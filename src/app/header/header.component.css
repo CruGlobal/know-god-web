@@ -1,0 +1,21 @@
+.dropdown-menu>li>a {
+    display: block;
+    padding: 3px 20px;
+    clear: both;
+    font-weight: normal;
+    line-height: 1.8125;
+    color: #333333;
+    white-space: nowrap;
+    font-size: 13px;
+}
+
+.navbar-nav>li>a {
+    padding-top: 13.5px;
+    padding-bottom: 17.5px;
+}
+
+.navbar{min-height: 50px;}
+.center{
+    margin-left: 10%;
+    margin-right: 10%;
+}

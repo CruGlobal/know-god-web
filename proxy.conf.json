@@ -1,0 +1,18 @@
+{
+   "/resources": {
+      "target": "https://mobile-content-api.cru.org",
+      "secure": false
+   },
+   "/languages": {
+      "target": "https://mobile-content-api.cru.org",
+      "secure": false
+   },
+   "/translations": {
+      "target": "https://mobile-content-api.cru.org",
+      "secure": false
+   },
+   "/know-god-assets": {
+      "target": "https://s3.amazonaws.com",
+      "secure": false
+   }
+}

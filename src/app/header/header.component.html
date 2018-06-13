@@ -1,0 +1,50 @@
+<header role=banner>
+  <nav class="navbar navbar-default" role=navigation>
+    <div class="container">
+      <div class=navbar-header>
+        <button class=navbar-toggle data-target="#navbar-collapse" data-toggle=collapse type=button>
+          <span class=sr-only>Toggle navigation</span>
+          <span class=icon-bar></span>
+          <span class=icon-bar></span>
+          <span class=icon-bar></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse center" id=navbar-collapse>
+        <ul class="navbar-left nav navbar-nav">
+          <li>
+            <a >
+              <i class="fa fa-home"></i>
+            </a>
+          </li>
+        </ul>
+        <ul class="navbar-right nav navbar-nav">
+          <li class=dropdown>
+            <a aria-expanded=false class=dropdown-toggle data-toggle=dropdown role=button>
+              <i class="fa fa-book"></i>{{selectbook}}
+              <span class=caret></span>
+            </a>
+            <ul class=dropdown-menu role=menu>
+           
+                <li *ngFor="let book of allBooks">
+                  <a (click)="selectBook(book.attributes.name,book.id)">{{book.attributes.name}}</a>
+                </li>
+            </ul>
+          </li>
+          <li class=dropdown>
+            <a aria-expanded=false class=dropdown-toggle data-toggle=dropdown role=button>
+              <i class="fa fa-language"></i> {{selectLan}}
+              <span class=caret></span>
+            </a>
+            <ul class=dropdown-menu role=menu>
+             
+                <li *ngFor="let languages of allLanguages">
+                  <a (click)="selectLanguage(languages.attributes.name, languages.id)">{{languages.attributes.name}}</a>
+                </li>
+        
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
