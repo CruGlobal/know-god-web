@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -29,7 +30,7 @@ export class CommonService {
   }
 
   getBooks(url) {
-    return this.http.get(url);
+    return this.http.get(url); 
   }
 
   getLanguages(url) {
@@ -37,7 +38,7 @@ export class CommonService {
   }
 
   downloadFile(url) {
-    return this.http.get(url,{ headers: this.headers, responseType:"arraybuffer"});
+    return this.http.get(url,{ headers: this.headers, responseType:"arraybuffer"}); 
   }
 
 }
