@@ -12,7 +12,7 @@ exports.config = {
     'browserName': 'chrome'
   },
   directConnect: true,
-  baseUrl: 'http://cru-kn-angular.herokupapp.com/',
+  baseUrl: 'http://acmesoftware.esy.es/kg/',
   framework: 'jasmine',
   jasmineNodeOpts: {
     showColors: true,
