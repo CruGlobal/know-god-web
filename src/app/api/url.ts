@@ -8,5 +8,6 @@ export const APIURL = {
     GET_ALL_BOOKS:'/resources/',
     GET_ALL_LANGUAGES:'/languages/',
     GET_ZIP_FILES: "/translations/",
-    GET_XML_FILES_FOR_MANIFEST: "/know-god-assets/"
+    GET_XML_FILES_FOR_MANIFEST: "/know-god-assets/",
+    GET_ATTACHMENTS:"/attachments/"
 } 

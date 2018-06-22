@@ -51,92 +51,88 @@ export class PageComponent implements OnInit {
   resources = [];
   pageContents = [];
   AllPagesContent = [];
-  private sub: any;
   constructor(public commonService: CommonService,
     private ngxXml2jsonService: NgxXml2jsonService,
     public sanitizer: DomSanitizer,
     private route: ActivatedRoute,
     public router: Router, public location: Location) {
 
-
-  }
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-  pageGetparameters = {
-    bookid: null,
-    langid: null,
-    pageid: null
-
+    // this.route.params.subscribe( params => {
+    //   console.log(params);
+    //   this.bookid = params['id']
+    // })
 
   }
 
   ngOnInit() {
-    //
-    this.AllBooks();
-    // this.AllLanguages();
-    this.sub = this.route.params.subscribe(params => {
+    this.route.params.subscribe((params) => {
       if (params['bookid'] && params['langid'] && params['pageid']) {
         this.selectedPage(params['pageid']);
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = params['pageid']
       }
-      // else if (params['bookid'] && params['langid']) {
-      //     this.selectLanguage(params['langname'], params['langid']);
-      // }
-
-      if (params['bookid']) {
-        this.pageGetparameters.bookid = params['bookid'];
+      else if (params['bookid'] && params['langid']) {
+        this.selectLanguage(params['langname'], params['langid']);
       }
-
-      if (params['bookid'] && params['langid']) {
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
+      else if (params['bookid']) {
+        this.selectBook(params['bookname'], params['bookid']);
       }
-      if (params['bookid'] && params['langid'] && params['page']) {
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid =Number(params['page'])
-        this.counter=Number(params['page'])
-
+      else {
+        //default flow
+        this.AllBooks();
+        this.AllLanguages();
       }
-      // else{
-      //     //default flow
-      //     this.AllBooks();
-      //     this.AllLanguages();
-      // }
     })
+
+
+    // if (sessionStorage.getItem("book") && sessionStorage.getItem("bookId")) {
+    //   this.books = false;
+    //   this.selectbook = sessionStorage.getItem("book");
+    //   this.selectedBookId = sessionStorage.getItem("bookId");
+    //   console.log("Selected Book Id on pageload:", this.selectedBookId)
+    //   let id = sessionStorage.getItem("bookId");
+    //   this.commonService.getBooks(APIURL.GET_ALL_BOOKS + id + "?include=translations")
+    //     .subscribe((data: any) => {
+    //       console.log(data);
+
+    //       if (data.data["attributes"]["resource-type"] == "tract") {
+    //         this.currentBookTranslations = data.included;
+    //         this.LanguagesForSelectedBook();
+    //       }
+
+    //     })
+
+    // }
+    // if (sessionStorage.getItem("language") && sessionStorage.getItem("languageId")) {
+    //   this.books = false;
+    //   this.selectbook = sessionStorage.getItem("book");
+    //   this.selectedBookId = sessionStorage.getItem("bookId");
+    //   this.language = false;
+    //   this.selectLan = sessionStorage.getItem("language")
+    //   this.selectedLanguageId = sessionStorage.getItem("languageId")
+    //   console.log("Selected Language Id:", this.selectedLanguageId)
+    //   let id = sessionStorage.getItem("languageId");
+    //   this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + id)
+    //     .subscribe((data: any) => {
+    //       this.currentLanguageTransalations = data.data.relationships.translations.data;
+    //       //console.log("currentLanguageTranslations:", this.currentLanguageTransalations)
+    //       this.translationsMapper(this.currentBookTranslations, this.currentLanguageTransalations);
+    //       console.log("currentTranslations:", this.currentTranslations);
+    //       // for (let i = 0; i < this.currentTranslations.length; i++) {
+    //       //   this.getXmlFiles(this.currentTranslations[i]);
+    //       // }
+    //       this.getXmlFiles(this.currentTranslations[0]);
+    //     })
+    //   sessionStorage.removeItem("book");
+    //   sessionStorage.removeItem("bookId");
+    //   sessionStorage.removeItem("language");
+    //   sessionStorage.removeItem("languageId");
+    // }
   }
-  //byDefault
-  getAllBooks_Default() {
-
-  }
-  getAllLanguages_default() {
-
-  }
-
-  GetParameterData() {
-
-  }
-
 
   /*To get all books*/
   AllBooks() {
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
       .subscribe((data: any) => {
         this.allBooks = data.data;
-
-        if (this.pageGetparameters.bookid) {
-          this.allBooks.forEach(x => {
-
-            if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
-              this.selectBook(x)
-            }
-
-          });
-        }
-        console.log("AllBooks:", this, this.allBooks)
 
       })
   }
@@ -146,16 +142,7 @@ export class PageComponent implements OnInit {
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
-        if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
-          this.allLanguages.forEach(x => {
-
-            if (x.attributes.code == this.pageGetparameters.langid) {
-              this.selectLanguage(x)
-            }
-
-          });
-        }
-        // this.selectedBookLanguauageTranslations = [];
+        this.selectedBookLanguauageTranslations = [];
         console.log("Languages:", this.allLanguages)
 
       })
@@ -186,20 +173,23 @@ export class PageComponent implements OnInit {
         console.log("selectedBookLanguageTranslations:", this.selectedBookLanguauageTranslations);
       })
   }
-  lang = "";
-  selectLanguage(lang) {
-    this.lang = lang.attributes.code;
-    console.log(lang);
-    if (!this.pageGetparameters.pageid) {
-      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
-      this.location.go(Url);
-    }
 
+  selectLanguage(value, id) {
+    //this.router.navigate(['/home/:book', this.language]);
+    sessionStorage.setItem("language", value);
+    sessionStorage.setItem("languageId", id);
+    console.log("xxxxxx:", this.selectedBookId)
+    let subUrl = '/home/' + this.selectedBookId
+    console.log("SubURL:", subUrl);
+    //let Url = this.router.createUrlTree(['/home',this.selectedBookId]).toString();
+    let Url = this.router.createUrlTree([subUrl, id]).toString();
+    console.log("URL:", Url);
+    this.location.go(Url);
     this.language = false;
-    this.selectLan = lang.attributes.name
-    this.selectedLanguageId = lang.id
+    this.selectLan = value
+    this.selectedLanguageId = id
     console.log("Selected Language Id:", this.selectedLanguageId)
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + lang.id)
+    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + id)
       .subscribe((data: any) => {
         this.currentLanguageTransalations = data.data.relationships.translations.data;
         //console.log("currentLanguageTranslations:", this.currentLanguageTransalations)
@@ -208,67 +198,42 @@ export class PageComponent implements OnInit {
         // for (let i = 0; i < this.currentTranslations.length; i++) {
         //   this.getXmlFiles(this.currentTranslations[i]);
         // }
-
-        if(this.pageGetparameters.pageid)
-        {
-          this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
-        }
-        else{
-          this.getXmlFiles(this.currentTranslations[0]);
-        }
-    
-          
-         
-        
-        
+        this.getXmlFiles(this.currentTranslations[0]);
       })
   }
-  BookID = "";
 
-  selectBook(book) {
-    console.log(book);
-    this.BookID = book.attributes.abbreviation
-
-    if (!this.pageGetparameters.langid) {
-      let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
-      this.location.go(Url);
-    }
-
-
+  selectBook(value, id) {
+    sessionStorage.setItem("book", value);
+    sessionStorage.setItem("bookId", id);
+    //this.router.navigateByUrl(this.myUrl);
+    let Url = this.router.createUrlTree(['/home', id]).toString();
+    this.location.go(Url);
+    //this.router.navigate(['/home', id]);
     this.books = false;
-    this.selectbook = book.attributes.name;
-    this.selectedBookId = book.id;
-    console.log("Selected Book Id:", this.selectedBookId);
-    this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
+    this.selectbook = value;
+    this.selectedBookId = id;
+
+    //this.router.navigate(['/home'],{queryParams:{bookname:value}});
+    console.log("Selected Book Id:", this.selectedBookId)
+
+    this.commonService.getBooks(APIURL.GET_ALL_BOOKS + id + "?include=translations")
       .subscribe((data: any) => {
         console.log(data);
+
         if (data.data["attributes"]["resource-type"] == "tract") {
           this.currentBookTranslations = data.included;
           this.LanguagesForSelectedBook();
         }
-        this.AllLanguages();
+
+        //console.log("currentBookTranslations:", this.currentBookTranslations)
+        // if(this.currentBookTranslations==undefined){
+        //   alert("Language translations are not available for this book")
+        // }
+        // else{
+
+        // }
+
       })
-
-
-
-    //isDefault
-    this.sub = this.route.params.subscribe(params => {
-      if (params['bookid'] && params['langid'] && params['pageid']) {
-        this.selectedPage(params['pageid']);
-      }
-      else if (params['bookid'] && params['langid']) {
-        //this.selectLanguage(params['langname'], params['langid']);
-      }
-      else if (params['bookid']) {
-        let bookname = this.route.queryParams['bookname']
-       // this.selectBook(bookname, params['bookid']);
-      }
-      else {
-        //default flow
-        this.AllBooks();
-        this.AllLanguages();
-      }
-    })
   }
 
   translationsMapper(booktranslations, languagetranslations) {
@@ -285,6 +250,7 @@ export class PageComponent implements OnInit {
 
   /*To get xml files for each translation Id*/
   getXmlFiles(id) {
+    //console.log(id);
     let manifest_name = id.attributes["manifest-name"];
     let translationId = id.id;
     //console.log("translationId:", translationId);
@@ -528,17 +494,14 @@ export class PageComponent implements OnInit {
     console.log("tagline", this.tagline);
 
   }
-  pageCount = ""
-  next() {
 
+  next() {
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
     this.tagline = "";
     if (this.counter < this.allPages.length) {
       this.counter++;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
-      this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
       if (this.currentPageContent.cards.length > 0) {
@@ -579,8 +542,6 @@ export class PageComponent implements OnInit {
     this.tagline = "";
     if (this.counter > 0) {
       this.counter--;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
-      this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
       if (this.currentPageContent.cards.length > 0) {
@@ -627,5 +588,5 @@ export class PageComponent implements OnInit {
       }
     }
   }
-
 }
+

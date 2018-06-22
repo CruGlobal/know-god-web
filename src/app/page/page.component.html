@@ -1,5 +1,5 @@
 <div>
-  <div>
+ <div> 
     <div class="header tc relative">
       <span class="l p25 absolute kg-gray-dark ng-binding">
         <i class="fas fa-book"></i>{{selectbook}}
@@ -24,22 +24,30 @@
 
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
 
-      <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks" [routerLink]="['/home', book.id]" routerLinkActive="active">
-
-        <a class="w100 dib pill-inside ng-binding" (click)="selectBook(book.attributes.name,book.id, '/home')"> {{book.attributes.name}}</a>
+       <span class="w33 dib pill kg-bg-white-hover ng-scope" 
+      *ngFor="let book of allBooks" [routerLink]="['/home','Ashok', book.id]" 
+      routerLinkActive="active" [queryParams]="{ bookname:book.attributes.name  }">
+    
+     <!-- <span class="w33 dib pill kg-bg-white-hover ng-scope" 
+     *ngFor="let book of allBooks" 
+     > -->
+        <a class="w100 dib pill-inside ng-binding" href="javascript:void(0)"
+        (click)="selectBook(book)"> {{book.attributes.name}}</a>
       </span>
     </div>
-    <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
-      <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations" >
+    <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language" >
+      <span class="w33 dib pill kg-bg-white-hover ng-scope" 
+      *ngFor="let lang of selectedBookLanguauageTranslations"
+      [routerLink]="['/home/:bookid', lang.id]" [queryParams]="{ langname:lang.attributes.name  }" >
 
-        <a class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang.attributes.name, lang.id)"> {{lang.attributes.name}}</a>
+        <a class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang)"> {{lang.attributes.name}}</a>
       </span>
 
     </div>
 
 
 
-  </div>
+  </div> 
   <div>
     <div class="py25 kg-bg-blue kg-white ng-scope">
       <div class="ng-scope">
@@ -73,6 +81,7 @@
               <p>{{label['content:paragraph']['content:text']}}</p> -->
               <span><h4 class="ng-binding">{{card.label}}</h4></span>
               <p class="mx144 ng-scope">{{card.content}}</p>
+              {{card.localImage|json}}
               <img *ngIf="card.localImage!=''"[src]="card.localImage" width="200" height="200">
              
         </div>

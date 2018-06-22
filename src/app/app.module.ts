@@ -12,20 +12,21 @@ import { HomeComponent } from './home/home.component';
 
 const appRoutes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
+ 
   {
     path: 'home',
     component: PageComponent
   },
   {
-    path: 'home/:id',
+    path: 'home/:bookid',
     component: PageComponent
   },
   {
-    path: 'home/:id/:lang',
+    path: 'home/:bookid/:langid',
     component: PageComponent
   },
   {
-    path: 'home/:book/:lang/:page',
+    path: 'home/:bookid/:langid/:page',
     component: PageComponent
   }
   
