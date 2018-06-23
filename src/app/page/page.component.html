@@ -49,7 +49,7 @@
         <h1 class="fl ml25 kg-white ng-binding ng-scope" *ngIf="counter>0">{{counter}}</h1>
       </div>
       <div>
-        <h2 class="mx100 kg-white ng-binding">{{currentPageContent.heading}}</h2>
+        <h2 class="mx100 kg-white ng-binding" *ngIf="currentPageContent">{{currentPageContent.heading}}</h2>
       </div>
     </div>
   </div>
@@ -63,7 +63,7 @@
           <p class="mx144">
             <span class="db ng-scope">
 
-              <span class="ng-binding ng-scope"> {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span>
+              <span class="ng-binding ng-scope" *ngIf="currentPageContent.paragraph"> {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span>
 
             </span>
 
@@ -72,7 +72,7 @@
         </div>
         <div *ngIf="Cards!=''">
           <div *ngFor="let card of Cards">
-            {{card | json}}
+            <!-- {{card | json}} -->
             <!-- <span><h4>{{label.label['content:text']}}</h4></span>
               <p>{{label['content:paragraph']['content:text']}}</p> -->
             <span>
