@@ -72,7 +72,6 @@ export class PageComponent implements OnInit {
   }
 
   ngOnInit() {
-
     
     //
     this.AllBooks();
@@ -219,8 +218,12 @@ export class PageComponent implements OnInit {
   }
   BookID = "";
 
-  selectBook(book) {
 
+  getCurrentUrl(){
+      console.log(this.router.url);
+  }
+  selectBook(book) {
+    
     
     console.log(book);
     this.BookID = book.attributes.abbreviation
@@ -229,6 +232,7 @@ export class PageComponent implements OnInit {
       let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
       this.location.go(Url);
     }
+    console.log(this.router.url);
 
 
     this.books = false;
@@ -244,7 +248,7 @@ export class PageComponent implements OnInit {
         }
         this.AllLanguages();
         
-      })
+      });
 
 
 
