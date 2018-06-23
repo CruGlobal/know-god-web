@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { PageComponent } from './page/page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 
 const appRoutes: Routes = [
   { path: "", redirectTo: "home", pathMatch: "full" },
@@ -57,7 +58,8 @@ const appRoutes: Routes = [
     AppComponent,
     HeaderComponent,
     PageComponent,
-    HomeComponent
+    HomeComponent,
+    SharingModalComponent
   ],
   imports: [
     BrowserModule,

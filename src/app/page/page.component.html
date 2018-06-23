@@ -14,7 +14,7 @@
       </div>
       <span class="r mt15 absolute tc pill">
         <a class="m10 db share">
-          <i class="fas fa-share-alt"></i>
+          <i class="fas fa-share-alt" data-toggle="modal" data-target="#share" href="#"></i>
         </a>
         <a href="" class="m10 db pill kg-bg-gray-dark share kg-gray-light">
           <i class="fab fa-facebook-f v-mid"></i>
@@ -70,10 +70,10 @@
         <div class="ng-scope">
           <p class="mx144">
             <span class="db ng-scope">
-
+        <!-- #BROKEN BINDING
               <span class="ng-binding ng-scope"
               dir="pageGetparameters.dir"
-              > {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span>
+              > {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span> -->
 
             </span>
 
@@ -142,3 +142,4 @@
       </span>
     </div>
   </div>
+  <sharing-modal [book]="selectbook"></sharing-modal>
