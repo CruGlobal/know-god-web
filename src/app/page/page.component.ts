@@ -23,7 +23,7 @@ export class PageComponent implements OnInit {
   allResourcesImages: any;
   selectedBookLanguauageTranslations = [];
   allLanguagesTranslations: any;
-  currentPageContent: any;
+  currentPageContent:any;
   language: boolean = false;
   books: boolean = false;
   currentTranslations = [];
@@ -72,6 +72,8 @@ export class PageComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    
     //
     this.AllBooks();
     // this.AllLanguages();
@@ -108,17 +110,7 @@ export class PageComponent implements OnInit {
       // }
     })
   }
-  //byDefault
-  getAllBooks_Default() {
-
-  }
-  getAllLanguages_default() {
-
-  }
-
-  GetParameterData() {
-
-  }
+ 
 
 
   /*To get all books*/
@@ -143,6 +135,9 @@ export class PageComponent implements OnInit {
 
   /*To get all languages*/
   AllLanguages() {
+
+
+
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
@@ -189,6 +184,7 @@ export class PageComponent implements OnInit {
   lang = "";
   selectLanguage(lang) {
     this.lang = lang.attributes.code;
+    this.pageGetparameters.langid = lang.attributes.code;
     console.log(lang);
     if (!this.pageGetparameters.pageid) {
       let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
@@ -226,6 +222,8 @@ export class PageComponent implements OnInit {
   BookID = "";
 
   selectBook(book) {
+
+    
     console.log(book);
     this.BookID = book.attributes.abbreviation
 
@@ -247,28 +245,29 @@ export class PageComponent implements OnInit {
           this.LanguagesForSelectedBook();
         }
         this.AllLanguages();
+        
       })
 
 
 
     //isDefault
-    this.sub = this.route.params.subscribe(params => {
-      if (params['bookid'] && params['langid'] && params['pageid']) {
-        this.selectedPage(params['pageid']);
-      }
-      else if (params['bookid'] && params['langid']) {
-        //this.selectLanguage(params['langname'], params['langid']);
-      }
-      else if (params['bookid']) {
-        let bookname = this.route.queryParams['bookname']
-       // this.selectBook(bookname, params['bookid']);
-      }
-      else {
-        //default flow
-        this.AllBooks();
-        this.AllLanguages();
-      }
-    })
+    // this.sub = this.route.params.subscribe(params => {
+    //   if (params['bookid'] && params['langid'] && params['pageid']) {
+    //     this.selectedPage(params['pageid']);
+    //   }
+    //   else if (params['bookid'] && params['langid']) {
+    //     //this.selectLanguage(params['langname'], params['langid']);
+    //   }
+    //   else if (params['bookid']) {
+    //     let bookname = this.route.queryParams['bookname']
+    //    // this.selectBook(bookname, params['bookid']);
+    //   }
+    //   else {
+    //     //default flow
+    //     // this.AllBooks();
+    //     // this.AllLanguages();
+    //   }
+    // })
   }
 
   translationsMapper(booktranslations, languagetranslations) {
@@ -414,12 +413,13 @@ export class PageComponent implements OnInit {
 
 
   Languages() {
-    this.language = true;
+    this.language = !this.language;
     this.books = false
   }
   Books() {
     this.language = false;
-    this.books = true;
+    this.books = !this.books;
+    
   }
 
   allPages = [];
@@ -518,11 +518,6 @@ export class PageComponent implements OnInit {
 
     }
 
-
-    // this.cardsContent = this.Cards;
-
-    //   if(this.currentPageContent["call-to-action"]) {
-    //   this.tagline = this.currentPageContent["call-to-action"]["content:text"];
     // }
     console.log("current page cards content:", this.Cards);
     console.log("tagline", this.tagline);
@@ -554,21 +549,6 @@ export class PageComponent implements OnInit {
 
         }
       }
-
-
-
-      // this.cardsContent = this.Cards;
-      // for (let i = 0; i < this.allResourcesImages.length; i++) {
-      //   if (this.currentPageContent["@attributes"]["background-image"] == this.allResourcesImages[i].filename) {
-      //     this.image = this.allResourcesImages[i].imageUrl;
-      //     console.log("this.image:", this.image);
-      //   }
-      // }
-      // if (this.currentPageContent["call-to-action"]) {
-      //   this.tagline = this.currentPageContent["call-to-action"]["content:text"];
-      // }
-      console.log("next page cards content:", this.Cards);
-      console.log("tagline", this.tagline);
     }
   }
 
