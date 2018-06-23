@@ -23,7 +23,7 @@ export class PageComponent implements OnInit {
   allResourcesImages: any;
   selectedBookLanguauageTranslations = [];
   allLanguagesTranslations: any;
-  currentPageContent: any;
+  currentPageContent:any;
   language: boolean = false;
   books: boolean = false;
   currentTranslations = [];
@@ -73,39 +73,46 @@ export class PageComponent implements OnInit {
 
   ngOnInit() {
 
-
+    
     //
     this.AllBooks();
     // this.AllLanguages();
     this.sub = this.route.params.subscribe(params => {
-      if (params['bookid'] && params['langid'] && params['page']) {
-        this.selectedPage(params['page']);
+      if (params['bookid'] && params['langid'] && params['pageid']) {
+        this.selectedPage(params['pageid']);
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = Number(params['page'])
+        this.pageGetparameters.pageid = params['pageid']
       }
       // else if (params['bookid'] && params['langid']) {
       //     this.selectLanguage(params['langname'], params['langid']);
       // }
-
-      if (params['bookid']) {
-        this.pageGetparameters.bookid = params['bookid'];
-      }
-
-      if (params['bookid'] && params['langid']) {
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-      }
       if (params['bookid'] && params['langid'] && params['page']) {
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = Number(params['page'])
-        this.counter = Number(params['page'])
+        this.pageGetparameters.pageid =Number(params['page'])
+        this.counter=Number(params['page'])
 
       }
+      else if (params['bookid'] && params['langid']) {
+        this.pageGetparameters.bookid = params['bookid']
+        this.pageGetparameters.langid = params['langid']
+      }
+
+      else if (params['bookid']) {
+        this.pageGetparameters.bookid = params['bookid'];
+      }
+
+      
+     
+      // else{
+      //     //default flow
+      //     this.AllBooks();
+      //     this.AllLanguages();
+      // }
     })
   }
-
+ 
 
 
   /*To get all books*/
@@ -196,19 +203,25 @@ export class PageComponent implements OnInit {
         //   this.getXmlFiles(this.currentTranslations[i]);
         // }
 
-        if (this.pageGetparameters.pageid) {
+        if(this.pageGetparameters.pageid)
+        {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
         }
-        else {
+        else{
           this.getXmlFiles(this.currentTranslations[0]);
         }
+    
+          
+         
+        
+        
       })
   }
   BookID = "";
 
   selectBook(book) {
 
-
+    
     console.log(book);
     this.BookID = book.attributes.abbreviation
 
@@ -230,8 +243,29 @@ export class PageComponent implements OnInit {
           this.LanguagesForSelectedBook();
         }
         this.AllLanguages();
-
+        
       })
+
+
+
+    //isDefault
+    // this.sub = this.route.params.subscribe(params => {
+    //   if (params['bookid'] && params['langid'] && params['pageid']) {
+    //     this.selectedPage(params['pageid']);
+    //   }
+    //   else if (params['bookid'] && params['langid']) {
+    //     //this.selectLanguage(params['langname'], params['langid']);
+    //   }
+    //   else if (params['bookid']) {
+    //     let bookname = this.route.queryParams['bookname']
+    //    // this.selectBook(bookname, params['bookid']);
+    //   }
+    //   else {
+    //     //default flow
+    //     // this.AllBooks();
+    //     // this.AllLanguages();
+    //   }
+    // })
   }
 
   translationsMapper(booktranslations, languagetranslations) {
@@ -250,60 +284,54 @@ export class PageComponent implements OnInit {
   getXmlFiles(id) {
     let manifest_name = id.attributes["manifest-name"];
     let translationId = id.id;
-
+    //console.log("translationId:", translationId);
+    //console.log("Manifest-name:", manifest_name);
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + translationId + "/" + manifest_name)
       .subscribe(data => {
-        console.log(data);
-        if (data) {
-          /*Convertion of array buffer to xml*/
-          let enc = new TextDecoder("utf-8");
-          let arr = new Uint8Array(data);
-          let result = enc.decode(arr);
-          //console.log("result:", result);
+        //console.log("data:", data);
+ 
+        /*Convertion of array buffer to xml*/
+        let enc = new TextDecoder("utf-8");
+        let arr = new Uint8Array(data);
+        let result = enc.decode(arr);
+        //console.log("result:", result);
 
-          /*convertion of xml to json*/
-          const parser = new DOMParser();
-          const xml = parser.parseFromString(result, 'text/xml');
-          let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
-          //console.log("JSON:", jsondata);
+        /*convertion of xml to json*/
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(result, 'text/xml');
+        let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
+        //console.log("JSON:", jsondata);
 
-          /* All Pages in xml file */
-          for (let j = 0; j < jsondata["manifest"]["pages"]["page"].length; j++) {
-            this.page.filename = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["filename"];
-            this.page.src = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["src"];
-            this.page.translationId = translationId;
-            //console.log(this.page);
-            this.pages.push(this.page);
-            this.AllPagesContent = [];
-            this.allPages = [];
-            this.allResourcesImages = [];
-            this.getXmlFileForEachPage(this.page);
-            this.page = { filename: "", src: "", translationId: "" };
 
-          }
-          //console.log("Pages:", this.pages);
+        /* All Pages in xml file */
+        for (let j = 0; j < jsondata["manifest"]["pages"]["page"].length; j++) {
+          this.page.filename = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["filename"];
+          this.page.src = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["src"];
+          this.page.translationId = translationId;
+          //console.log(this.page);
+          this.pages.push(this.page);
+          this.AllPagesContent = [];
+          this.allPages = [];
+          this.allResourcesImages = [];
+          this.getXmlFileForEachPage(this.page);
+          this.page = { filename: "", src: "", translationId: "" };
 
-          /*All resources in xml file*/
-          for (let j = 0; j < jsondata["manifest"]["resources"]["resource"].length; j++) {
-            this.resource.filename = jsondata["manifest"]["resources"]["resource"][j]["@attributes"]["filename"];
-            this.resource.src = jsondata["manifest"]["resources"]["resource"][j]["@attributes"]["src"];
-            this.resource.translationId = translationId;
-            this.pages.push(this.resource);
-            this.resources.push(this.resource);
-            this.getXmlFileForEachResource(this.resource);
-            //this.getImages(this.resource);
-            this.resource = { filename: "", src: "", translationId: "" };
-          }
-          console.log("Resources:", this.resources);
-          this.currentPage();
-          this.getXmlFileForEachPage(data);
-        } else {
-          alert('error')
         }
+        //console.log("Pages:", this.pages);
 
-
-      })
-
+        /*All resources in xml file*/
+        for (let j = 0; j < jsondata["manifest"]["resources"]["resource"].length; j++) {
+          this.resource.filename = jsondata["manifest"]["resources"]["resource"][j]["@attributes"]["filename"];
+          this.resource.src = jsondata["manifest"]["resources"]["resource"][j]["@attributes"]["src"];
+          this.resource.translationId = translationId;
+          this.pages.push(this.resource);
+          this.resources.push(this.resource);
+          this.getXmlFileForEachResource(this.resource);
+          //this.getImages(this.resource);
+          this.resource = { filename: "", src: "", translationId: "" };
+        }
+        console.log("Resources:", this.resources);
+      });
   }
 
 
@@ -389,7 +417,7 @@ export class PageComponent implements OnInit {
   Books() {
     this.language = false;
     this.books = !this.books;
-
+    
   }
 
   allPages = [];
@@ -462,7 +490,7 @@ export class PageComponent implements OnInit {
     this.allPages.push(obj);
     console.log("allPagesMapperObj:", this.allPages);
     //this.currentPageContent = this.allPages[this.counter];
-    if (this.counter == 0) {
+    if (this.counter) {
       this.currentPage();
     }
 
@@ -479,14 +507,18 @@ export class PageComponent implements OnInit {
     this.Cards = [];
     this.cardsContent = [];
     this.tagline = "";
- 
     this.currentPageContent = this.allPages[this.counter];
     if (this.currentPageContent.cards.length > 0) {
       this.Cards = this.currentPageContent.cards;
       for (let i = 0; i < this.Cards.length; i++) {
+
       }
 
     }
+
+    // }
+    console.log("current page cards content:", this.Cards);
+    console.log("tagline", this.tagline);
 
   }
   pageCount = ""
