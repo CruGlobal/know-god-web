@@ -66,7 +66,8 @@ export class PageComponent implements OnInit {
   pageGetparameters = {
     bookid: null,
     langid: null,
-    pageid: null
+    pageid: null,
+    dir:'rtl'
 
 
   }
@@ -150,6 +151,7 @@ export class PageComponent implements OnInit {
   LanguagesForSelectedBook() {
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
+        console.info('languageTransalations',data);
         this.allLanguagesTranslations = data.data;
         for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
           let language;
@@ -175,6 +177,7 @@ export class PageComponent implements OnInit {
   selectLanguage(lang) {
     this.lang = lang.attributes.code;
     this.pageGetparameters.langid = lang.attributes.code;
+    this.pageGetparameters.dir = lang.attributes.direction;
     console.log(lang);
     if (!this.pageGetparameters.pageid) {
     //  let Url = this.router.navigateByUrl('/home/'+this.BookID+ '/' +lang.attributes.code)
