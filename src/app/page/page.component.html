@@ -49,7 +49,7 @@
         <h1 class="fl ml25 kg-white ng-binding ng-scope" *ngIf="counter>0">{{counter}}</h1>
       </div>
       <div>
-        <h2 class="mx100 kg-white ng-binding">{{currentPageContent.heading}}</h2>
+        <h2 class="mx100 kg-white ng-binding">{{currentPageContent?.heading}}</h2>
       </div>
     </div>
   </div>
@@ -62,27 +62,50 @@
         <div class="ng-scope">
           <p class="mx144">
             <span class="db ng-scope">
-
-              <span class="ng-binding ng-scope"> {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span>
-
+              <span class="ng-binding ng-scope"> {{summary_line}} </span>
+              <p *ngFor="let item of multiple_summary_line">
+                <span class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
+              </p>
             </span>
 
           </p>
-
         </div>
+
+        <div *ngIf="paras?.length > 0">
+          <p class="mx144" *ngFor="let item of paras; let i= index">
+            <span class="ng-binding ng-scope" *ngIf="item.type== 'text'">
+              <b>{{item.text}} </b>
+            </span>
+            <span class="ng-binding ng-scope" *ngIf="item.type=='button'">
+              <a href="">{{item.text}}</a>
+            </span>
+          </p>
+        </div>
+
         <div *ngIf="Cards!=''">
           <div *ngFor="let card of Cards">
-            {{card | json}}
+            <!-- {{card | json}} -->
             <!-- <span><h4>{{label.label['content:text']}}</h4></span>
               <p>{{label['content:paragraph']['content:text']}}</p> -->
             <span>
               <h4 class="ng-binding">{{card.label}}</h4>
             </span>
-            <p class="mx144 ng-scope">{{card.content}}</p>
+            <div *ngFor="let cardpara of card.content;let i= index">
+                <!-- <p class="mx144 ng-scope" >{{card.content[i]}}</p> -->
+                <p class="mx144 ng-scope" *ngFor="let cardcont of card.content[i]" >{{cardcont}}</p>
+                <img *ngIf="card.localImage[i]!=''" [src]="card.localImage[i]" width="200" height="200">
+            </div>
+            
+            <!-- <p *ngIf="card.contenttype=='array'" *ngFor="let item of card.content">
+              <span class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
+            </p> -->
             <!-- {{card.localImage|json}} -->
-            <img *ngIf="card.localImage!=''" [src]="card.localImage" width="200" height="200">
+            <!-- <img *ngIf="card.localImage!=''" [src]="card.localImage" width="200" height="200"> -->
 
           </div>
+        </div>
+        <div *ngIf="call_to_action!=''">
+          <h4 class="mx144 action ng-scope">{{call_to_action}}</h4>
         </div>
         <!-- <div>
           <img *ngIf="image" [src]="image" width="200" height="200">
@@ -92,7 +115,7 @@
 
         <div>
           <span>
-            {{tagline}}
+            {{call_to_action}}
           </span>
         </div>
       </div>

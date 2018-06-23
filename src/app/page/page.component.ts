@@ -23,7 +23,7 @@ export class PageComponent implements OnInit {
   allResourcesImages: any;
   selectedBookLanguauageTranslations = [];
   allLanguagesTranslations: any;
-  currentPageContent:any;
+  currentPageContent: any;
   language: boolean = false;
   books: boolean = false;
   currentTranslations = [];
@@ -73,7 +73,7 @@ export class PageComponent implements OnInit {
 
   ngOnInit() {
 
-    
+
     //
     this.AllBooks();
     // this.AllLanguages();
@@ -99,8 +99,8 @@ export class PageComponent implements OnInit {
       if (params['bookid'] && params['langid'] && params['page']) {
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid =Number(params['page'])
-        this.counter=Number(params['page'])
+        this.pageGetparameters.pageid = Number(params['page'])
+        this.counter = Number(params['page'])
 
       }
       // else{
@@ -110,7 +110,7 @@ export class PageComponent implements OnInit {
       // }
     })
   }
- 
+
 
 
   /*To get all books*/
@@ -205,25 +205,24 @@ export class PageComponent implements OnInit {
         //   this.getXmlFiles(this.currentTranslations[i]);
         // }
 
-        if(this.pageGetparameters.pageid)
-        {
+        if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
         }
-        else{
+        else {
           this.getXmlFiles(this.currentTranslations[0]);
         }
-    
-          
-         
-        
-        
+
+
+
+
+
       })
   }
   BookID = "";
 
   selectBook(book) {
 
-    
+
     console.log(book);
     this.BookID = book.attributes.abbreviation
 
@@ -245,7 +244,7 @@ export class PageComponent implements OnInit {
           this.LanguagesForSelectedBook();
         }
         this.AllLanguages();
-        
+
       })
 
 
@@ -419,29 +418,46 @@ export class PageComponent implements OnInit {
   Books() {
     this.language = false;
     this.books = !this.books;
-    
+
   }
 
   allPages = [];
 
   objectMapper(resourcePage) {
-    let heading, card, cards, paragraph, call_to_action, obj, attributes;
+    let heading, card, cards, paragraph, call_to_action, obj, attributes, paras;
     obj = {};
     heading = {};
     paragraph = {};
     call_to_action = {};
     card = {
       label: "",
-      content: "",
-      image: "",
-      localImage: ""
+      content: [],
+      image: [],
+      localImage: []
     };
     cards = [];
+
     attributes = {};
     if (resourcePage.page.hero) {
-      heading = resourcePage.page.hero.heading["content:text"];
+      heading = resourcePage.page.hero.heading == undefined ? '' : resourcePage.page.hero.heading["content:text"];
       paragraph = resourcePage.page.hero;
       obj = resourcePage.page;
+
+      paras = [];
+      if (resourcePage.page.hero["content:paragraph"] != undefined && resourcePage.page.hero["content:paragraph"].length != undefined) {
+        resourcePage.page.hero["content:paragraph"].forEach(para => {
+          var newPara = { type: '', text: '' };
+          if (para["content:button"] == undefined) {
+            newPara.type = "text";
+            newPara.text = para["content:text"];
+          } else {
+            newPara.type = "button";
+            newPara.text = para["content:button"]["content:text"];
+          }
+          paras.push(newPara)
+        });
+
+      }
     }
     if (resourcePage.page.header) {
       heading = resourcePage.page.header.title["content:text"];
@@ -449,20 +465,36 @@ export class PageComponent implements OnInit {
       paragraph = '';
       for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
         card.label = resourcePage.page.cards.card[i].label["content:text"];
-        card.content = resourcePage.page.cards.card[i]["content:paragraph"]["content:text"];
-        if (resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]) {
-          card.image = resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]["@attributes"]["resource"];
+
+        if (resourcePage.page.cards.card[i]["content:paragraph"].length == undefined) {
+          card.content.push(resourcePage.page.cards.card[i]["content:paragraph"]["content:text"]);
+          if (resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]) {
+            card.image.push(resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]["@attributes"]["resource"]);
+          }
+          else {
+            card.image.push("");
+          }
         }
-        else {
-          card.image = ""
-        }
+        else
+          for (let j = 0; j < resourcePage.page.cards.card[i]["content:paragraph"].length; j++) {
+            var cardpara = resourcePage.page.cards.card[i]["content:paragraph"][j];
+            card.content.push(cardpara["content:text"]);
+            if (cardpara["content:image"]) {
+              card.image.push(cardpara["content:image"]["@attributes"]["resource"]);
+            }
+            else {
+              card.image.push("");
+            }
+          }
+
         cards.push(card);
         card = {
           label: "",
-          content: "",
-          image: ""
+          content: [],
+          image: []
         };
       }
+
     }
     if (resourcePage.page.hero && resourcePage.page.cards) {
       heading = resourcePage.page.hero.heading["content:text"];
@@ -470,25 +502,47 @@ export class PageComponent implements OnInit {
       obj = resourcePage.page;
       for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
         card.label = resourcePage.page.cards.card[i].label["content:text"];
-        card.content = resourcePage.page.cards.card[i]["content:paragraph"]["content:text"];
-        if (resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]) {
-          card.image = resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]["@attributes"]["resource"];
+
+        if (resourcePage.page.cards.card[i]["content:paragraph"].length == undefined) {
+          card.content.push(resourcePage.page.cards.card[i]["content:paragraph"]["content:text"]);
+          if (resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]) {
+            card.image.push(resourcePage.page.cards.card[i]["content:paragraph"]["content:image"]["@attributes"]["resource"]);
+          }
+          else {
+            card.image.push("");
+          }
         }
-        else {
-          card.image = ""
-        }
+        else
+          for (let j = 0; j < resourcePage.page.cards.card[i]["content:paragraph"].length; j++) {
+            var cardpara = resourcePage.page.cards.card[i]["content:paragraph"][j];
+            card.content.push(cardpara["content:text"]);
+            if (cardpara["content:image"]) {
+              card.image.push(cardpara["content:image"]["@attributes"]["resource"]);
+            }
+            else {
+              card.image.push("");
+            }
+          }
         cards.push(card);
         card = {
           label: "",
-          content: "",
-          image: ""
+          content: [],
+          image: []
         };
       }
     }
 
+    if (resourcePage.page["call-to-action"]) {
+      obj.call_to_action = resourcePage.page["call-to-action"]["content:text"];
+    } else obj.call_to_action = "";
+
+    if (typeof obj.call_to_action == "object") obj.call_to_action = '';
+
     obj.heading = heading;
     obj.paragraph = paragraph;
     obj.cards = cards;
+    obj.paras = paras;
+    //obj.call_to_action = action;
     this.allPages.push(obj);
     console.log("allPagesMapperObj:", this.allPages);
     //this.currentPageContent = this.allPages[this.counter];
@@ -500,6 +554,10 @@ export class PageComponent implements OnInit {
   }
   Cards = [];
   cardsContent = [];
+  paras = [];
+  call_to_action = '';
+  summary_line: any;
+  multiple_summary_line = [];
   paraGraph;
   image;
   tagline;
@@ -509,7 +567,19 @@ export class PageComponent implements OnInit {
     this.Cards = [];
     this.cardsContent = [];
     this.tagline = "";
+    this.currentPageContent = {};
     this.currentPageContent = this.allPages[this.counter];
+
+    if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
+      this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
+      if (typeof this.summary_line != "string") {
+        this.multiple_summary_line = this.summary_line;
+        this.summary_line = '';
+      }
+    } else this.summary_line = '';
+    this.call_to_action = this.currentPageContent.call_to_action;
+    this.paras = this.currentPageContent.paras;
+
     if (this.currentPageContent.cards.length > 0) {
       this.Cards = this.currentPageContent.cards;
       for (let i = 0; i < this.Cards.length; i++) {
@@ -517,6 +587,7 @@ export class PageComponent implements OnInit {
       }
 
     }
+
 
     // }
     console.log("current page cards content:", this.Cards);
@@ -530,23 +601,35 @@ export class PageComponent implements OnInit {
     this.Cards = [];
     this.cardsContent = [];
     this.tagline = "";
+
     if (this.counter < this.allPages.length) {
       this.counter++;
       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
+      if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
+        this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
+        if (typeof this.summary_line != "string") {
+          this.multiple_summary_line = this.summary_line;
+          this.summary_line = '';
+        }
+      } else this.summary_line = '';
+      this.call_to_action = this.currentPageContent.call_to_action;
+      this.paras = this.currentPageContent.paras;
+
       if (this.currentPageContent.cards.length > 0) {
         this.Cards = this.currentPageContent.cards;
         for (let i = 0; i < this.Cards.length; i++) {
-          if (this.Cards[i].image == "") {
-            this.Cards[i].localImage = "";
+          if(this.Cards[i].localImage == undefined )this.Cards[i].localImage = [];
+          for (let j = 0; j < this.Cards[i].image.length; j++) {
+            if (this.Cards[i].image[j] == "") {
+              this.Cards[i].localImage[j] ="";
+            }
+            else {
+              this.Cards[i].localImage[j] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
+            }
           }
-          else {
-            this.Cards[i].localImage = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image));
-            console.log(this.Cards[i].localImage)
-          }
-
         }
       }
     }
@@ -556,6 +639,7 @@ export class PageComponent implements OnInit {
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
+    this.currentPageContent = {};
     this.tagline = "";
     if (this.counter > 0) {
       this.counter--;
@@ -563,15 +647,30 @@ export class PageComponent implements OnInit {
       this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
+      if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
+        this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
+        if (typeof this.summary_line != "string") {
+          this.multiple_summary_line = this.summary_line;
+          this.summary_line = '';
+          // for (let index = 0; index < this.summary_line.length; index++) {
+          //   this.summary_line[index] = this.summary_line[index] + '</br>';          
+          // } 
+        }
+      } else this.summary_line = '';
+      this.call_to_action = this.currentPageContent.call_to_action;
+      this.paras = this.currentPageContent.paras;
+
       if (this.currentPageContent.cards.length > 0) {
         this.Cards = this.currentPageContent.cards;
         for (let i = 0; i < this.Cards.length; i++) {
-          if (this.Cards[i].image == "") {
-            this.Cards[i].localImage = ""
-          }
-          else {
-            this.Cards[i].localImage = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image));
-            console.log(this.Cards[i].localImage)
+          if(this.Cards[i].localImage == undefined )this.Cards[i].localImage = [];
+          for (let j = 0; j < this.Cards[i].image.length; j++) {
+            if (this.Cards[i].image[j] == "") {
+              this.Cards[i].localImage[j] ="";
+            }
+            else {
+              this.Cards[i].localImage[j] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
+            }
           }
 
         }
@@ -586,6 +685,8 @@ export class PageComponent implements OnInit {
 
   selectedPage(pageid) {
 
+
+
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -593,15 +694,31 @@ export class PageComponent implements OnInit {
     if (this.counter < this.allPages.length) {
       this.counter++;
       this.currentPageContent = this.allPages[pageid];
+
+      if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
+        this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
+        if (typeof this.summary_line != "string") {
+          this.multiple_summary_line = this.summary_line;
+          this.summary_line = '';
+          // for (let index = 0; index < this.summary_line.length; index++) {
+          //   this.summary_line[index] = this.summary_line[index] + '</br>';          
+          // } 
+        }
+      } else this.summary_line = '';
+      this.call_to_action = this.currentPageContent.call_to_action;
+      this.paras = this.currentPageContent.paras;
+
       if (this.currentPageContent.cards.length > 0) {
         this.Cards = this.currentPageContent.cards;
         for (let i = 0; i < this.Cards.length; i++) {
-          if (this.Cards[i].image == "") {
-            this.Cards[i].localImage = "";
-          }
-          else {
-            this.Cards[i].localImage = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image));
-            console.log(this.Cards[i].localImage)
+          if(this.Cards[i].localImage == undefined )this.Cards[i].localImage = [];
+          for (let j = 0; j < this.Cards[i].image.length; j++) {
+            if (this.Cards[i].image[j] == "") {
+              this.Cards[i].localImage[j] ="";
+            }
+            else {
+              this.Cards[i].localImage[j] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
+            }
           }
         }
       }
