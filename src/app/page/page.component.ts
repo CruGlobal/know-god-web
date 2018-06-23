@@ -212,7 +212,7 @@ export class PageComponent implements OnInit {
         }
         ;
       })
-      this.previous();
+      this.currentPage();
   }
   BookID = "";
 
@@ -469,7 +469,10 @@ export class PageComponent implements OnInit {
     this.allPages.push(obj);
     console.log("allPagesMapperObj:", this.allPages);
     //this.currentPageContent = this.allPages[this.counter];
-    if (this.counter==0) {
+    if (this.counter) {
+      this.currentPage();
+    }
+    else if(this.counter==0){
       this.currentPage();
     }
 
@@ -482,12 +485,14 @@ export class PageComponent implements OnInit {
   tagline;
 
   currentPage() {
-    this.tagline = "";
-    this.Cards = [];
-    this.cardsContent = [];
-    this.tagline = "";
+    // this.tagline = "";
+    // this.Cards = [];
+    // this.cardsContent = [];
+    // this.tagline = "";
     this.currentPageContent = this.allPages[this.counter];
     if (this.currentPageContent.cards.length > 0) {
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      this.location.go(Url);
       this.Cards = this.currentPageContent.cards;
       for (let i = 0; i < this.Cards.length; i++) {
 
@@ -535,7 +540,7 @@ export class PageComponent implements OnInit {
     this.Cards = [];
     this.cardsContent = [];
     this.tagline = "";
-    if (this.counter > 0) {
+    if (this.counter>0) {
       this.counter--;
       //let Url = this.router.navigateByUrl('/home/'+ this.BookID+'/' +this.lang+ '/' + this.counter);
        let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
