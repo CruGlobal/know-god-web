@@ -102,13 +102,6 @@ export class PageComponent implements OnInit {
         this.pageGetparameters.bookid = params['bookid'];
       }
 
-      
-     
-      // else{
-      //     //default flow
-      //     this.AllBooks();
-      //     this.AllLanguages();
-      // }
     })
   }
  
@@ -184,8 +177,9 @@ export class PageComponent implements OnInit {
     this.pageGetparameters.langid = lang.attributes.code;
     console.log(lang);
     if (!this.pageGetparameters.pageid) {
+    //  let Url = this.router.navigateByUrl('/home/'+this.BookID+ '/' +lang.attributes.code)
       let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
-      this.location.go(Url);
+    this.location.go(Url);
     }
 
     this.language = false;
@@ -229,8 +223,9 @@ export class PageComponent implements OnInit {
     this.BookID = book.attributes.abbreviation
 
     if (!this.pageGetparameters.langid) {
-      let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
-      this.location.go(Url);
+      let Url=this.router.navigateByUrl('/home/'+ book.attributes.abbreviation)
+     // let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
+     // this.location.go(Url);
     }
     console.log(this.router.url);
 
@@ -250,26 +245,6 @@ export class PageComponent implements OnInit {
         
       });
 
-
-
-    //isDefault
-    // this.sub = this.route.params.subscribe(params => {
-    //   if (params['bookid'] && params['langid'] && params['pageid']) {
-    //     this.selectedPage(params['pageid']);
-    //   }
-    //   else if (params['bookid'] && params['langid']) {
-    //     //this.selectLanguage(params['langname'], params['langid']);
-    //   }
-    //   else if (params['bookid']) {
-    //     let bookname = this.route.queryParams['bookname']
-    //    // this.selectBook(bookname, params['bookid']);
-    //   }
-    //   else {
-    //     //default flow
-    //     // this.AllBooks();
-    //     // this.AllLanguages();
-    //   }
-    // })
   }
 
   translationsMapper(booktranslations, languagetranslations) {
@@ -534,7 +509,8 @@ export class PageComponent implements OnInit {
     this.tagline = "";
     if (this.counter < this.allPages.length) {
       this.counter++;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      //let Url = this.router.navigateByUrl('/home/'+ this.BookID +'/' +this.lang+'/'+this.counter)
+       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
@@ -561,7 +537,8 @@ export class PageComponent implements OnInit {
     this.tagline = "";
     if (this.counter > 0) {
       this.counter--;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      //let Url = this.router.navigateByUrl('/home/'+ this.BookID+'/' +this.lang+ '/' + this.counter);
+       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
