@@ -203,11 +203,11 @@ export class PageComponent implements OnInit {
         {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
          // this.AllLanguages()
-         this.LanguagesForSelectedBook();
+         //this.LanguagesForSelectedBook();
         }
         else{
           this.getXmlFiles(this.currentTranslations[0]);
-          this.LanguagesForSelectedBook();
+          //this.LanguagesForSelectedBook();
           //this.AllLanguages()
         }
         ;
