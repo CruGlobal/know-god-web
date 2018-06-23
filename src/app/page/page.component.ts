@@ -198,14 +198,19 @@ export class PageComponent implements OnInit {
         // for (let i = 0; i < this.currentTranslations.length; i++) {
         //   this.getXmlFiles(this.currentTranslations[i]);
         // }
-
+        //this.LanguagesForSelectedBook();
         if(this.pageGetparameters.pageid)
         {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
+         // this.AllLanguages()
+         this.LanguagesForSelectedBook();
         }
         else{
           this.getXmlFiles(this.currentTranslations[0]);
+          this.LanguagesForSelectedBook();
+          //this.AllLanguages()
         }
+        ;
       })
       this.previous();
   }
@@ -216,8 +221,6 @@ export class PageComponent implements OnInit {
       console.log(this.router.url);
   }
   selectBook(book) {
-    
-    
     console.log(book);
     this.BookID = book.attributes.abbreviation
 
