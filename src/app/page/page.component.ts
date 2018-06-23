@@ -203,12 +203,8 @@ export class PageComponent implements OnInit {
         else{
           this.getXmlFiles(this.currentTranslations[0]);
         }
-    
-          
-         
-        
-        
       })
+      this.previous();
   }
   BookID = "";
 
@@ -341,9 +337,7 @@ export class PageComponent implements OnInit {
         this.AllPagesContent.push(jsondata);
         console.log("AllPages:", this.AllPagesContent)
         this.objectMapper(jsondata);
-        // window.localStorage["JSONdata"] = jsondata;
-        // var accessdata = window.localStorage["JSONdata"];
-        // console.log("ACCESSDATA:", accessdata);
+    
 
       })
   }
@@ -469,7 +463,7 @@ export class PageComponent implements OnInit {
     this.allPages.push(obj);
     console.log("allPagesMapperObj:", this.allPages);
     //this.currentPageContent = this.allPages[this.counter];
-    if (this.counter) {
+    if (this.counter==0) {
       this.currentPage();
     }
 
