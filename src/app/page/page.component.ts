@@ -380,7 +380,7 @@ export class PageComponent implements OnInit {
         // var accessdata = window.localStorage["JSONdata"];
         // console.log("ACCESSDATA:", accessdata);
 
-      })
+      });
   }
 
   imageUrl
