@@ -12,14 +12,7 @@
       <div class="dib progress pill my25 kg-bg-gray-light">
         <div class="kg-bg-gray pill"> </div>
       </div>
-      <span class="r mt15 absolute tc pill">
-        <a class="m10 db share">
-          <i class="fas fa-share-alt" data-toggle="modal" data-target="#share" href="#"></i>
-        </a>
-        <a href="" class="m10 db pill kg-bg-gray-dark share kg-gray-light">
-          <i class="fab fa-facebook-f v-mid"></i>
-        </a>
-      </span>
+      <sharing-modal [book]="selectbook"></sharing-modal>
     </div>
 
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
@@ -142,4 +135,4 @@
       </span>
     </div>
   </div>
-  <sharing-modal [book]="selectbook"></sharing-modal>
+  
