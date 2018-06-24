@@ -559,7 +559,10 @@ export class PageComponent implements OnInit {
     this.allPages.push(obj);
     console.log("allPagesMapperObj:", this.allPages);
     //this.currentPageContent = this.allPages[this.counter];
-    if (this.counter == 0) {
+  if (this.counter) {
+      this.currentPage();
+    }
+    else if (this.counter == 0) {
       this.currentPage();
     }
 
