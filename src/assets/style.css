@@ -135,6 +135,11 @@ a {
   margin-left: 44px;
   margin-right: 44px;
 }
+.action{
+  text-align: right;
+    font-style: italic;
+    padding-top: 10px;
+}
 .db {
   display: block;
 }
