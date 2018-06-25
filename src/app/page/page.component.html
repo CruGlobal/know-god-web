@@ -1,5 +1,5 @@
 <div>
-  <div>
+  <!-- <div>
     <div class="header tc relative">
       <span class="l p25 absolute kg-gray-dark ng-binding">
         <i class="fas fa-book"></i>{{selectbook}}
@@ -15,21 +15,12 @@
 	   <sharing-modal [book]="selectbook"></sharing-modal>
     </div>
 
-
-
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
 
       <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
-
-        <!-- <span class="w33 dib pill kg-bg-white-hover ng-scope" 
-     *ngFor="let book of allBooks" 
-     > -->
 		 <span class="w100 dib pill-inside ng-binding" 
         dir="pageGetparameters.dir"
         (click)="selectBook(book)"> {{book.attributes.name}}</span>											  
-		<!--						   
-        <span class="w100 dib pill-inside ng-binding" (click)="selectBook(book)"> {{book.attributes.name}}</span>
-		-->
       </span>
     </div>
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
@@ -38,16 +29,14 @@
 			<span class="w100 dib pill-inside ng-binding"
         dir="pageGetparameters.dir"
         (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>	
-<!--		
-        <span class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
--->     
+ 
 	 </span>
 
     </div>
 
 
 
-  </div>
+  </div> -->
 
   
   <div>

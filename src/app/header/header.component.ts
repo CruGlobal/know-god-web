@@ -4,6 +4,10 @@ import { APIURL } from '../api/url';
 import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
 import { Parser } from 'xml2js';
 import { NgxXml2jsonService } from 'ngx-xml2json';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
+import { isArray } from 'util';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header',
@@ -11,7 +15,17 @@ import { NgxXml2jsonService } from 'ngx-xml2json';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  bookid: any;
 
+  myUrl: string;
+  languageSelected: any;
+  bookname: any;
+  allResourcesImages: any;
+  selectedBookLanguauageTranslations = [];
+  allLanguagesTranslations: any;
+  currentPageContent: any;
+  language: boolean = false;
+  books: boolean = false;
   currentTranslations = [];
   currentBookTranslations = [];
   currentLanguageTransalations = [];
@@ -22,73 +36,202 @@ export class HeaderComponent implements OnInit {
   allLanguages: any;
   selectLan: any;
   selectbook: any;
-  page={
-    translationId:"",
+  page = {
+    translationId: "",
     filename: "",
     src: ""
   };
   resource = {
-    translationId:"",
+    translationId: "",
     filename: "",
     src: ""
   };
+  counter = 0;
   pages = [];
   resources = [];
   pageContents = [];
-  constructor(public commonService: CommonService, private ngxXml2jsonService: NgxXml2jsonService) {
-    this.AllBooks();
-    this.AllLanguages();
+  AllPagesContent = [];
+  private sub: any;
+  constructor(public commonService: CommonService,
+    private ngxXml2jsonService: NgxXml2jsonService,
+    public sanitizer: DomSanitizer,
+    private route: ActivatedRoute,
+    public router: Router, public location: Location) {
+
+
+  }
+  ngOnDestroy() {
+    this.sub.unsubscribe();
+  }
+  pageGetparameters = {
+    bookid: null,
+    langid: null,
+    pageid: null,
+    dir:'rtl'
+
+
 
   }
 
   ngOnInit() {
-    //this.getZipFiles(1155);
+
+
+    //
+    this.AllBooks();
+    // this.AllLanguages();
+    this.route.params.subscribe(params => {
+      if (params['bookid'] && params['langid'] && params['pageid']) {
+        //this.selectedPage(params['pageid']);
+        this.pageGetparameters.bookid = params['bookid']
+        this.pageGetparameters.langid = params['langid']
+        this.pageGetparameters.pageid = params['pageid']
+      }
+      // else if (params['bookid'] && params['langid']) {
+      //     this.selectLanguage(params['langname'], params['langid']);
+      // }
+      if (params['bookid'] && params['langid'] && params['page']) {
+        this.pageGetparameters.bookid = params['bookid']
+        this.pageGetparameters.langid = params['langid']
+        this.pageGetparameters.pageid = Number(params['page'])
+        this.counter = Number(params['page'])							 														 
+      }
+      else if (params['bookid'] && params['langid']) {
+        this.pageGetparameters.bookid = params['bookid']
+        this.pageGetparameters.langid = params['langid']
+      }																   																																								
+      else if (params['bookid']) {
+        this.pageGetparameters.bookid = params['bookid'];
+      }						   							 								 		  
+    })
   }
 
+  /*To get all books*/
   AllBooks() {
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
       .subscribe((data: any) => {
         this.allBooks = data.data;
 
+        if (this.pageGetparameters.bookid) {
+          this.allBooks.forEach(x => {
+
+            if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
+              this.selectBook(x)
+            }
+
+          });
+        }
+        console.log("AllBooks:", this, this.allBooks)
+
       })
   }
 
+  /*To get all languages*/
   AllLanguages() {
+
+
+
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
+        if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
+          this.allLanguages.forEach(x => {
+
+            if (x.attributes.code == this.pageGetparameters.langid) {
+              this.selectLanguage(x)
+            }
+
+          });
+        }
+        // this.selectedBookLanguauageTranslations = [];
+        console.log("Languages:", this.allLanguages)
 
       })
   }
 
-  selectLanguage(value, id) {
-    this.selectLan = value
-    this.selectedLanguageId = id
+  /*Language translations for selected book*/
+  LanguagesForSelectedBook() {
+    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
+      .subscribe((data: any) => {
+        this.allLanguagesTranslations = data.data;
+        for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
+          let language;
+          let currentIterationTranslations = this.allLanguagesTranslations[i].relationships.translations.data;
+          for (let j = 0; j < currentIterationTranslations.length; j++) {
+            for (let k = 0; k < this.currentBookTranslations.length; k++) {
+              if (this.currentBookTranslations[k].id == currentIterationTranslations[j].id) {
+                language = this.allLanguagesTranslations[i];
+              }
+            }
+          }
+          if (language == undefined) {
+
+          }
+          else {
+            this.selectedBookLanguauageTranslations.push(language);
+          }
+        }
+        console.log("selectedBookLanguageTranslations:", this.selectedBookLanguauageTranslations);
+      })
+  }
+  lang = "";
+  selectLanguage(lang) {
+    this.lang = lang.attributes.code;
+    this.pageGetparameters.langid = lang.attributes.code;
+		this.pageGetparameters.dir = lang.attributes.direction;												   
+    console.log(lang);
+    if (!this.pageGetparameters.pageid) {
+      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
+      this.location.go(Url);
+    }
+
+    this.language = false;
+    this.selectLan = lang.attributes.name
+    this.selectedLanguageId = lang.id
     console.log("Selected Language Id:", this.selectedLanguageId)
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + id)
+    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + lang.id)
       .subscribe((data: any) => {
         this.currentLanguageTransalations = data.data.relationships.translations.data;
-        console.log("currentLanguageTranslations:", this.currentLanguageTransalations)
+        //console.log("currentLanguageTranslations:", this.currentLanguageTransalations)
         this.translationsMapper(this.currentBookTranslations, this.currentLanguageTransalations);
         console.log("currentTranslations:", this.currentTranslations);
         // for (let i = 0; i < this.currentTranslations.length; i++) {
         //   this.getXmlFiles(this.currentTranslations[i]);
         // }
-        this.getXmlFiles(this.currentTranslations[0]);
+
       })
-
+				 
   }
+  BookID = "";
 
-  selectBook(value, id) {
-    this.selectbook = value;
-    this.selectedBookId = id;
-    console.log("Selected Book Id:", this.selectedBookId)
-    this.commonService.getBooks(APIURL.GET_ALL_BOOKS + id + "?include=translations")
+  
+  selectBook(book) {
+    console.log(book);
+    this.BookID = book.attributes.abbreviation
+
+    if (!this.pageGetparameters.langid) {
+		 let Url=this.router.navigateByUrl('/home/'+ book.attributes.abbreviation)
+     // le																	   
+      //let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
+      //this.location.go(Url);
+    }
+
+
+    this.books = false;
+    this.selectbook = book.attributes.name;
+    this.selectedBookId = book.id;
+    console.log("Selected Book Id:", this.selectedBookId);
+    this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
       .subscribe((data: any) => {
-        this.currentBookTranslations = data.included;
-        console.log("currentBookTranslations:", this.currentBookTranslations)
+        console.log(data);
+        if (data.data["attributes"]["resource-type"] == "tract") {
+          this.currentBookTranslations = data.included;
+          this.LanguagesForSelectedBook();
+        }
+	  this.AllLanguages();
+
       })
-  }
+
+}
 
   translationsMapper(booktranslations, languagetranslations) {
     this.currentTranslations = [];
@@ -101,85 +244,23 @@ export class HeaderComponent implements OnInit {
       }
     }
   }
-  getXmlFiles(id) {
-    console.log(id);
-    let manifest_name = id.attributes["manifest-name"];
-    let translationId = id.id;
-    console.log("translationId:", translationId);
-    console.log("Manifest-name:", manifest_name);
-    this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + translationId + "/" + manifest_name)
-      .subscribe(data => {
-        console.log("data:", data);
 
-        //Convertion of array buffer to xml
-        let enc = new TextDecoder("utf-8");
-        let arr = new Uint8Array(data);
-        let result = enc.decode(arr);
-        console.log("result:", result);
 
-        //convertion of xml to json
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(result, 'text/xml');
-        let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
-        console.log("JSON:", jsondata);
 
-        // All Pages in xml file
-        for(let j=0; j<jsondata["manifest"]["pages"]["page"].length; j++){
-          this.page.filename = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["filename"];
-          this.page.src = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["src"];
-          this.page.translationId = translationId;
-          console.log(this.page);
-          this.pages.push(this.page);
-          this.getXmlFileForEachPage(this.page);
-          this.page={filename:"", src:"", translationId:""};
-          
-        }
-        console.log("Pages:", this.pages);
 
-        //All resources in xml file
-        for(let j=0; j<jsondata["manifest"]["resources"]["resource"].length; j++){
-          this.resource.filename = jsondata["manifest"]["resources"]["resource"][j]["@attributes"]["filename"];
-          this.resource.src = jsondata["manifest"]["resources"]["resource"][j]["@attributes"]["src"];
-          this.resource.translationId = translationId;
-          this.pages.push(this.resource);
-          this.resources.push(this.resource);
-          this.resource={filename:"", src:"", translationId:""};
-        }
-        console.log("Resources:", this.resources);
-        
 
-      });
+  Languages() {
+    this.language = !this.language;
+    this.books = false
+  }
+  Books() {
+    this.language = false;
+    this.books = !this.books;
+
   }
 
-  getXmlFileForEachPage(page){
-    console.log(page);
-    this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"/"+page.translationId+"/"+page.src)
-    .subscribe((data:any) => {
-      console.log(data);
+  allPages = [];
 
-      //Convertion of array buffer to xml
-        let enc = new TextDecoder("utf-8");
-        let arr = new Uint8Array(data);
-        let result = enc.decode(arr);
-        console.log("result:", result);
-        let obj = {
-          xmlFile: result,
-          filename: page.filename,
-          translationId: page.translationId,
-          src: page.src
-        }
-        console.log(obj);
-
-        //convertion of xml to json
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(result, 'application/xml');
-        let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
-        console.log("JSON:", jsondata);
-
-    })
-  }
-
- 
 
   
 
