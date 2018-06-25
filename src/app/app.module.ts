@@ -16,7 +16,7 @@ const appRoutes: Routes = [
  
   {
     path: 'home',
-    component: PageComponent
+    component: HomeComponent
   },
   {
     path: 'home/:bookid',
