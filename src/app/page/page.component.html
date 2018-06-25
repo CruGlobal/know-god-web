@@ -29,13 +29,17 @@
         <!-- <span class="w33 dib pill kg-bg-white-hover ng-scope" 
      *ngFor="let book of allBooks" 
      > -->
-        <span class="w100 dib pill-inside ng-binding" (click)="selectBook(book)"> {{book.attributes.name}}</span>
+        <span class="w100 dib pill-inside ng-binding" 
+        dir="pageGetparameters.dir"
+        (click)="selectBook(book)"> {{book.attributes.name}}</span>
       </span>
     </div>
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
       <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
 
-        <span class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
+        <span class="w100 dib pill-inside ng-binding"
+        dir="pageGetparameters.dir"
+        (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
       </span>
 
     </div>
@@ -46,10 +50,13 @@
   <div>
     <div class="py25 kg-bg-blue kg-white ng-scope">
       <div class="ng-scope">
-        <h1 class="fl ml25 kg-white ng-binding ng-scope" *ngIf="counter>0">{{counter}}</h1>
+        <h1 class="fl ml25 kg-white ng-binding ng-scope"
+        dir="pageGetparameters.dir"
+        *ngIf="counter>0">{{counter}}</h1>
       </div>
       <div>
-        <h2 class="mx100 kg-white ng-binding">{{currentPageContent?.heading}}</h2>
+        <h2 class="mx100 kg-white ng-binding"
+        dir="pageGetparameters.dir">{{currentPageContent?.heading}}</h2>
       </div>
     </div>
   </div>
@@ -62,7 +69,7 @@
         <div class="ng-scope">
           <p class="mx144">
             <span class="db ng-scope">
-              <span class="ng-binding ng-scope"> {{summary_line}} </span>
+              <span class="ng-binding ng-scope"  dir="pageGetparameters.dir"> {{summary_line}} </span>
               <p *ngFor="let item of multiple_summary_line">
                 <span class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
               </p>
@@ -88,11 +95,11 @@
             <!-- <span><h4>{{label.label['content:text']}}</h4></span>
               <p>{{label['content:paragraph']['content:text']}}</p> -->
             <span>
-              <h4 class="ng-binding">{{card.label}}</h4>
+              <h4 class="ng-binding"  dir="pageGetparameters.dir">{{card.label}}</h4>
             </span>
             <div *ngFor="let cardpara of card.content;let i= index">
                 <!-- <p class="mx144 ng-scope" >{{card.content[i]}}</p> -->
-                <p class="mx144 ng-scope" *ngFor="let cardcont of card.content[i]" >{{cardcont}}</p>
+                <p dir="pageGetparameters.dir" class="mx144 ng-scope" *ngFor="let cardcont of card.content[i]" >{{cardcont}}</p>
                 <img *ngIf="card.localImage[i]!=''" [src]="card.localImage[i]" width="200" height="200">
             </div>
             
@@ -114,7 +121,7 @@
 
 
         <div>
-          <span>
+          <span dir="pageGetparameters.dir">
             {{call_to_action}}
           </span>
         </div>
@@ -130,18 +137,28 @@
     </div>
   </div>
   <div class="my25 mx100">
-    <a (click)="previous()" *ngIf="counter>0" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
-    <a *ngIf="counter==0" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
-    <a (click)="next()" *ngIf="counter<allPages.length" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
-    <a *ngIf="counter==allPages.length" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
+    <a (click)="previous()" *ngIf="counter>0"
+        dir="pageGetparameters.dir"
+      class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
+    <a *ngIf="counter==0"
+    dir="pageGetparameters.dir"
+    class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
+    <a (click)="next()"
+    dir="pageGetparameters.dir"
+    *ngIf="counter<allPages.length"
+    dir="pageGetparameters.dir"
+    class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
+    <a *ngIf="counter==allPages.length" 
+    dir="pageGetparameters.dir"
+    class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
 
   </div>
   <div class="px100">
     <div class="line kg-gray-light f11">
-      <span class="fl py25">
+      <span class="fl py25"  dir="pageGetparameters.dir">
         <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">© 1994-2018 Cru. All Rights Reserved.</span>
-      <span class="fr py25">Learn more at
-        <a class="kg-gray-light" href="knowgod.com">knowGod.com</a>
+      <span class="fr py25"  dir="pageGetparameters.dir">Learn more at
+        <a  dir="pageGetparameters.dir" class="kg-gray-light" href="knowgod.com">knowGod.com</a>
       </span>
     </div>
   </div>

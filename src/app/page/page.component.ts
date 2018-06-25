@@ -66,7 +66,8 @@ export class PageComponent implements OnInit {
   pageGetparameters = {
     bookid: null,
     langid: null,
-    pageid: null
+    pageid: null,
+    dir:'rtl'
 
 
   }
@@ -87,15 +88,6 @@ export class PageComponent implements OnInit {
       // else if (params['bookid'] && params['langid']) {
       //     this.selectLanguage(params['langname'], params['langid']);
       // }
-
-      if (params['bookid']) {
-        this.pageGetparameters.bookid = params['bookid'];
-      }
-
-      if (params['bookid'] && params['langid']) {
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-      }
       if (params['bookid'] && params['langid'] && params['page']) {
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
@@ -103,11 +95,15 @@ export class PageComponent implements OnInit {
         this.counter = Number(params['page'])
 
       }
-      // else{
-      //     //default flow
-      //     this.AllBooks();
-      //     this.AllLanguages();
-      // }
+      else if (params['bookid'] && params['langid']) {
+        this.pageGetparameters.bookid = params['bookid']
+        this.pageGetparameters.langid = params['langid']
+      }
+
+      else if (params['bookid']) {
+        this.pageGetparameters.bookid = params['bookid'];
+      }
+
     })
   }
 
@@ -135,9 +131,6 @@ export class PageComponent implements OnInit {
 
   /*To get all languages*/
   AllLanguages() {
-
-
-
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
@@ -152,7 +145,6 @@ export class PageComponent implements OnInit {
         }
         // this.selectedBookLanguauageTranslations = [];
         console.log("Languages:", this.allLanguages)
-
       })
   }
 
@@ -160,6 +152,7 @@ export class PageComponent implements OnInit {
   LanguagesForSelectedBook() {
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
+        console.info('languageTransalations',data);
         this.allLanguagesTranslations = data.data;
         for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
           let language;
@@ -185,10 +178,12 @@ export class PageComponent implements OnInit {
   selectLanguage(lang) {
     this.lang = lang.attributes.code;
     this.pageGetparameters.langid = lang.attributes.code;
+    this.pageGetparameters.dir = lang.attributes.direction;
     console.log(lang);
     if (!this.pageGetparameters.pageid) {
+    //  let Url = this.router.navigateByUrl('/home/'+this.BookID+ '/' +lang.attributes.code)
       let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
-      this.location.go(Url);
+    this.location.go(Url);
     }
 
     this.language = false;
@@ -207,29 +202,33 @@ export class PageComponent implements OnInit {
 
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
+         // this.AllLanguages()
+         //this.LanguagesForSelectedBook();
         }
         else {
           this.getXmlFiles(this.currentTranslations[0]);
-        }
-
-
-
-
-
+          //this.LanguagesForSelectedBook();
+          //this.AllLanguages()
+        }        
       })
+      this.previous();
   }
   BookID = "";
 
+
+  getCurrentUrl(){
+      console.log(this.router.url);
+  }
   selectBook(book) {
-
-
     console.log(book);
     this.BookID = book.attributes.abbreviation
 
     if (!this.pageGetparameters.langid) {
-      let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
-      this.location.go(Url);
+      let Url=this.router.navigateByUrl('/home/'+ book.attributes.abbreviation)
+     // let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
+     // this.location.go(Url);
     }
+    console.log(this.router.url);
 
 
     this.books = false;
@@ -244,29 +243,9 @@ export class PageComponent implements OnInit {
           this.LanguagesForSelectedBook();
         }
         this.AllLanguages();
+        
+      });
 
-      })
-
-
-
-    //isDefault
-    // this.sub = this.route.params.subscribe(params => {
-    //   if (params['bookid'] && params['langid'] && params['pageid']) {
-    //     this.selectedPage(params['pageid']);
-    //   }
-    //   else if (params['bookid'] && params['langid']) {
-    //     //this.selectLanguage(params['langname'], params['langid']);
-    //   }
-    //   else if (params['bookid']) {
-    //     let bookname = this.route.queryParams['bookname']
-    //    // this.selectBook(bookname, params['bookid']);
-    //   }
-    //   else {
-    //     //default flow
-    //     // this.AllBooks();
-    //     // this.AllLanguages();
-    //   }
-    // })
   }
 
   translationsMapper(booktranslations, languagetranslations) {
@@ -290,7 +269,7 @@ export class PageComponent implements OnInit {
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + translationId + "/" + manifest_name)
       .subscribe(data => {
         //console.log("data:", data);
-
+ 
         /*Convertion of array buffer to xml*/
         let enc = new TextDecoder("utf-8");
         let arr = new Uint8Array(data);
@@ -363,9 +342,7 @@ export class PageComponent implements OnInit {
         this.AllPagesContent.push(jsondata);
         console.log("AllPages:", this.AllPagesContent)
         this.objectMapper(jsondata);
-        // window.localStorage["JSONdata"] = jsondata;
-        // var accessdata = window.localStorage["JSONdata"];
-        // console.log("ACCESSDATA:", accessdata);
+    
 
       })
   }
@@ -546,7 +523,7 @@ export class PageComponent implements OnInit {
     this.allPages.push(obj);
     console.log("allPagesMapperObj:", this.allPages);
     //this.currentPageContent = this.allPages[this.counter];
-    if (this.counter == 0) {
+    if (this.counter==0) {
       this.currentPage();
     }
 
@@ -604,7 +581,8 @@ export class PageComponent implements OnInit {
 
     if (this.counter < this.allPages.length) {
       this.counter++;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      //let Url = this.router.navigateByUrl('/home/'+ this.BookID +'/' +this.lang+'/'+this.counter)
+       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
@@ -643,7 +621,8 @@ export class PageComponent implements OnInit {
     this.tagline = "";
     if (this.counter > 0) {
       this.counter--;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      //let Url = this.router.navigateByUrl('/home/'+ this.BookID+'/' +this.lang+ '/' + this.counter);
+       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.currentPageContent = this.allPages[this.counter];
 
