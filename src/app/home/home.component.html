@@ -2,7 +2,7 @@
   <div class="header tc relative">
     <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
       <i class="fas fa-home"></i>
-      <!-- <i class="fas fa-chevron-up flip"></i> -->
+      
     </span>
     <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
       <i class="fas fa-book"></i>{{selectbook}}
@@ -15,14 +15,7 @@
     <div class="dib progress pill my25 kg-bg-gray-light">
       <div class="kg-bg-gray pill"> </div>
     </div>
-    <!-- <span class="r mt15 absolute tc pill">
-        <a class="m10 db share">
-          <i class="fas fa-share-alt"></i>
-        </a>
-        <a href="" class="m10 db pill kg-bg-gray-dark share kg-gray-light">
-          <i class="fab fa-facebook-f v-mid"></i>
-        </a>
-      </span> -->
+   
   </div>
 
   <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
@@ -46,8 +39,10 @@
 <div class="row .bg-light">
   <div class="col-md-6 align">
     <div class="thumbnail" *ngFor="let banner of images">
-      {{banner|json}}
-      <img [src]="banner.imageurl">
+     
+      <!-- <img [src]="banner.imageurl"> -->
+      <img [src]="banner.SrcImg" style="width: 100%;">
+      <p>{{banner.description}}</p>
       <div class="caption">
         <h3>
           <a href="#" class="btn btn-primary">{{banner.resource}}</a>

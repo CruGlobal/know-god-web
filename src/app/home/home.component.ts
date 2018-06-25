@@ -20,6 +20,7 @@ export class HomeComponent implements OnInit {
   image5: any;
   image6: any;
   image7: any;
+  description: any;
   constructor(public commonService: CommonService, public sanitizer: DomSanitizer) {
     this.AllBooks();
   }
@@ -48,17 +49,21 @@ export class HomeComponent implements OnInit {
     this.commonService.getBooks(url)
       .subscribe((data: any) => {
         console.log(data);
-        let bannerId = data.data.attributes["attr-banner"];
+        this.description=data.data.attributes.description
+         let bannerId = data.data.attributes["attr-banner"];
+      //  let bannerId = data.data;
         this.getImages(bannerId, resource);
       })
   }
 
   getImages(bannerId, resource) {
     let url = APIURL.GET_ATTACHMENTS + bannerId + "/download";
+    console.log("url:-",url)
     this.commonService.downloadFile(url)
       .subscribe((data: any) => {
         console.log(data);
         var data = data;
+        
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
         });
@@ -68,7 +73,7 @@ export class HomeComponent implements OnInit {
         localStorage.getItem(resource);
         //this.images.push( localStorage.getItem(resource));
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(resource));
-        this.images.push({imageurl:this.imageUrl, resource:resource});  
+        this.images.push({imageurl:this.imageUrl,description:this.description, resource:resource,SrcImg:"https://mobile-content-api.cru.org/attachments/"+bannerId+"/download"});  
         console.log(this.resourceIds);
         console.log(this.images);
       })

@@ -230,8 +230,6 @@ export class PageComponent implements OnInit {
       console.log(this.router.url);
   }
   selectBook(book) {
-
-
     console.log(book);
     this.BookID = book.attributes.abbreviation
 
