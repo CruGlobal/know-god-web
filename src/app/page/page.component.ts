@@ -36,7 +36,7 @@ export class PageComponent implements OnInit {
   allLanguages: any;
   selectLan: any;
   selectbook: any;
-  pageNames =[];
+  pageNames = [];
   page = {
     translationId: "",
     filename: "",
@@ -117,28 +117,51 @@ export class PageComponent implements OnInit {
 
   /*To get all books*/
   AllBooks() {
-    this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
-      .subscribe((data: any) => {
-        this.allBooks = data.data;
+    
+      this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
+        .subscribe((data: any) => {
+          this.allBooks = data.data;
 
-        if (this.pageGetparameters.bookid) {
-          this.allBooks.forEach(x => {
+          if (this.pageGetparameters.bookid) {
+            this.allBooks.forEach(x => {
 
-            if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
-              this.selectBook(x)
-            }
+              if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
+                this.selectBook(x)
+              }
 
-          });
-        } 
+            });
+          }
 
-      })
+        })
+    
+  }
+
+  handleBookLoad(data) {
+    if (this.pageGetparameters.bookid) {
+      this.allBooks.forEach(x => {
+
+        if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
+          this.selectBook(x)
+        }
+
+      });
+    }
+  }
+  handleLanguageLoad() {
+    if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
+      this.allLanguages.forEach(x => {
+
+        if (x.attributes.code == this.pageGetparameters.langid) {
+          this.selectLanguage(x)
+        }
+
+      });
+    }
   }
 
   /*To get all languages*/
   AllLanguages() {
-
-
-
+   
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
@@ -177,14 +200,14 @@ export class PageComponent implements OnInit {
           else {
             this.selectedBookLanguauageTranslations.push(language);
           }
-        } 
+        }
       })
   }
   lang = "";
   selectLanguage(lang) {
     this.lang = lang.attributes.code;
     this.pageGetparameters.langid = lang.attributes.code;
-    this.pageGetparameters.dir = lang.attributes.direction; 
+    this.pageGetparameters.dir = lang.attributes.direction;
     if (!this.pageGetparameters.pageid) {
       let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
       this.location.go(Url);
@@ -192,12 +215,12 @@ export class PageComponent implements OnInit {
 
     this.language = false;
     this.selectLan = lang.attributes.name
-    this.selectedLanguageId = lang.id 
+    this.selectedLanguageId = lang.id
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + lang.id)
       .subscribe((data: any) => {
-        this.currentLanguageTransalations = data.data.relationships.translations.data; 
+        this.currentLanguageTransalations = data.data.relationships.translations.data;
         this.translationsMapper(this.currentBookTranslations, this.currentLanguageTransalations);
-        
+
         // for (let i = 0; i < this.currentTranslations.length; i++) {
         //   this.getXmlFiles(this.currentTranslations[i]);
         // }
@@ -219,7 +242,7 @@ export class PageComponent implements OnInit {
     console.log(this.router.url);
   }
   selectBook(book) {
- 
+
     this.BookID = book.attributes.abbreviation
 
     if (!this.pageGetparameters.langid) {
@@ -232,9 +255,9 @@ export class PageComponent implements OnInit {
 
     this.books = false;
     this.selectbook = book.attributes.name;
-    this.selectedBookId = book.id; 
+    this.selectedBookId = book.id;
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
-      .subscribe((data: any) => { 
+      .subscribe((data: any) => {
         if (data.data["attributes"]["resource-type"] == "tract") {
           this.currentBookTranslations = data.included;
           this.LanguagesForSelectedBook();
@@ -269,7 +292,7 @@ export class PageComponent implements OnInit {
     this.currentTranslations = [];
     for (let j = 0; j < languagetranslations.length; j++) {
       for (let i = 0; i < booktranslations.length; i++) {
-        if (this.currentBookTranslations[i].id == this.currentLanguageTransalations[j].id) { 
+        if (this.currentBookTranslations[i].id == this.currentLanguageTransalations[j].id) {
           this.currentTranslations.push(this.currentBookTranslations[i])
         }
       }
@@ -279,34 +302,34 @@ export class PageComponent implements OnInit {
   /*To get xml files for each translation Id*/
   getXmlFiles(id) {
     let manifest_name = id.attributes["manifest-name"];
-    let translationId = id.id;     
+    let translationId = id.id;
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + translationId + "/" + manifest_name)
-      .subscribe(data => { 
+      .subscribe(data => {
 
         /*Convertion of array buffer to xml*/
         let enc = new TextDecoder("utf-8");
         let arr = new Uint8Array(data);
-        let result = enc.decode(arr); 
+        let result = enc.decode(arr);
 
         /*convertion of xml to json*/
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'text/xml');
-        let jsondata = this.ngxXml2jsonService.xmlToJson(xml); 
+        let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
 
         /* All Pages in xml file */
         for (let j = 0; j < jsondata["manifest"]["pages"]["page"].length; j++) {
           this.page.filename = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["filename"];
           this.page.src = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["src"];
-          this.page.translationId = translationId; 
+          this.page.translationId = translationId;
           this.pages.push(this.page);
           this.AllPagesContent = [];
           this.allPages = [];
           this.allResourcesImages = [];
           this.getXmlFileForEachPage(this.page);
-          console.log('getting xml file loop : '+ this.page.filename)
+          console.log('getting xml file loop : ' + this.page.filename)
           this.pageNames.push(this.page.filename); //push page name in order
           this.page = { filename: "", src: "", translationId: "" };
-        } 
+        }
 
         /*All resources in xml file*/
         for (let j = 0; j < jsondata["manifest"]["resources"]["resource"].length; j++) {
@@ -318,32 +341,32 @@ export class PageComponent implements OnInit {
           this.getXmlFileForEachResource(this.resource);
           //this.getImages(this.resource);
           this.resource = { filename: "", src: "", translationId: "" };
-        } 
+        }
       });
   }
 
 
-  getXmlFileForEachPage(page) { 
+  getXmlFileForEachPage(page) {
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + "/" + page.translationId + "/" + page.src)
-      .subscribe((data: any) => { 
+      .subscribe((data: any) => {
 
         //Convertion of array buffer to xml
         let enc = new TextDecoder("utf-8");
         let arr = new Uint8Array(data);
-        let result = enc.decode(arr); 
+        let result = enc.decode(arr);
         let obj = {
           xmlFile: result,
           filename: page.filename,
           translationId: page.translationId,
           src: page.src
-        } 
+        }
 
         //convertion of xml to json
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'application/xml');
-        let jsondata = this.ngxXml2jsonService.xmlToJson(xml); 
+        let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
         this.objectMapper(jsondata, page.filename);
-        this.AllPagesContent.push(jsondata); 
+        this.AllPagesContent.push(jsondata);
         console.log('app page content push: ' + page.filename);
         // window.localStorage["JSONdata"] = jsondata;
         // var accessdata = window.localStorage["JSONdata"];
@@ -354,9 +377,9 @@ export class PageComponent implements OnInit {
 
   imageUrl
   /*To get images from xml files*/
-  getXmlFileForEachResource(resource) { 
+  getXmlFileForEachResource(resource) {
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + "/" + resource.translationId + "/" + resource.src)
-      .subscribe((data: any) => { 
+      .subscribe((data: any) => {
         var data = data;
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
@@ -364,7 +387,7 @@ export class PageComponent implements OnInit {
         var fileURL = URL.createObjectURL(file);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);
-        var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl } 
+        var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl }
         this.allResourcesImages.push(imageUrls);
         //this.AllPagesContent.push(fileURL); 
         //window.open(fileURL);
@@ -376,10 +399,10 @@ export class PageComponent implements OnInit {
 
     //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + "/" + resource.translationId + "/" + resource.src)
-      .subscribe((x: any) => { 
+      .subscribe((x: any) => {
         const reader = new FileReader();
         reader.readAsDataURL(x);
-        reader.onloadend = function () { 
+        reader.onloadend = function () {
           //localStorage.set('abc.jpg',reader.result);
           localStorage.set(resource.filename, reader.result);
         };
@@ -528,9 +551,9 @@ export class PageComponent implements OnInit {
     obj.heading = heading;
     obj.paragraph = paragraph;
     obj.cards = cards;
-    obj.paras = paras; 
+    obj.paras = paras;
     obj.pagename = pagename;
-    this.allPages.push(obj); 
+    this.allPages.push(obj);
     //this.currentPageContent = this.allPages[this.counter];
     if (this.counter) {
       this.currentPage();
@@ -705,13 +728,13 @@ export class PageComponent implements OnInit {
         return false;
     });
 
-    if(selected_page.length == 0){
+    if (selected_page.length == 0) {
       if (this.currentPageContent == undefined) {
         console.log('Page not found in this.allPages : ' + pageid)
         return;
       }
     }
- 
+
     this.currentPageContent = selected_page[0];//this.allPages[pageid];
     if (this.currentPageContent == undefined) {
       console.log('Page not found to laod : ' + pageid)

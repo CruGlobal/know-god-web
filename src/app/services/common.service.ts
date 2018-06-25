@@ -11,6 +11,8 @@ import { map } from 'rxjs/operators';
 export class CommonService {
   headers: HttpHeaders;
   options: any;
+  allBooks=[];
+  allLanguages=[];
   constructor(public http: HttpClient) {
     this.headers = new HttpHeaders({
       'Accept': 'application/xml, image/png, image/jpeg, image/jpg, image/gif, text/html,application/xhtml+xml',

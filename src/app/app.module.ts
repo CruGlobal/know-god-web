@@ -11,67 +11,14 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 
-const appRoutes: Routes = [
+const appRoutes: Routes =[
   { path: "", redirectTo: "home", pathMatch: "full" },
-
-  {
-    path: 'home',
-    component: HeaderComponent,children:[
-      {path:'/:langid',component:HomeComponent},
-      {path:'/:langid/:bookid',component:PageComponent},
-      {path:'/s:langid/:bookid/:pageid',component:PageComponent}
-    ]
-  },
-  // {
-  //   path: '',
-  //   component: HeaderComponent,children:[
-      
-  //   ]
-  // },
-  // {
-  //   path: 'home/:bookid',
-  //   component: HomeComponent
-  // },
-  // {
-  //   path: 'home/:bookid/:langid',
-  //   component: PageComponent
-  // },
-  // },
-  // {
-  //   path: 'home/:bookid',
-  //   component: PageComponent
-  // },
-  // {
-  //   path: 'home/:bookid/:langid',
-  //   component: PageComponent
-  // },
-  // {
-  //   path: 'home/:bookid/:langid/:page',
-  //   component: PageComponent
-  // }
-
-  // {
-  //   path: 'home',
-  //   component: PageComponent,
-  //   children: [
-  //     {
-  //       path: 'home/:id',
-  //       component: PageComponent,
-  //       children: [
-  //         {
-  //           path: 'home/:book/:lang',
-  //           component: PageComponent,
-  //           children: [
-  //             { path: 'home/:book/:lang/:page', component: PageComponent }
-  //           ]
-  //         }
-  //       ]
-  //     }
-
-  //   ]
-  // },
-
+  { path: '', component: HeaderComponent},
+  { path: 'home/:bookid', component: PageComponent},
+  { path: 'home/:bookid/:langid', component: PageComponent},
+  { path: 'home/:bookid/:langid/:page', component: PageComponent }
 ]
+
 @NgModule({
   declarations: [
     AppComponent,

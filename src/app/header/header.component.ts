@@ -1,267 +1,177 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
-import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
-import { Parser } from 'xml2js';
+import { DomSanitizer } from '@angular/platform-browser';
 import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DomSanitizer } from '@angular/platform-browser';
-import { isArray } from 'util';
-import { Location } from '@angular/common';
+
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+    selector: 'app-header',
+    templateUrl: './header.component.html',
+    styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit {
-  bookid: any;
+export class HeaderComponent {
+   // allBooks: any;
+  imageUrl: any;
+  resourceIds = [];
+  images = [];
+  image1: any;
+  image2: any;
+  image3: any;
+  image4: any;
+  image5: any;
+  image6: any;
+  image7: any;
+  description: any;
+    allBooks = [];
+    allLanguages = [];
+    selectedBookLanguauageTranslations = [];
+    isBooksSelected=false;
+    isLanguagesSelected=false;
+    selectedLookup ={
+        bookname:'',
+        language:'',
+        languageId:"",
+        bookId:"",
+        pageId:'',
+        
+    };
+    selectedBook: any;
+    selectedLanguage:any;
 
-  myUrl: string;
-  languageSelected: any;
-  bookname: any;
-  allResourcesImages: any;
-  selectedBookLanguauageTranslations = [];
-  allLanguagesTranslations: any;
-  currentPageContent: any;
-  language: boolean = false;
-  books: boolean = false;
-  currentTranslations = [];
-  currentBookTranslations = [];
-  currentLanguageTransalations = [];
-  jsonXmlFiles = [];
-  selectedBookId: any;
-  selectedLanguageId: any;
-  allBooks: any;
-  allLanguages: any;
-  selectLan: any;
-  selectbook: any;
-  page = {
-    translationId: "",
-    filename: "",
-    src: ""
-  };
-  resource = {
-    translationId: "",
-    filename: "",
-    src: ""
-  };
-  counter = 0;
-  pages = [];
-  resources = [];
-  pageContents = [];
-  AllPagesContent = [];
-  private sub: any;
-  constructor(public commonService: CommonService,
-    private ngxXml2jsonService: NgxXml2jsonService,
-    public sanitizer: DomSanitizer,
-    private route: ActivatedRoute,
-    public router: Router, public location: Location) {
+    constructor(public route: Router,
+        public router: ActivatedRoute,
+        public commonService: CommonService,
+        public sanitizer: DomSanitizer,
+        private ngxXml2jsonService: NgxXml2jsonService) {
+        //fetch All the books and langauges
+        this.AllBooks();
+        this.getAllBooksFromApi();
 
-
-  }
-  ngOnDestroy() {
-    this.sub.unsubscribe();
-  }
-  pageGetparameters = {
-    bookid: null,
-    langid: null,
-    pageid: null,
-    dir:'rtl'
-
-
-
-  }
-
-  ngOnInit() {
-
-
-    //
-    this.AllBooks();
-    // this.AllLanguages();
-    this.route.params.subscribe(params => {
-      if (params['bookid'] && params['langid'] && params['pageid']) {
-        //this.selectedPage(params['pageid']);
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = params['pageid']
-      }
-      // else if (params['bookid'] && params['langid']) {
-      //     this.selectLanguage(params['langname'], params['langid']);
-      // }
-      if (params['bookid'] && params['langid'] && params['page']) {
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = Number(params['page'])
-        this.counter = Number(params['page'])							 														 
-      }
-      else if (params['bookid'] && params['langid']) {
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-      }																   																																								
-      else if (params['bookid']) {
-        this.pageGetparameters.bookid = params['bookid'];
-      }						   							 								 		  
-    })
-  }
-
-  /*To get all books*/
-  AllBooks() {
-    this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
-      .subscribe((data: any) => {
-        this.allBooks = data.data;
-
-        if (this.pageGetparameters.bookid) {
-          this.allBooks.forEach(x => {
-
-            if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
-              this.selectBook(x)
-            }
-
-          });
+        this.getAllLangaugesFromApi();
+    }
+    getAllBooksFromApi(id = "") {
+        if (this.commonService.allBooks.length > 0) {
+            this.allBooks = this.commonService.allBooks;
         }
-        console.log("AllBooks:", this, this.allBooks)
-
-      })
-  }
-
-  /*To get all languages*/
-  AllLanguages() {
-
-
-
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
-      .subscribe((data: any) => {
-        this.allLanguages = data.data;
-        if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
-          this.allLanguages.forEach(x => {
-
-            if (x.attributes.code == this.pageGetparameters.langid) {
-              this.selectLanguage(x)
-            }
-
-          });
+        else {
+            this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
+                .subscribe((data: any) => {
+                    this.commonService.allBooks = data.data;
+                    this.allBooks = data.data;
+                    if (id != "") {
+                        this.selectedBook = this.allBooks.filter(x => x.attributes.abbreviation == id)[0];
+                        console.log(this.selectedBook);
+                        this.selectedLookup.bookname = this.selectedBook.attributes.name;
+                    }
+                    else{
+                        // let book = this.allBooks.filter(x=>x.attributes.abbreviation==id)[0];
+                        // this.selectedLookup.bookname =book.attributes.name;
+                    }
+                });
         }
-        // this.selectedBookLanguauageTranslations = [];
-        console.log("Languages:", this.allLanguages)
-
-      })
-  }
-
-  /*Language translations for selected book*/
-  LanguagesForSelectedBook() {
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
-      .subscribe((data: any) => {
-        this.allLanguagesTranslations = data.data;
-        for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
-          let language;
-          let currentIterationTranslations = this.allLanguagesTranslations[i].relationships.translations.data;
-          for (let j = 0; j < currentIterationTranslations.length; j++) {
-            for (let k = 0; k < this.currentBookTranslations.length; k++) {
-              if (this.currentBookTranslations[k].id == currentIterationTranslations[j].id) {
-                language = this.allLanguagesTranslations[i];
-              }
-            }
-          }
-          if (language == undefined) {
-
-          }
-          else {
-            this.selectedBookLanguauageTranslations.push(language);
-          }
+    }
+    getAllLangaugesFromApi(id = "") {
+        if (this.commonService.allLanguages.length > 0) {
+            this.allLanguages = this.commonService.allLanguages;
         }
-        console.log("selectedBookLanguageTranslations:", this.selectedBookLanguauageTranslations);
-      })
-  }
-  lang = "";
-  selectLanguage(lang) {
-    this.lang = lang.attributes.code;
-    this.pageGetparameters.langid = lang.attributes.code;
-		this.pageGetparameters.dir = lang.attributes.direction;												   
-    console.log(lang);
-    if (!this.pageGetparameters.pageid) {
-      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
-      this.location.go(Url);
+        else {
+            this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
+                .subscribe((data: any) => {
+                    this.allLanguages = data.data;
+                    if (id != "") {
+                        this.selectedBookLanguauageTranslations = this.allLanguages.filter(x => x.id == id);
+                        console.log(this.selectedBookLanguauageTranslations);
+                        this.selectedLookup.language=this.allLanguages.filter(x=>x.attributes.code==id)[0].attributes.name;
+                    }
+                    else{
+                        this.selectedBookLanguauageTranslations= this.allLanguages;
+                        let item =this.allLanguages.filter(x=>x.attributes.code=='en')[0];
+                        this.selectedLookup.languageId=item.attributes.code;
+                        this.selectedLookup.language = item.attributes.name;
+                        //this.route.navigateByUrl('/home/'+ this.selectedLookup.languageId);
+                    }
+                });
+        }
     }
 
-    this.language = false;
-    this.selectLan = lang.attributes.name
-    this.selectedLanguageId = lang.id
-    console.log("Selected Language Id:", this.selectedLanguageId)
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + lang.id)
-      .subscribe((data: any) => {
-        this.currentLanguageTransalations = data.data.relationships.translations.data;
-        //console.log("currentLanguageTranslations:", this.currentLanguageTransalations)
-        this.translationsMapper(this.currentBookTranslations, this.currentLanguageTransalations);
-        console.log("currentTranslations:", this.currentTranslations);
-        // for (let i = 0; i < this.currentTranslations.length; i++) {
-        //   this.getXmlFiles(this.currentTranslations[i]);
-        // }
+    loadBookFromUrl() {
 
-      })
-				 
-  }
-  BookID = "";
+    }
+    selectBookFromDropdown(item){
+        this.isBooksSelected=!this.isBooksSelected;
+        this.selectedBook=item;
+        this.selectedLookup.bookname =item.attributes.name;
+        this.route.navigateByUrl('home/'+item.attributes.abbreviation + '/' + this.selectedLookup.languageId);
+    }
+    selecteLanguageFromDropdown(item){
+        this.isLanguagesSelected=!this.isLanguagesSelected;
+        this.selectedLanguage=item;
+        this.selectedLookup.language =item.attributes.name;
+    }
+    expandBookDropdown(item){
+        this.isBooksSelected = !this.isBooksSelected;
+    }
 
-  
-  selectBook(book) {
-    console.log(book);
-    this.BookID = book.attributes.abbreviation
-
-    if (!this.pageGetparameters.langid) {
-		 let Url=this.router.navigateByUrl('/home/'+ book.attributes.abbreviation)
-     // le																	   
-      //let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
-      //this.location.go(Url);
+    expandLanguageDropdown(item){
+        this.isLanguagesSelected = !this.isLanguagesSelected;
     }
 
 
-    this.books = false;
-    this.selectbook = book.attributes.name;
-    this.selectedBookId = book.id;
-    console.log("Selected Book Id:", this.selectedBookId);
-    this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
-      .subscribe((data: any) => {
-        console.log(data);
-        if (data.data["attributes"]["resource-type"] == "tract") {
-          this.currentBookTranslations = data.included;
-          this.LanguagesForSelectedBook();
-        }
-	  this.AllLanguages();
-
-      })
-
-}
-
-  translationsMapper(booktranslations, languagetranslations) {
-    this.currentTranslations = [];
-    for (let j = 0; j < languagetranslations.length; j++) {
-      for (let i = 0; i < booktranslations.length; i++) {
-        if (this.currentBookTranslations[i].id == this.currentLanguageTransalations[j].id) {
-          console.log("currentTranslationIdInMapper", this.currentLanguageTransalations[j].id);
-          this.currentTranslations.push(this.currentBookTranslations[i])
-        }
+    AllBooks() {
+        this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
+          .subscribe((data: any) => {
+            this.allBooks = data.data;
+            console.log(this.allBooks);
+            for (let i = 0; i < this.allBooks.length; i++) {
+              this.resourceIds.push({ resourceId: this.allBooks[i].id, 
+                resource: this.allBooks[i].attributes.name });
+            }
+            console.log(this.resourceIds);
+            for (let i = 0; i < this.resourceIds.length; i++) {
+              this.getAttachments(this.resourceIds[i].resourceId, this.resourceIds[i].resource);
+            }
+          })
       }
-    }
-  }
+    
 
 
-
-
-
-  Languages() {
-    this.language = !this.language;
-    this.books = false
-  }
-  Books() {
-    this.language = false;
-    this.books = !this.books;
-
-  }
-
-  allPages = [];
-
-
-  
-
+    getAttachments(resourceId, resource) {
+        let url = APIURL.GET_ALL_BOOKS + resourceId + "?include=attachments";
+        this.commonService.getBooks(url)
+          .subscribe((data: any) => {
+            console.log(data);
+            this.description=data.data.attributes.description
+             let bannerId = data.data.attributes["attr-banner"];
+          //  let bannerId = data.data;
+            this.getImages(bannerId, resource);
+          })
+      }
+    
+      getImages(bannerId, resource) {
+        let url = APIURL.GET_ATTACHMENTS + bannerId + "/download";
+        console.log("url:-",url)
+        this.commonService.downloadFile(url)
+          .subscribe((data: any) => {
+            console.log(data);
+            var data = data;
+            
+            var file = new Blob([data], {
+              type: 'image/jpeg, image/png, image/gif'
+            });
+            var fileURL = URL.createObjectURL(file);
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
+            localStorage.setItem(resource, fileURL);
+            localStorage.getItem(resource);
+            //this.images.push( localStorage.getItem(resource));
+            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(resource));
+            this.images.push({imageurl:this.imageUrl,description:this.description, resource:resource,SrcImg:"https://mobile-content-api.cru.org/attachments/"+bannerId+"/download"});  
+            
+          })
+      }
+      navigateToPage(id){
+          let book = this.allBooks[id].attributes.abbreviation;
+          this.route.navigateByUrl('home/'+book + '/' + this.selectedLookup.languageId);
+      }
 }

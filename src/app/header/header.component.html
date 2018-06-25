@@ -5,12 +5,12 @@
           <!-- <i class="fas fa-chevron-up flip"></i> -->
         </span>
     <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
-      <i class="fas fa-book"></i>{{selectbook}}
-      <i class="fas fa-chevron-up flip" (click)="Books()"></i>
+      <i class="fas fa-book"></i>{{selectedLookup.bookname}}
+      <i class="fas fa-chevron-up flip" (click)="expandBookDropdown()"></i>
     </span>
     <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 75%;">
-      <i class="fas fa-language"></i> {{selectLan}}
-      <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
+      <i class="fas fa-language"></i> {{this.selectedLookup.language}}
+      <i class="fas fa-chevron-up flip" (click)="expandLanguageDropdown()"></i>
     </span>
     <div class="dib progress pill my25 kg-bg-gray-light">
       <div class="kg-bg-gray pill"> </div>
@@ -18,22 +18,38 @@
    
   </div>
 
-  <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
+  <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="isBooksSelected">
 
     <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks" >
 
-      <a class="w100 dib pill-inside ng-binding" (click)="selectBook(book)"> {{book.attributes.name}}</a>
+      <a class="w100 dib pill-inside ng-binding" (click)="selectBookFromDropdown(book)"> {{book.attributes.name}}</a>
     </span>
   </div>
-  <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
+  <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="isLanguagesSelected">
     <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
 
-      <a class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang)">{{lang.attributes.name}}</a>
+      <a class="w100 dib pill-inside ng-binding" (click)="selecteLanguageFromDropdown(lang)">{{lang.attributes.name}}</a>
     </span>
 
   </div>
-
-
-
 </div>
-<router-outlet></router-outlet>
+
+
+<!-- <app-header></app-header> -->
+<div class="row .bg-light">
+  <div class="col-md-6 align">
+    <div class="thumbnail" *ngFor="let banner of images;let i =index">
+     
+      <!-- <img [src]="banner.imageurl"> -->
+      <img [src]="banner.SrcImg" style="width: 100%;">
+      <p>{{banner.description}}</p>
+      <div class="caption">
+        <h3 (click)="navigateToPage(i)">
+          <a href="javascript:void(0)"  class="btn btn-primary">{{banner.resource}}</a>
+        </h3>
+        <!-- <p></p>
+          <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+      </div>
+    </div>
+  </div>
+</div>

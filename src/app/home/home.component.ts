@@ -27,7 +27,7 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
   }
-
+  
   AllBooks() {
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
       .subscribe((data: any) => {
@@ -74,16 +74,9 @@ export class HomeComponent implements OnInit {
         //this.images.push( localStorage.getItem(resource));
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(resource));
         this.images.push({imageurl:this.imageUrl,description:this.description, resource:resource,SrcImg:"https://mobile-content-api.cru.org/attachments/"+bannerId+"/download"});  
-        console.log(this.resourceIds);
-        console.log(this.images);
+        
       })
   }
 
-  // bindImages() {
-  //   for (let i = 0; i < this.resourceIds.length; i++) {
-  //     this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.resourceIds[i].resource));
-  //     this.images.push({ imageurl: this.imageUrl, resource: this.resourceIds[i].resource });
-  //   }
-  //   console.log("Bannerimages:", this.images);
-  // }
+
 }
