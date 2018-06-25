@@ -1,0 +1,65 @@
+<span class="r mt15 absolute tc pill">
+  <a class="m10 db share">
+    <i class="fas fa-share-alt" data-toggle="modal" data-target="#share" href="#"></i>
+  </a>
+  <a  href="javascript:void(0)" target="_blank" class="m10 db pill kg-bg-gray-dark share kg-gray-light" (click)="shareTo('FACEBOOK')">
+    <i class="fab fa-facebook-f v-mid"></i>
+  </a>
+</span>
+
+
+<div aria-hidden="false" class="modal fade in" id="share" role="dialog" tabindex="-1" >
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+          <div class="fa fa-close"></div>
+        </button>
+        <h4 class="modal-title" align="left">
+          <div class="fa fa-share-alt"></div>
+        </h4>
+      </div>
+      <div class="modal-body">
+        <form class="form-horizontal">
+          <div class="form-group" align="left">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-10 col-sm-offset-2">
+              <div class="btn-group">
+                
+                <a  title="Twitter" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('TWITTER')">
+                  <div class="fa fa-twitter fa-lg"></div>
+                </a>
+                <a  title="Facebook" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('FACEBOOK')">
+                  <div class="fa fa-facebook fa-lg"></div>
+                </a>
+                <a  title="Google+" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('GOOGLEPLUS')">
+                  <div class="fa fa-google-plus fa-lg"></div>
+                </a>
+                <a class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('MAILTO')"
+                   title="Email">
+                  <div class="fa fa-envelope fa-lg"></div>
+                </a>
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="share-link">
+              <div class="fa fa-link fa-lg"></div>
+            </label>
+            <div class="col-sm-10">
+              <input name="share-link" id="share-link" [value] = "currentUrl" class="form-control">
+            
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label" for="share-iframe">Embed</label>
+            <div class="col-sm-10">
+              <input name="share-iframe" id="share-ifrm" [value] = "embedUrl"
+                class="form-control">
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

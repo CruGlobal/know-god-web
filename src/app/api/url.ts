@@ -11,3 +11,13 @@ export const APIURL = {
     GET_XML_FILES_FOR_MANIFEST: "/know-god-assets/",
     GET_ATTACHMENTS:"/attachments/"
 } 
+
+
+export const SHAREDURL = new Map([
+    ['GOOGLEPLUS','https://plusone.google.com/_/+1/confirm?url='],
+    ['FACEBOOK','https://www.facebook.com/sharer/sharer.php?u='],
+    ['TWITTER','https://twitter.com/home?status=BOOK_NAME via %40crutweets BOOK_LINK'],
+    ['MAILTO','mailto:?subject=MAIL_SUBJECT&body=MAIL_BODY'],
+]);
+
+export const EMBED_URL = '<iframe src="EMBED_URL" height="900" width="768" frameborder="0" allowfullscreen=""></iframe>';

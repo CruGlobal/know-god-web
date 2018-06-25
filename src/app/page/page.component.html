@@ -12,14 +12,7 @@
       <div class="dib progress pill my25 kg-bg-gray-light">
         <div class="kg-bg-gray pill"> </div>
       </div>
-      <span class="r mt15 absolute tc pill">
-        <a class="m10 db share">
-          <i class="fas fa-share-alt"></i>
-        </a>
-        <a href="" class="m10 db pill kg-bg-gray-dark share kg-gray-light">
-          <i class="fab fa-facebook-f v-mid"></i>
-        </a>
-      </span>
+	   <sharing-modal [book]="selectbook"></sharing-modal>
     </div>
 
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
@@ -29,18 +22,24 @@
         <!-- <span class="w33 dib pill kg-bg-white-hover ng-scope" 
      *ngFor="let book of allBooks" 
      > -->
-        <span class="w100 dib pill-inside ng-binding" 
+		 <span class="w100 dib pill-inside ng-binding" 
         dir="pageGetparameters.dir"
-        (click)="selectBook(book)"> {{book.attributes.name}}</span>
+        (click)="selectBook(book)"> {{book.attributes.name}}</span>											  
+		<!--						   
+        <span class="w100 dib pill-inside ng-binding" (click)="selectBook(book)"> {{book.attributes.name}}</span>
+		-->
       </span>
     </div>
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
       <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
 
-        <span class="w100 dib pill-inside ng-binding"
+			<span class="w100 dib pill-inside ng-binding"
         dir="pageGetparameters.dir"
-        (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
-      </span>
+        (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>	
+<!--		
+        <span class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
+-->     
+	 </span>
 
     </div>
 
@@ -50,9 +49,9 @@
   <div>
     <div class="py25 kg-bg-blue kg-white ng-scope">
       <div class="ng-scope">
-        <h1 class="fl ml25 kg-white ng-binding ng-scope"
+     <h1 class="fl ml25 kg-white ng-binding ng-scope"
         dir="pageGetparameters.dir"
-        *ngIf="counter>0">{{counter}}</h1>
+        *ngIf="counter>0">{{counter}}</h1>							   
       </div>
       <div>
         <h2 class="mx100 kg-white ng-binding"
@@ -69,9 +68,15 @@
         <div class="ng-scope">
           <p class="mx144">
             <span class="db ng-scope">
-              <span class="ng-binding ng-scope"  dir="pageGetparameters.dir"> {{summary_line}} </span>
+			<!-- #BROKEN BINDING
+															
+              <span class="ng-binding ng-scope"
+              dir="pageGetparameters.dir"
+              > {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span> -->
+
+              <span class="ng-binding ng-scope" dir="pageGetparameters.dir"> {{summary_line}} </span>
               <p *ngFor="let item of multiple_summary_line">
-                <span class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
+                <span dir="pageGetparameters.dir" class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
               </p>
             </span>
 
@@ -79,11 +84,11 @@
         </div>
 
         <div *ngIf="paras?.length > 0">
-          <p class="mx144" *ngFor="let item of paras; let i= index">
-            <span class="ng-binding ng-scope" *ngIf="item.type== 'text'">
+          <p class="mx144" dir="pageGetparameters.dir" *ngFor="let item of paras; let i= index">
+            <span class="ng-binding ng-scope"  dir="pageGetparameters.dir" *ngIf="item.type== 'text'">
               <b>{{item.text}} </b>
             </span>
-            <span class="ng-binding ng-scope" *ngIf="item.type=='button'">
+            <span class="ng-binding ng-scope" dir="pageGetparameters.dir" *ngIf="item.type=='button'">
               <a href="">{{item.text}}</a>
             </span>
           </p>
@@ -95,12 +100,12 @@
             <!-- <span><h4>{{label.label['content:text']}}</h4></span>
               <p>{{label['content:paragraph']['content:text']}}</p> -->
             <span>
-              <h4 class="ng-binding"  dir="pageGetparameters.dir">{{card.label}}</h4>
+              <h4 class="ng-binding" dir="pageGetparameters.dir">{{card.label}}</h4>
             </span>
             <div *ngFor="let cardpara of card.content;let i= index">
                 <!-- <p class="mx144 ng-scope" >{{card.content[i]}}</p> -->
-                <p dir="pageGetparameters.dir" class="mx144 ng-scope" *ngFor="let cardcont of card.content[i]" >{{cardcont}}</p>
-                <img *ngIf="card.localImage[i]!=''" [src]="card.localImage[i]" width="200" height="200">
+                <p class="mx144 ng-scope" dir="pageGetparameters.dir" *ngFor="let cardcont of card.content[i]" >{{cardcont}}</p>
+                <img *ngIf="card.localImage[i]!=''" [src]="card.localImage[i]" width="50%" height="auto" style="margin-left: 22%;">
             </div>
             
             <!-- <p *ngIf="card.contenttype=='array'" *ngFor="let item of card.content">
@@ -136,7 +141,17 @@
       </h3> -->
     </div>
   </div>
+  <!--
   <div class="my25 mx100">
+    <a (click)="previous()" *ngIf="counter>0" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
+    <a *ngIf="counter==0" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
+    <a (click)="next()" *ngIf="counter<allPages.length" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
+    <a *ngIf="counter==allPages.length" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
+
+  </div>
+  -->
+  
+   <div class="my25 mx100">
     <a (click)="previous()" *ngIf="counter>0"
         dir="pageGetparameters.dir"
       class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
@@ -153,12 +168,13 @@
     class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
 
   </div>
+  
   <div class="px100">
     <div class="line kg-gray-light f11">
-      <span class="fl py25"  dir="pageGetparameters.dir">
+      <span dir="pageGetparameters.dir" class="fl py25">
         <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">© 1994-2018 Cru. All Rights Reserved.</span>
-      <span class="fr py25"  dir="pageGetparameters.dir">Learn more at
-        <a  dir="pageGetparameters.dir" class="kg-gray-light" href="knowgod.com">knowGod.com</a>
+      <span dir="pageGetparameters.dir" class="fr py25">Learn more at
+        <a dir="pageGetparameters.dir" class="kg-gray-light" href="knowgod.com">knowGod.com</a>
       </span>
     </div>
   </div>
