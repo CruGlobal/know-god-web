@@ -39,6 +39,7 @@ export class HeaderComponent {
     };
     selectedBook: any;
     selectedLanguage:any;
+    resourceId: any;
 
     constructor(public route: Router,
         public router: ActivatedRoute,
@@ -123,7 +124,7 @@ export class HeaderComponent {
         this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
           .subscribe((data: any) => {
             this.allBooks = data.data;
-            console.log(this.allBooks);
+            console.log('asdasd:',this.allBooks);
             for (let i = 0; i < this.allBooks.length; i++) {
               this.resourceIds.push({ resourceId: this.allBooks[i].id, 
                 resource: this.allBooks[i].attributes.name });
@@ -141,22 +142,25 @@ export class HeaderComponent {
         let url = APIURL.GET_ALL_BOOKS + resourceId + "?include=attachments";
         this.commonService.getBooks(url)
           .subscribe((data: any) => {
-            console.log(data);
+            //console.log(data);
+            //console.log('narasimha:',data);
             this.description=data.data.attributes.description
+            //this.resourceId=data.data.id
+           // console.log('id:',this.resourceId);
              let bannerId = data.data.attributes["attr-banner"];
           //  let bannerId = data.data;
-            this.getImages(bannerId, resource);
+            this.getImages(bannerId, resource,resourceId);
           })
       }
-    
-      getImages(bannerId, resource) {
+   
+      getImages(bannerId, resource,id) {
         let url = APIURL.GET_ATTACHMENTS + bannerId + "/download";
-        console.log("url:-",url)
+        //console.log("url:-",url)
         this.commonService.downloadFile(url)
           .subscribe((data: any) => {
-            console.log(data);
+          //  console.log(data);
             var data = data;
-            
+            // console.log('narasimha:',data);
             var file = new Blob([data], {
               type: 'image/jpeg, image/png, image/gif'
             });
@@ -166,12 +170,12 @@ export class HeaderComponent {
             localStorage.getItem(resource);
             //this.images.push( localStorage.getItem(resource));
             this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(resource));
-            this.images.push({imageurl:this.imageUrl,description:this.description, resource:resource,SrcImg:"https://mobile-content-api.cru.org/attachments/"+bannerId+"/download"});  
+            this.images.push({imageurl:this.imageUrl,description:this.description,id:id,resourceId:id, resource:resource,SrcImg:"https://mobile-content-api.cru.org/attachments/"+bannerId+"/download"});  
             
           })
       }
       navigateToPage(id){
-          let book = this.allBooks[id].attributes.abbreviation;
+          let book = this.allBooks.find(x=>x.id==id).attributes.abbreviation;
           this.route.navigateByUrl('home/'+book + '/' + this.selectedLookup.languageId);
       }
 }
