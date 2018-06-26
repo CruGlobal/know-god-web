@@ -112,23 +112,23 @@ export class PageComponent implements OnInit {
 
   /*To get all books*/
   AllBooks() {
-    
-      this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
-        .subscribe((data: any) => {
-          this.allBooks = data.data;
 
-          if (this.pageGetparameters.bookid) {
-            this.allBooks.forEach(x => {
+    this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
+      .subscribe((data: any) => {
+        this.allBooks = data.data;
 
-              if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
-                this.selectBook(x)
-              }
+        if (this.pageGetparameters.bookid) {
+          this.allBooks.forEach(x => {
 
-            });
-          }
+            if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
+              this.selectBook(x)
+            }
 
-        })
-    
+          });
+        }
+
+      })
+
   }
 
   handleBookLoad(data) {
@@ -156,7 +156,7 @@ export class PageComponent implements OnInit {
 
   /*To get all languages*/
   AllLanguages() {
-   
+
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
@@ -207,6 +207,7 @@ export class PageComponent implements OnInit {
       let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
       this.location.go(Url);
     }
+    
 
     this.language = false;
     this.selectLan = lang.attributes.name
@@ -254,6 +255,10 @@ export class PageComponent implements OnInit {
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
       .subscribe((data: any) => {
         if (data.data["attributes"]["resource-type"] == "tract") {
+          this.currentBookTranslations = data.included;
+          this.LanguagesForSelectedBook();
+        }
+        else if (data.data["attributes"]["resource-type"] == "article") {
           this.currentBookTranslations = data.included;
           this.LanguagesForSelectedBook();
         }
@@ -747,6 +752,8 @@ export class PageComponent implements OnInit {
     this.paras = this.currentPageContent.paras;
 
     if (this.currentPageContent.cards.length > 0) {
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      this.location.go(Url);
       this.Cards = this.currentPageContent.cards;
       for (let i = 0; i < this.Cards.length; i++) {
         if (this.Cards[i].localImage == undefined) this.Cards[i].localImage = [];
@@ -760,6 +767,9 @@ export class PageComponent implements OnInit {
         }
       }
     }
+
+
+
   }
 
 }
