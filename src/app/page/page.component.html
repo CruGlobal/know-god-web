@@ -15,12 +15,12 @@
 
 <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
 
-  <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
+  
 
     <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
       <span class="w100 dib pill-inside ng-binding" dir="pageGetparameters.dir" (click)="selectBook(book)"> {{book.attributes.name}}</span>
     </span>
-  </span>
+  
 </div>
 <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
   <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">

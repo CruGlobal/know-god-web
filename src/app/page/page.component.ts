@@ -107,11 +107,6 @@ export class PageComponent implements OnInit {
       else if (params['bookid']) {
         this.pageGetparameters.bookid = params['bookid'];
       }
-
-
-
-
-
     })
   }
 
