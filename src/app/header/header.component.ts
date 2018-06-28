@@ -47,7 +47,8 @@ export class HeaderComponent {
         public sanitizer: DomSanitizer,
         private ngxXml2jsonService: NgxXml2jsonService) {
         //fetch All the books and langauges
-        this.AllBooks();
+        //this.AllBooks();
+        this.getAttachments();
         this.getAllBooksFromApi();
 
         this.getAllLangaugesFromApi();
@@ -119,61 +120,35 @@ export class HeaderComponent {
         this.isLanguagesSelected = !this.isLanguagesSelected;
     }
 
-
-    AllBooks() {
-        this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
-          .subscribe((data: any) => {
-            this.allBooks = data.data;
-            console.log('asdasd:',this.allBooks);
-            for (let i = 0; i < this.allBooks.length; i++) {
-              this.resourceIds.push({ resourceId: this.allBooks[i].id, 
-                resource: this.allBooks[i].attributes.name });
-            }
-            console.log(this.resourceIds);
-            for (let i = 0; i < this.resourceIds.length; i++) {
-              this.getAttachments(this.resourceIds[i].resourceId, this.resourceIds[i].resource);
-            }
-          })
-      }
-    
-
-
-    getAttachments(resourceId, resource) {
-        let url = APIURL.GET_ALL_BOOKS + resourceId + "?include=attachments";
-        this.commonService.getBooks(url)
-          .subscribe((data: any) => {
-            //console.log(data);
-            //console.log('narasimha:',data);
-            this.description=data.data.attributes.description
-            //this.resourceId=data.data.id
-           // console.log('id:',this.resourceId);
-             let bannerId = data.data.attributes["attr-banner"];
-          //  let bannerId = data.data;
-            this.getImages(bannerId, resource,resourceId);
-          })
-      }
    
-      getImages(bannerId, resource,id) {
-        let url = APIURL.GET_ATTACHMENTS + bannerId + "/download";
-        //console.log("url:-",url)
-        this.commonService.downloadFile(url)
-          .subscribe((data: any) => {
-          //  console.log(data);
-            var data = data;
-            // console.log('narasimha:',data);
-            var file = new Blob([data], {
-              type: 'image/jpeg, image/png, image/gif'
-            });
-            var fileURL = URL.createObjectURL(file);
-            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
-            localStorage.setItem(resource, fileURL);
-            localStorage.getItem(resource);
-            //this.images.push( localStorage.getItem(resource));
-            this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(resource));
-            this.images.push({imageurl:this.imageUrl,description:this.description,id:id,resourceId:id, resource:resource,SrcImg:"https://mobile-content-api.cru.org/attachments/"+bannerId+"/download"});  
-            
-          })
-      }
+    immg = [];
+    ImageUrl;
+    Images = [];
+    getAttachments() {
+        let url = APIURL.GET_ALL_BOOKS + "?include=attachments";
+        this.commonService.getBooks(url)
+            .subscribe((data: any) => {
+                //console.log('nnnnnnnnnnnnn:',data)
+                for (let k = 0; k < data.data.length; k++) {
+                    this.description = data.data[k].attributes.description;
+                    let resourceName = data.data[k].attributes.name;
+                    let resourceId = data.data[k].id;
+                    let bannerId = data.data[k].attributes["attr-banner"];
+                    for (let i = 0; i < data.included.length; i++) {
+                        if (bannerId == data.included[i].id) {
+                            this.ImageUrl = data.included[i].attributes.file
+                            this.Images.push({ description: this.description, ImgUrl: this.ImageUrl, resource: resourceName, id: resourceId })
+
+
+                        }
+                    }
+                    
+                }
+            })
+       
+
+    }
+
       navigateToPage(id){
           let book = this.allBooks.find(x=>x.id==id).attributes.abbreviation;
           this.route.navigateByUrl('home/'+book + '/' + this.selectedLookup.languageId);

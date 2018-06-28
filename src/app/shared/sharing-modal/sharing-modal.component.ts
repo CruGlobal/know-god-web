@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SHAREDURL, EMBED_URL } from '../../api/url';
 import { Router } from '@angular/router';
-
+import {CommonService} from '../../services/common.service';
 @Component({
   selector: 'sharing-modal',
   templateUrl: './sharing-modal.component.html',
@@ -11,16 +11,29 @@ export class SharingModalComponent implements OnInit {
 
   @Input()
   book: any;
-  currentUrl: string;
-  embedUrl: string;
 
-  constructor(private router: Router) {
+  currentUrl;
+  embedUrl;
+  
+  constructor(private router: Router,public commonService:CommonService) {
+   
     this.router.events.subscribe(() => {
-      this.currentUrl = window.location.href;
-      this.embedUrl = EMBED_URL.replace("EMBED_URL", this.currentUrl);
-      console.log(this.book);
+      //this.currentUrl = window.location.href;
+      this.commonService.getUrl()
+      .subscribe(x=>{
+        console.log(window.location.hostname);
+        let port = window.location.port;
+        if(port){
+          this.currentUrl=window.location.hostname+`:${port}`+x;
+        }
+        
+        this.embedUrl = EMBED_URL.replace("EMBED_URL", this.currentUrl);
+      });
+      console.log(this.currentUrl);
     });
   }
+
+
 
   ngOnInit() {
 

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import {Headers, RequestOptions} from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
@@ -13,6 +13,8 @@ export class CommonService {
   options: any;
   allBooks=[];
   allLanguages=[];
+  currenturl:Subject<any>;
+  getCurrentUrl:Subject<any>
   constructor(public http: HttpClient) {
     this.headers = new HttpHeaders({
       'Accept': 'application/xml, image/png, image/jpeg, image/jpg, image/gif, text/html,application/xhtml+xml',
@@ -25,12 +27,16 @@ export class CommonService {
       'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
 
     });
-    console.log(this.headers.get('Accept'))
-    console.log("Headers:", this.headers);
-   
-     
+    console.log(this.headers.get('Accept'))  
+    this.currenturl=new Subject<any>()
+    
   }
-
+getUrl(){
+  return this.currenturl.asObservable();
+}
+setCurrentUrl(url){
+this.currenturl.next(url);
+}
   getBooks(url) {
     return this.http.get(url); 
   }
@@ -42,5 +48,6 @@ export class CommonService {
   downloadFile(url) {
     return this.http.get(url,{ headers: this.headers, responseType:"arraybuffer"}); 
   }
+
 
 }

@@ -58,7 +58,7 @@ export class PageComponent implements OnInit {
     public sanitizer: DomSanitizer,
     private route: ActivatedRoute,
     public router: Router, public location: Location) {
-
+     
 
   }
   ngOnDestroy() {
@@ -76,7 +76,7 @@ export class PageComponent implements OnInit {
 
   ngOnInit() {
 
-
+    this.getCurrentUrl()
     //
     this.AllBooks();
     // this.AllLanguages();
@@ -207,7 +207,7 @@ export class PageComponent implements OnInit {
       let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
       this.location.go(Url);
     }
-    
+
 
     this.language = false;
     this.selectLan = lang.attributes.name
@@ -235,6 +235,8 @@ export class PageComponent implements OnInit {
   BookID = "";
 
   getCurrentUrl() {
+    let Url=this.router.url;
+    this.commonService.setCurrentUrl(Url);
     console.log(this.router.url);
   }
   selectBook(book) {
@@ -266,26 +268,6 @@ export class PageComponent implements OnInit {
 
       })
 
-
-
-    //isDefault
-    // this.sub = this.route.params.subscribe(params => {
-    //   if (params['bookid'] && params['langid'] && params['pageid']) {
-    //     this.selectedPage(params['pageid']);
-    //   }
-    //   else if (params['bookid'] && params['langid']) {
-    //     //this.selectLanguage(params['langname'], params['langid']);
-    //   }
-    //   else if (params['bookid']) {
-    //     let bookname = this.route.queryParams['bookname']
-    //    // this.selectBook(bookname, params['bookid']);
-    //   }
-    //   else {
-    //     //default flow
-    //     // this.AllBooks();
-    //     // this.AllLanguages();
-    //   }
-    // })
   }
 
   translationsMapper(booktranslations, languagetranslations) {
@@ -384,11 +366,14 @@ export class PageComponent implements OnInit {
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
         });
+
         var fileURL = URL.createObjectURL(file);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);
         var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl }
         this.allResourcesImages.push(imageUrls);
+
+
         //this.AllPagesContent.push(fileURL); 
         //window.open(fileURL);
 
@@ -582,39 +567,10 @@ export class PageComponent implements OnInit {
     this.currentPageContent = {};
 
     this.LoadPage(this.counter);
-    // this.currentPageContent = this.allPages[this.counter];
-
-    // if (this.currentPageContent == undefined) return;
-
-    // if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
-    //   this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
-    //   if (typeof this.summary_line != "string") {
-    //     this.multiple_summary_line = this.summary_line;
-    //     this.summary_line = '';
-    //   }
-    // } else this.summary_line = '';
-    // this.call_to_action = this.currentPageContent.call_to_action;
-    // this.paras = this.currentPageContent.paras;
-
-    // if (this.currentPageContent.cards.length > 0) {
-    //   let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
-    //   this.location.go(Url);
-    //   this.Cards = this.currentPageContent.cards;
-    //   for (let i = 0; i < this.Cards.length; i++) {
-
-    //   }
-
-    // }
-
-
-    // // }
-    // console.log("current page cards content:", this.Cards);
-    // console.log("tagline", this.tagline);
 
   }
   pageCount = ""
   next() {
-
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -624,36 +580,12 @@ export class PageComponent implements OnInit {
       this.counter++;
       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
+      this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
-      // // this.currentPageContent = this.allPages[this.counter];
 
-      // // if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
-      // //   this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
-      // //   if (typeof this.summary_line != "string") {
-      // //     this.multiple_summary_line = this.summary_line;
-      // //     this.summary_line = '';
-      // //   }
-      // // } else this.summary_line = '';
-      // // this.call_to_action = this.currentPageContent.call_to_action;
-      // // this.paras = this.currentPageContent.paras;
-
-      // // if (this.currentPageContent.cards.length > 0) {
-      // //   this.Cards = this.currentPageContent.cards;
-      // //   for (let i = 0; i < this.Cards.length; i++) {
-      // //     if (this.Cards[i].localImage == undefined) this.Cards[i].localImage = [];
-      // //     for (let j = 0; j < this.Cards[i].image.length; j++) {
-      // //       if (this.Cards[i].image[j] == "") {
-      // //         this.Cards[i].localImage[j] = "";
-      // //       }
-      // //       else {
-      // //         this.Cards[i].localImage[j] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
-      // //       }
-      // //     }
-      // //   }
-      // // }
     }
   }
-
+  
   previous() {
     this.tagline = "";
     this.Cards = [];
@@ -664,43 +596,9 @@ export class PageComponent implements OnInit {
       this.counter--;
       let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
-
+      this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
-      // // this.currentPageContent = this.allPages[this.counter];
 
-      // // if (this.currentPageContent.paragraph["content:paragraph"] != undefined) {
-      // //   this.summary_line = this.currentPageContent.paragraph["content:paragraph"]["content:text"];
-      // //   if (typeof this.summary_line != "string") {
-      // //     this.multiple_summary_line = this.summary_line;
-      // //     this.summary_line = '';
-      // //     // for (let index = 0; index < this.summary_line.length; index++) {
-      // //     //   this.summary_line[index] = this.summary_line[index] + '</br>';          
-      // //     // } 
-      // //   }
-      // // } else this.summary_line = '';
-      // // this.call_to_action = this.currentPageContent.call_to_action;
-      // // this.paras = this.currentPageContent.paras;
-
-      // // if (this.currentPageContent.cards.length > 0) {
-      // //   this.Cards = this.currentPageContent.cards;
-      // //   for (let i = 0; i < this.Cards.length; i++) {
-      // //     if (this.Cards[i].localImage == undefined) this.Cards[i].localImage = [];
-      // //     for (let j = 0; j < this.Cards[i].image.length; j++) {
-      // //       if (this.Cards[i].image[j] == "") {
-      // //         this.Cards[i].localImage[j] = "";
-      // //       }
-      // //       else {
-      // //         this.Cards[i].localImage[j] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
-      // //       }
-      // //     }
-
-      // //   }
-      // // }
-      // this.Cards = this.currentPageContent.cards;
-      // this.cardsContent = this.Cards;
-      // if (this.currentPageContent["call-to-action"]) {
-      //   this.tagline = this.currentPageContent["call-to-action"]["content:text"];
-      // }
     }
   }
 
@@ -767,9 +665,6 @@ export class PageComponent implements OnInit {
         }
       }
     }
-
-
-
   }
 
 }

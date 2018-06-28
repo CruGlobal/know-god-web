@@ -36,20 +36,25 @@
 
 
 <!-- <app-header></app-header> -->
-<div class="row .bg-light">
-  <div class="col-md-6 align">
-    <div class="thumbnail" *ngFor="let banner of images;let i =index">
-     <!-- {{banner | json}} -->
-      <!-- <img [src]="banner.imageurl"> -->
-      <img [src]="banner.SrcImg" style="width: 100%;">
-      <p>{{banner.description}}</p>
-      <div class="caption">
-        <h3 (click)="navigateToPage(banner.resourceId)">
-          <a href="javascript:void(0)"  class="btn btn-primary">{{banner.resource}}</a>
-        </h3>
-        <!-- <p></p>
-          <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
+<div class="row bg-light">
+  <div class="col-md-6" *ngFor="let banner of Images;let i = index; let isFirstRow=last" [ngClass]="{'RowHeaderCSS' : isFirstRow}">
+    <div class="container1" >
+      <!-- <div *ngIf="i%2==0"> -->
+      <div class="thumbnail image" style="height: 350px; max-height: 600px; overflow-y:auto;">
+        <img [src]="banner.ImgUrl" style="width: 100%;">
+        <p>{{banner.description}}</p>
+        <div class="caption">
+          <h3 (click)="navigateToPage(banner.id)">
+            <a href="javascript:void(0)" class="btn btn-primary">{{banner.resource}}</a>
+          </h3>
+        </div>
       </div>
+      <div class="middle">
+        <img src="/assets/img/circle.png" (click)="navigateToPage(banner.id)">
+
+      </div>
+   
     </div>
+    
   </div>
 </div>
