@@ -362,26 +362,23 @@ export class PageComponent implements OnInit {
   getXmlFileForEachResource(resource) {
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + "/" + resource.translationId + "/" + resource.src)
       .subscribe((data: any) => {
+        
         var data = data;
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
         });
-
-        var fileURL = URL.createObjectURL(file);
-        this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
+        setTimeout(()=>{ this. currentPage(); }, 3000);
+          
+          var fileURL = URL.createObjectURL(file);
+          this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);
         var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl }
-        this.allResourcesImages.push(imageUrls);
-
-
-        //this.AllPagesContent.push(fileURL); 
-        //window.open(fileURL);
-
+        this.allResourcesImages.push(imageUrls); 
+     
       })
   }
 
   getImages(resource) {
-
     //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + "/" + resource.translationId + "/" + resource.src)
       .subscribe((x: any) => {
@@ -393,7 +390,9 @@ export class PageComponent implements OnInit {
         };
       })
   }
-
+  refresh(): void {
+    window.location.reload();
+}
 
   Languages() {
     this.language = !this.language;
