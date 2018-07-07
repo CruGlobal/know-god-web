@@ -488,7 +488,8 @@ export class PageComponent implements OnInit {
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
       .subscribe((x: any) => {
         const reader = new FileReader();
-        reader.readAsDataURL(x);
+        
+        if(x instanceof Blob)reader.readAsDataURL(x);
         reader.onloadend = function () {
           //localStorage.set('abc.jpg',reader.result);
           localStorage.set(resource.filename, reader.result);
