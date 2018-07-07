@@ -11,29 +11,25 @@ export class SharingModalComponent implements OnInit {
 
   @Input()
   book: any;
+  currentUrl: string;
+  embedUrl: string;
 
-  currentUrl;
-  embedUrl;
-  
   constructor(private router: Router,public commonService:CommonService) {
-   
     this.router.events.subscribe(() => {
-      //this.currentUrl = window.location.href;
       this.commonService.getUrl()
       .subscribe(x=>{
         console.log(window.location.hostname);
         let port = window.location.port;
         if(port){
           this.currentUrl=window.location.hostname+`:${port}`+x;
-        }
-        
+        }else{
+          this.currentUrl=window.location.hostname + x;
+        }        
         this.embedUrl = EMBED_URL.replace("EMBED_URL", this.currentUrl);
       });
       console.log(this.currentUrl);
     });
   }
-
-
 
   ngOnInit() {
 

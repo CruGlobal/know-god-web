@@ -1,161 +1,222 @@
-<div class="header tc relative">
-  <span class="l p25 absolute kg-gray-dark ng-binding">
-    <i class="fas fa-book"></i>{{selectbook}}
-    <i class="fas fa-chevron-up flip" (click)="Books()"></i>
-  </span>
-  <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
-    <i class="fas fa-language"></i> {{selectLan}}
-    <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
-  </span>
-  <div class="dib progress pill my25 kg-bg-gray-light">
-    <div class="kg-bg-gray pill"> </div>
-  </div>
-  <sharing-modal [book]="selectbook"></sharing-modal>
-</div>
+<div>
 
-<div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
+    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
-  
+  <div>
+    <div class="header tc relative">
+	<span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
+          <a [routerLink]="''"><i class="fas fa-home"></i></a> 
+        </span>
+    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
+        <i class="fas fa-book"></i>{{selectbook}}
+        <i class="fas fa-chevron-up flip" (click)="Books()"></i>
+      </span>
+    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 75%;">
+        <i class="fas fa-language"></i> {{selectLan}}
+        <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
+       
+            
+        
+      </span>
+     
+      <div class="dib progress pill my25 kg-bg-gray-light">
+        <div class="kg-bg-gray pill"></div>
+      </div>
+      <sharing-modal [book]="selectbook"></sharing-modal>
+      
+    </div>
 
-    <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
-      <span class="w100 dib pill-inside ng-binding" dir="pageGetparameters.dir" (click)="selectBook(book)"> {{book.attributes.name}}</span>
-    </span>
-  
-</div>
-<div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
-  <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
 
-    <span class="w100 dib pill-inside ng-binding" dir="pageGetparameters.dir" (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
-    <!--		
+
+    <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
+
+      <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
+
+        <!-- <span class="w33 dib pill kg-bg-white-hover ng-scope" 
+     *ngFor="let book of allBooks" 
+     > -->
+        <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectBook(book,true)"> {{book.attributes.name}}</span>
+        <!--						   
+        <span class="w100 dib pill-inside ng-binding" (click)="selectBook(book)"> {{book.attributes.name}}</span>
+		-->
+      </span>
+    </div>
+    <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
+      <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
+
+        <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectLanguage(lang,true)"> {{lang.attributes.name}}</span>
+        <!--		
         <span class="w100 dib pill-inside ng-binding" (click)="selectLanguage(lang)"> {{lang.attributes.name}}</span>
 -->
-  </span>
+      </span>
 
-</div>
-
-
-
-
-
-<div>
-  <div class="py25 kg-bg-blue kg-white ng-scope">
-    <div class="ng-scope">
-      <h1 class="fl ml25 kg-white ng-binding ng-scope" dir="pageGetparameters.dir" *ngIf="counter>0">{{counter}}</h1>
     </div>
-    <div>
-      <h2 class="mx100 kg-white ng-binding" dir="pageGetparameters.dir">{{currentPageContent?.heading}}</h2>
+
+
+
+  </div>
+
+
+  <div *ngIf="!showNoRecordFound">
+    <div class="py25 kg-bg-blue kg-white ng-scope">
+      <div class="ng-scope" *ngIf="pageGetparameters.dir=='ltr'">
+        <h1 class="fl ml25  kg-white ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
+      </div>
+      <div *ngIf="currentPageContent">
+        <h2 class="mx100 kg-white ng-binding" style="min-height:70px"  dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
+      </div>
+      <div class="ng-scope" *ngIf="pageGetparameters.dir=='rtl'">
+          <h1 class="ml25 top  kg-white ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
+        </div>
     </div>
   </div>
-</div>
-<div>
-  <div class="mx100">
-    <div>
+
+  <div>
+    <div class="mx100" *ngIf="!showNoRecordFound">
       <div>
-        <!-- <h2 class="ng-binding">This response involves ...</h2> -->
-      </div>
-      <div class="ng-scope">
-        <p class="mx144">
-          <span class="db ng-scope">
-            <!-- #BROKEN BINDING
-															
-              <span class="ng-binding ng-scope"
-              dir="pageGetparameters.dir"
-              > {{currentPageContent.paragraph["content:paragraph"]["content:text"]}} </span> -->
+        <div>
+          <!-- <h2 class="ng-binding">This response involves ...</h2> -->
+        </div>
+        <div class="ng-scope">
+          <p class="mx144">
+            <span class="db ng-scope">
+              <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}}> {{summary_line}} </span>
+              <p *ngFor="let item of multiple_summary_line">
+                <span dir={{pageGetparameters.dir}} class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
+               
+              </p>
+            </span>
 
-            <span class="ng-binding ng-scope" dir="pageGetparameters.dir"> {{summary_line}} </span>
-            <p *ngFor="let item of multiple_summary_line">
-              <span dir="pageGetparameters.dir" class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
-            </p>
-          </span>
+          </p>
+        </div>
 
-        </p>
-      </div>
+        <div *ngIf="paras?.length > 0">
+          <p class="mx144" dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
+            <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text'">
 
-      <div *ngIf="paras?.length > 0">
-        <p class="mx144" dir="pageGetparameters.dir" *ngFor="let item of paras; let i= index">
-          <span class="ng-binding ng-scope" dir="pageGetparameters.dir" *ngIf="item.type== 'text'">
-            <b>{{item.text}} </b>
-          </span>
-          <span class="ng-binding ng-scope" dir="pageGetparameters.dir" *ngIf="item.type=='button'">
-            <a href="">{{item.text}}</a>
-          </span>
-        </p>
-      </div>
+              
+              <b>{{item.text}} </b>
+            </span>
+            <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type=='button'">
+              <a href="">{{item.text}}</a>
+            
+            </span>
+          </p>
+        </div>
 
-      <div *ngIf="Cards!=''">
-        <div *ngFor="let card of Cards">
-          <!-- {{card | json}} -->
-          <!-- <span><h4>{{label.label['content:text']}}</h4></span>
-              <p>{{label['content:paragraph']['content:text']}}</p> -->
-          <span>
-            <h4 class="ng-binding" dir="pageGetparameters.dir">{{card.label}}</h4>
-          </span>
-          <div *ngFor="let cardpara of card.content;let i= index">
-            <p class="mx144 ng-scope" *ngIf="card.contenttype=='string'">{{cardpara}}</p>
-            <div *ngIf="card.contenttype=='array'">
-              <p class="mx144 ng-scope" dir="pageGetparameters.dir" *ngFor="let cardcont of card.content[i]">{{cardcont}}</p>
+        <div *ngIf="Cards!=''">
+          <div *ngFor="let card of Cards">
+            <span>
+              <h4 class="ng-binding" dir={{pageGetparameters.dir}}>{{card.label}}</h4>
+             
+            </span>
+            <div *ngFor="let cardpara of card.content;let i= index">
+              <p class="mx144 ng-scope" *ngIf="isArray(card.content[i])==false">{{cardpara}}</p>
+              <div *ngIf="isArray(card.content[i])==true">
+                <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let cardcont of card.content[i]">{{cardcont}}</p>
+              </div>
+
+              <a *ngIf="card.url!=undefined && card.url[i]!=''" href="">{{card.url[i]}}</a>
+
+              <!-- <p class="mx144 ng-scope" *ngIf="card.contenttype=='string'">{{cardpara}}</p>
+              <div *ngIf="card.contenttype=='array'">
+                <p class="mx144 ng-scope" dir="pageGetparameters.dir" *ngFor="let cardcont of card.content[i]">{{cardcont}}</p>
+              </div> -->
+              <img *ngIf="card.localImage!=undefined && card.localImage[i]!=''" [src]="card.localImage[i]" width="50%" height="auto" style="margin-left: 22%;">
+
             </div>
-            <img *ngIf="card.localImage!=undefined && card.localImage[i]!=''" [src]="card.localImage[i]" width="50%" height="auto" style="margin-left: 22%;">
-          </div>
 
-          <!-- <p *ngIf="card.contenttype=='array'" *ngFor="let item of card.content">
+            <div width="col-lg-12 row" >
+              <div *ngIf="card.tabs.length > 0" style="overflow:hidden" >
+                <div *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
+
+                  <h4 class="mx144 ng-scope" dir={{pageGetparameters.dir}}>{{cardtab.heading}}</h4>
+
+                  <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
+
+                  <img *ngFor="let image1 of cardtab.localImage"  [src]="image1" width="25%" height="auto" style="margin-left: 12%;">
+
+                  <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
+
+                </div>
+              </div>
+            </div>
+
+            <!-- <p *ngIf="card.contenttype=='array'" *ngFor="let item of card.content">
               <span class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
             </p> -->
-          <!-- {{card.localImage|json}} -->
-          <!-- <img *ngIf="card.localImage!=''" [src]="card.localImage" width="200" height="200"> -->
+            <!-- {{card.localImage|json}} -->
+            <!-- <img *ngIf="card.localImage!=''" [src]="card.localImage" width="200" height="200"> -->
 
+          </div>
         </div>
-      </div>
-      <div *ngIf="call_to_action!=''">
-        <h4 class="mx144 action ng-scope">{{call_to_action}}</h4>
-      </div>
-      <!-- <div>
+        <div *ngIf="call_to_action!=''">
+          <h4 class="mx144 action ng-scope">{{call_to_action}}</h4>
+        </div>
+        <!-- <div>
           <img *ngIf="image" [src]="image" width="200" height="200">
          
         </div> -->
 
 
-      <div>
-        <span dir="pageGetparameters.dir">
-          {{call_to_action}}
-        </span>
+        <!-- <div>
+          <span dir="pageGetparameters.dir">
+            {{call_to_action}}
+          </span>
+        </div> -->
       </div>
+
     </div>
+  </div>
+  <div>
+    <div class="mx100">
+    
+    </div>
+  </div>
+  
+
+  <div class="my25 mx100" *ngIf="!showNoRecordFound">
+    <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
+    <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
+    <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
+    <a *ngIf="counter==allPages.length-1" dir={{pageGetparameters.dir}} class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
 
   </div>
+
+  <div class="px100" *ngIf="!showNoRecordFound">
+    <div class="line kg-gray-light f11">
+      <span dir={{pageGetparameters.dir}} class="fl py25">
+        <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">© 1994-2018 Cru. All Rights Reserved.</span>
+      <span dir={{pageGetparameters.dir}} class="fr py25">Learn more at
+        <a dir={{pageGetparameters.dir}} class="kg-gray-light" href="knowgod.com">knowGod.com</a>
+      </span>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="showNoRecordFound">
+    <h3>There are no records found for this language.</h3>
+</div> -->
+
+<div class="container" style="margin-top: 20%;" *ngIf="showNoRecordFound">
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron">
+                <h2>This book isn't available in the currently selected language.</h2>
+            	<!-- <p>In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
+            	<p><a href="https://www.tutorialrepublic.com" target="_blank" class="btn btn-primary btn-lg">Get started today</a></p> -->
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-  <div class="mx100">
-    <!-- <h3>
-        It's not enough just to know or feel that this is true. We have a choice to make...
-      </h3> -->
-  </div>
-</div>
-<!--
-  <div class="my25 mx100">
-    <a (click)="previous()" *ngIf="counter>0" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
-    <a *ngIf="counter==0" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
-    <a (click)="next()" *ngIf="counter<allPages.length" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
-    <a *ngIf="counter==allPages.length" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
 
-  </div>
-  -->
-
-<div class="my25 mx100">
-  <a (click)="previous()" *ngIf="counter>0" dir="pageGetparameters.dir" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
-  <a *ngIf="counter==0" dir="pageGetparameters.dir" class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
-  <a (click)="next()" dir="pageGetparameters.dir" *ngIf="counter<allPages.length" dir="pageGetparameters.dir" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
-  <a *ngIf="counter==allPages.length" dir="pageGetparameters.dir" class="py25 kg-white tc w50 fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
-
-</div>
-
-<div class="px100">
-  <div class="line kg-gray-light f11">
-    <span dir="pageGetparameters.dir" class="fl py25">
-      <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">© 1994-2018 Cru. All Rights Reserved.
-    </span>
-    <span dir="pageGetparameters.dir" class="fr py25">Learn more at
-      <a dir="pageGetparameters.dir" class="kg-gray-light" href="knowgod.com">knowGod.com</a>
-    </span>
-  </div>
+<div class="container" style="margin-top: 20%;" *ngIf="errorpresent">
+	<div class="row">
+    	<div class="col-xs-12">
+        	<div class="jumbotron" style="margin-top: -25%;width: 108%;margin-left: -20px;">
+                <h2>{{errorMsg}}</h2>
+            	<!-- <p>In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
+            	<p><a href="https://www.tutorialrepublic.com" target="_blank" class="btn btn-primary btn-lg">Get started today</a></p> -->
+            </div>
+        </div>
+    </div>
 </div>

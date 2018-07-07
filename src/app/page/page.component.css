@@ -1,0 +1,17 @@
+.pending-count{    position: absolute;
+    text-align: right;
+    right: 105px;
+    top: 19px;}
+
+    .top{
+        margin-top: -7%;
+    }
+
+    .cardtabs{
+        float:left;
+         width: 48%;
+         border: 1px solid #ddd;
+         text-align: center;
+         height:250px;
+         overflow: scroll;
+    }

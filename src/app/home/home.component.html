@@ -1,14 +1,15 @@
 <!-- <app-header></app-header> -->
-<div class="row .bg-light">
-  <div class="col-md-6 align">
-    <div class="thumbnail" *ngFor="let banner of images">
-     
+<!-- <div class="row .bg-light"> -->
+  <div class="col-md-12">
+  <div class="col-md-6" *ngFor="let banner of Images">
+    <div class="thumbnail" >
+    
       <!-- <img [src]="banner.imageurl"> -->
-      <img [src]="banner.SrcImg" style="width: 100%;">
+      <img [src]="banner.ImgUrl" style="width: 100%;">
       <p>{{banner.description}}</p>
       <div class="caption">
         <h3>
-          <a [routerLink]="" class="btn btn-primary">{{banner.resource}}</a>
+          <a [routerLink]="" class="btn btn-primary">{{banner.resource}} </a>
         </h3>
         <!-- <p></p>
           <p><a href="#" class="btn btn-primary" role="button">Button</a> <a href="#" class="btn btn-default" role="button">Button</a></p> -->
@@ -16,3 +17,4 @@
     </div>
   </div>
 </div>
+<!-- </div> -->

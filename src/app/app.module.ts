@@ -9,7 +9,9 @@ import { CommonModule } from '@angular/common';
 import { PageComponent } from './page/page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
+import { LoadingModule } from 'ngx-loading';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
+import { HttpModule } from '@angular/http';
 
 const appRoutes: Routes =[
   { path: "", redirectTo: "home", pathMatch: "full" },
@@ -25,15 +27,15 @@ const appRoutes: Routes =[
     HeaderComponent,
     PageComponent,
     HomeComponent,
-    SharingModalComponent
+    SharingModalComponent,    
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(appRoutes),
-
-
+    LoadingModule,
+    HttpModule,
+    RouterModule.forRoot(appRoutes)
   ],
   providers: [CommonModule],
   bootstrap: [AppComponent]

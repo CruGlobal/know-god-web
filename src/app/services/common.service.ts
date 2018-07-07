@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 // import {Headers, RequestOptions} from '@angular/http';
-import { Observable, Subject } from 'rxjs';
+import { Observable,Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 
@@ -15,6 +15,7 @@ export class CommonService {
   allLanguages=[];
   currenturl:Subject<any>;
   getCurrentUrl:Subject<any>
+  selectedLan:any;
   constructor(public http: HttpClient) {
     this.headers = new HttpHeaders({
       'Accept': 'application/xml, image/png, image/jpeg, image/jpg, image/gif, text/html,application/xhtml+xml',
@@ -27,16 +28,17 @@ export class CommonService {
       'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
 
     });
-    console.log(this.headers.get('Accept'))  
+    console.log(this.headers.get('Accept'))
+    console.log("Headers:", this.headers);
     this.currenturl=new Subject<any>()
-    
+     
   }
-getUrl(){
-  return this.currenturl.asObservable();
-}
-setCurrentUrl(url){
-this.currenturl.next(url);
-}
+  getUrl(){
+    return this.currenturl.asObservable();
+  }
+  setCurrentUrl(url){
+  this.currenturl.next(url);
+  }
   getBooks(url) {
     return this.http.get(url); 
   }
@@ -48,6 +50,5 @@ this.currenturl.next(url);
   downloadFile(url) {
     return this.http.get(url,{ headers: this.headers, responseType:"arraybuffer"}); 
   }
-
 
 }
