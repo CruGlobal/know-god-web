@@ -19,12 +19,13 @@ export class SharingModalComponent implements OnInit {
       this.commonService.getUrl()
       .subscribe(x=>{
         console.log(window.location.hostname);
-        let port = window.location.port;
+         let port = window.location.port;
+         let protocol = window.location.protocol;
         if(port){
-          this.currentUrl=window.location.hostname+`:${port}`+x;
+          this.currentUrl= protocol + window.location.hostname+`:${port}`+x;
         }else{
-          this.currentUrl=window.location.hostname + x;
-        }        
+          this.currentUrl= protocol + window.location.hostname + x;
+        }          
         this.embedUrl = EMBED_URL.replace("EMBED_URL", this.currentUrl);
       });
       console.log(this.currentUrl);
