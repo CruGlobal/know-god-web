@@ -20,7 +20,7 @@ export class SharingModalComponent implements OnInit {
       .subscribe(x=>{
         console.log(window.location.hostname);
          let port = window.location.port;
-         let protocol = window.location.protocol;
+        let protocol = window.location.protocol ?  window.location.protocol + "//" : "";
         if(port){
           this.currentUrl= protocol + window.location.hostname+`:${port}`+x;
         }else{
