@@ -18,7 +18,8 @@ const appRoutes: Routes =[
   { path: 'home/:bookid/:langid', component: PageComponent},
   { path: 'home/:bookid', component: PageComponent},
   { path: 'base', component: HeaderComponent} ,
-  { path: '', redirectTo: '/base', pathMatch: 'full'}
+  { path: '', redirectTo: '/base', pathMatch: 'full'} ,
+  { path: "", redirectTo: '/base', pathMatch: 'full'}
 ];
 
 @NgModule({
