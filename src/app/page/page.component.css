@@ -8,10 +8,10 @@
     }
 
     .cardtabs{
-        float:left;
+        /* float:left; */
          width: 48%;
          border: 1px solid #ddd;
          text-align: center;
-         height:250px;
-         overflow: scroll;
+         /* height:250px;
+         overflow: scroll; */
     }

@@ -14,12 +14,12 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 import { HttpModule } from '@angular/http';
 
 const appRoutes: Routes =[
-  { path: "", redirectTo: "home", pathMatch: "full" },
-  { path: '', component: HeaderComponent},
-  { path: 'home/:bookid', component: PageComponent},
+  { path: 'home/:bookid/:langid/:page', component: PageComponent },
   { path: 'home/:bookid/:langid', component: PageComponent},
-  { path: 'home/:bookid/:langid/:page', component: PageComponent }
-]
+  { path: 'home/:bookid', component: PageComponent},
+  { path: 'base', component: HeaderComponent} ,
+  { path: '', redirectTo: '/base', pathMatch: 'full'}
+];
 
 @NgModule({
   declarations: [

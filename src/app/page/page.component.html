@@ -1,29 +1,31 @@
 <div>
 
-    <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
+  <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
 
   <div>
     <div class="header tc relative">
-	<span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
-          <a [routerLink]="''"><i class="fas fa-home"></i></a> 
-        </span>
-    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
+      <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
+        <a [routerLink]="''">
+          <i class="fas fa-home"></i>
+        </a>
+      </span>
+      <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
         <i class="fas fa-book"></i>{{selectbook}}
         <i class="fas fa-chevron-up flip" (click)="Books()"></i>
       </span>
-    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 75%;">
+      <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 75%;">
         <i class="fas fa-language"></i> {{selectLan}}
         <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
-       
-            
-        
+
+
+
       </span>
-     
+
       <div class="dib progress pill my25 kg-bg-gray-light">
         <div class="kg-bg-gray pill"></div>
       </div>
       <sharing-modal [book]="selectbook"></sharing-modal>
-      
+
     </div>
 
 
@@ -63,11 +65,11 @@
         <h1 class="fl ml25  kg-white ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
       </div>
       <div *ngIf="currentPageContent">
-        <h2 class="mx100 kg-white ng-binding" style="min-height:70px"  dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
+        <h2 class="mx100 kg-white ng-binding" style="min-height:70px" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
       </div>
       <div class="ng-scope" *ngIf="pageGetparameters.dir=='rtl'">
-          <h1 class="ml25 top  kg-white ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
-        </div>
+        <h1 class="ml25 top  kg-white ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
+      </div>
     </div>
   </div>
 
@@ -83,7 +85,7 @@
               <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}}> {{summary_line}} </span>
               <p *ngFor="let item of multiple_summary_line">
                 <span dir={{pageGetparameters.dir}} class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
-               
+
               </p>
             </span>
 
@@ -94,12 +96,12 @@
           <p class="mx144" dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
             <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text'">
 
-              
+
               <b>{{item.text}} </b>
             </span>
             <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type=='button'">
               <a href="">{{item.text}}</a>
-            
+
             </span>
           </p>
         </div>
@@ -108,7 +110,7 @@
           <div *ngFor="let card of Cards">
             <span>
               <h4 class="ng-binding" dir={{pageGetparameters.dir}}>{{card.label}}</h4>
-             
+
             </span>
             <div *ngFor="let cardpara of card.content;let i= index">
               <p class="mx144 ng-scope" *ngIf="isArray(card.content[i])==false">{{cardpara}}</p>
@@ -126,7 +128,19 @@
 
             </div>
 
-            <div width="col-lg-12 row" >
+            <table width="col-lg-12" *ngIf="card.tabs.length > 0">
+              <tr  style="overflow:hidden">
+                <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
+
+                  <h4 class="mx144 ng-scope" dir={{pageGetparameters.dir}}>{{cardtab.heading}}</h4>
+                  <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
+                  <img *ngFor="let image1 of cardtab.localImage" [src]="image1" width="25%" height="auto" style="margin-left: 12%;">
+                  <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
+
+                </td>
+              </tr>
+            </table>
+            <!-- <div width="col-lg-12 row" >
               <div *ngIf="card.tabs.length > 0" style="overflow:hidden" >
                 <div *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
 
@@ -140,7 +154,7 @@
 
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <!-- <p *ngIf="card.contenttype=='array'" *ngFor="let item of card.content">
               <span class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
@@ -170,10 +184,10 @@
   </div>
   <div>
     <div class="mx100">
-    
+
     </div>
   </div>
-  
+
 
   <div class="my25 mx100" *ngIf="!showNoRecordFound">
     <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="py25 kg-white tc w50 fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
@@ -197,26 +211,26 @@
     <h3>There are no records found for this language.</h3>
 </div> -->
 
-<div class="container" style="margin-top: 20%;" *ngIf="showNoRecordFound">
-	<div class="row">
-    	<div class="col-xs-12">
-        	<div class="jumbotron">
-                <h2>This book isn't available in the currently selected language.</h2>
-            	<!-- <p>In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
+  <div class="container" style="margin-top: 20%;" *ngIf="showNoRecordFound">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="jumbotron">
+          <h2>This book isn't available in the currently selected language.</h2>
+          <!-- <p>In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
             	<p><a href="https://www.tutorialrepublic.com" target="_blank" class="btn btn-primary btn-lg">Get started today</a></p> -->
-            </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
 
-<div class="container" style="margin-top: 20%;" *ngIf="errorpresent">
-	<div class="row">
-    	<div class="col-xs-12">
-        	<div class="jumbotron" style="margin-top: -25%;width: 108%;margin-left: -20px;">
-                <h2>{{errorMsg}}</h2>
-            	<!-- <p>In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
+  <div class="container" style="margin-top: 20%;" *ngIf="errorpresent">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="jumbotron" style="margin-top: -25%;width: 108%;margin-left: -20px;">
+          <h2>{{errorMsg}}</h2>
+          <!-- <p>In today's world internet is the most popular way of connecting with the people. At <a href="https://www.tutorialrepublic.com" target="_blank">tutorialrepublic.com</a> you will learn the essential of web development technologies along with real life practice example, so that you can create your own website to connect with the people around the world.</p>
             	<p><a href="https://www.tutorialrepublic.com" target="_blank" class="btn btn-primary btn-lg">Get started today</a></p> -->
-            </div>
         </div>
+      </div>
     </div>
-</div>
+  </div>
