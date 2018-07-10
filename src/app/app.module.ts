@@ -12,6 +12,8 @@ import { HomeComponent } from './home/home.component';
 import { LoadingModule } from 'ngx-loading';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 import { HttpModule } from '@angular/http';
+import { LoaderService } from './services/loader-service/loader.service';
+import { LoaderComponent } from './shared/loader/loader.component';
 
 const appRoutes: Routes =[
   { path: 'home/:bookid/:langid/:page', component: PageComponent },
@@ -28,7 +30,8 @@ const appRoutes: Routes =[
     HeaderComponent,
     PageComponent,
     HomeComponent,
-    SharingModalComponent,    
+    SharingModalComponent,  
+    LoaderComponent  
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,10 @@ const appRoutes: Routes =[
     HttpModule,
     RouterModule.forRoot(appRoutes)
   ],
-  providers: [CommonModule],
+  providers: [
+    CommonModule,
+    LoaderService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

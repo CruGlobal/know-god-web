@@ -8,6 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { isArray } from 'util';
 import { Location } from '@angular/common';
+import { LoaderService } from '../services/loader-service/loader.service';
 
 @Component({
   selector: 'app-page',
@@ -15,6 +16,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./page.component.css']
 })
 export class PageComponent implements OnInit {
+  showLoader: boolean;
   bookid: any;
   loading: boolean = false;
   myUrl: string;
@@ -60,7 +62,10 @@ export class PageComponent implements OnInit {
     private ngxXml2jsonService: NgxXml2jsonService,
     public sanitizer: DomSanitizer,
     private route: ActivatedRoute,
-    public router: Router, public location: Location) {
+    public router: Router, 
+    public location: Location,
+    private loaderService: LoaderService
+  ) {
     this.AllBooks();
 
   }
@@ -75,6 +80,13 @@ export class PageComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.showLoader = false;
+    this.loaderService.status.subscribe((val: boolean)=>{
+      this.showLoader = val;
+    });
+
+
     if (this.commonService.selectedLan != undefined) {
       this.selectLan = this.commonService.selectedLan.attributes.name;
       this.selectedLanguageId = this.commonService.selectedLan.id
@@ -83,6 +95,7 @@ export class PageComponent implements OnInit {
     //this.AllBooks();
     // this.AllLanguages();
     this.sub = this.route.params.subscribe(params => {
+      this.showLoader = true;
       if (params['bookid'] && params['langid'] && params['pageid']) {
         this.selectedPage(params['pageid']);
         this.pageGetparameters.bookid = params['bookid']
@@ -216,6 +229,7 @@ export class PageComponent implements OnInit {
   }
   lang = "";
   selectLanguage(lang, selectChoice = false) {
+    this.loaderService.display(true);
     this.loading = true;
     this.showNoRecordFound = false;
     this.errorpresent = false;
@@ -271,6 +285,7 @@ export class PageComponent implements OnInit {
   //   console.log(this.router.url);
   // }
   selectBook(book, fromChoice = false) {
+    this.loaderService.display(true);
     this.loading = true;
     this.BookID = book.attributes.abbreviation
     this.selectLan = '';
@@ -471,7 +486,7 @@ export class PageComponent implements OnInit {
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
         });
-        setTimeout(() => { this.currentPage(); }, 1000);
+        setTimeout(()=>{ this. currentPage(); this.loaderService.display(false); }, 1000);
         var fileURL = URL.createObjectURL(file);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);

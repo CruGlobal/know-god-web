@@ -58,7 +58,7 @@
 
   </div>
 
-
+<div [hidden]="showLoader">
   <div *ngIf="!showNoRecordFound">
     <div class="py25 kg-bg-blue kg-white ng-scope">
       <div class="ng-scope" *ngIf="pageGetparameters.dir=='ltr'">
@@ -233,4 +233,5 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
