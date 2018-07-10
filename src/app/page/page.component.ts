@@ -255,7 +255,8 @@ export class PageComponent implements OnInit {
 
         if (this.currentTranslations.length == 0) {
           this.errorpresent = true;
-          this.errorMsg = "This book is not available in selected language."
+          this.errorMsg = "This book is not available in selected language.";
+          this.loaderService.display(false);
           this.loading = false;
           return;
         }
@@ -354,6 +355,7 @@ export class PageComponent implements OnInit {
       console.log('No data')
       this.ClearContent();
       this.showNoRecordFound = true;
+      this.loaderService.display(false);
       this.loading = false;
       return;
     }
@@ -375,6 +377,7 @@ export class PageComponent implements OnInit {
           /* All Pages in xml file */
           if (jsondata["manifest"]["pages"]["page"] == undefined) {
             console.log('No pages defined for book in manifest');
+            this.loaderService.display(false);
             this.showNoRecordFound = true;
             //return;
           }
@@ -439,6 +442,7 @@ export class PageComponent implements OnInit {
         },
           err => {
             console.log('Error reading manifest file.');
+            this.loaderService.display(false);
             this.showNoRecordFound = true;
           });
       this.loading = false;
