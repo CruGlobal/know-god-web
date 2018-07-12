@@ -79,16 +79,13 @@ export class PageComponent implements OnInit {
       this.selectLan = this.commonService.selectedLan.attributes.name;
       this.selectedLanguageId = this.commonService.selectedLan.id
     }
-    //
-    //this.AllBooks();
-    // this.AllLanguages();
+    
     this.sub = this.route.params.subscribe(params => {
       if (params['bookid'] && params['langid'] && params['pageid']) {
         this.selectedPage(params['pageid']);
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = params['pageid']
-        // this.getCurrentUrl()
+        this.pageGetparameters.pageid = params['pageid']         
       }
       // else if (params['bookid'] && params['langid']) {
       //     this.selectLanguage(params['langname'], params['langid']);

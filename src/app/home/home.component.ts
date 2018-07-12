@@ -49,9 +49,8 @@ export class HomeComponent implements OnInit {
     this.commonService.getBooks(url)
       .subscribe((data: any) => {
         console.log(data);
-        this.description=data.data.attributes.description
-         let bannerId = data.data.attributes["attr-banner"];
-      //  let bannerId = data.data;
+        this.description=data.data.attributes.description;
+         let bannerId = data.data.attributes["attr-banner"]; 
         this.getImages(bannerId, resource);
       })
   }
