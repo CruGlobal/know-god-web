@@ -1,7 +1,7 @@
 <div>
-
+<!--
   <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px' }"></ngx-loading>
-
+-->
   <div>
     <div class="header tc relative">
       <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
@@ -57,7 +57,7 @@
 
   </div>
 
-
+<div [hidden]="showLoader">
   <div *ngIf="!showNoRecordFound">
     <div class="py25 kg-bg-blue kg-white ng-scope">
       <div class="ng-scope" *ngIf="pageGetparameters.dir=='ltr'">
@@ -232,4 +232,5 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
