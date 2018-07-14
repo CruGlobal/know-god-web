@@ -1,20 +1,43 @@
-<span class="r mt15 absolute tc pill">
-  <a class="m10 db share">
-    <i class="fas fa-share-alt" data-toggle="modal" data-target="#share" href="#"></i>
-  </a>
-  <a  href="javascript:void(0)" target="_blank" class="m10 db pill kg-bg-gray-dark share kg-gray-light" (click)="shareTo('FACEBOOK')">
+
+  <span class="r mt15 absolute tc pill">
+    <a class="m10 db share" style="color:black">
+      <i class="fas fa-share-alt" *ngIf="ShareState == 'min'" (click)="ShareState = 'max'" href="#"></i>
+      <!-- <i class="fas fa-share-alt" data-toggle="modal" data-target="#share" href="#"></i> -->
+    </a>
+    <div>
+      <div class="sharemax" *ngIf="ShareState == 'max'">
+        <a title="Close" class="btn shareclose" href="javascript:void(0)" target="_blank" (click)="ShareState = 'min'">
+          <div class="fa fa-close"></div>
+        </a>
+        <a title="Twitter" class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('TWITTER')">
+          <div class="fa fa-twitter"></div>
+        </a>
+        <a title="Facebook" class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('FACEBOOK')">
+          <div class="fa fa-facebook"></div>
+        </a>
+        <a title="Google+" class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('GOOGLEPLUS')">
+          <div class="fa fa-google-plus"></div>
+        </a>
+        <a class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('MAILTO')" title="Email">
+          <div class="fa fa-envelope"></div>
+        </a>
+      </div>
+    </div>
+
+    <!-- <a  href="javascript:void(0)" target="_blank" class="m10 db pill kg-bg-gray-dark share kg-gray-light" (click)="shareTo('FACEBOOK')">
     <i class="fab fa-facebook-f v-mid"></i>
-  </a>
-</span>
+  </a> -->
+  </span>
+ 
 
-
-<div aria-hidden="false" style="display:none" class="modal fade in" id="share" role="dialog" tabindex="-1" >
+<!-- 
+<div aria-hidden="false" style="display:none" class="modal fade in" id="share" role="dialog" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-       <div class="modal-title" align="left">
+        <div class="modal-title" align="left">
           <div class="fa fa-share-alt"></div>
-          <button type="button" class="close btn-trans" data-dismiss="modal" >
+          <button type="button" class="close btn-trans" data-dismiss="modal">
             <div class="fa fa-close"></div>
           </button>
         </div>
@@ -25,18 +48,17 @@
             <label class="col-sm-2 control-label"></label>
             <div class="col-sm-10 col-sm-offset-2">
               <div class="btn-group">
-                
-                <a  title="Twitter" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('TWITTER')">
+
+                <a title="Twitter" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('TWITTER')">
                   <div class="fa fa-twitter fa-lg"></div>
                 </a>
-                <a  title="Facebook" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('FACEBOOK')">
+                <a title="Facebook" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('FACEBOOK')">
                   <div class="fa fa-facebook fa-lg"></div>
                 </a>
-                <a  title="Google+" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('GOOGLEPLUS')">
+                <a title="Google+" class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('GOOGLEPLUS')">
                   <div class="fa fa-google-plus fa-lg"></div>
                 </a>
-                <a class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('MAILTO')"
-                   title="Email">
+                <a class="btn btn-default" href="javascript:void(0)" target="_blank" (click)="shareTo('MAILTO')" title="Email">
                   <div class="fa fa-envelope fa-lg"></div>
                 </a>
               </div>
@@ -47,19 +69,18 @@
               <div class="fa fa-link fa-lg"></div>
             </label>
             <div class="col-sm-10">
-              <input name="share-link" id="share-link" [value] = "currentUrl" class="form-control">
-            
+              <input name="share-link" id="share-link" [value]="currentUrl" class="form-control">
+
             </div>
           </div>
           <div class="form-group">
             <label class="col-sm-2 control-label" for="share-iframe">Embed</label>
             <div class="col-sm-10">
-              <input name="share-iframe" id="share-ifrm" [value] = "embedUrl"
-                class="form-control">
+              <input name="share-iframe" id="share-ifrm" [value]="embedUrl" class="form-control">
             </div>
           </div>
         </form>
       </div>
     </div>
   </div>
-</div>
+</div> -->

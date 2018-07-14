@@ -1,7 +1,12 @@
+html{
+    background-color: white !important;
+}
+
 .pending-count{    position: absolute;
     text-align: right;
     right: 105px;
-    top: 19px;}
+    top: 19px;
+}
 
     .top{
         margin-top: -7%;
@@ -15,3 +20,99 @@
          /* height:250px;
          overflow: scroll; */
     }
+
+.calltoaction{
+    text-align: center;
+    font-weight: lighter;
+    padding-top: 10px;
+    font-size: 24px;
+}
+
+.page{
+    width: 768px;
+    /* position: relative; */
+    margin-left: 250px;
+    /* left: 20%; */
+    /* transform: translate(-50%, 0); */
+    
+}
+
+.outerbox{
+    align-content: center;
+    align-items: center;
+     
+}
+
+.footer{
+    margin-left: 10px; 
+    margin-top: 15px;    
+}
+
+.buttons{
+    text-align: center; 
+    padding-top: 15px;
+    /* padding-bottom: 25px; */
+    width: 264px;
+    height:64px;
+}
+
+.buttons:hover{    
+    text-decoration: none;
+}
+
+.pill-left{
+margin-right: 2px;
+}
+
+.pill-right{
+    margin-left: 2px;
+}
+
+.kg-bg-gray:hover{
+    background-color: #e4e0e0;
+    color:#bebebe;
+    }
+
+.kg-bg-blue:hover{
+    background-color: #7fbfe0;
+    color:#3ba4db;
+}
+
+.actionbutton{
+    background-color: #3ba4db;
+    width: 264px;
+    height: 64px;
+    text-align: center;
+    border-radius: 50px 50px 50px 50px;
+    padding: 15px 35px; 
+}
+
+.headerheight{ 
+    line-height: 30px;
+    padding-top: 30px;
+}
+
+.imgwidth{
+    min-width: 440px;
+    max-width: 540px;
+}
+
+
+.actionbutton a{
+    color:white;
+    text-decoration: none;
+    min-width: 310px;
+    display: inline-block;
+}
+
+.actionbutton a:hover{
+    color:#3ba4db;
+}
+
+.actionbutton:hover{   
+    background-color: #7fbfe0;    
+}
+
+p{
+    line-height: 28px;
+}

@@ -13,6 +13,7 @@ export class SharingModalComponent implements OnInit {
   book: any;
   currentUrl: string;
   embedUrl: string;
+  ShareState : 'min';
 
   constructor(private router: Router,public commonService:CommonService) {
     this.router.events.subscribe(() => {
@@ -33,7 +34,7 @@ export class SharingModalComponent implements OnInit {
   }
 
   ngOnInit() {
-
+    this.ShareState = 'min';
 
   }
 

@@ -57,12 +57,16 @@ export class PageComponent implements OnInit {
   resources = [];
   pageContents = [];
   AllPagesContent = [];
+  FirstPage = false;
+  LastPage = false;
+
+
   private sub: any;
   constructor(public commonService: CommonService,
     private ngxXml2jsonService: NgxXml2jsonService,
     public sanitizer: DomSanitizer,
     private route: ActivatedRoute,
-    public router: Router, 
+    public router: Router,
     public location: Location,
     private loaderService: LoaderService
   ) {
@@ -82,7 +86,7 @@ export class PageComponent implements OnInit {
   ngOnInit() {
 
     this.showLoader = false;
-    this.loaderService.status.subscribe((val: boolean)=>{
+    this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
     });
 
@@ -91,14 +95,14 @@ export class PageComponent implements OnInit {
       this.selectLan = this.commonService.selectedLan.attributes.name;
       this.selectedLanguageId = this.commonService.selectedLan.id
     }
-    
+
     this.sub = this.route.params.subscribe(params => {
       this.showLoader = true;
       if (params['bookid'] && params['langid'] && params['pageid']) {
         this.selectedPage(params['pageid']);
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = params['pageid']         
+        this.pageGetparameters.pageid = params['pageid']
       }
       // else if (params['bookid'] && params['langid']) {
       //     this.selectLanguage(params['langname'], params['langid']);
@@ -487,7 +491,7 @@ export class PageComponent implements OnInit {
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
         });
-        setTimeout(()=>{ this. currentPage(); this.loaderService.display(false); }, 1000);
+        setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
         var fileURL = URL.createObjectURL(file);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);
@@ -504,8 +508,8 @@ export class PageComponent implements OnInit {
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
       .subscribe((x: any) => {
         const reader = new FileReader();
-        
-        if(x instanceof Blob)reader.readAsDataURL(x);
+
+        if (x instanceof Blob) reader.readAsDataURL(x);
         reader.onloadend = function () {
           //localStorage.set('abc.jpg',reader.result);
           localStorage.set(resource.filename, reader.result);
@@ -806,6 +810,8 @@ export class PageComponent implements OnInit {
     this.multiple_summary_line = [];
     this.paras = [];
     this.call_to_action = '';
+    this.FirstPage = false;
+    this.LastPage = false;
 
   }
 
@@ -817,16 +823,16 @@ export class PageComponent implements OnInit {
     //What if pageid donot exist
     let page_name = this.pageNames[pageid];
 
-    let selected_page = this.allPages.filter(row => {
-      // if (row.pagename == page_name){
-      //   return true;
-      // }
-      // else{
-      //   this.loading = false;
-      // return false;
-      // }
-      return row.pagename == page_name;
+    if (this.counter == 0) this.FirstPage = true;
+    else this.FirstPage = false;
 
+    if (this.counter == this.allPages.length - 1)
+      this.LastPage = true;
+    else
+      this.LastPage = false;
+
+    let selected_page = this.allPages.filter(row => { 
+      return row.pagename == page_name;
     });
 
     if (selected_page.length == 0) {

@@ -1,3 +1,38 @@
+.sharemax{
+  max-width: 50px;
+  border-radius: 30px;
+   background-color:  #e6e4e4; 
+  margin-top:-35px;
+  padding-bottom: 5px;
+}
+
+.sharemax a {
+  background-color:#4c4b4b;
+  color:white;
+  border-radius: 50%;
+  margin: 2px; 
+  display:inline-block;
+}
+
+.sharemax a div{
+  width:12px;
+  height:12px;
+  font-size: initial;
+}
+
+.shareclose{
+  color:black !important;
+  background-color: transparent  !important;
+}
+
+.shareclose div{
+  width:16px  !important;
+  height:16px  !important;
+  font-size:23px;
+}
+
+
+
 html {
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
