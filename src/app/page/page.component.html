@@ -11,7 +11,8 @@
         <i class="fas fa-chevron-up flip" (click)="Books()"></i>
       </span> -->
       <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
-        <i class="fas fa-language"></i> {{selectLan}}
+        
+        <img src="assets/img/lang.png" class="langicon"> {{selectLan}}
         <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
       </span>
 
@@ -49,7 +50,7 @@
           <h2 class="mx100 kg-white ng-binding" style="min-height:70px" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
         </div>
         <div  *ngIf="pageGetparameters.dir=='rtl'">
-          <h1 class="ml25 top  kg-white ng-binding ng-scope headerheight" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
+          <h1 class="mr25   kg-white ng-binding rtlpageno" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
         </div>
       </div>
     </div>
@@ -183,14 +184,14 @@
 
     <div class="px100" *ngIf="!showNoRecordFound">
       <div class="line kg-gray-light f11">
-        <span dir={{pageGetparameters.dir}} class="fl py25 col-lg-8">
+        <span  class="fl py25 col-lg-8">
           <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px;float:left" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
           <div class="footer">
             © 1994-2018 Cru. All Rights Reserved.
           </div>
         </span>
-        <span dir={{pageGetparameters.dir}} class="fr py25 footer">Learn more at
-          <a dir={{pageGetparameters.dir}} class="kg-gray-light" href="godtoolsapp.com">godtoolsapp.com</a>
+        <span  class="fr py25 footer">Learn more at
+          <a  class="kg-gray-light" href="godtoolsapp.com">godtoolsapp.com</a>
         </span>
       </div>
     </div>

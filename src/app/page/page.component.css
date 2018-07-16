@@ -2,6 +2,22 @@ html{
     background-color: white !important;
 }
 
+.mr25{
+    margin-right:25px;
+    margin-bottom: 40px;
+}
+
+.rtlpageno{
+    margin-top: -8%;
+    line-height : 30px;
+}
+
+.langicon{
+    width: auto;
+    float: left;
+    margin-top: 6px;
+}
+
 .pending-count{    position: absolute;
     text-align: right;
     right: 105px;
