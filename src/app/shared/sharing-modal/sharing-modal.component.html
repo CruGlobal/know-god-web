@@ -7,19 +7,19 @@
     </a>
     <div>
       <div class="sharemax" *ngIf="ShareState == 'max'">
-        <a title="Close" class="btn shareclose" href="javascript:void(0)" target="_blank" (click)="ShareState = 'min'">
+        <a title="Close" class="btn shareclose"  (click)="ShareState = 'min'">
           <div class="fa fa-close"></div>
         </a>
-        <a title="Twitter" class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('TWITTER')">
+        <a title="Twitter" class="btn"  (click)="shareTo('TWITTER')">
           <div class="fa fa-twitter"></div>
         </a>
-        <a title="Facebook" class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('FACEBOOK')">
+        <a title="Facebook" class="btn"  (click)="shareTo('FACEBOOK')">
           <div class="fa fa-facebook"></div>
         </a>
-        <a title="Google+" class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('GOOGLEPLUS')">
+        <a title="Google+" class="btn"  (click)="shareTo('GOOGLEPLUS')">
           <div class="fa fa-google-plus"></div>
         </a>
-        <a class="btn" href="javascript:void(0)" target="_blank" (click)="shareTo('MAILTO')" title="Email">
+        <a class="btn"  (click)="shareTo('MAILTO')" title="Email">
           <div class="fa fa-envelope"></div>
         </a>
       </div>
