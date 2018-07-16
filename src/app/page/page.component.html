@@ -49,11 +49,16 @@
           <h2 class="mx100 kg-white ng-binding" style="min-height:70px" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
         </div>
         <div  *ngIf="pageGetparameters.dir=='rtl'">
-          <h1 class="ml25 top  kg-white ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
+          <h1 class="ml25 top  kg-white ng-binding ng-scope headerheight" dir={{pageGetparameters.dir}} *ngIf="counter>0">{{counter}}</h1>
         </div>
       </div>
     </div>
-    <div style="min-height: 60px;">&nbsp;</div>
+    <div class="py25 tc headerheight" *ngIf="FirstPage">
+      <div *ngIf="currentPageContent" >
+        <h2 class="mx100 tc ng-binding" style="min-height:70px" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
+      </div> 
+    </div>
+    <div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>
     <div>
       <div class="mx100" *ngIf="!showNoRecordFound">
         <div>

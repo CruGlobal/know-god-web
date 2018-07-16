@@ -42,6 +42,7 @@ export class PageComponent implements OnInit {
   selectLan: any;
   selectbook: any;
   pageNames = [];
+  pageCount = 0;
   page = {
     translationId: "",
     filename: "",
@@ -277,7 +278,7 @@ export class PageComponent implements OnInit {
         this.loading = false;
       })
 
-    this.currentPage();
+   // this.currentPage();
   }
   BookID = "";
 
@@ -386,6 +387,8 @@ export class PageComponent implements OnInit {
 
           if (jsondata["manifest"]["pages"]["page"] && jsondata["manifest"]["pages"]["page"].length > 0) {
 
+            this.pageCount = jsondata["manifest"]["pages"]["page"].length;
+
             for (let j = 0; j < jsondata["manifest"]["pages"]["page"].length; j++) {
               this.page.filename = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["filename"];
               this.page.src = jsondata["manifest"]["pages"]["page"][j]["@attributes"]["src"];
@@ -474,6 +477,8 @@ export class PageComponent implements OnInit {
         this.objectMapper(jsondata, page.filename);
         this.AllPagesContent.push(jsondata);
         console.log('app page content push: ' + page.filename);
+        if(this.pageCount == this.AllPagesContent.length)
+        setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
         // window.localStorage["JSONdata"] = jsondata;
         // var accessdata = window.localStorage["JSONdata"];
         // console.log("ACCESSDATA:", accessdata);
@@ -491,14 +496,16 @@ export class PageComponent implements OnInit {
         var file = new Blob([data], {
           type: 'image/jpeg, image/png, image/gif'
         });
-        setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
+
+        // if(this.pageCount == 0)
+        // setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
+      
         var fileURL = URL.createObjectURL(file);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);
         var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl }
         this.allResourcesImages.push(imageUrls);
         this.loading = false;
-
       })
   }
 
@@ -596,13 +603,16 @@ export class PageComponent implements OnInit {
     obj.paras = paras;
     obj.pagename = pagename;
     this.allPages.push(obj);
+    //console.log('getXmlFileForEachPage: objectMapper ends')
     //this.currentPageContent = this.allPages[this.counter];
-    if (this.counter) {
-      this.currentPage();
-    }
-    else if (this.counter == 0) {
-      this.currentPage();
-    }
+  //   if(jsondata["manifest"]["pages"]["page"].length){
+  //   if (this.counter) {
+  //     this.currentPage();
+  //   }
+  //   else if (this.counter == 0) {
+  //     this.currentPage();
+  //   }
+  // }
 
 
   }
@@ -718,6 +728,7 @@ export class PageComponent implements OnInit {
   tagline;
 
   currentPage() {
+    console.log("load current page")
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -725,8 +736,9 @@ export class PageComponent implements OnInit {
     this.currentPageContent = {};
     this.LoadPage(this.counter);
   }
-  pageCount = ""
+  
   next() {
+    console.log("load next page")
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -750,6 +762,7 @@ export class PageComponent implements OnInit {
   }
 
   previous() {
+    console.log("load previous page")
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -779,6 +792,7 @@ export class PageComponent implements OnInit {
   }
 
   selectedPage(pageid) {
+    console.log("load selected page")
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -802,6 +816,8 @@ export class PageComponent implements OnInit {
   }
 
   ClearContent() {
+
+    console.log('Page cleared');
     this.tagline = "";
     this.summary_line = "";
     this.Cards = [];
@@ -817,6 +833,7 @@ export class PageComponent implements OnInit {
 
   LoadPage(pageid) {
     this.loading = true;
+    console.log("Loading Page")
     this.ClearContent();
 
     //get page name from id
@@ -831,13 +848,13 @@ export class PageComponent implements OnInit {
     else
       this.LastPage = false;
 
-    let selected_page = this.allPages.filter(row => { 
+    let selected_page = this.allPages.filter(row => {
       return row.pagename == page_name;
     });
 
     if (selected_page.length == 0) {
       if (this.currentPageContent == undefined) {
-        console.log('Page not found in page collection : ' + pageid)
+        // console.log('Page not found in page collection : ' + pageid)
         return;
       }
       this.loading = false;
@@ -853,7 +870,7 @@ export class PageComponent implements OnInit {
       this.loading = false;
     }
     else {
-      console.log('Page not found to load : ' + pageid)
+      //   console.log('Page not found to load : ' + pageid)
       this.loading = false;
     }
 
