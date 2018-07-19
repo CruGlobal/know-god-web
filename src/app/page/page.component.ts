@@ -9,6 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { isArray } from 'util';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
+import { listeners } from 'cluster';
 
 @Component({
   selector: 'app-page',
@@ -43,6 +44,8 @@ export class PageComponent implements OnInit {
   selectbook: any;
   pageNames = [];
   pageCount = 0;
+  displayForm = false;
+  displayModel = false;
   page = {
     translationId: "",
     filename: "",
@@ -278,7 +281,7 @@ export class PageComponent implements OnInit {
         this.loading = false;
       })
 
-   // this.currentPage();
+    // this.currentPage();
   }
   BookID = "";
 
@@ -477,8 +480,8 @@ export class PageComponent implements OnInit {
         this.objectMapper(jsondata, page.filename);
         this.AllPagesContent.push(jsondata);
         console.log('app page content push: ' + page.filename);
-        if(this.pageCount == this.AllPagesContent.length)
-        setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
+        if (this.pageCount == this.AllPagesContent.length)
+          setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
         // window.localStorage["JSONdata"] = jsondata;
         // var accessdata = window.localStorage["JSONdata"];
         // console.log("ACCESSDATA:", accessdata);
@@ -499,7 +502,7 @@ export class PageComponent implements OnInit {
 
         // if(this.pageCount == 0)
         // setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
-      
+
         var fileURL = URL.createObjectURL(file);
         this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
         localStorage.setItem(resource.filename, fileURL);
@@ -539,12 +542,13 @@ export class PageComponent implements OnInit {
   allPages = [];
 
   objectMapper(resourcePage, pagename) {
-    let heading, card, cards, paragraph, call_to_action, obj, attributes, paras;
+    let heading, card, cards, paragraph, call_to_action, obj, attributes, paras, modals;
     obj = {};
     heading = {};
     paragraph = {};
     call_to_action = {};
     cards = [];
+    modals = [];
 
     attributes = {};
     if (resourcePage.page.hero) {
@@ -591,6 +595,20 @@ export class PageComponent implements OnInit {
       }
     }
 
+    if (resourcePage.page.modals) {
+
+      if (resourcePage.page.modals.modal.length == undefined) {
+        let modal = this.getModalContent(resourcePage, null);
+        modals.push(modal);
+      }
+      else {
+        for (let i = 0; i < resourcePage.page.modals.modal.length; i++) {
+          let modal = this.getModalContent(resourcePage, i);
+          modals.push(modal);
+        }
+      }
+    }
+
     if (resourcePage.page["call-to-action"]) {
       obj.call_to_action = resourcePage.page["call-to-action"]["content:text"];
     } else obj.call_to_action = "";
@@ -601,19 +619,9 @@ export class PageComponent implements OnInit {
     obj.paragraph = paragraph;
     obj.cards = cards;
     obj.paras = paras;
+    obj.modals = modals;
     obj.pagename = pagename;
     this.allPages.push(obj);
-    //console.log('getXmlFileForEachPage: objectMapper ends')
-    //this.currentPageContent = this.allPages[this.counter];
-  //   if(jsondata["manifest"]["pages"]["page"].length){
-  //   if (this.counter) {
-  //     this.currentPage();
-  //   }
-  //   else if (this.counter == 0) {
-  //     this.currentPage();
-  //   }
-  // }
-
 
   }
 
@@ -622,13 +630,26 @@ export class PageComponent implements OnInit {
     let card = {
       label: "",
       content: [],
-      url: [],
+      button: [],
+      link: [],
       //contenttype: '',
       image: [],
       localImage: [],
       forms: [],
-      tabs: []
+      tabs: [],
+      hidden: false,
+      listener: '',
+      dismiss: '',
+      isForm: false
     };
+
+    if (resourcePage.page.cards.card[i]["@attributes"]) {
+      if (resourcePage.page.cards.card[i]["@attributes"].hidden) card.hidden = resourcePage.page.cards.card[i]["@attributes"].hidden;
+      if (resourcePage.page.cards.card[i]["@attributes"]["listeners"]) card.listener = resourcePage.page.cards.card[i]["@attributes"]["listeners"];
+      if (resourcePage.page.cards.card[i]["@attributes"]["dismiss-listeners"]) card.dismiss = resourcePage.page.cards.card[i]["@attributes"]["dismiss-listeners"];
+
+      if (card.listener != '' && card.dismiss != '') card.isForm = true;
+    }
 
     //handle card heading
     card.label = resourcePage.page.cards.card[i].label["content:text"];
@@ -641,28 +662,33 @@ export class PageComponent implements OnInit {
       paragraphs = resourcePage.page.cards.card[i]["content:paragraph"];
 
     for (let j = 0; j < paragraphs.length; j++) {
-      var cardpara = paragraphs[j];
-      card.content.push(cardpara["content:text"]);
+      var formpara = paragraphs[j];
+      card.content.push(formpara["content:text"]);
+
+      //handle buttons
+      if (formpara["content:button"]) {
+        card.button.push([formpara["content:button"]["content:text"], formpara["content:button"]["@attributes"].events]);
+      } else card.button.push('');
 
       //handle links
-      if (cardpara["content:button"]) {
-        card.url.push(cardpara["content:button"]["content:text"]);
-      } else card.url.push('');
+      if (formpara["content:link"]) {
+        card.link.push([formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]);
+      } else card.link.push('');
 
 
       //handle image
-      if (cardpara["content:image"]) {
-        card.image.push(cardpara["content:image"]["@attributes"]["resource"]);
+      if (formpara["content:image"]) {
+        card.image.push(formpara["content:image"]["@attributes"]["resource"]);
       }
       else {
         card.image.push("");
       }
 
       //handle content tabs      
-      if (cardpara["content:tabs"]) {
+      if (formpara["content:tabs"]) {
         let tab;
-        for (let k = 0; k < cardpara["content:tabs"]["content:tab"].length; k++) {
-          tab = cardpara["content:tabs"]["content:tab"][k];
+        for (let k = 0; k < formpara["content:tabs"]["content:tab"].length; k++) {
+          tab = formpara["content:tabs"]["content:tab"][k];
           let eachtab = {
             heading: '',
             paras: [],
@@ -702,22 +728,120 @@ export class PageComponent implements OnInit {
     }
 
     //handle forms
+    //let htmlelement = {};
+    let cardforms = {
+      elements: [],
+      buttons: [],
+      links: [],
+    }
     let forms = resourcePage.page.cards.card[i]["content:form"];
     if (forms != undefined) {
-      //   for (var prop in forms) {
-      //     if (!forms.hasOwnProperty(prop)) { 
-      //         continue;
-      //     }
 
-      //      console.log(prop.toString()) 
-      // } 
+      //handle input elements
+      let elements = forms["content:input"];
+      card.isForm = true;
+
+      if (elements) {
+        for (let j = 0; j < elements.length; j++) {
+          var formelement = elements[j];
+          let htmlelement = {
+            name: '',
+            type: '',
+            value: '',
+            required: '',
+            label: '',
+            placeholder: ''
+          };
+
+          if (formelement["@attributes"].name) htmlelement.name = formelement["@attributes"].name;
+          if (formelement["@attributes"].type) htmlelement.type = formelement["@attributes"].type;
+          if (formelement["@attributes"].value) htmlelement.value = formelement["@attributes"].value;
+          if (formelement["@attributes"].required) htmlelement.required = formelement["@attributes"].required;
+          if (formelement["content:label"]) htmlelement.label = formelement["content:label"]["content:text"];
+          if (formelement["content:placeholder"]) htmlelement.placeholder = formelement["content:placeholder"]["content:text"];
+
+          cardforms.elements.push(htmlelement)
+
+        }
+      }
+
+
+      //handle form paragraph 
+      let paragraphs = [];
+      if (forms["content:paragraph"].length == undefined) {
+        paragraphs.push(forms["content:paragraph"]);
+      } else
+        paragraphs = forms["content:paragraph"];
+
+      //handle form buttons and links
+      for (let j = 0; j < paragraphs.length; j++) {
+        var formpara = paragraphs[j];
+        if (formpara["content:button"]) {
+          cardforms.buttons.push([formpara["content:button"]["content:text"], formpara["content:button"]["@attributes"].events]);
+        } else if (formpara["content:link"]) {
+          cardforms.links.push([formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]);
+        }
+      }
+
+
+      card.forms.push(cardforms);
+
     }
-
-
     return card;
   }
 
+  getModalContent(resourcePage, i) {
+
+    let modal = {
+      title: "",
+      paras: [{
+        text: '',
+        button: [],
+        type: ''
+      }],
+      listener: '',
+      dismiss: '',
+    };
+
+    let currentModal = (i == null) ? resourcePage.page.modals.modal : resourcePage.page.modals.modal[i];
+
+    if (currentModal["@attributes"]) {
+      if (currentModal["@attributes"]["listeners"]) modal.listener = currentModal["@attributes"]["listeners"];
+      if (currentModal["@attributes"]["dismiss-listeners"]) modal.dismiss = currentModal["@attributes"]["dismiss-listeners"];
+
+    }
+
+    //handle modal heading
+    modal.title = currentModal.title["content:text"];
+
+    //handle card paragraph 
+    let paragraphs = [];
+    if (currentModal["content:paragraph"].length == undefined) {
+      paragraphs.push(currentModal["content:paragraph"]);
+    } else
+      paragraphs = currentModal["content:paragraph"];
+
+    for (let j = 0; j < paragraphs.length; j++) {
+      var modalpara = paragraphs[j];
+
+      if (modalpara["content:text"]) {
+        modal.paras.push({ text: modalpara["content:text"], button: [], type: 'text' });
+      }
+
+      //handle buttons
+      if (modalpara["content:button"]) {
+        modal.paras.push({ text: '', type: 'button', button: [modalpara["content:button"]["content:text"], modalpara["content:button"]["@attributes"].events] });
+
+      }
+
+    }
+
+    return modal;
+
+  }
+
   Cards = [];
+  Modals = [];
   cardsContent = [];
   paras = [];
   call_to_action = '';
@@ -736,7 +860,7 @@ export class PageComponent implements OnInit {
     this.currentPageContent = {};
     this.LoadPage(this.counter);
   }
-  
+
   next() {
     console.log("load next page")
     this.loading = true;
@@ -833,6 +957,9 @@ export class PageComponent implements OnInit {
 
   LoadPage(pageid) {
     this.loading = true;
+    this.displayForm = false;
+    this.displayModel = false;
+
     console.log("Loading Page")
     this.ClearContent();
 
@@ -903,8 +1030,15 @@ export class PageComponent implements OnInit {
       }
 
       this.location.go(Url);
+      this.Modals = this.currentPageContent.modals;
       this.Cards = this.currentPageContent.cards;
       for (let i = 0; i < this.Cards.length; i++) {
+
+        if ((this.Cards[i].listener == '' && this.Cards[i].dismiss == '') || this.Cards[i].forms.length == 0)
+          this.Cards[i].hidden = false;
+        else
+          this.Cards[i].hidden = true;
+
         if (this.Cards[i].localImage == undefined) this.Cards[i].localImage = [];
         for (let j = 0; j < this.Cards[i].image.length; j++) {
           if (this.Cards[i].image[j] == "") {
@@ -934,4 +1068,88 @@ export class PageComponent implements OnInit {
 
   }
 
+  // getCards(isForm) {
+
+  //   let cardItems = this.Cards.filter(row => {
+  //     return row.isForm == isForm;
+  //   });
+  //   return cardItems;
+
+  // }
+
+  formAction(inputFunctionName) {
+
+    let functionName = inputFunctionName;
+
+    if (functionName.indexOf(' ') > -1) {
+      var splitname = functionName.split(' ');
+
+      if (splitname[0].indexOf(":") > -1) functionName = splitname[1].trim();
+      else functionName = splitname[0];
+    }
+
+    let show_card = this.Cards.filter(row => {
+      return row.listener == functionName;
+    });
+
+    //display form card
+    if (show_card.length > 0) {
+      show_card[0].hidden = false;
+      this.displayForm = true;
+
+      //hide other regular cards
+      let other_cards = this.Cards.filter(row => {
+        return row.listener != functionName;
+      });
+
+      //clear other contents
+      this.tagline = "";
+      this.summary_line = "";
+      this.multiple_summary_line = [];
+      this.paras = [];
+      this.call_to_action = '';
+      this.currentPageContent.heading = show_card[0].label;
+
+      other_cards.forEach(card => {
+        card.hidden = true;
+      });
+    }
+
+    let hide_card = this.Cards.filter(row => {
+      return row.dismiss == functionName;
+    });
+
+    //closing form
+    if (hide_card.length > 0) { 
+      this.next();
+    }
+
+    let show_modal = this.Modals.filter(row => {
+      return row.listener == functionName;
+    });
+
+    //show modal
+    if (show_modal.length > 0) {
+      this.LoadModal(show_modal[0]);
+    }
+
+    let hide_modal = this.Modals.filter(row => {
+      return row.dismiss == functionName;
+    });
+
+    //show modal
+    if (hide_modal.length > 0) {
+      this.next();
+    }
+
+
+  }
+
+
+  LoadModal(modal) {
+
+    this.ClearContent();
+    this.displayModel = true;  
+
+  }
 }

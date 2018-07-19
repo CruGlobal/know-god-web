@@ -22,6 +22,13 @@
         <a class="btn"  (click)="shareTo('MAILTO')" title="Email">
           <div class="fa fa-envelope"></div>
         </a>
+        <a class="btn" id="lnkCopy"  (click)="CopyToClipboard(event)" title="Copy URL to Clipboard">
+            <div class="fa fa-link"></div>
+          </a>
+        <!-- <button class="btn"    ngclipboard data-clipboard-text="Just because you can doesn't mean you should — clipboard.js" 
+        ngclipboard-success="CopySuccess(e);" ngclipboard-error="CopyError(e);"  title="Email">
+            <div class="fa fa-envelope"></div>
+        </button> -->
       </div>
     </div>
 

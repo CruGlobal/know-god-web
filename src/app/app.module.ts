@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,7 +13,10 @@ import { LoadingModule } from 'ngx-loading';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 import { HttpModule } from '@angular/http';
 import { LoaderService } from './services/loader-service/loader.service';
-import { LoaderComponent } from './shared/loader/loader.component';
+import { LoaderComponent } from './shared/loader/loader.component'; 
+import {ToastrModule } from 'ngx-toastr';
+//import { CustomOption } from './shared/custom-options';
+ 
 
 const appRoutes: Routes =[
   { path: 'home/:bookid/:langid/:page', component: PageComponent },
@@ -39,11 +42,14 @@ const appRoutes: Routes =[
     FormsModule,
     LoadingModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes) ,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot() ,
+    
   ],
   providers: [
     CommonModule,
-    LoaderService
+    LoaderService, 
   ],
   bootstrap: [AppComponent]
 })

@@ -31,6 +31,21 @@
   font-size:23px;
 }
 
+.toastr-copy{
+  top: 12px;
+  right: 12px;
+}
+
+
+#toast-container{
+  top: 261px !important;
+  right: 810px !important;
+}
+
+.toast-info {
+  background-color: #e6e4e4 !important;
+}
+
 
 
 html {
