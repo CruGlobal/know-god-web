@@ -40,7 +40,7 @@
   </div>
 
   <div [hidden]="showLoader" class="page">
-    <div *ngIf="!showNoRecordFound ">
+    <div *ngIf="!showNoRecordFound && !errorpresent">
       <div class="py25 kg-bg-blue kg-white headerheight" *ngIf="!FirstPage && !LastPage && !displayModel">
         <div *ngIf="pageGetparameters.dir=='ltr'">
           <h1 class="fl ml25  kg-white ng-binding headerheight" dir={{pageGetparameters.dir}} *ngIf="counter>0 && !displayForm">{{counter}}</h1>
@@ -60,7 +60,7 @@
     </div>
     <div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>
     <div>
-      <div class="mx100" *ngIf="!showNoRecordFound">
+      <div class="mx100" *ngIf="!showNoRecordFound  && !errorpresent">
         <div>
           <div>
             <!-- <h2 class="ng-binding">This response involves ...</h2> -->
@@ -205,7 +205,7 @@
     </div>
 
 
-    <div class="my25 mx100" *ngIf="!showNoRecordFound && !displayForm">
+    <div class="my25 mx100" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
       <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
       <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="buttons kg-white  fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
@@ -213,7 +213,7 @@
 
     </div>
 
-    <div class="px100" *ngIf="!showNoRecordFound && !displayForm">
+    <div class="px100" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <div class="line kg-gray-light f11">
         <span class="fl py25 col-lg-8">
           <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px;float:left" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">

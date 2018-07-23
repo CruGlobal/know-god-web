@@ -24,6 +24,7 @@ export class PageComponent implements OnInit {
   languageSelected: any;
   bookname: any;
   allResourcesImages: any;
+  IndexContent: any;
   selectedBookLanguauageTranslations = [];
   allLanguagesTranslations: any;
   currentPageContent: any;
@@ -75,8 +76,9 @@ export class PageComponent implements OnInit {
     private loaderService: LoaderService
   ) {
     this.AllBooks();
-
+    this.AllLanguages();
   }
+
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
@@ -146,9 +148,9 @@ export class PageComponent implements OnInit {
       .subscribe((data: any) => {
         this.allBooks = data.data;
 
+
         if (this.pageGetparameters.bookid) {
           this.allBooks.forEach(x => {
-
             if (x.attributes.abbreviation == this.pageGetparameters.bookid) {
               this.selectBook(x, false)
             }
@@ -161,15 +163,22 @@ export class PageComponent implements OnInit {
 
   /*To get all languages*/
   AllLanguages() {
+    this.loading = true;
+    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
+      .subscribe((data: any) => {
+        this.allLanguages = data.data;
+        // this.selectedBookLanguauageTranslations = []; 
+        this.loading = false;
+      })
+  }
 
-
+  AllLanguages_old() {
     this.loading = true;
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
         if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
           this.allLanguages.forEach(x => {
-
             if (x.attributes.code == this.pageGetparameters.langid) {
               this.selectLanguage(x)
             }
@@ -195,33 +204,67 @@ export class PageComponent implements OnInit {
     this.cardsContent = [];
     this.currentPageContent = {};
     this.multiple_summary_line = [];
-    //  this.pageGetparameters.pageid = 0;
-    //this.counter = 0;
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
-      .subscribe((data: any) => {
-        this.allLanguagesTranslations = data.data;
-        for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
-          let language;
-          let currentIterationTranslations = this.allLanguagesTranslations[i].relationships.translations.data;
-          for (let j = 0; j < currentIterationTranslations.length; j++) {
-            for (let k = 0; k < this.currentBookTranslations.length; k++) {
-              if (this.currentBookTranslations[k].id == currentIterationTranslations[j].id) {
-                language = this.allLanguagesTranslations[i];
-              }
-            }
-          }
-          if (language == undefined) {
 
-          }
-          else {
-            this.selectedBookLanguauageTranslations.push(language);
+    this.allLanguagesTranslations = this.allLanguages;
+    for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
+      let language;
+      let currentIterationTranslations = this.allLanguagesTranslations[i].relationships.translations.data;
+      for (let j = 0; j < currentIterationTranslations.length; j++) {
+        for (let k = 0; k < this.currentBookTranslations.length; k++) {
+          if (this.currentBookTranslations[k].id == currentIterationTranslations[j].id) {
+            language = this.allLanguagesTranslations[i];
           }
         }
+      }
+      if (language != undefined) {
+        this.selectedBookLanguauageTranslations.push(language);
+      }
+    }
 
-        this.showNoRecordFound = this.checkIfPreSelectedLanguageExists();
-        this.loading = false;
-      })
+    this.showNoRecordFound = this.checkIfPreSelectedLanguageExists();
+    this.loading = false;
   }
+
+  // LanguagesForSelectedBook_old() {
+  //   this.loading = true;
+  //   this.showNoRecordFound = false;
+  //   this.errorpresent = false;
+  //   this.errorMsg = '';
+  //   this.selectedBookLanguauageTranslations = [];
+  //   this.selectLan = '';
+  //   this.tagline = "";
+  //   this.summary_line = "";
+  //   this.Cards = [];
+  //   this.cardsContent = [];
+  //   this.currentPageContent = {};
+  //   this.multiple_summary_line = [];
+  //   //  this.pageGetparameters.pageid = 0;
+  //   //this.counter = 0;
+  //   this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
+  //     .subscribe((data: any) => {
+  //       this.allLanguagesTranslations = data.data;
+  //       for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
+  //         let language;
+  //         let currentIterationTranslations = this.allLanguagesTranslations[i].relationships.translations.data;
+  //         for (let j = 0; j < currentIterationTranslations.length; j++) {
+  //           for (let k = 0; k < this.currentBookTranslations.length; k++) {
+  //             if (this.currentBookTranslations[k].id == currentIterationTranslations[j].id) {
+  //               language = this.allLanguagesTranslations[i];
+  //             }
+  //           }
+  //         }
+  //         if (language == undefined) {
+
+  //         }
+  //         else {
+  //           this.selectedBookLanguauageTranslations.push(language);
+  //         }
+  //       }
+
+  //       this.showNoRecordFound = this.checkIfPreSelectedLanguageExists();
+  //       this.loading = false;
+  //     })
+  // }
 
   checkIfPreSelectedLanguageExists() {
     if (this.pageGetparameters.langid) {
@@ -240,6 +283,17 @@ export class PageComponent implements OnInit {
     this.errorpresent = false;
     this.errorMsg = '';
     this.ClearContent();
+
+    if (lang == '') {
+      if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
+        this.allLanguages.forEach(x => {
+          if (x.attributes.code == this.pageGetparameters.langid) {
+            lang = x;
+          }
+        });
+      }
+    }
+
     this.lang = lang.attributes.code;
     this.pageGetparameters.langid = lang.attributes.code;
     this.pageGetparameters.dir = lang.attributes.direction;
@@ -255,7 +309,7 @@ export class PageComponent implements OnInit {
 
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + lang.id)
       .subscribe((data: any) => {
-        this.currentLanguageTransalations = data.data.relationships.translations.data;
+        this.currentLanguageTransalations = data.data.relationships.translations.data; //this.IndexContent.data.relationships["latest-translations"].data;
         this.translationsMapper(this.currentBookTranslations, this.currentLanguageTransalations);
 
         if (this.currentTranslations.length == 0) {
@@ -264,25 +318,81 @@ export class PageComponent implements OnInit {
           this.loaderService.display(false);
           this.loading = false;
           return;
-        }
+        }else this.errorpresent = false;
+ 
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
           let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
           this.location.go(Url);
           this.commonService.setCurrentUrl(Url);
           this.getXmlFiles(this.currentTranslations[0]);
-
         }
         else {
           this.getXmlFiles(this.currentTranslations[0]);
           //this.LanguagesForSelectedBook();
           //this.AllLanguages()
         }
-        this.loading = false;
       })
+    this.loading = false;
 
-    // this.currentPage();
   }
+
+  // selectLanguage_old(lang, selectChoice = false) {
+  //   this.loaderService.display(true);
+  //   this.loading = true;
+  //   this.showNoRecordFound = false;
+  //   this.errorpresent = false;
+  //   this.errorMsg = '';
+  //   this.IndexContent = null;
+  //   this.ClearContent();
+  //   this.lang = lang.attributes.code;
+  //   this.pageGetparameters.langid = lang.attributes.code;
+  //   this.pageGetparameters.dir = lang.attributes.direction;
+  //   if (!this.pageGetparameters.pageid) {
+  //     let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
+  //     this.location.go(Url);
+  //     this.commonService.setCurrentUrl(Url);
+  //   }
+  //   this.language = false;
+  //   this.selectLan = lang.attributes.name;
+  //   this.commonService.selectedLan = lang;
+  //   this.selectedLanguageId = lang.id
+
+  //   this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES + lang.id)
+  //     .subscribe((data: any) => {
+
+  //       this.getIndex();
+
+  //       this.currentLanguageTransalations = data.data.relationships.translations.data;
+  //       this.translationsMapper(this.currentBookTranslations, this.currentLanguageTransalations);
+
+  //       if (this.currentTranslations.length == 0) {
+  //         this.errorpresent = true;
+  //         this.errorMsg = "This book is not available in selected language.";
+  //         this.loaderService.display(false);
+  //         this.loading = false;
+  //         return;
+  //       }
+
+  //       if (this.pageGetparameters.pageid) {
+  //         this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
+  //         let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+  //         this.location.go(Url);
+  //         this.commonService.setCurrentUrl(Url);
+  //         this.getXmlFiles(this.currentTranslations[0]);
+
+  //       }
+  //       else {
+  //         this.getXmlFiles(this.currentTranslations[0]);
+  //         //this.LanguagesForSelectedBook();
+  //         //this.AllLanguages()
+  //       }
+  //       this.loading = false;
+  //     })
+
+  //   // this.currentPage();
+  // }
+
   BookID = "";
 
   // getCurrentUrl() {
@@ -302,37 +412,58 @@ export class PageComponent implements OnInit {
       this.counter = 0;
     }
     this.pageNames = [];
-
     this.ClearContent();
 
     if (!this.pageGetparameters.langid) {
-
       let Url = this.router.navigateByUrl('/home/' + book.attributes.abbreviation)
       this.commonService.setCurrentUrl(Url);
-      // le																	   
-      //let Url = this.router.createUrlTree(['/home', book.attributes.abbreviation]).toString();
-      //this.location.go(Url);
     }
-
 
     this.books = false;
     this.selectbook = book.attributes.name;
     this.selectedBookId = book.id;
 
+    this.getIndex();
 
-    this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
-      .subscribe((data: any) => {
-        // this.counter=0;
-        if (data.data["attributes"]["resource-type"] == "tract") {
-          this.currentBookTranslations = data.included;
-          this.LanguagesForSelectedBook();
-        }
-
-        this.AllLanguages();
-        this.loading = false;
-      })
-
+    this.loading = false;
   }
+
+  // selectBook_old(book, fromChoice = false) {
+  //   this.loaderService.display(true);
+  //   this.loading = true;
+  //   this.BookID = book.attributes.abbreviation
+  //   this.selectLan = '';
+  //   this.selectedBookLanguauageTranslations = [];
+
+  //   if (fromChoice == true) {
+  //     this.pageGetparameters.pageid = 0;
+  //     this.counter = 0;
+  //   }
+  //   this.pageNames = [];
+  //   this.ClearContent();
+
+  //   if (!this.pageGetparameters.langid) {
+  //     let Url = this.router.navigateByUrl('/home/' + book.attributes.abbreviation)
+  //     this.commonService.setCurrentUrl(Url);
+  //   }
+
+  //   this.books = false;
+  //   this.selectbook = book.attributes.name;
+  //   this.selectedBookId = book.id;
+
+  //   this.commonService.getBooks(APIURL.GET_ALL_BOOKS + book.id + "?include=translations")
+  //     .subscribe((data: any) => {
+  //       // this.counter=0;
+  //       if (data.data["attributes"]["resource-type"] == "tract") {
+  //         this.currentBookTranslations = data.included;
+  //         this.LanguagesForSelectedBook();
+  //       }
+  //       this.AllLanguages();
+  //       this.loading = false;
+  //     })
+
+  //   this.loading = false;
+  // }
 
   translationsMapper(booktranslations, languagetranslations) {
     this.loading = true;
@@ -357,9 +488,10 @@ export class PageComponent implements OnInit {
     if (id == undefined) return;
     let manifest_name = id.attributes["manifest-name"];
     if (manifest_name == null) {
-      console.log('No data')
+      console.log('Manifest name not specified in index file')      
       this.ClearContent();
-      this.showNoRecordFound = true;
+      this.errorpresent = true;
+      this.errorMsg = "Problem loading book content.";
       this.loaderService.display(false);
       this.loading = false;
       return;
@@ -383,7 +515,8 @@ export class PageComponent implements OnInit {
           if (jsondata["manifest"]["pages"]["page"] == undefined) {
             console.log('No pages defined for book in manifest');
             this.loaderService.display(false);
-            this.showNoRecordFound = true;
+            this.errorpresent = true;
+            this.errorMsg = "Problem loading book content.";
             //return;
           }
           //new code change.
@@ -512,7 +645,7 @@ export class PageComponent implements OnInit {
       })
   }
 
-  getImages(resource) {
+  getImages1(resource) {
     this.loading = true;
     //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
@@ -526,6 +659,63 @@ export class PageComponent implements OnInit {
         };
         this.loading = false;
       })
+  }
+
+  getIndex() {
+    this.loading = true;
+    //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
+    this.commonService.downloadFile(APIURL.GET_INDEX_FILE.replace('{0}', this.selectedBookId))
+      .subscribe((data: any) => {
+
+        /*Convertion of array buffer to xml*/
+        let enc = new TextDecoder("utf-8");
+        let arr = new Uint8Array(data);
+        let result = enc.decode(arr);
+
+        /*convertion of xml to json*/
+        let jsondata = JSON.parse(result);
+        this.IndexContent = jsondata;
+
+        if (this.IndexContent.data["attributes"]["resource-type"] == "tract") {
+          this.currentBookTranslations = this.IndexContent.included;
+          this.LanguagesForSelectedBook();
+        }
+
+        this.selectLanguage('', false);
+
+        this.loading = false;
+      })
+  }
+
+  getImages(resource) {
+    this.loading = true;
+
+    if (this.IndexContent != undefined && this.IndexContent != null) {
+
+      var attachments = this.IndexContent.included.filter(row => {
+        if (row.type == "attachment" && row.attributes["file-file-name"] == resource.filename)
+          return true;
+        else
+          return false; 
+      });
+
+      if(attachments.length ==0 ){
+        localStorage.set(resource.filename, '');
+        return;
+      }
+      //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
+      this.commonService.downloadFile(attachments[0].attributes.file)
+        .subscribe((x: any) => {
+          const reader = new FileReader();
+
+          if (x instanceof Blob) reader.readAsDataURL(x);
+          reader.onloadend = function () {
+            //localStorage.set('abc.jpg',reader.result);
+            localStorage.set(resource.filename, reader.result);
+          };
+          this.loading = false;
+        })
+    }
   }
 
 
@@ -656,10 +846,12 @@ export class PageComponent implements OnInit {
 
     //handle card paragraph 
     let paragraphs = [];
-    if (resourcePage.page.cards.card[i]["content:paragraph"].length == undefined) {
-      paragraphs.push(resourcePage.page.cards.card[i]["content:paragraph"]);
-    } else
-      paragraphs = resourcePage.page.cards.card[i]["content:paragraph"];
+    if (resourcePage.page.cards.card[i]["content:paragraph"]) {
+      if (resourcePage.page.cards.card[i]["content:paragraph"].length == undefined) {
+        paragraphs.push(resourcePage.page.cards.card[i]["content:paragraph"]);
+      } else
+        paragraphs = resourcePage.page.cards.card[i]["content:paragraph"];
+    }
 
     for (let j = 0; j < paragraphs.length; j++) {
       var formpara = paragraphs[j];
@@ -667,7 +859,7 @@ export class PageComponent implements OnInit {
 
       //handle buttons
       if (formpara["content:button"]) {
-        card.button.push([formpara["content:button"]["content:text"], formpara["content:button"]["@attributes"].events]);
+        card.button.push([formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]);
       } else card.button.push('');
 
       //handle links
@@ -768,10 +960,12 @@ export class PageComponent implements OnInit {
 
       //handle form paragraph 
       let paragraphs = [];
-      if (forms["content:paragraph"].length == undefined) {
-        paragraphs.push(forms["content:paragraph"]);
-      } else
-        paragraphs = forms["content:paragraph"];
+      if (forms["content:paragraph"] != undefined) {
+        if (forms["content:paragraph"].length == undefined) {
+          paragraphs.push(forms["content:paragraph"]);
+        } else
+          paragraphs = forms["content:paragraph"];
+      }
 
       //handle form buttons and links
       for (let j = 0; j < paragraphs.length; j++) {
@@ -816,10 +1010,12 @@ export class PageComponent implements OnInit {
 
     //handle card paragraph 
     let paragraphs = [];
-    if (currentModal["content:paragraph"].length == undefined) {
-      paragraphs.push(currentModal["content:paragraph"]);
-    } else
-      paragraphs = currentModal["content:paragraph"];
+    if (currentModal["content:paragraph"]) {
+      if (currentModal["content:paragraph"].length == undefined) {
+        paragraphs.push(currentModal["content:paragraph"]);
+      } else
+        paragraphs = currentModal["content:paragraph"];
+    }
 
     for (let j = 0; j < paragraphs.length; j++) {
       var modalpara = paragraphs[j];
@@ -940,8 +1136,7 @@ export class PageComponent implements OnInit {
   }
 
   ClearContent() {
-
-    console.log('Page cleared');
+ 
     this.tagline = "";
     this.summary_line = "";
     this.Cards = [];
@@ -959,8 +1154,7 @@ export class PageComponent implements OnInit {
     this.loading = true;
     this.displayForm = false;
     this.displayModel = false;
-
-    console.log("Loading Page")
+ 
     this.ClearContent();
 
     //get page name from id
@@ -1120,7 +1314,7 @@ export class PageComponent implements OnInit {
     });
 
     //closing form
-    if (hide_card.length > 0) { 
+    if (hide_card.length > 0) {
       this.next();
     }
 
@@ -1149,7 +1343,7 @@ export class PageComponent implements OnInit {
   LoadModal(modal) {
 
     this.ClearContent();
-    this.displayModel = true;  
+    this.displayModel = true;
 
   }
 }
