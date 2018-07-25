@@ -318,8 +318,8 @@ export class PageComponent implements OnInit {
           this.loaderService.display(false);
           this.loading = false;
           return;
-        }else this.errorpresent = false;
- 
+        } else this.errorpresent = false;
+
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
           let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
@@ -488,7 +488,7 @@ export class PageComponent implements OnInit {
     if (id == undefined) return;
     let manifest_name = id.attributes["manifest-name"];
     if (manifest_name == null) {
-      console.log('Manifest name not specified in index file')      
+      console.log('Manifest name not specified in index file')
       this.ClearContent();
       this.errorpresent = true;
       this.errorMsg = "Problem loading book content.";
@@ -521,7 +521,7 @@ export class PageComponent implements OnInit {
           }
           //new code change.
 
-          if (jsondata["manifest"]["pages"]["page"] && jsondata["manifest"]["pages"]["page"].length !=undefined && jsondata["manifest"]["pages"]["page"].length > 0) {
+          if (jsondata["manifest"]["pages"]["page"] && jsondata["manifest"]["pages"]["page"].length != undefined && jsondata["manifest"]["pages"]["page"].length > 0) {
 
             this.pageCount = jsondata["manifest"]["pages"]["page"].length;
 
@@ -682,12 +682,12 @@ export class PageComponent implements OnInit {
 
           this.currentBookTranslations = [];
           this.IndexContent.data.relationships["latest-translations"].data.forEach(translation => {
-            
+
             var required = this.IndexContent.included.filter(row => {
               if (row.type == "translation" && row.id == translation.id)
                 return true;
               else
-                return false; 
+                return false;
             });
 
             required.forEach(element => {
@@ -708,7 +708,7 @@ export class PageComponent implements OnInit {
   getImages(resource) {
     //this.loading = true;
 
-    if(resource == undefined || resource == '' || resource == null) return '';
+    if (resource == undefined || resource == '' || resource == null) return '';
 
     if (this.IndexContent != undefined && this.IndexContent != null) {
 
@@ -716,10 +716,10 @@ export class PageComponent implements OnInit {
         if (row.type == "attachment" && row.attributes["file-file-name"] == resource)
           return true;
         else
-          return false; 
+          return false;
       });
 
-      if(attachments.length ==0 ){
+      if (attachments.length == 0) {
         //localStorage.set(resource.filename, '');
         return '';
       }
@@ -753,6 +753,14 @@ export class PageComponent implements OnInit {
 
   allPages = [];
 
+  getImageName(contentImage) {
+    if (contentImage["@attributes"]["restrictTo"] == undefined ||
+      contentImage["@attributes"]["restrictTo"] == null ||
+      contentImage["@attributes"]["restrictTo"] == "web")
+      return contentImage["@attributes"]["resource"];
+    else return '';
+  }
+
   objectMapper(resourcePage, pagename) {
     let heading, card, cards, paragraph, call_to_action, obj, attributes, paras, modals;
     obj = {};
@@ -771,13 +779,15 @@ export class PageComponent implements OnInit {
       paras = [];
       if (resourcePage.page.hero["content:paragraph"] != undefined && resourcePage.page.hero["content:paragraph"].length != undefined) {
         resourcePage.page.hero["content:paragraph"].forEach(para => {
-          var newPara = { type: '', text: '' };
-          if (para["content:button"] == undefined) {
+          var newPara = { type: '', text: '', image:'' };
+          if (para["content:text"] != undefined) {
             newPara.type = "text";
             newPara.text = para["content:text"];
-          } else {
+          } if (para["content:button"] != undefined) {
             newPara.type = "button";
             newPara.text = para["content:button"]["content:text"];
+          } if (para["content:image"] != undefined) { 
+            newPara.image = this.getImages(this.getImageName(para["content:image"])); //para["content:image"]["@attributes"]["resource"];
           }
           paras.push(newPara)
         });
@@ -788,12 +798,12 @@ export class PageComponent implements OnInit {
       heading = resourcePage.page.header.title["content:text"];
       obj = resourcePage.page;
       paragraph = '';
-      if(resourcePage.page.cards != undefined){
-      for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
-        let card = this.getCardContent(resourcePage, i);
-        cards.push(card);
+      if (resourcePage.page.cards != undefined) {
+        for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
+          let card = this.getCardContent(resourcePage, i);
+          cards.push(card);
+        }
       }
-    }
     }
 
     if (resourcePage.page.hero && resourcePage.page.cards) {
@@ -894,7 +904,7 @@ export class PageComponent implements OnInit {
 
       //handle image
       if (formpara["content:image"]) {
-        card.image.push(formpara["content:image"]["@attributes"]["resource"]);
+        card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
       }
       else {
         card.image.push("");
@@ -922,7 +932,7 @@ export class PageComponent implements OnInit {
           }
 
           //this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]))
-          if (tab["content:image"].length == undefined) eachtab.images.push(tab["content:image"]["@attributes"]["resource"])
+          if (tab["content:image"].length == undefined) eachtab.images.push(this.getImageName(tab["content:image"])); //(tab["content:image"]["@attributes"]["resource"])
           else {
             tab["content:image"].forEach(tabimage => {
               eachtab.images.push(tabimage["content:text"])
@@ -1071,7 +1081,7 @@ export class PageComponent implements OnInit {
   image;
   tagline;
 
-  currentPage() { 
+  currentPage() {
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -1103,7 +1113,7 @@ export class PageComponent implements OnInit {
     }
   }
 
-  previous() { 
+  previous() {
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -1132,7 +1142,7 @@ export class PageComponent implements OnInit {
     }
   }
 
-  selectedPage(pageid) { 
+  selectedPage(pageid) {
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -1156,7 +1166,7 @@ export class PageComponent implements OnInit {
   }
 
   ClearContent() {
- 
+
     this.tagline = "";
     this.summary_line = "";
     this.Cards = [];
@@ -1174,7 +1184,7 @@ export class PageComponent implements OnInit {
     this.loading = true;
     this.displayForm = false;
     this.displayModel = false;
- 
+
     this.ClearContent();
 
     //get page name from id

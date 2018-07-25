@@ -83,6 +83,9 @@
               <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text'">
                 <b>{{item.text}} </b>
               </span>
+              <span class="ng-binding ng-scope" *ngIf="item.image!= ''">
+                <img class="imgwidth" *ngIf="item.image!=undefined && item.image!=''" [src]="item.image" height="auto">
+              </span>
               <span class="actionbutton" dir={{pageGetparameters.dir}} *ngIf="item.type=='button'">
                 <a href="">{{item.text}}</a>
 
