@@ -679,7 +679,23 @@ export class PageComponent implements OnInit {
         this.IndexContent = jsondata;
 
         if (this.IndexContent.data["attributes"]["resource-type"] == "tract") {
-          this.currentBookTranslations = this.IndexContent.included;
+
+          this.currentBookTranslations = [];
+          this.IndexContent.data.relationships["latest-translations"].data.forEach(translation => {
+            
+            var required = this.IndexContent.included.filter(row => {
+              if (row.type == "translation" && row.id == translation.id)
+                return true;
+              else
+                return false; 
+            });
+
+            required.forEach(element => {
+              this.currentBookTranslations.push(element);
+            });
+
+          });
+          //this.currentBookTranslations = this.IndexContent.included;
           this.LanguagesForSelectedBook();
         }
 
@@ -772,10 +788,12 @@ export class PageComponent implements OnInit {
       heading = resourcePage.page.header.title["content:text"];
       obj = resourcePage.page;
       paragraph = '';
+      if(resourcePage.page.cards != undefined){
       for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
         let card = this.getCardContent(resourcePage, i);
         cards.push(card);
       }
+    }
     }
 
     if (resourcePage.page.hero && resourcePage.page.cards) {
@@ -1053,8 +1071,7 @@ export class PageComponent implements OnInit {
   image;
   tagline;
 
-  currentPage() {
-    console.log("load current page")
+  currentPage() { 
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -1064,7 +1081,6 @@ export class PageComponent implements OnInit {
   }
 
   next() {
-    console.log("load next page")
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -1087,8 +1103,7 @@ export class PageComponent implements OnInit {
     }
   }
 
-  previous() {
-    console.log("load previous page")
+  previous() { 
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
@@ -1117,8 +1132,7 @@ export class PageComponent implements OnInit {
     }
   }
 
-  selectedPage(pageid) {
-    console.log("load selected page")
+  selectedPage(pageid) { 
     this.loading = true;
     this.tagline = "";
     this.Cards = [];
