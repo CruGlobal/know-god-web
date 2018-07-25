@@ -521,7 +521,7 @@ export class PageComponent implements OnInit {
           }
           //new code change.
 
-          if (jsondata["manifest"]["pages"]["page"] && jsondata["manifest"]["pages"]["page"].length > 0) {
+          if (jsondata["manifest"]["pages"]["page"] && jsondata["manifest"]["pages"]["page"].length !=undefined && jsondata["manifest"]["pages"]["page"].length > 0) {
 
             this.pageCount = jsondata["manifest"]["pages"]["page"].length;
 
@@ -547,7 +547,7 @@ export class PageComponent implements OnInit {
               this.pages.push(this.resource);
               this.resources.push(this.resource);
               this.getXmlFileForEachResource(this.resource);
-              this.getImages(this.resource);
+              //this.getImages1(this.resource);
               this.resource = { filename: "", src: "", translationId: "" };
             }
           }
@@ -583,9 +583,11 @@ export class PageComponent implements OnInit {
           err => {
             console.log('Error reading manifest file.');
             this.loaderService.display(false);
-            this.showNoRecordFound = true;
+            this.errorpresent = true;
+            this.errorMsg = "Problem loading book content.";
           });
       this.loading = false;
+      this.loaderService.display(false);
     }
   }
 
@@ -688,33 +690,37 @@ export class PageComponent implements OnInit {
   }
 
   getImages(resource) {
-    this.loading = true;
+    //this.loading = true;
+
+    if(resource == undefined || resource == '' || resource == null) return '';
 
     if (this.IndexContent != undefined && this.IndexContent != null) {
 
       var attachments = this.IndexContent.included.filter(row => {
-        if (row.type == "attachment" && row.attributes["file-file-name"] == resource.filename)
+        if (row.type == "attachment" && row.attributes["file-file-name"] == resource)
           return true;
         else
           return false; 
       });
 
       if(attachments.length ==0 ){
-        localStorage.set(resource.filename, '');
-        return;
+        //localStorage.set(resource.filename, '');
+        return '';
       }
-      //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
-      this.commonService.downloadFile(attachments[0].attributes.file)
-        .subscribe((x: any) => {
-          const reader = new FileReader();
 
-          if (x instanceof Blob) reader.readAsDataURL(x);
-          reader.onloadend = function () {
-            //localStorage.set('abc.jpg',reader.result);
-            localStorage.set(resource.filename, reader.result);
-          };
-          this.loading = false;
-        })
+      return attachments[0].attributes.file;
+      //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
+      // this.commonService.downloadFile(attachments[0].attributes.file)
+      //   .subscribe((x: any) => {
+      //     const reader = new FileReader();
+
+      //     if (x instanceof Blob) reader.readAsDataURL(x);
+      //     reader.onloadend = function () {
+      //       //localStorage.set('abc.jpg',reader.result);
+      //       localStorage.set(resource.filename, reader.result);
+      //     };
+      //     this.loading = false;
+      //   })
     }
   }
 
@@ -1239,7 +1245,7 @@ export class PageComponent implements OnInit {
             this.Cards[i].localImage[j] = "";
           }
           else {
-            this.Cards[i].localImage[j] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
+            this.Cards[i].localImage[j] = this.getImages(this.Cards[i].image[j]);// this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
           }
         }
 
@@ -1249,7 +1255,7 @@ export class PageComponent implements OnInit {
               this.Cards[i].tabs[j].localImage[k] = "";
             }
             else {
-              this.Cards[i].tabs[j].localImage[k] = this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
+              this.Cards[i].tabs[j].localImage[k] = this.getImages(this.Cards[i].tabs[j].image[k]);//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
             }
 
           }
