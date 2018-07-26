@@ -533,8 +533,7 @@ export class PageComponent implements OnInit {
               this.AllPagesContent = [];
               this.allPages = [];
               this.allResourcesImages = [];
-              this.getXmlFileForEachPage(this.page);
-              console.log('getting xml file loop : ' + this.page.filename)
+              this.getXmlFileForEachPage(this.page);               
               this.pageNames.push(this.page.filename); //push page name in order
               this.page = { filename: "", src: "", translationId: "" };
             }
@@ -614,7 +613,7 @@ export class PageComponent implements OnInit {
         let jsondata = this.ngxXml2jsonService.xmlToJson(xml);
         this.objectMapper(jsondata, page.filename);
         this.AllPagesContent.push(jsondata);
-        console.log('app page content push: ' + page.filename);
+
         if (this.pageCount == this.AllPagesContent.length)
           setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
         // window.localStorage["JSONdata"] = jsondata;
@@ -706,7 +705,6 @@ export class PageComponent implements OnInit {
   }
 
   getImages(resource) {
-    //this.loading = true;
 
     if (resource == undefined || resource == '' || resource == null) return '';
 
@@ -720,23 +718,11 @@ export class PageComponent implements OnInit {
       });
 
       if (attachments.length == 0) {
-        //localStorage.set(resource.filename, '');
+        console.log('getImages: Image not found in index file')
         return '';
       }
 
       return attachments[0].attributes.file;
-      //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
-      // this.commonService.downloadFile(attachments[0].attributes.file)
-      //   .subscribe((x: any) => {
-      //     const reader = new FileReader();
-
-      //     if (x instanceof Blob) reader.readAsDataURL(x);
-      //     reader.onloadend = function () {
-      //       //localStorage.set('abc.jpg',reader.result);
-      //       localStorage.set(resource.filename, reader.result);
-      //     };
-      //     this.loading = false;
-      //   })
     }
   }
 
@@ -754,10 +740,19 @@ export class PageComponent implements OnInit {
   allPages = [];
 
   getImageName(contentImage) {
+
+    console.log('getImageName: restrictTo -' + contentImage["@attributes"]["restrictTo"])
+    var ImageName = '';
+    var ImagePath = '';
     if (contentImage["@attributes"]["restrictTo"] == undefined ||
       contentImage["@attributes"]["restrictTo"] == null ||
-      contentImage["@attributes"]["restrictTo"] == "web")
-      return contentImage["@attributes"]["resource"];
+      contentImage["@attributes"]["restrictTo"] == "web") {
+      ImageName = contentImage["@attributes"]["resource"];
+      console.log('getImageName: ImageName -' + ImageName)
+      ImagePath = this.getImages(ImageName);
+      console.log('getImageName: ImagePath -' + ImagePath)
+      return ImagePath
+    }
     else return '';
   }
 
@@ -776,23 +771,8 @@ export class PageComponent implements OnInit {
       paragraph = resourcePage.page.hero;
       obj = resourcePage.page;
 
-      paras = [];
-      if (resourcePage.page.hero["content:paragraph"] != undefined && resourcePage.page.hero["content:paragraph"].length != undefined) {
-        resourcePage.page.hero["content:paragraph"].forEach(para => {
-          var newPara = { type: '', text: '', image:'' };
-          if (para["content:text"] != undefined) {
-            newPara.type = "text";
-            newPara.text = para["content:text"];
-          } if (para["content:button"] != undefined) {
-            newPara.type = "button";
-            newPara.text = para["content:button"]["content:text"];
-          } if (para["content:image"] != undefined) { 
-            newPara.image = this.getImages(this.getImageName(para["content:image"])); //para["content:image"]["@attributes"]["resource"];
-          }
-          paras.push(newPara)
-        });
+      paras =  this.getHeroContent(resourcePage.page.hero);
 
-      }
     }
     if (resourcePage.page.header) {
       heading = resourcePage.page.header.title["content:text"];
@@ -806,9 +786,8 @@ export class PageComponent implements OnInit {
       }
     }
 
-    if (resourcePage.page.hero && resourcePage.page.cards) {
-      heading = resourcePage.page.hero.heading == undefined ? '' : resourcePage.page.hero.heading["content:text"];
-      paragraph = resourcePage.page.hero;
+    if (resourcePage.page.cards) {
+
       obj = resourcePage.page;
 
       if (cards.length == 0) { //dont process card, if already done in header
@@ -847,6 +826,40 @@ export class PageComponent implements OnInit {
     obj.pagename = pagename;
     this.allPages.push(obj);
 
+  }
+
+  getHeroContent(hero) {
+    var heropara = [];
+
+    if (hero["content:paragraph"] != undefined && hero["content:paragraph"].length != undefined) {
+      hero["content:paragraph"].forEach(para => {
+        
+
+        if (para["content:text"] != undefined) {
+          var paracontent = { type: '', text: '', image: '' };
+          paracontent.type = "text";
+          paracontent.text = para["content:text"];
+          heropara.push(paracontent);
+        } 
+        if (para["content:button"] != undefined) {
+          var paracontent = { type: '', text: '', image: '' };
+          paracontent.type = "button";
+          paracontent.text = para["content:button"]["content:text"];
+          heropara.push(paracontent);
+        } 
+        if (para["content:image"] != undefined) {
+          var paracontent = { type: '', text: '', image: '' };
+          paracontent.type = "image";
+          paracontent.image = this.getImageName(para["content:image"]); //para["content:image"]["@attributes"]["resource"];
+          heropara.push(paracontent);
+        }
+        
+      });
+
+    }
+
+    return heropara;
+    
   }
 
   getCardContent(resourcePage, i) {
@@ -1269,7 +1282,7 @@ export class PageComponent implements OnInit {
             this.Cards[i].localImage[j] = "";
           }
           else {
-            this.Cards[i].localImage[j] = this.getImages(this.Cards[i].image[j]);// this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
+            this.Cards[i].localImage[j] = this.Cards[i].image[j];// this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
           }
         }
 
@@ -1279,7 +1292,7 @@ export class PageComponent implements OnInit {
               this.Cards[i].tabs[j].localImage[k] = "";
             }
             else {
-              this.Cards[i].tabs[j].localImage[k] = this.getImages(this.Cards[i].tabs[j].image[k]);//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
+              this.Cards[i].tabs[j].localImage[k] = this.Cards[i].tabs[j].image[k];//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
             }
 
           }
