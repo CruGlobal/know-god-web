@@ -545,7 +545,7 @@ export class PageComponent implements OnInit {
               this.resource.translationId = translationId;
               this.pages.push(this.resource);
               this.resources.push(this.resource);
-              this.getXmlFileForEachResource(this.resource);
+              //this.getXmlFileForEachResource(this.resource);
               //this.getImages1(this.resource);
               this.resource = { filename: "", src: "", translationId: "" };
             }
@@ -1300,7 +1300,7 @@ export class PageComponent implements OnInit {
               this.Cards[i].tabs[j].localImage[k] = "";
             }
             else {
-              this.Cards[i].tabs[j].localImage[k] = this.Cards[i].tabs[j].image[k];//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
+              this.Cards[i].tabs[j].localImage[k] = this.Cards[i].tabs[j].images[k];//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
             }
 
           }
