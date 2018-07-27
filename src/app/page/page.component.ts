@@ -722,7 +722,15 @@ export class PageComponent implements OnInit {
         return '';
       }
 
-      return attachments[0].attributes.file;
+      var filename =attachments[0].attributes.file
+      
+      //add name to prefetch
+     let link=document.createElement('link');
+      link.href=filename;
+      link.rel='prefetch';
+      document.getElementsByTagName('head')[0].appendChild(link);
+
+      return filename;
     }
   }
 
