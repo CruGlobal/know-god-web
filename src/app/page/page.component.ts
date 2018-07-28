@@ -21,9 +21,9 @@ export class PageComponent implements OnInit {
   bookid: any;
   loading: boolean = false;
   myUrl: string;
-  languageSelected: any;
+  //languageSelected: any;
   bookname: any;
-  allResourcesImages: any;
+  //allResourcesImages: any;
   IndexContent: any;
   selectedBookLanguauageTranslations = [];
   allLanguagesTranslations: any;
@@ -36,7 +36,7 @@ export class PageComponent implements OnInit {
   currentTranslations = [];
   currentBookTranslations = [];
   currentLanguageTransalations = [];
-  jsonXmlFiles = [];
+  //jsonXmlFiles = [];
   selectedBookId: any;
   selectedLanguageId: any;
   allBooks: any;
@@ -75,6 +75,7 @@ export class PageComponent implements OnInit {
     public location: Location,
     private loaderService: LoaderService
   ) {
+    this.showLoader = true;
     this.AllBooks();
     this.AllLanguages();
   }
@@ -134,16 +135,12 @@ export class PageComponent implements OnInit {
         // this.getCurrentUrl()
       }
 
-
-
-
-
     })
   }
 
   /*To get all books*/
   AllBooks() {
-    this.loading = true;
+    //this.loading = true;
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
       .subscribe((data: any) => {
         this.allBooks = data.data;
@@ -157,23 +154,23 @@ export class PageComponent implements OnInit {
 
           });
         }
-        this.loading = false;
+        //this.loading = false;
       })
   }
 
   /*To get all languages*/
   AllLanguages() {
-    this.loading = true;
+    //this.loading = true;
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
         // this.selectedBookLanguauageTranslations = []; 
-        this.loading = false;
+        //this.loading = false;
       })
   }
 
   AllLanguages_old() {
-    this.loading = true;
+    //this.loading = true;
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
@@ -186,13 +183,13 @@ export class PageComponent implements OnInit {
           });
         }
         // this.selectedBookLanguauageTranslations = []; 
-        this.loading = false;
+        //this.loading = false;
       })
   }
 
   /*Language translations for selected book*/
   LanguagesForSelectedBook() {
-    this.loading = true;
+    //this.loading = true;
     this.showNoRecordFound = false;
     this.errorpresent = false;
     this.errorMsg = '';
@@ -222,11 +219,11 @@ export class PageComponent implements OnInit {
     }
 
     this.showNoRecordFound = this.checkIfPreSelectedLanguageExists();
-    this.loading = false;
+    //this.loading = false;
   }
 
   // LanguagesForSelectedBook_old() {
-  //   this.loading = true;
+  //   //this.loading = true;
   //   this.showNoRecordFound = false;
   //   this.errorpresent = false;
   //   this.errorMsg = '';
@@ -262,7 +259,7 @@ export class PageComponent implements OnInit {
   //       }
 
   //       this.showNoRecordFound = this.checkIfPreSelectedLanguageExists();
-  //       this.loading = false;
+  //       //this.loading = false;
   //     })
   // }
 
@@ -278,7 +275,7 @@ export class PageComponent implements OnInit {
   lang = "";
   selectLanguage(lang, selectChoice = false) {
     this.loaderService.display(true);
-    this.loading = true;
+    //this.loading = true;
     this.showNoRecordFound = false;
     this.errorpresent = false;
     this.errorMsg = '';
@@ -316,7 +313,7 @@ export class PageComponent implements OnInit {
           this.errorpresent = true;
           this.errorMsg = "This book is not available in selected language.";
           this.loaderService.display(false);
-          this.loading = false;
+          //this.loading = false;
           return;
         } else this.errorpresent = false;
 
@@ -333,13 +330,13 @@ export class PageComponent implements OnInit {
           //this.AllLanguages()
         }
       })
-    this.loading = false;
+    //this.loading = false;
 
   }
 
   // selectLanguage_old(lang, selectChoice = false) {
   //   this.loaderService.display(true);
-  //   this.loading = true;
+  //   //this.loading = true;
   //   this.showNoRecordFound = false;
   //   this.errorpresent = false;
   //   this.errorMsg = '';
@@ -370,7 +367,7 @@ export class PageComponent implements OnInit {
   //         this.errorpresent = true;
   //         this.errorMsg = "This book is not available in selected language.";
   //         this.loaderService.display(false);
-  //         this.loading = false;
+  //         //this.loading = false;
   //         return;
   //       }
 
@@ -387,7 +384,7 @@ export class PageComponent implements OnInit {
   //         //this.LanguagesForSelectedBook();
   //         //this.AllLanguages()
   //       }
-  //       this.loading = false;
+  //       //this.loading = false;
   //     })
 
   //   // this.currentPage();
@@ -402,7 +399,7 @@ export class PageComponent implements OnInit {
   // }
   selectBook(book, fromChoice = false) {
     this.loaderService.display(true);
-    this.loading = true;
+    //this.loading = true;
     this.BookID = book.attributes.abbreviation
     this.selectLan = '';
     this.selectedBookLanguauageTranslations = [];
@@ -425,12 +422,12 @@ export class PageComponent implements OnInit {
 
     this.getIndex();
 
-    this.loading = false;
+    //this.loading = false;
   }
 
   // selectBook_old(book, fromChoice = false) {
   //   this.loaderService.display(true);
-  //   this.loading = true;
+  //   //this.loading = true;
   //   this.BookID = book.attributes.abbreviation
   //   this.selectLan = '';
   //   this.selectedBookLanguauageTranslations = [];
@@ -459,20 +456,20 @@ export class PageComponent implements OnInit {
   //         this.LanguagesForSelectedBook();
   //       }
   //       this.AllLanguages();
-  //       this.loading = false;
+  //       //this.loading = false;
   //     })
 
-  //   this.loading = false;
+  //   //this.loading = false;
   // }
 
   translationsMapper(booktranslations, languagetranslations) {
-    this.loading = true;
+    //this.loading = true;
     this.currentTranslations = [];
     for (let j = 0; j < languagetranslations.length; j++) {
       for (let i = 0; i < booktranslations.length; i++) {
         if (this.currentBookTranslations[i].id == this.currentLanguageTransalations[j].id) {
           this.currentTranslations.push(this.currentBookTranslations[i])
-          this.loading = false;
+          //this.loading = false;
         }
         else {
           // alert('errorrrr')
@@ -484,7 +481,7 @@ export class PageComponent implements OnInit {
 
   /*To get xml files for each translation Id*/
   getXmlFiles(id) {
-    this.loading = true;
+    //this.loading = true;
     if (id == undefined) return;
     let manifest_name = id.attributes["manifest-name"];
     if (manifest_name == null) {
@@ -493,7 +490,7 @@ export class PageComponent implements OnInit {
       this.errorpresent = true;
       this.errorMsg = "Problem loading book content.";
       this.loaderService.display(false);
-      this.loading = false;
+      //this.loading = false;
       return;
     }
     else if (manifest_name) {
@@ -532,8 +529,8 @@ export class PageComponent implements OnInit {
               this.pages.push(this.page);
               this.AllPagesContent = [];
               this.allPages = [];
-              this.allResourcesImages = [];
-              this.getXmlFileForEachPage(this.page);               
+              //this.allResourcesImages = [];
+              this.getXmlFileForEachPage(this.page);
               this.pageNames.push(this.page.filename); //push page name in order
               this.page = { filename: "", src: "", translationId: "" };
             }
@@ -585,14 +582,14 @@ export class PageComponent implements OnInit {
             this.errorpresent = true;
             this.errorMsg = "Problem loading book content.";
           });
-      this.loading = false;
-      this.loaderService.display(false);
+      //this.loading = false;
+      //  this.loaderService.display(false);
     }
   }
 
 
   getXmlFileForEachPage(page) {
-    this.loading = true;
+    //this.loading = true;
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + page.translationId + "/" + page.src)
       .subscribe((data: any) => {
 
@@ -614,56 +611,59 @@ export class PageComponent implements OnInit {
         this.objectMapper(jsondata, page.filename);
         this.AllPagesContent.push(jsondata);
 
-        if (this.pageCount == this.AllPagesContent.length)
-          setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
+        if (this.pageCount == this.AllPagesContent.length) {
+          this.currentPage();
+          this.loaderService.display(false);
+        }
+        //setTimeout(() => { this.currentPage();  }, 1000);
         // window.localStorage["JSONdata"] = jsondata;
         // var accessdata = window.localStorage["JSONdata"];
         // console.log("ACCESSDATA:", accessdata);
-        this.loading = false;
+        //this.loading = false;
       });
   }
 
   imageUrl
   /*To get images from xml files*/
-  getXmlFileForEachResource(resource) {
-    this.loading = true;
-    this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
-      .subscribe((data: any) => {
-        var data = data;
-        var file = new Blob([data], {
-          type: 'image/jpeg, image/png, image/gif'
-        });
+  // getXmlFileForEachResource(resource) {
+  //   //this.loading = true;
+  //   this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
+  //     .subscribe((data: any) => {
+  //       var data = data;
+  //       var file = new Blob([data], {
+  //         type: 'image/jpeg, image/png, image/gif'
+  //       });
 
-        // if(this.pageCount == 0)
-        // setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
+  //       // if(this.pageCount == 0)
+  //       // setTimeout(() => { this.currentPage(); this.loaderService.display(false); }, 1000);
 
-        var fileURL = URL.createObjectURL(file);
-        this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
-        localStorage.setItem(resource.filename, fileURL);
-        var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl }
-        this.allResourcesImages.push(imageUrls);
-        this.loading = false;
-      })
-  }
+  //       var fileURL = URL.createObjectURL(file);
+  //       this.imageUrl = this.sanitizer.bypassSecurityTrustUrl(fileURL);
+  //       localStorage.setItem(resource.filename, fileURL);
+  //       var imageUrls = { filename: resource.filename, imageUrl: this.imageUrl }
+  //       this.allResourcesImages.push(imageUrls);
+  //       //this.loading = false;
+  //     })
+  // }
 
-  getImages1(resource) {
-    this.loading = true;
-    //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
-    this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
-      .subscribe((x: any) => {
-        const reader = new FileReader();
+  // getImages1(resource) {
+  //   //this.loading = true;
+  //   //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
+  //   this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + resource.translationId + "/" + resource.src)
+  //     .subscribe((x: any) => {
+  //       const reader = new FileReader();
 
-        if (x instanceof Blob) reader.readAsDataURL(x);
-        reader.onloadend = function () {
-          //localStorage.set('abc.jpg',reader.result);
-          localStorage.set(resource.filename, reader.result);
-        };
-        this.loading = false;
-      })
-  }
+  //       if (x instanceof Blob) reader.readAsDataURL(x);
+  //       reader.onloadend = function () {
+  //         //localStorage.set('abc.jpg',reader.result);
+  //         localStorage.set(resource.filename, reader.result);
+  //       };
+  //       //this.loading = false;
+  //     })
+  // }
 
   getIndex() {
-    this.loading = true;
+    //this.loading = true;
     //this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST+"1061/fedd51055ce5ca6351d19f781601eb94192915597b4b023172acaab4fac04794")
     this.commonService.downloadFile(APIURL.GET_INDEX_FILE.replace('{0}', this.selectedBookId))
       .subscribe((data: any) => {
@@ -700,7 +700,7 @@ export class PageComponent implements OnInit {
 
         this.selectLanguage('', false);
 
-        this.loading = false;
+        //this.loading = false;
       })
   }
 
@@ -722,12 +722,12 @@ export class PageComponent implements OnInit {
         return '';
       }
 
-      var filename =attachments[0].attributes.file
-      
+      var filename = attachments[0].attributes.file
+
       //add name to prefetch
-     let link=document.createElement('link');
-      link.href=filename;
-      link.rel='prefetch';
+      let link = document.createElement('link');
+      link.href = filename;
+      link.rel = 'prefetch';
       document.getElementsByTagName('head')[0].appendChild(link);
 
       return filename;
@@ -746,7 +746,6 @@ export class PageComponent implements OnInit {
   }
 
   allPages = [];
-
   getImageName(contentImage) {
 
     console.log('getImageName: restrictTo -' + contentImage["@attributes"]["restrictTo"])
@@ -779,7 +778,7 @@ export class PageComponent implements OnInit {
       paragraph = resourcePage.page.hero;
       obj = resourcePage.page;
 
-      paras =  this.getHeroContent(resourcePage.page.hero);
+      paras = this.getHeroContent(resourcePage.page.hero);
 
     }
     if (resourcePage.page.header) {
@@ -841,33 +840,33 @@ export class PageComponent implements OnInit {
 
     if (hero["content:paragraph"] != undefined && hero["content:paragraph"].length != undefined) {
       hero["content:paragraph"].forEach(para => {
-        
+
 
         if (para["content:text"] != undefined) {
           var paracontent = { type: '', text: '', image: '' };
           paracontent.type = "text";
           paracontent.text = para["content:text"];
           heropara.push(paracontent);
-        } 
+        }
         if (para["content:button"] != undefined) {
           var paracontent = { type: '', text: '', image: '' };
           paracontent.type = "button";
           paracontent.text = para["content:button"]["content:text"];
           heropara.push(paracontent);
-        } 
+        }
         if (para["content:image"] != undefined) {
           var paracontent = { type: '', text: '', image: '' };
           paracontent.type = "image";
           paracontent.image = this.getImageName(para["content:image"]); //para["content:image"]["@attributes"]["resource"];
           heropara.push(paracontent);
         }
-        
+
       });
 
     }
 
     return heropara;
-    
+
   }
 
   getCardContent(resourcePage, i) {
@@ -1084,11 +1083,8 @@ export class PageComponent implements OnInit {
         modal.paras.push({ text: '', type: 'button', button: [modalpara["content:button"]["content:text"], modalpara["content:button"]["@attributes"].events] });
 
       }
-
     }
-
     return modal;
-
   }
 
   Cards = [];
@@ -1109,10 +1105,11 @@ export class PageComponent implements OnInit {
     this.tagline = "";
     this.currentPageContent = {};
     this.LoadPage(this.counter);
+
   }
 
   next() {
-    this.loading = true;
+    //this.loading = true;
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -1126,16 +1123,16 @@ export class PageComponent implements OnInit {
       this.LoadPage(this.counter);
       //$('html, body').animate({ scrollTop: 0 }, 'fast');
       window.scrollTo(0, 0);
-      this.loading = false;
+      //this.loading = false;
     }
     else {
       this.pageGetparameters.pageid = null;
-      this.loading = false;
+      //this.loading = false;
     }
   }
 
   previous() {
-    this.loading = true;
+    //this.loading = true;
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -1149,7 +1146,7 @@ export class PageComponent implements OnInit {
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
       window.scrollTo(0, 0);
-      this.loading = false;
+      //this.loading = false;
     }
     else {
       this.pageGetparameters.pageid = null;
@@ -1159,12 +1156,12 @@ export class PageComponent implements OnInit {
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
       window.scrollTo(0, 0);
-      this.loading = false;
+      //this.loading = false;
     }
   }
 
   selectedPage(pageid) {
-    this.loading = true;
+    //this.loading = true;
     this.tagline = "";
     this.Cards = [];
     this.cardsContent = [];
@@ -1173,7 +1170,7 @@ export class PageComponent implements OnInit {
     if (this.counter < this.allPages.length) {
       this.counter++;
       this.LoadPage(pageid);
-      this.loading = false;
+      //this.loading = false;
     }
   }
 
@@ -1187,7 +1184,6 @@ export class PageComponent implements OnInit {
   }
 
   ClearContent() {
-
     this.tagline = "";
     this.summary_line = "";
     this.Cards = [];
@@ -1198,11 +1194,10 @@ export class PageComponent implements OnInit {
     this.call_to_action = '';
     this.FirstPage = false;
     this.LastPage = false;
-
   }
 
   LoadPage(pageid) {
-    this.loading = true;
+    //this.loading = true;
     this.displayForm = false;
     this.displayModel = false;
 
@@ -1229,27 +1224,27 @@ export class PageComponent implements OnInit {
         // console.log('Page not found in page collection : ' + pageid)
         return;
       }
-      this.loading = false;
+      //this.loading = false;
     }
 
     this.currentPageContent = selected_page[0];//this.allPages[pageid];
     if (this.currentPageContent && this.currentPageContent.header) {
       this.currentPageContent.heading = this.currentPageContent.header.title['content:text'];
-      this.loading = false;
+      //this.loading = false;
     }
     else if (this.currentPageContent && this.currentPageContent.heading) {
       this.currentPageContent.heading = this.currentPageContent.heading;
-      this.loading = false;
+      //this.loading = false;
     }
     else {
       //   console.log('Page not found to load : ' + pageid)
-      this.loading = false;
+      //this.loading = false;
     }
 
     if (this.currentPageContent == undefined) {
       console.log('Page not header found to load : ' + pageid)
       // this.showNoRecordFound= true;
-      this.loading = false;
+      //this.loading = false;
       return;
 
     }
@@ -1260,7 +1255,7 @@ export class PageComponent implements OnInit {
         this.multiple_summary_line = this.summary_line;
         this.summary_line = '';
       }
-      this.loading = false;
+      //this.loading = false;
     } else this.summary_line = '';
     this.call_to_action = this.currentPageContent.call_to_action;
     this.paras = this.currentPageContent.paras;
@@ -1284,32 +1279,32 @@ export class PageComponent implements OnInit {
         else
           this.Cards[i].hidden = true;
 
-        if (this.Cards[i].localImage == undefined) this.Cards[i].localImage = [];
-        for (let j = 0; j < this.Cards[i].image.length; j++) {
-          if (this.Cards[i].image[j] == "") {
-            this.Cards[i].localImage[j] = "";
-          }
-          else {
-            this.Cards[i].localImage[j] = this.Cards[i].image[j];// this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
-          }
-        }
+        // if (this.Cards[i].localImage == undefined) this.Cards[i].localImage = [];
+        // for (let j = 0; j < this.Cards[i].image.length; j++) {
+        //   if (this.Cards[i].image[j] == "") {
+        //     this.Cards[i].localImage[j] = "";
+        //   }
+        //   else {
+        //     this.Cards[i].localImage[j] = this.Cards[i].image[j];// this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]));
+        //   }
+        // }
 
-        for (let j = 0; j < this.Cards[i].tabs.length; j++) {
-          for (let k = 0; k < this.Cards[i].tabs[j].images.length; k++) {
-            if (this.Cards[i].tabs[j].images[k] == "") {
-              this.Cards[i].tabs[j].localImage[k] = "";
-            }
-            else {
-              this.Cards[i].tabs[j].localImage[k] = this.Cards[i].tabs[j].images[k];//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
-            }
-
-          }
-
-        }
+        // for (let j = 0; j < this.Cards[i].tabs.length; j++) {
+        //   for (let k = 0; k < this.Cards[i].tabs[j].images.length; k++) {
+        //     if (this.Cards[i].tabs[j].images[k] == "") {
+        //       this.Cards[i].tabs[j].localImage[k] = "";
+        //     }
+        //     else {
+        //       this.Cards[i].tabs[j].localImage[k] = this.Cards[i].tabs[j].images[k];//this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].tabs[j].images[k]));
+        //     }
+        //   }
+        // }
 
       }
-      this.loading = false;
+      //this.loading = false;
     }
+
+
 
   }
 
@@ -1386,10 +1381,7 @@ export class PageComponent implements OnInit {
     if (hide_modal.length > 0) {
       this.next();
     }
-
-
   }
-
 
   LoadModal(modal) {
 

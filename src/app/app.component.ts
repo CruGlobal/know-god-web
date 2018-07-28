@@ -13,8 +13,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(){
     this.loaderService.status.subscribe((val: boolean)=>{
-      this.showLoader = val;
-      console.log("loading...");
+      this.showLoader = val; 
     });
   }
 }

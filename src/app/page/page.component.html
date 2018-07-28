@@ -122,7 +122,7 @@
                 </span>
 
 
-                <img class="imgwidth" *ngIf="card.localImage!=undefined && card.localImage[i]!=''" [src]="card.localImage[i]" height="auto">
+                <img class="imgwidth" *ngIf="card.image!=undefined && card.image[i]!=''" [src]="card.image[i]" height="auto">
 
               </div>
 
@@ -132,7 +132,7 @@
                   <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
                     <!-- <h4 class="mx144 ng-scope" dir={{pageGetparameters.dir}}>{{cardtab.heading}}</h4> -->
                     <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
-                    <img *ngFor="let image1 of cardtab.localImage" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
+                    <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
                     <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
 
                   </td>
