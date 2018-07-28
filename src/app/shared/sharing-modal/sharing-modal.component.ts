@@ -18,7 +18,7 @@ export class SharingModalComponent implements OnInit {
   book: any;
   currentUrl: string;
   embedUrl: string;
-  ShareState: 'min';
+  ShareState =  'min';
   supported = false;
   textToCopy = '';
 
