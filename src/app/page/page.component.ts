@@ -2,14 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
 import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
-import { Parser } from 'xml2js';
+//import { Parser } from 'xml2js';
 import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { isArray } from 'util';
+//import { isArray } from 'util';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { listeners } from 'cluster';
+//import { listeners } from 'cluster';
 
 @Component({
   selector: 'app-page',

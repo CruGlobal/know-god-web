@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
 import { DomSanitizer } from '@angular/platform-browser';
-import { NgxXml2jsonService } from 'ngx-xml2json';
+//import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
 
 
@@ -45,7 +45,8 @@ export class HeaderComponent {
         public router: ActivatedRoute,
         public commonService: CommonService,
         public sanitizer: DomSanitizer,
-        private ngxXml2jsonService: NgxXml2jsonService) {
+     //   private ngxXml2jsonService: NgxXml2jsonService
+    ) {
         //fetch All the books and langauges
      //   this.AllBooks();
      this. getAttachments();

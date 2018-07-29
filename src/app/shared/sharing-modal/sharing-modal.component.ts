@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, ViewEncapsulation, ViewContainerRef } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { SHAREDURL, EMBED_URL } from '../../api/url';
 import { Router } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { ToastrService } from 'ngx-toastr';
-
 import { Clipboard } from 'ts-clipboard';
 
 @Component({
