@@ -11,24 +11,39 @@
   <link href="assets/css/style.css" rel=stylesheet />
   <link href="assets/style.css" rel=stylesheet />
   <link href="assets/css/toastr.css" rel=stylesheet />
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css" integrity="sha384-3AB7yXWz4OeoZcPbieVW64vVXEwADiYyAEhwilzWsLw+9FgqpyjjStpPnpBO8o8S"
+    crossorigin="anonymous">
   <link rel="stylesheet" type="text/css" href="http://acmesoftware.esy.es/assets/style.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-   
+
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>  -->
   <script type="application/javascript" src="http://acmesoftware.esy.es/assets/js/base.js"></script>
   <script type="application/javascript" src="http://acmesoftware.esy.es/assets/js/bootstrap.js"></script>
   <script type="application/javascript" src="main.js"></script>
-  
+
   <script>
-  history.pushState({}, "entry page", location.hash.substring(1));
-</script>
+    //history.pushState({}, "entry page", location.hash.substring(1));
+ 
+    window.addEventListener('popstate', function (e) {
+      // The popstate event is fired each time when the current history entry changes.
+
+      if (e.currentTarget.location.href.indexOf('home') > -1) {
+        console.log('index addEventListener')
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
+        window.location.assign(document.getElementById("prevURL").value);
+      }
+    }, false);
+
+  </script>
 </head>
 
 <body class="en en_index booklet-none locale-en">
-  <app-root></app-root> 
+  <input type="hidden" id="prevURL" />
+  <app-root></app-root>
 </body>
 
 </html>

@@ -1,10 +1,11 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { SHAREDURL, EMBED_URL } from '../../api/url';
-import { Router,NavigationStart  } from '@angular/router';
+import { Router,NavigationStart ,NavigationError,RoutesRecognized } from '@angular/router';
 import { CommonService } from '../../services/common.service';
 import { ToastrService } from 'ngx-toastr';
 import { Clipboard } from 'ts-clipboard';
 import { Location } from '@angular/common';
+
 
 @Component({
   selector: 'sharing-modal',
@@ -26,7 +27,7 @@ export class SharingModalComponent implements OnInit {
     private toastr: ToastrService,
     public location: Location,
   ) {
-
+  
     this.router.events.subscribe(() => {
       this.commonService.getUrl()
         .subscribe(x => {
@@ -42,27 +43,37 @@ export class SharingModalComponent implements OnInit {
         });     
     });
 
+    
 
-    router.events.subscribe((event) => {
-      if(event instanceof NavigationStart) {
-        console.log ('navigation starts')
-        console.log('this.currentUrl : ' + this.currentUrl);
-        console.log('window.location.href : ' + window.location.href);
-        if (this.currentUrl != undefined  && window.location.href != this.currentUrl) {
-          let Url = this.router.createUrlTree([window.location.pathname]).toString();
-          //console.log('Url : ' + Url);
-          this.commonService.setCurrentUrl(window.location.href);
+    // router.events.subscribe((event) => {
+
+      
+    //   if(event instanceof NavigationStart) {
+    //     console.log ('navigation starts')
+    //     //console.log('this.currentUrl : ' + this.currentUrl);
+    //    // console.log('window.location.href : ' + window.location.href);
+    //    // if (this.currentUrl != undefined  && window.location.href != this.currentUrl) {
+    //     //  let Url = this.router.createUrlTree([window.location.pathname]).toString();
+    //       //console.log('Url : ' + Url);
+    //     //  this.commonService.setCurrentUrl(window.location.href);
           
-          //this.location.go(Url);
-          this.router.navigateByUrl(window.location.pathname);
-       //   window.location.assign( window.location.href); 
-        }
-      }
-      // NavigationEnd
-      // NavigationCancel
-      // NavigationError
-      // RoutesRecognized
-    });
+    //       //this.location.go(Url);
+    //     //  this.router.navigateByUrl(window.location.pathname);
+    //    //   window.location.assign( window.location.href); 
+    //     }
+    //     if(event instanceof NavigationError) {
+    //       console.log ('navigation error')
+    //     }
+    //     if(event instanceof RoutesRecognized) {
+    //       console.log ('navigation RoutesRecognized')
+    //     }
+
+      
+    //   // NavigationEnd
+    //   // NavigationCancel
+    //   // NavigationError
+    //   // RoutesRecognized
+    // });
   }
 
   ngOnInit() {

@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 //import { isArray } from 'util';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
-//import { listeners } from 'cluster';
+//import { listeners } from 'cluster'; 
 
 @Component({
   selector: 'app-page',
@@ -75,8 +75,7 @@ export class PageComponent implements OnInit {
     public location: Location,
     private loaderService: LoaderService
   ) {
-
-    console.log(' loading page component');
+ 
     this.showLoader = true;
     this.AllBooks();
     this.AllLanguages();
@@ -99,11 +98,7 @@ export class PageComponent implements OnInit {
       this.showLoader = val;
     });
 
-    window.onhashchange = function () {
-      //blah blah blah
-      //this.previous();
-      console.log('back button')
-    }
+   
 
     if (this.commonService.selectedLan != undefined) {
       this.selectLan = this.commonService.selectedLan.attributes.name;
@@ -302,7 +297,8 @@ export class PageComponent implements OnInit {
     this.pageGetparameters.langid = lang.attributes.code;
     this.pageGetparameters.dir = lang.attributes.direction;
     if (!this.pageGetparameters.pageid) {
-      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
+      this.setPrevURL();
+      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();      
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
     }
@@ -326,7 +322,8 @@ export class PageComponent implements OnInit {
 
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
-          let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+          this.setPrevURL();
+          let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();          
           this.location.go(Url);
           this.commonService.setCurrentUrl(Url);
           this.getXmlFiles(this.currentTranslations[0]);
@@ -1097,6 +1094,11 @@ export class PageComponent implements OnInit {
     return modal;
   }
 
+
+  setPrevURL(){
+    (<HTMLInputElement>document.getElementById("prevURL")).value = location.href;
+  }
+
   Cards = [];
   Modals = [];
   cardsContent = [];
@@ -1127,7 +1129,8 @@ export class PageComponent implements OnInit {
     if (this.counter < this.allPages.length - 1) {
       this.counter++;
       this.pageGetparameters.pageid = this.counter;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      this.setPrevURL();       
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();      
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
@@ -1151,7 +1154,8 @@ export class PageComponent implements OnInit {
     if (this.counter > 1) {
       this.counter--;
       this.pageGetparameters.pageid = this.counter;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
+      this.setPrevURL();    
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();      
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
@@ -1161,7 +1165,8 @@ export class PageComponent implements OnInit {
     else {
       this.pageGetparameters.pageid = null;
       this.counter = 0;
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang]).toString();
+      this.setPrevURL();    
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang]).toString();      
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
@@ -1272,6 +1277,7 @@ export class PageComponent implements OnInit {
 
     if (this.currentPageContent.cards.length > 0) {
       let Url = "";
+     // this.setPrevURL();
       if (this.counter > 0) {
         Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       }
@@ -1279,6 +1285,7 @@ export class PageComponent implements OnInit {
         Url = this.router.createUrlTree(['/home', this.BookID, this.lang]).toString();
       }
 
+      
       this.location.go(Url);
       this.Modals = this.currentPageContent.modals;
       this.Cards = this.currentPageContent.cards;
@@ -1314,7 +1321,7 @@ export class PageComponent implements OnInit {
       //this.loading = false;
     }
 
-
+    this.showLoader = false;
 
   }
 
