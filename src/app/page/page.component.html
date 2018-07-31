@@ -95,7 +95,7 @@
               </span>
 
               <span class="actionbutton" dir={{pageGetparameters.dir}} *ngIf="item.type=='button'">
-                <a href="">{{item.text}}</a>
+                <a [href]="'http://' + item.text" target="_blank">{{item.text}}</a>
               </span>
             </p>
           </div>

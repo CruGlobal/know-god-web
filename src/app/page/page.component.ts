@@ -75,6 +75,8 @@ export class PageComponent implements OnInit {
     public location: Location,
     private loaderService: LoaderService
   ) {
+
+    console.log(' loading page component');
     this.showLoader = true;
     this.AllBooks();
     this.AllLanguages();
@@ -97,6 +99,11 @@ export class PageComponent implements OnInit {
       this.showLoader = val;
     });
 
+    window.onhashchange = function () {
+      //blah blah blah
+      //this.previous();
+      console.log('back button')
+    }
 
     if (this.commonService.selectedLan != undefined) {
       this.selectLan = this.commonService.selectedLan.attributes.name;
@@ -838,32 +845,35 @@ export class PageComponent implements OnInit {
   getHeroContent(hero) {
     var heropara = [];
 
+    let heroparagraphs = [];
+
     if (hero["content:paragraph"] != undefined && hero["content:paragraph"].length != undefined) {
-      hero["content:paragraph"].forEach(para => {
-
-
-        if (para["content:text"] != undefined) {
-          var paracontent = { type: '', text: '', image: '' };
-          paracontent.type = "text";
-          paracontent.text = para["content:text"];
-          heropara.push(paracontent);
-        }
-        if (para["content:button"] != undefined) {
-          var paracontent = { type: '', text: '', image: '' };
-          paracontent.type = "button";
-          paracontent.text = para["content:button"]["content:text"];
-          heropara.push(paracontent);
-        }
-        if (para["content:image"] != undefined) {
-          var paracontent = { type: '', text: '', image: '' };
-          paracontent.type = "image";
-          paracontent.image = this.getImageName(para["content:image"]); //para["content:image"]["@attributes"]["resource"];
-          heropara.push(paracontent);
-        }
-
-      });
-
+      heroparagraphs = hero["content:paragraph"];
+    } else if (hero["content:paragraph"] != undefined && hero["content:paragraph"].length == undefined) {
+      heroparagraphs.push(hero["content:paragraph"]);
     }
+
+    heroparagraphs.forEach(para => {
+      if (para["content:text"] != undefined) {
+        var paracontent = { type: '', text: '', image: '' };
+        paracontent.type = "text";
+        paracontent.text = para["content:text"];
+        heropara.push(paracontent);
+      }
+      if (para["content:button"] != undefined) {
+        var paracontent = { type: '', text: '', image: '' };
+        paracontent.type = "button";
+        paracontent.text = para["content:button"]["content:text"];
+        heropara.push(paracontent);
+      }
+      if (para["content:image"] != undefined) {
+        var paracontent = { type: '', text: '', image: '' };
+        paracontent.type = "image";
+        paracontent.image = this.getImageName(para["content:image"]); //para["content:image"]["@attributes"]["resource"];
+        heropara.push(paracontent);
+      }
+
+    });
 
     return heropara;
 
