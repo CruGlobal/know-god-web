@@ -177,6 +177,7 @@ p{
 .language-selector-toggle {
     line-height: 36px;
     padding: 12px 24px;
+    cursor: pointer;
 }
 
 .language-selector-toggle .fas{

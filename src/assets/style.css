@@ -239,7 +239,9 @@ a {
 }
 .kg-bg-white {
   background-color: var(--kg-white);
+  cursor: pointer;
 }
 .kg-bg-white-hover:hover {
   background-color: var(--kg-white);
+  cursor: pointer;
 }

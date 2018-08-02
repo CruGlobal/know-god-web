@@ -1,12 +1,12 @@
 .share {
     width: auto;
     height: auto;
-    padding: 12px 24px;
 }
 
 .share img {
     display: block;
-    padding: 10px 0;
+    padding: 12px 24px;
+    margin-top: 12px;
 }
 
 .sharemax{
@@ -28,8 +28,6 @@
 }
 
 .sharemax a div{
-  width:12px;
-  height:12px;
   font-size: initial;
 }
 
@@ -1479,9 +1477,13 @@ html {
     background-image: none;
     border: 1px solid transparent;
     white-space: nowrap;
-    padding: 6px 12px;
+    padding: 0;
     font-size: 14px;
-    line-height: 1.42857143;
+
+    line-height: 35px;
+    height: 35px;
+    width: 35px;
+
     border-radius: 4px;
     -webkit-user-select: none;
     -moz-user-select: none;
