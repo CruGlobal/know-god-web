@@ -15,7 +15,8 @@ html{
 .langicon{
     width: auto;
     float: left;
-    margin-top: 6px;
+    margin-top: 10px;
+    margin-right: 8px;
 }
 
 .pending-count{    position: absolute;
@@ -47,7 +48,7 @@ html{
 .page{
     width: 768px;
     /* position: relative; */
-    margin-left: 250px;
+    margin: 0 auto;
     /* left: 20%; */
     /* transform: translate(-50%, 0); */
     
@@ -59,10 +60,10 @@ html{
      
 }
 
-.footer{
+/*.footer{
     margin-left: 10px; 
     margin-top: 15px;    
-}
+}*/
 
 .buttons{
     text-align: center; 
@@ -140,14 +141,18 @@ margin-right: 2px;
 }
 
 .headerheight{ 
-    line-height: 30px;
-    padding-top: 30px;
+    margin-top: 60px;
+    margin-bottom: 36px;
 }
 
-.imgwidth{
+.headerheight h1 {
+    line-height: 42px;
+}
+
+/*.imgwidth{
     min-width: 440px;
     max-width: 540px;
-}
+}*/
 
 .form-control{
     border: 1px solid #3ba4db !important;
@@ -165,4 +170,37 @@ margin-right: 2px;
 
 p{
     line-height: 28px;
+}
+
+
+/***** CRU ADDITIONS *****/
+.language-selector-toggle {
+    line-height: 36px;
+    padding: 12px 24px;
+}
+
+.language-selector-toggle .fas{
+    margin-left: 5px;
+}
+
+.footer-wrapper {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.footer-wrapper > div > div {
+    padding: 12px 0;
+}
+
+.footer-wrapper img {
+    height: 45px;
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: middle;
+}
+
+.footer-wrapper span {
+    display: inline-block;
+    line-height: 45px;
+    vertical-align: middle;
 }

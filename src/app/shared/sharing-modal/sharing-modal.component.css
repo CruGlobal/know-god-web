@@ -1,8 +1,21 @@
+.share {
+    width: auto;
+    height: auto;
+    padding: 12px 24px;
+}
+
+.share img {
+    display: block;
+    padding: 10px 0;
+}
+
 .sharemax{
+  position: absolute;
   max-width: 50px;
   border-radius: 30px;
-   background-color:  #e6e4e4; 
-  margin-top:-35px;
+  background-color:  #e6e4e4; 
+  top: 11px;
+  right: 7px;
   padding-bottom: 5px;
 }
 

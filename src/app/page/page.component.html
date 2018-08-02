@@ -10,7 +10,7 @@
         <i class="fas fa-book"></i>{{selectbook}}
         <i class="fas fa-chevron-up flip" (click)="Books()"></i>
       </span> -->
-      <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
+      <span class="l absolute kg-gray-dark ng-binding language-selector-toggle">
 
         <img src="assets/img/lang.png" class="langicon"> {{selectLan}}
         <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
@@ -53,9 +53,9 @@
         </div>
       </div>
     </div>
-    <div class="py25 tc headerheight" *ngIf="FirstPage">
+    <div class="tc headerheight" *ngIf="FirstPage">
       <div *ngIf="currentPageContent">
-        <h2 class="mx100 tc ng-binding" style="min-height:70px" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
+        <h2 class="mx100 tc ng-binding" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
       </div>
     </div>
     <div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>
@@ -79,7 +79,7 @@
           </div>
 
           <div *ngIf="paras?.length > 0" [ngClass]="{'tc' : FirstPage || LastPage}">
-            <p class="mx144" dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
+            <p dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
 
               <span *ngIf="item.type== 'text' && isArray(item.text)==true">
                 <span class="ng-binding" dir={{pageGetparameters.dir}} *ngFor="let line of item.text">
@@ -90,7 +90,7 @@
                 {{item.text}}
               </span>
 
-              <span class="ng-binding image" *ngIf="item.type == 'image'">
+              <span class="ng-binding image tc" *ngIf="item.type == 'image'">
                 <img class="imgwidth" *ngIf="item.image!=undefined && item.image!=''" [src]="item.image" height="auto">
               </span>
 
@@ -223,17 +223,15 @@
 
     </div>
 
-    <div class="px100" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
-      <div class="line kg-gray-light f11">
-        <span class="fl py25 col-lg-8">
-          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px;float:left" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
-          <div class="footer">
-            © 1994-2018 Cru. All Rights Reserved.
-          </div>
-        </span>
-        <span class="fr py25 footer">Learn more at
-          <a class="kg-gray-light" href="godtoolsapp.com">godtoolsapp.com</a>
-        </span>
+    <div class="footer-wrapper" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
+      <div class="line f11">
+        <div class="col-lg-8">
+          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="float:left" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
+          <span>© 1994-2018 Cru. All Rights Reserved.</span>
+        </div>
+        <div class="col-lg-4 tr">
+          <span>Learn more at <a href="http://godtoolsapp.com">godtoolsapp.com</a></span>
+        </div>
       </div>
     </div>
 
