@@ -184,6 +184,10 @@ p{
     margin-left: 5px;
 }
 
+.progress-buttons .buttons {
+    width: calc(50% - 2px);
+}
+
 .footer-wrapper {
     margin-left: 100px;
     margin-right: 100px;
@@ -197,11 +201,11 @@ p{
     height: 45px;
     display: inline-block;
     margin-right: 12px;
-    vertical-align: middle;
+    vertical-align: bottom;
 }
 
 .footer-wrapper span {
     display: inline-block;
-    line-height: 45px;
-    vertical-align: middle;
+    line-height: 20px;
+    margin-top: 25px;
 }

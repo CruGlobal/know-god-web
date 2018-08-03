@@ -215,7 +215,7 @@
     </div>
 
 
-    <div class="my25 mx100" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
+    <div class="my25 mx100 tc progress-buttons" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
       <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
       <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="buttons kg-white  fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
@@ -225,12 +225,12 @@
 
     <div class="footer-wrapper" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <div class="line f11">
-        <div class="col-lg-8">
-          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="float:left" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
+        <div class="col-xs-8">
+          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
           <span>© 1994-2018 Cru. All Rights Reserved.</span>
         </div>
-        <div class="col-lg-4 tr">
-          <span>Learn more at <a href="http://godtoolsapp.com">godtoolsapp.com</a></span>
+        <div class="col-xs-4 tr">
+          <span>Learn more at <a href="http://godtoolsapp.com" target="_blank">godtoolsapp.com</a></span>
         </div>
       </div>
     </div>
