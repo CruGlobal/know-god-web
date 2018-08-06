@@ -779,7 +779,7 @@ export class PageComponent implements OnInit {
     attributes = {};
     if (resourcePage.page.hero) {
       heading = resourcePage.page.hero.heading == undefined ? '' : resourcePage.page.hero.heading["content:text"];
-      paragraph = resourcePage.page.hero;
+      //paragraph = resourcePage.page.hero;
       obj = resourcePage.page;
 
       paras = this.getHeroContent(resourcePage.page.hero);
@@ -841,7 +841,6 @@ export class PageComponent implements OnInit {
 
   getHeroContent(hero) {
     var heropara = [];
-
     let heroparagraphs = [];
 
     if (hero["content:paragraph"] != undefined && hero["content:paragraph"].length != undefined) {
