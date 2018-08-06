@@ -40,7 +40,13 @@
   </div>
 
   <div [hidden]="showLoader" class="page">
-    <div *ngIf="!showNoRecordFound && !errorpresent">
+    <!-- First Page Header -->
+    <div class="tc headerheight" *ngIf="FirstPage">
+      <div *ngIf="currentPageContent">
+        <h2 class="mx100 tc ng-binding" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
+      </div>
+    </div>
+    <div *ngIf="!showNoRecordFound && !errorpresent && !FirstPage">
       <div class="py25 kg-bg-blue kg-white headerheight" *ngIf="!FirstPage && !LastPage && !displayModel">
         <div *ngIf="pageGetparameters.dir=='ltr'">
           <h1 class="fl ml25  kg-white ng-binding headerheight" dir={{pageGetparameters.dir}} *ngIf="counter>0 && !displayForm">{{counter}}</h1>
@@ -51,11 +57,6 @@
         <div *ngIf="pageGetparameters.dir=='rtl'">
           <h1 class="mr25   kg-white ng-binding rtlpageno" dir={{pageGetparameters.dir}} *ngIf="counter>0  && !displayForm">{{counter}}</h1>
         </div>
-      </div>
-    </div>
-    <div class="tc headerheight" *ngIf="FirstPage">
-      <div *ngIf="currentPageContent">
-        <h2 class="mx100 tc ng-binding" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
       </div>
     </div>
     <div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>
@@ -71,10 +72,8 @@
                 <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}}> {{summary_line}} </span>
                 <p *ngFor="let item of multiple_summary_line">
                   <span dir={{pageGetparameters.dir}} class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
-
                 </p>
               </span>
-
             </p>
           </div>
 
@@ -208,32 +207,26 @@
 
       </div>
     </div>
-    <div>
-      <div class="mx100">
-
-      </div>
-    </div>
 
 
-    <div class="my25 mx100 tc progress-buttons" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
+    <div class="my25 mx100 tc tool-navigation" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
       <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
       <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="buttons kg-white  fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
       <a *ngIf="counter==allPages.length-1" dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
-
     </div>
 
-    <div class="footer-wrapper" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
-      <div class="line f11">
-        <div class="col-xs-8">
+    <footer *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
+      <div class="row">
+        <div class="col-8">
           <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
           <span>© 1994-2018 Cru. All Rights Reserved.</span>
         </div>
-        <div class="col-xs-4 tr">
+        <div class="col-4 tr">
           <span>Learn more at <a href="http://godtoolsapp.com" target="_blank">godtoolsapp.com</a></span>
         </div>
       </div>
-    </div>
+    </footer>
 
     <!-- <div *ngIf="showNoRecordFound">
     <h3>There are no records found for this language.</h3>
