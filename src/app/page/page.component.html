@@ -61,7 +61,8 @@
             <p dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
               <span *ngIf="item.type== 'text' && isArray(item.text)==true">
                 <span class="ng-binding" dir={{pageGetparameters.dir}} *ngFor="let line of item.text">
-                  {{line}} <br/>
+                  {{line}}
+                  <br/>
                 </span>
               </span>
               <span class="ng-binding" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text' && isArray(item.text)==false">
@@ -94,7 +95,15 @@
                 <span *ngIf="card.link!=undefined && card.link[i]!=''" class="cardlink col-lg-12">
                   <a (click)="formAction(card.link[i][1])">{{card.link[i][0]}}</a>
                 </span>
-                <img class="imgwidth" *ngIf="card.image!=undefined && card.image[i]!=''" [src]="card.image[i]" height="auto">
+
+                
+                  <!-- <img class="imgwidth" *ngIf="card.image!=undefined && card.image[i]!=''" [src]="card.image[i]" height="auto"> -->
+                
+                <p class="mx144" *ngFor="let cardimage of card.image">                  
+                  <img  class="imgwidth" *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null" [src]="cardimage.image"
+                    height="auto">
+                </p>
+
               </div>
               <table width="col-lg-12" *ngIf="card.tabs.length > 0">
                 <tr style="overflow:hidden">
