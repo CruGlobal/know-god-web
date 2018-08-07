@@ -1,8 +1,20 @@
+.share {
+    width: auto;
+    height: auto;
+}
+
+.share img {
+    display: block;
+    padding: 22px 24px;
+}
+
 .sharemax{
+  position: absolute;
   max-width: 50px;
   border-radius: 30px;
-   background-color:  #e6e4e4; 
-  margin-top:-35px;
+  background-color:  #e6e4e4; 
+  top: 11px;
+  right: 12px;
   padding-bottom: 5px;
 }
 
@@ -15,8 +27,6 @@
 }
 
 .sharemax a div{
-  width:12px;
-  height:12px;
   font-size: initial;
 }
 
@@ -1466,9 +1476,13 @@ html {
     background-image: none;
     border: 1px solid transparent;
     white-space: nowrap;
-    padding: 6px 12px;
+    padding: 0;
     font-size: 14px;
-    line-height: 1.42857143;
+
+    line-height: 36px;
+    height: 36px;
+    width: 36px;
+
     border-radius: 4px;
     -webkit-user-select: none;
     -moz-user-select: none;

@@ -1,7 +1,122 @@
+/***** Global *****/
 html{
     background-color: white !important;
 }
 
+
+/***** Bootstrap-ish *****/
+.container {
+    max-width: 100%;
+}
+
+.row {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+.col-4, .col-8 {
+    position: relative;
+    width: 100%;
+    min-height: 1px;
+    padding-right: 15px;
+    padding-left: 15px;
+}
+
+.col-4 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 33.33333%;
+    flex: 0 0 33.33333%;
+    max-width: 33.33333%;
+}
+
+.col-8 {
+    -webkit-box-flex: 0;
+    -ms-flex: 0 0 66.66667%;
+    flex: 0 0 66.66667%;
+    max-width: 66.66667%;
+}
+
+
+/***** Header *****/
+/*header {
+    height: 60px;
+    border-bottom: 1px var(--kg-gray-light) solid;
+}*/
+
+
+/***** Language Selector *****/
+.language-selector-toggle {
+    line-height: 36px;
+    padding: 12px 24px;
+    cursor: pointer;
+}
+
+.language-selector-toggle .fas{
+    margin-left: 5px;
+}
+
+
+/***** Tool Navigation *****/
+.tool-navigation {
+    margin-top: 30px;
+    margin-left: 100px;
+    margin-right: 100px;
+    margin-bottom: 30px;
+}
+.tool-navigation .buttons {
+    width: calc(50% - 2px);
+}
+
+
+/***** Alerts *****/
+.alertJumbotron {
+    margin-top: 20%;
+    margin-bottom: 30px;
+    padding: 30px 15px;
+    color: inherit;
+    background-color: #eeeeee;
+    border-radius: 3px;
+}
+
+.alertJumbotron h2 {
+    margin-bottom: 0;
+}
+
+@media screen and (min-width: 550px) {
+    .alertJumbotron {
+        padding: 48px 60px;
+    }
+}
+
+
+/***** Footer *****/
+footer {
+    text-align: left;
+    padding: 12px 0;
+    margin-left: 100px;
+    margin-right: 100px;
+    border-top: var(--kg-gray-light) 2px solid;
+    font-size: 11px;
+}
+
+footer img {
+    height: 45px;
+    display: inline-block;
+    margin-right: 12px;
+    vertical-align: bottom;
+}
+
+footer span {
+    display: inline-block;
+    line-height: 20px;
+    margin-top: 25px;
+}
+
+
+/***** Other *****/
 .mr25{
     margin-right:25px;
     margin-bottom: 40px;
@@ -15,7 +130,8 @@ html{
 .langicon{
     width: auto;
     float: left;
-    margin-top: 6px;
+    margin-top: 10px;
+    margin-right: 8px;
 }
 
 .pending-count{    position: absolute;
@@ -44,25 +160,16 @@ html{
     font-size: 24px;
 }
 
-.page{
-    width: 768px;
-    /* position: relative; */
-    margin-left: 250px;
-    /* left: 20%; */
-    /* transform: translate(-50%, 0); */
-    
-}
-
 .outerbox{
-    align-content: center;
-    align-items: center;
+    width: 768px;
+    margin: 0 auto;
      
 }
 
-.footer{
+/*.footer{
     margin-left: 10px; 
     margin-top: 15px;    
-}
+}*/
 
 .buttons{
     text-align: center; 
@@ -139,15 +246,19 @@ margin-right: 2px;
     color:#3ba4db;    
 }
 
-.headerheight{ 
-    line-height: 30px;
-    padding-top: 30px;
+.headerheight .firstHeading { 
+    margin-top: 60px;
+    margin-bottom: 36px;
 }
 
-.imgwidth{
+.headerheight h1 {
+    line-height: 42px;
+}
+
+/*.imgwidth{
     min-width: 440px;
     max-width: 540px;
-}
+}*/
 
 .form-control{
     border: 1px solid #3ba4db !important;
@@ -163,6 +274,12 @@ margin-right: 2px;
     background-color: #7fbfe0;    
 }
 
-p{
+p {
     line-height: 28px;
+}
+
+.mx100 .image {
+    display: block;
+    margin-left: -100px;
+    margin-right: -100px;
 }

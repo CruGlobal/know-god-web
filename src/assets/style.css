@@ -131,6 +131,10 @@ a {
   margin-left: 100px;
   margin-right: 100px;
 }
+.mx114 {
+  margin-left: 114px;
+  margin-right: 114px;
+}
 .mx144 {
   margin-left: 44px;
   margin-right: 44px;
@@ -176,6 +180,9 @@ a {
 }
 .tc {
   text-align: center;
+}
+.tc img {
+  margin: 0 auto;
 }
 .tr {
   text-align: right;
@@ -232,7 +239,9 @@ a {
 }
 .kg-bg-white {
   background-color: var(--kg-white);
+  cursor: pointer;
 }
 .kg-bg-white-hover:hover {
   background-color: var(--kg-white);
+  cursor: pointer;
 }

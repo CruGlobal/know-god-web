@@ -1,46 +1,31 @@
 <div class="outerbox">
-  <div class="page">
-    <div class="header tc relative">
-      <!-- <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
-        <a [routerLink]="''">
-          <i class="fas fa-home"></i>
-        </a>
-      </span>
-      <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
-        <i class="fas fa-book"></i>{{selectbook}}
-        <i class="fas fa-chevron-up flip" (click)="Books()"></i>
-      </span> -->
-      <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
 
+  <!-- Tools Persistent Header -->
+  <header>
+    <div class="header tc relative">
+      <span class="l absolute kg-gray-dark ng-binding language-selector-toggle">
         <img src="assets/img/lang.png" class="langicon"> {{selectLan}}
         <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
       </span>
-
-      <!-- <div class="dib progress pill my25 kg-bg-gray-light">
-        <div class="kg-bg-gray pill"></div>
-      </div> -->
       <sharing-modal [book]="selectbook"></sharing-modal>
     </div>
-
-
-
-    <!-- <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="books">
-
-      <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
-        <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectBook(book,true)"> {{book.attributes.name}}</span> 
-      </span>
-    </div> -->
-
     <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="language">
       <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
         <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectLanguage(lang,true)"> {{lang.attributes.name}}</span>
       </span>
-
     </div>
-  </div>
+  </header>
 
-  <div [hidden]="showLoader" class="page">
-    <div *ngIf="!showNoRecordFound && !errorpresent">
+  <!-- Main Content -->
+  <div [hidden]="showLoader">
+
+    <!-- First Page Header -->
+    <div class="tc headerheight" *ngIf="FirstPage && currentPageContent">
+      <h2 class="mx100 tc firstHeading ng-binding" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
+    </div>
+
+    <!-- Additional Pages Header -->
+    <div *ngIf="!showNoRecordFound && !errorpresent && !FirstPage">
       <div class="py25 kg-bg-blue kg-white headerheight" *ngIf="!FirstPage && !LastPage && !displayModel">
         <div *ngIf="pageGetparameters.dir=='ltr'">
           <h1 class="fl ml25  kg-white ng-binding headerheight" dir={{pageGetparameters.dir}} *ngIf="counter>0 && !displayForm">{{counter}}</h1>
@@ -53,34 +38,27 @@
         </div>
       </div>
     </div>
-    <div class="py25 tc headerheight" *ngIf="FirstPage">
-      <div *ngIf="currentPageContent">
-        <h2 class="mx100 tc ng-binding" style="min-height:70px" dir={{pageGetparameters.dir}}>{{currentPageContent?.heading}}</h2>
-      </div>
-    </div>
+
+    <!-- Spacer -->
     <div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>
+
     <div>
       <div class="mx100" *ngIf="!showNoRecordFound  && !errorpresent">
         <div>
-          <div>
-            <!-- <h2 class="ng-binding">This response involves ...</h2> -->
-          </div>
+
           <div class="ng-scope" [ngClass]="{'tc' : FirstPage || LastPage}">
             <p class="mx144">
               <span class="db ng-scope">
                 <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}}> {{summary_line}} </span>
                 <p *ngFor="let item of multiple_summary_line">
                   <span dir={{pageGetparameters.dir}} class="ng-binding ng-scope" style="margin-bottom: 5px;"> {{item}} </span>
-
                 </p>
               </span>
-
             </p>
           </div>
 
           <div *ngIf="paras?.length > 0" [ngClass]="{'tc' : FirstPage || LastPage}">
-            <p class="mx144" dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
-
+            <p dir={{pageGetparameters.dir}} *ngFor="let item of paras; let i= index">
               <span *ngIf="item.type== 'text' && isArray(item.text)==true">
                 <span class="ng-binding" dir={{pageGetparameters.dir}} *ngFor="let line of item.text">
                   {{line}}
@@ -90,11 +68,9 @@
               <span class="ng-binding" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text' && isArray(item.text)==false">
                 {{item.text}}
               </span>
-
-              <span class="ng-binding image" *ngIf="item.type == 'image'">
+              <span class="ng-binding image tc" *ngIf="item.type == 'image'">
                 <img class="imgwidth" *ngIf="item.image!=undefined && item.image!=''" [src]="item.image" height="auto">
               </span>
-
               <span class="actionbutton" dir={{pageGetparameters.dir}} *ngIf="item.type=='button'">
                 <a [href]="'http://' + item.text" target="_blank">{{item.text}}</a>
               </span>
@@ -111,13 +87,11 @@
                 <div *ngIf="isArray(card.content[i])==true">
                   <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let cardcont of card.content[i]">{{cardcont}}</p>
                 </div>
-
                 <p class="mx144 tc">
                   <span class="cardbutton" *ngIf="card.button!=undefined && card.button[i]!=''">
                     <a (click)="formAction(card.button[i][1])">{{card.button[i][0]}}</a>
                   </span>
                 </p>
-
                 <span *ngIf="card.link!=undefined && card.link[i]!=''" class="cardlink col-lg-12">
                   <a (click)="formAction(card.link[i][1])">{{card.link[i][0]}}</a>
                 </span>
@@ -131,29 +105,23 @@
                 </p>
 
               </div>
-
               <table width="col-lg-12" *ngIf="card.tabs.length > 0">
                 <tr style="overflow:hidden">
                   <!-- comparison table -->
                   <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
-                    <!-- <h4 class="mx144 ng-scope" dir={{pageGetparameters.dir}}>{{cardtab.heading}}</h4> -->
                     <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
                     <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
                     <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
-
                   </td>
                 </tr>
               </table>
-
               <div *ngIf="card.forms.length > 0">
                 <form *ngFor="let cardform of card.forms;let j= index" class="mx144">
-
                   <div class="form-group" *ngFor="let element of cardform.elements">
                     <label [for]="element.name">{{element.label}}</label>
                     <input [type]="element.type" class="form-control" [value]="element.value" [name]="element.name" [placeholder]="element.placeholder"
                       [required]="element.required">
                   </div>
-
                   <div class="form-group" *ngFor="let button of cardform.buttons">
                     <p class="mx144 tc">
                       <span class="cardbutton">
@@ -161,31 +129,23 @@
                       </span>
                     </p>
                   </div>
-
                   <div class="form-group" *ngFor="let link of cardform.links">
                     <span class="cardlink">
                       <a (click)="formAction(link[1])">{{link[0]}}</a>
                     </span>
                   </div>
-
                 </form>
               </div>
-
             </div>
           </div>
-
+          
           <div *ngIf="displayModel">
-
             <div *ngFor="let modal of Modals">
-
               <div class="kg-bg-blue kg-white headerheight">
-
                 <div *ngIf="currentPageContent">
                   <h2 class="mx100 kg-white ng-binding tc" style="min-height:70px">{{modal.title}}</h2>
                 </div>
               </div>
-
-
               <div *ngIf="modal.paras?.length > 0" class="tc">
                 <div class="mx144" dir={{pageGetparameters.dir}} *ngFor="let item of modal.paras; let i= index">
                   <p class="mx144" dir={{pageGetparameters.dir}}>
@@ -193,7 +153,6 @@
                       {{item.text}}
                     </span>
                   </p>
-
                   <p class="mx144 tc">
                     <span class="cardbutton" *ngIf="item.type=='button'">
                       <a (click)="formAction(item.button[1])">{{item.button[0]}}</a>
@@ -201,69 +160,40 @@
                   </p>
                 </div>
               </div>
-
             </div>
           </div>
-
-
+          
           <div *ngIf="call_to_action!=''">
             <h4 class="calltoaction">{{call_to_action}}</h4>
           </div>
-
+          
         </div>
-
-      </div>
-    </div>
-    <div>
-      <div class="mx100">
-
       </div>
     </div>
 
-
-    <div class="my25 mx100" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
+    <div class="tool-navigation" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
       <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
       <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="buttons kg-white  fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
       <a *ngIf="counter==allPages.length-1" dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
-
     </div>
 
-    <div class="px100" *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
-      <div class="line kg-gray-light f11">
-        <span class="fl py25 col-lg-8">
-          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" style="height:28px;float:left" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
-          <div class="footer">
-            © 1994-2018 Cru. All Rights Reserved.
-          </div>
-        </span>
-        <span class="fr py25 footer">Learn more at
-          <a class="kg-gray-light" href="godtoolsapp.com">godtoolsapp.com</a>
-        </span>
-      </div>
-    </div>
-
-    <!-- <div *ngIf="showNoRecordFound">
-    <h3>There are no records found for this language.</h3>
-</div> -->
-
-    <div class="container" style="margin-top: 20%;" *ngIf="showNoRecordFound">
+    <footer *ngIf="!showNoRecordFound && !displayForm  && !errorpresent">
       <div class="row">
-        <div style="width: 768px">
-          <div class="jumbotron">
-            <h2>This book isn't available in the currently selected language.</h2>
-          </div>
+        <div class="col-8">
+          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
+          <span>© 1994-2018 Cru. All Rights Reserved.</span>
+        </div>
+        <div class="col-4 tr">
+          <span>Learn more at <a href="http://godtoolsapp.com" target="_blank">godtoolsapp.com</a></span>
         </div>
       </div>
+    </footer>
+
+    <div class="alertJumbotron" *ngIf="showNoRecordFound || errorpresent">
+      <h2 *ngIf="showNoRecordFound">This book isn't available in the currently selected language.</h2>
+      <h2 *ngIf="errorpresent">{{errorMsg}}</h2>
     </div>
 
-    <div class="container" style="margin-top: 20%;" *ngIf="errorpresent">
-      <div class="row">
-        <div style="width: 768px">
-          <div class="jumbotron" style="margin-top: -25%;width: 108%;margin-left: -20px;">
-            <h2>{{errorMsg}}</h2>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  </div><!-- end Main Content -->
+</div><!-- end .outerbox -->
