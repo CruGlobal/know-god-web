@@ -75,7 +75,7 @@ export class PageComponent implements OnInit {
     public location: Location,
     private loaderService: LoaderService
   ) {
- 
+
     this.showLoader = true;
     this.AllBooks();
     this.AllLanguages();
@@ -98,7 +98,7 @@ export class PageComponent implements OnInit {
       this.showLoader = val;
     });
 
-   
+
 
     if (this.commonService.selectedLan != undefined) {
       this.selectLan = this.commonService.selectedLan.attributes.name;
@@ -298,7 +298,7 @@ export class PageComponent implements OnInit {
     this.pageGetparameters.dir = lang.attributes.direction;
     if (!this.pageGetparameters.pageid) {
       this.setPrevURL();
-      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();      
+      let Url = this.router.createUrlTree(['/home', this.BookID, lang.attributes.code]).toString();
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
     }
@@ -323,7 +323,7 @@ export class PageComponent implements OnInit {
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
           this.setPrevURL();
-          let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();          
+          let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
           this.location.go(Url);
           this.commonService.setCurrentUrl(Url);
           this.getXmlFiles(this.currentTranslations[0]);
@@ -779,7 +779,7 @@ export class PageComponent implements OnInit {
     attributes = {};
     if (resourcePage.page.hero) {
       heading = resourcePage.page.hero.heading == undefined ? '' : resourcePage.page.hero.heading["content:text"];
-      paragraph = resourcePage.page.hero;
+      //paragraph = resourcePage.page.hero;
       obj = resourcePage.page;
 
       paras = this.getHeroContent(resourcePage.page.hero);
@@ -841,7 +841,6 @@ export class PageComponent implements OnInit {
 
   getHeroContent(hero) {
     var heropara = [];
-
     let heroparagraphs = [];
 
     if (hero["content:paragraph"] != undefined && hero["content:paragraph"].length != undefined) {
@@ -864,10 +863,19 @@ export class PageComponent implements OnInit {
         heropara.push(paracontent);
       }
       if (para["content:image"] != undefined) {
-        var paracontent = { type: '', text: '', image: '' };
-        paracontent.type = "image";
-        paracontent.image = this.getImageName(para["content:image"]); //para["content:image"]["@attributes"]["resource"];
-        heropara.push(paracontent);
+        if (para["content:image"].length == undefined) {
+          var paracontent = { type: '', text: '', image: '' };
+          paracontent.type = "image";
+          paracontent.image = this.getImageName(para["content:image"]); //para["content:image"]["@attributes"]["resource"];
+          heropara.push(paracontent);
+        } else {
+          para["content:image"].forEach(heroimage => {
+            var paracontent = { type: '', text: '', image: '' };
+            paracontent.type = "image";
+            paracontent.image = this.getImageName(heroimage); //para["content:image"]["@attributes"]["resource"];
+            heropara.push(paracontent);
+          });
+        }
       }
 
     });
@@ -931,7 +939,17 @@ export class PageComponent implements OnInit {
 
       //handle image
       if (formpara["content:image"]) {
-        card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
+
+        if (formpara["content:image"].length == undefined)
+          card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
+        else {
+          formpara["content:image"].forEach(cardimage => {
+            var paracontent = { type: '', text: '', image: '' };
+            paracontent.type = "image";
+            paracontent.image = this.getImageName(cardimage); //para["content:image"]["@attributes"]["resource"];
+            card.image.push(paracontent);
+          });
+        }
       }
       else {
         card.image.push("");
@@ -1095,7 +1113,7 @@ export class PageComponent implements OnInit {
   }
 
 
-  setPrevURL(){
+  setPrevURL() {
     (<HTMLInputElement>document.getElementById("prevURL")).value = location.href;
   }
 
@@ -1129,8 +1147,8 @@ export class PageComponent implements OnInit {
     if (this.counter < this.allPages.length - 1) {
       this.counter++;
       this.pageGetparameters.pageid = this.counter;
-      this.setPrevURL();       
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();      
+      this.setPrevURL();
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
@@ -1154,8 +1172,8 @@ export class PageComponent implements OnInit {
     if (this.counter > 1) {
       this.counter--;
       this.pageGetparameters.pageid = this.counter;
-      this.setPrevURL();    
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();      
+      this.setPrevURL();
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
@@ -1165,8 +1183,8 @@ export class PageComponent implements OnInit {
     else {
       this.pageGetparameters.pageid = null;
       this.counter = 0;
-      this.setPrevURL();    
-      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang]).toString();      
+      this.setPrevURL();
+      let Url = this.router.createUrlTree(['/home', this.BookID, this.lang]).toString();
       this.location.go(Url);
       this.commonService.setCurrentUrl(Url);
       this.LoadPage(this.counter);
@@ -1277,7 +1295,7 @@ export class PageComponent implements OnInit {
 
     if (this.currentPageContent.cards.length > 0) {
       let Url = "";
-     // this.setPrevURL();
+      // this.setPrevURL();
       if (this.counter > 0) {
         Url = this.router.createUrlTree(['/home', this.BookID, this.lang, this.counter]).toString();
       }
@@ -1285,7 +1303,7 @@ export class PageComponent implements OnInit {
         Url = this.router.createUrlTree(['/home', this.BookID, this.lang]).toString();
       }
 
-      
+
       this.location.go(Url);
       this.Modals = this.currentPageContent.modals;
       this.Cards = this.currentPageContent.cards;
