@@ -246,7 +246,7 @@ margin-right: 2px;
     color:#3ba4db;    
 }
 
-.headerheight{ 
+.headerheight .firstHeading { 
     margin-top: 60px;
     margin-bottom: 36px;
 }
