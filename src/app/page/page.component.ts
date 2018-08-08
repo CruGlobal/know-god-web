@@ -943,12 +943,14 @@ export class PageComponent implements OnInit {
         if (formpara["content:image"].length == undefined)
           card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
         else {
+          var imgArr = [];
           formpara["content:image"].forEach(cardimage => {
             var paracontent = { type: '', text: '', image: '' };
             paracontent.type = "image";
             paracontent.image = this.getImageName(cardimage); //para["content:image"]["@attributes"]["resource"];
-            card.image.push(paracontent);
+            imgArr.push(paracontent);
           });
+          card.image.push(imgArr);
         }
       }
       else {
