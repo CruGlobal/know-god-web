@@ -715,7 +715,7 @@ export class PageComponent implements OnInit {
     if (this.IndexContent != undefined && this.IndexContent != null) {
 
       var attachments = this.IndexContent.included.filter(row => {
-        if (row.type == "attachment" && row.attributes["file-file-name"] == resource)
+        if (row.type.toLowerCase() == "attachment" && row.attributes["file-file-name"].toLowerCase() == resource.toLowerCase())
           return true;
         else
           return false;
