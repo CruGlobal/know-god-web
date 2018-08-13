@@ -96,13 +96,16 @@
                   <a (click)="formAction(card.link[i][1])">{{card.link[i][0]}}</a>
                 </span>
 
-                
-                  <!-- <img class="imgwidth" *ngIf="card.image!=undefined && card.image[i]!=''" [src]="card.image[i]" height="auto"> -->
-                
-                <p class="mx144" *ngFor="let cardimage of card.image">                  
-                  <img  class="imgwidth" *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null" [src]="cardimage.image"
-                    height="auto">
-                </p>
+
+                <div *ngIf="isArray(card.content[i])==false">
+                  <img class="imgwidth" *ngIf="card.image!=undefined && card.image[i]!=''" [src]="card.image[i]" height="auto">
+                </div>
+                <div *ngIf="isArray(card.content[i])==true">
+                  <p class="mx144" *ngFor="let cardimage of card.image[i]">
+                    <img class="imgwidth" *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null" [src]="cardimage.image"
+                      height="auto">
+                  </p>
+                </div>
 
               </div>
               <table width="col-lg-12" *ngIf="card.tabs.length > 0">
