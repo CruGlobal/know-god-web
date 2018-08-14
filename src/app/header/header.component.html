@@ -8,9 +8,9 @@
       <i class="fas fa-book"></i>{{selectedLookup.bookname}}
       <i class="fas fa-chevron-up flip" (click)="expandBookDropdown(null)"></i>
     </span>
-    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 75%;">
+    <span (click)="expandLanguageDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding language-selector" style="margin-left: 75%;">
       <i class="fas fa-language"></i> {{selectedLookup.language}}
-      <i class="fas fa-chevron-up flip" (click)="expandLanguageDropdown(null)"></i>
+      <i class="fas fa-chevron-up flip"></i>
     </span>
     <div class="dib progress pill my25 kg-bg-gray-light">
       <div class="kg-bg-gray pill"> </div>
