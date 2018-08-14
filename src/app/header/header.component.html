@@ -1,21 +1,13 @@
 <div>
   <div class="header tc relative">
-    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
-      <i class="fas fa-home"></i>
-      <!-- <i class="fas fa-chevron-up flip"></i> -->
-    </span>
-    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 25%;">
+    <span (click)="expandBookDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding pointer" style="margin-left: 5%;">
       <i class="fas fa-book"></i>{{selectedLookup.bookname}}
-      <i class="fas fa-chevron-up flip" (click)="expandBookDropdown(null)"></i>
+      <i class="fas fa-chevron-up flip"></i>
     </span>
-    <span (click)="expandLanguageDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding language-selector" style="margin-left: 75%;">
+    <span (click)="expandLanguageDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding pointer" style="margin-left: 75%;">
       <i class="fas fa-language"></i> {{selectedLookup.language}}
       <i class="fas fa-chevron-up flip"></i>
     </span>
-    <div class="dib progress pill my25 kg-bg-gray-light">
-      <div class="kg-bg-gray pill"> </div>
-    </div>
-
   </div>
 
   <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="isBooksSelected">
