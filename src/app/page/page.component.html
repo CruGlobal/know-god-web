@@ -90,7 +90,7 @@
           <!-- Button content -->
           <ng-container *ngIf="item.type=='button'">
             <div class="mw568 buttonContent tc" dir={{pageGetparameters.dir}}>
-              <a [href]="'http://' + item.text" target="_blank">{{item.text}}</a>
+              <a [href]="'http://' + item.text" target="_blank">{{hostnameUrlFromLink(item.text)}}</a>
             </div>
           </ng-container>
 

@@ -1438,6 +1438,16 @@ export class PageComponent implements OnInit {
 
     this.ClearContent();
     this.displayModel = true;
-
   }
+
+  hostnameUrlFromLink(link) {
+    let parser = document.createElement('a');
+    if (!link.startsWith("http://") || !link.startsWith("https://")) {
+      link = `http://${link}`;
+    }
+    parser.href = link;
+    let hostnameFromLink = parser.hostname;
+    return hostnameFromLink
+  }
+
 }
