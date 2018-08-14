@@ -1,10 +1,10 @@
 <div>
   <div class="header tc relative">
-    <span class="l p25 absolute kg-gray-dark ng-binding" style="margin-left: 5%;">
+    <span (click)="expandBookDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding pointer" style="margin-left: 5%;">
       <i class="fas fa-book"></i>{{selectedLookup.bookname}}
-      <i class="fas fa-chevron-up flip" (click)="expandBookDropdown(null)"></i>
+      <i class="fas fa-chevron-up flip"></i>
     </span>
-    <span (click)="expandLanguageDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding language-selector" style="margin-left: 75%;">
+    <span (click)="expandLanguageDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding pointer" style="margin-left: 75%;">
       <i class="fas fa-language"></i> {{selectedLookup.language}}
       <i class="fas fa-chevron-up flip"></i>
     </span>
