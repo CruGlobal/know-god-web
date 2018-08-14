@@ -33,15 +33,6 @@ p {
     padding-right: 24px;
 }
 
-@media screen and (min-width: 616px) { /* 568 + 48 */
-    .mw568 {
-        max-width: 568px;
-        width: 100%;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
 
 /***** Bootstrap-ish *****/
 .container {
@@ -125,18 +116,138 @@ p {
 
 
 /***** Content *****/
-.arrayContent span {
-    display: block;
+#toolContent > *:first-child:not([class*="stepHeading"]) {
+    margin-top: 48px;
+}
+
+#toolContent > *:not(footer) {
+    margin-bottom: 30px;
+}
+
+.firstHeading { 
+    margin-top: 60px;
+    margin-bottom: 36px !important;
 }
 
 p.firstContent {
     font-size: 20px;
+}
+
+.stepHeading {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    color: white;
+    background-color: var(--kg-blue);
+    margin-bottom: 0 !important;
+}
+
+.stepHeading h1 {
+    position: relative;
+    font-size: 36px;
+    line-height: 42px;
+    color: white;
+}
+
+.stepHeading span:after {
+    display: inline-block;
+    content: ")";
+}
+
+.stepHeading span {
+    margin-right: 12px;
+    font-weight: 400;
+}
+
+.stepHeading h1[dir=rtl] span {
+    margin-left: 12px;
+}
+
+.stepHeading + *:not([class*="imageContent"]) {
+    margin-top: 48px;
+}
+
+.imageContent:not(:first-child) {
     margin-bottom: 30px;
 }
 
-img.firstImage {
+.arrayContent {
     margin-bottom: 30px;
 }
+
+.arrayContent span {
+    display: block;
+    margin-bottom: 24px;
+}
+
+.calltoaction {
+    text-align: center;
+    font-weight: lighter;
+    margin-top: 48px;
+    margin-bottom: 48px !important;
+    font-size: 24px;
+    line-height: 30px;
+}
+
+.cardHeading + .cardButton {
+    margin-top: 48px;
+}
+
+.cardButton {
+    text-align: center;
+}
+
+.cardButton + .cardButton {
+    margin-top: 12px;
+}
+
+.buttonContent a {
+    background-color: #3ba4db; 
+    text-align: center;
+    border-radius: 50px;
+    padding: 11px 25px; 
+    min-width: 200px;
+    max-width: 568px;
+    color:white;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+.linkContent { 
+    text-align:center;
+    margin-top: 24px;
+    width: 100%;
+    display: inherit;
+}
+
+.linkContent a {
+    color:#3ba4db;    
+}
+
+/*.actionbutton {
+    background-color: #3ba4db;
+    width: 264px;
+    height: 64px;
+    text-align: center;
+    border-radius: 50px 50px 50px 50px;
+    padding: 15px 35px; 
+}
+
+.actionbutton a {
+    color:white;
+    text-decoration: none;
+    min-width: 310px;
+    display: inline-block;
+}
+
+.actionbutton a:hover {
+    color:#3ba4db;
+}
+
+.actionbutton:hover {   
+    background-color: #7fbfe0;    
+}*/
 
 
 /***** Alerts *****/
@@ -220,13 +331,6 @@ footer span {
          overflow: scroll; */
     }
 
-.calltoaction{
-    text-align: center;
-    font-weight: lighter;
-    padding-top: 10px;
-    font-size: 24px;
-}
-
 /*.footer{
     margin-left: 10px; 
     margin-top: 15px;    
@@ -262,112 +366,54 @@ a.kg-bg-blue:hover{
     color:#3ba4db;
 }
 
-.actionbutton{
-    background-color: #3ba4db;
-    width: 264px;
-    height: 64px;
-    text-align: center;
-    border-radius: 50px 50px 50px 50px;
-    padding: 15px 35px; 
-}
-
-.actionbutton a{
-    color:white;
-    text-decoration: none;
-    min-width: 310px;
-    display: inline-block;
-}
-
-.cardbutton{
-    background-color: #3ba4db; 
-    text-align: center;
-    border-radius: 50px 50px 50px 50px; 
-    /* margin-left: 28%; */
-    padding: 15px 25px; 
-}
-
-.cardbutton a{
-    color:white;
-    text-decoration: none;
-    min-width: 150px;
-    display: inline-block;
-    margin: 7px 0px;
-}
-
-.cardlink{ 
-    text-align:center;
-    padding: 25px 25px;
-    width: 100%;
-    display: inherit;
-    /* color:#3ba4db;
-    float: left; */
-}
-
-.cardlink a{
-    color:#3ba4db;    
-}
-
-.firstHeading { 
-    margin-top: 60px;
-    margin-bottom: 36px;
-}
-
-.stepHeading {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    color: white;
-    background-color: var(--kg-blue);
-}
-
-.stepHeading h1 {
-    position: relative;
-    font-size: 36px;
-    line-height: 42px;
-    color: white;
-}
-
-.stepHeading span:after {
-    display: inline-block;
-    content: ")";
-}
-
-.stepHeading span {
-    margin-right: 12px;
-    font-weight: 400;
-}
-
-.stepHeading h1[dir=rtl] span {
-    margin-left: 12px;
-}
-
-/*.imgwidth{
-    min-width: 440px;
-    max-width: 540px;
-}*/
 
 .form-control{
     border: 1px solid #3ba4db !important;
 }
 
-
-
-.actionbutton a:hover{
-    color:#3ba4db;
+#languageList {
+    background-color: #f0f0f0;
 }
 
-.actionbutton:hover{   
-    background-color: #7fbfe0;    
+#languageList ul {
+    columns: 2;
+    margin: 0;
+    padding: 0;
 }
 
-/*.mx100 .image {
-    display: block;
-    margin-left: -100px;
-    margin-right: -100px;
-}*/
+#languageList li {
+    margin: 0;
+    padding: 4px 16px;
+    list-style-type: none;
+    border-radius: 16px;
+    line-height: 1.25;
+}
+
+#languageList li:hover {
+    background-color: white;
+    cursor: pointer;
+}
 
 
 /***** Responsive *****/
+@media screen and (min-width: 550px) {
+    .jumbotron {
+        padding: 48px 60px;
+    }
+    #languageList ul {
+        columns: 3;
+    }
+}
+
 @media screen and (max-width: 615px) {
+    .px44 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    .mx44 {
+        margin-left: 0;
+        margin-right: 0;
+    }
     footer.mw568 {
         margin-left: 0;
         margin-right: 0;
@@ -375,15 +421,20 @@ a.kg-bg-blue:hover{
         max-width: 100%;
     }
 }
-@media screen and (min-width: 616px) {
-    /*.contentWrapper {
-        margin-left: 13.020833%;
-        margin-right: 13.020833%;
+
+@media screen and (min-width: 616px) { /* 568 + 48 */
+    .mw568 {
+        max-width: 568px;
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
     }
-    .contentWrapper .innerWrapper {
-        margin-left: 0;
-        margin-right: 0;
-    }*/
+
+    .indent {
+        padding-left: 44px;
+        padding-right: 44px;
+    }
+
     footer {
         padding: 12px 0;
     }
@@ -399,12 +450,16 @@ a.kg-bg-blue:hover{
         right: 0;
     }
 }
-@media screen and (min-width: 550px) {
-    .jumbotron {
-        padding: 48px 60px;
-    }
-}
+
 @media screen and (min-width: 768px) {
+    .stepHeading {
+        min-height: 134px;
+    }
+
+    .stepHeading.tenSteps h1 {
+        padding-left: 40px;
+    }
+
     .stepHeading span:after {
         display: none;
     }

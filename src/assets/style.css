@@ -96,6 +96,10 @@ a {
 .pill-inside {
   padding: 4px 20px 4px 20px;
 }
+.px44 {
+  padding-right: 44px;
+  padding-left: 44px;
+}
 .px100 {
   padding-right: 100px;
   padding-left: 100px;
@@ -127,6 +131,10 @@ a {
 .ml25 {
   margin-left: 25px;
 }
+.mx44 {
+  margin-left: 44px;
+  margin-right: 44px;
+}
 .mx100 {
   margin-left: 100px;
   margin-right: 100px;
@@ -134,10 +142,6 @@ a {
 .mx114 {
   margin-left: 114px;
   margin-right: 114px;
-}
-.mx144 {
-  margin-left: 44px;
-  margin-right: 44px;
 }
 .action{
   text-align: right;

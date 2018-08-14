@@ -9,11 +9,14 @@
       </span>
       <sharing-modal [book]="selectbook"></sharing-modal>
     </div>
-    <div class="py25 kg-bg-gray-light ng-hide" *ngIf="language">
+    <div id="languageList" class="py25 ng-hide" *ngIf="language">
       <div class="mw568">
-        <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
+        <ul>
+          <li class="ng-binding" dir='ltr' (click)="selectLanguage(lang,true)" *ngFor="let lang of selectedBookLanguauageTranslations">{{lang.attributes.name}}</li>
+        </ul>
+        <!-- <span class="w-sm-50 w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
           <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectLanguage(lang,true)"> {{lang.attributes.name}}</span>
-        </span>
+        </span> -->
       </div>
     </div>
   </header>
@@ -39,7 +42,7 @@
 
       <!-- Additional Pages Header -->
       <ng-container *ngIf="!FirstPage && !LastPage && !displayModel">
-        <div class="stepHeading">
+        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9}">
           <ng-container *ngIf="currentPageContent">
             <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}><span class="ng-binding" *ngIf="counter>0 && !displayForm">{{counter}}</span>{{currentPageContent?.heading}}</h1>
           </ng-container>
@@ -49,9 +52,10 @@
       <!-- Spacer -->
       <!--<div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>-->
 
+      <!-- Summary? -->
       <ng-container *ngIf="summary_line || item">
         <div class="ng-scope">
-          <p class="mx144">
+          <p class="mx44">
             <span class="db ng-scope">
               <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}}> {{summary_line}} </span>
               <p *ngFor="let item of multiple_summary_line">
@@ -62,70 +66,108 @@
         </div>
       </ng-container>
 
+      <!-- Basic content -->
       <ng-container *ngIf="paras?.length > 0">
         <ng-container *ngFor="let item of paras; let i= index">
-          <p class="mw568 arrayContent" *ngIf="item.type== 'text' && isArray(item.text)==true">
-            <span class="ng-binding" dir={{pageGetparameters.dir}} *ngFor="let line of item.text">
-              {{line}}
-            </span>
-          </p>
-          <p class="mw568 textContent ng-binding" [ngClass]="{'firstContent' : FirstPage}" *ngIf="item.type== 'text' && isArray(item.text)==false" dir={{pageGetparameters.dir}}>
-            {{item.text}}
-          </p>
-          <img class="imageContent ng-binding" [ngClass]="{'firstImage' : FirstPage}" *ngIf="item.type == 'image' && item.image!=undefined && item.image!=''" [src]="item.image">
-          <div class="mw568 actionbutton buttonContent" dir={{pageGetparameters.dir}} *ngIf="item.type=='button'">
-            <a [href]="'http://' + item.text" target="_blank">{{item.text}}</a>
-          </div>
+
+          <!-- Array content -->
+          <ng-container *ngIf="item.type== 'text' && isArray(item.text)==true">
+            <p class="mw568 arrayContent">
+              <span class="ng-binding" dir={{pageGetparameters.dir}} *ngFor="let line of item.text">{{line}}</span>
+            </p>
+          </ng-container>
+
+          <!-- Text content -->
+          <ng-container *ngIf="item.type== 'text' && isArray(item.text)==false">
+            <p class="mw568 textContent ng-binding" [ngClass]="{'firstContent' : FirstPage}" dir={{pageGetparameters.dir}}>{{item.text}}</p>
+          </ng-container>
+
+          <!-- Image content -->
+          <ng-container *ngIf="item.type == 'image' && item.image!=undefined && item.image!=''">
+            <img class="imageContent ng-binding" [ngClass]="{'firstImage' : FirstPage}" [src]="item.image">
+          </ng-container>
+
+          <!-- Button content -->
+          <ng-container *ngIf="item.type=='button'">
+            <div class="mw568 buttonContent tc" dir={{pageGetparameters.dir}}>
+              <a [href]="'http://' + item.text" target="_blank">{{item.text}}</a>
+            </div>
+          </ng-container>
+
         </ng-container>
       </ng-container>
 
+      <!-- Cards -->
       <ng-container *ngIf="Cards!=''">
         <div *ngFor="let card of Cards" [hidden]="card.hidden">
-          <span *ngIf="!card.isForm">
-            <h4 class="ng-binding" dir={{pageGetparameters.dir}}>{{card.label}}</h4>
-          </span>
-          <div *ngFor="let cardpara of card.content;let i= index">
-            <p class="mx144 ng-scope" *ngIf="isArray(card.content[i])==false">{{cardpara}}</p>
-            <div *ngIf="isArray(card.content[i])==true">
-              <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let cardcont of card.content[i]">{{cardcont}}</p>
-            </div>
-            <p class="mx144 tc">
-              <span class="cardbutton" *ngIf="card.button!=undefined && card.button[i]!=''">
+
+          <!-- Card heading -->
+          <ng-container *ngIf="!card.isForm">
+            <h4 class="mw568 cardHeading ng-binding" dir={{pageGetparameters.dir}}>{{card.label}}</h4>
+          </ng-container>
+
+          <!-- Card text/button/image content -->
+          <ng-container *ngFor="let cardpara of card.content;let i= index">
+
+            <!-- Array content -->
+            <ng-container *ngIf="isArray(card.content[i])==true">
+              <p class="mw568 arrayContent indent">
+                <span class="ng-scope" dir={{pageGetparameters.dir}} *ngFor="let cardcont of card.content[i]">{{cardcont}}</span>
+              </p>
+            </ng-container>
+
+            <!-- Text content -->
+            <ng-container *ngIf="isArray(card.content[i])==false">
+              <p class="mw568 textContent indent ng-scope">{{cardpara}}</p>
+            </ng-container>
+
+            <!-- Image content -->
+            <ng-container *ngIf="card.image!=''">
+              <ng-container *ngFor="let cardimage of card.image">                  
+                <img class="imageContent" *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null" [src]="cardimage.image" />
+              </ng-container>
+            </ng-container>
+
+            <!-- Button content -->
+            <ng-container *ngIf="card.button!=undefined && card.button[i]!=''">
+              <div class="mw568 buttonContent tc indent">
                 <a (click)="formAction(card.button[i][1])">{{card.button[i][0]}}</a>
-              </span>
-            </p>
-            <span *ngIf="card.link!=undefined && card.link[i]!=''" class="cardlink col-lg-12">
-              <a (click)="formAction(card.link[i][1])">{{card.link[i][0]}}</a>
-            </span>
+              </div>
+            </ng-container>
 
-            
-              <!-- <img class="imgwidth" *ngIf="card.image!=undefined && card.image[i]!=''" [src]="card.image[i]" height="auto"> -->
-            
-            <p class="mx144" *ngFor="let cardimage of card.image">                  
-              <img  class="imgwidth" *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null" [src]="cardimage.image"
-                height="auto">
-            </p>
+            <!-- Link content -->
+            <ng-container *ngIf="card.link!=undefined && card.link[i]!=''">
+              <div class="mw568 linkContent indent">
+                <a (click)="formAction(card.link[i][1])">{{card.link[i][0]}}</a>
+              </div>
+            </ng-container>
 
-          </div>
-          <table width="col-lg-12" *ngIf="card.tabs.length > 0">
-            <tr style="overflow:hidden">
-              <!-- comparison table -->
-              <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
-                <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
-                <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
-                <p class="mx144 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
-              </td>
-            </tr>
-          </table>
-          <div *ngIf="card.forms.length > 0">
-            <form *ngFor="let cardform of card.forms;let j= index" class="mx144">
+          </ng-container>
+
+          <!-- Card table content -->
+          <ng-container *ngIf="card.tabs.length > 0">
+            <table>
+              <tr style="overflow:hidden">
+                <!-- comparison table -->
+                <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
+                  <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
+                  <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
+                  <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
+                </td>
+              </tr>
+            </table>
+          </ng-container>
+
+          <!-- Card form content -->
+          <ng-container *ngIf="card.forms.length > 0">
+            <form *ngFor="let cardform of card.forms;let j= index" class="mx44">
               <div class="form-group" *ngFor="let element of cardform.elements">
                 <label [for]="element.name">{{element.label}}</label>
                 <input [type]="element.type" class="form-control" [value]="element.value" [name]="element.name" [placeholder]="element.placeholder"
                   [required]="element.required">
               </div>
               <div class="form-group" *ngFor="let button of cardform.buttons">
-                <p class="mx144 tc">
+                <p class="mx44 tc">
                   <span class="cardbutton">
                     <a (click)="formAction(button[1])">{{button[0]}}</a>
                   </span>
@@ -137,7 +179,8 @@
                 </span>
               </div>
             </form>
-          </div>
+          </ng-container>
+
         </div>
       </ng-container>
       
@@ -149,13 +192,13 @@
             </ng-container>
           </div>
           <div *ngIf="modal.paras?.length > 0" class="tc">
-            <div class="mx144" dir={{pageGetparameters.dir}} *ngFor="let item of modal.paras; let i= index">
-              <p class="mx144" dir={{pageGetparameters.dir}}>
+            <div class="mx44" dir={{pageGetparameters.dir}} *ngFor="let item of modal.paras; let i= index">
+              <p class="mx44" dir={{pageGetparameters.dir}}>
                 <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text'">
                   {{item.text}}
                 </span>
               </p>
-              <p class="mx144 tc">
+              <p class="mx44 tc">
                 <span class="cardbutton" *ngIf="item.type=='button'">
                   <a (click)="formAction(item.button[1])">{{item.button[0]}}</a>
                 </span>
@@ -165,9 +208,7 @@
         </ng-container>
       </ng-container>
       
-      <ng-container *ngIf="call_to_action!=''">
-        <h4 class="calltoaction">{{call_to_action}}</h4>
-      </ng-container>
+      <h4 class="calltoaction mw568 px44" *ngIf="call_to_action!=''">{{call_to_action}}</h4>
 
       <ng-container *ngIf="!displayForm">
 
