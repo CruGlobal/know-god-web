@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
 import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
@@ -138,6 +138,20 @@ export class PageComponent implements OnInit {
       }
 
     })
+  }
+  
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    let RIGHT_ARROW = 39;
+    let LEFT_ARROW = 37;
+
+    if (event.keyCode === RIGHT_ARROW && this.counter<this.allPages.length-1) {
+      this.next();
+    }
+    
+    if (event.keyCode === LEFT_ARROW && this.counter>0) {
+      this.previous();
+    }
   }
 
   /*To get all books*/
