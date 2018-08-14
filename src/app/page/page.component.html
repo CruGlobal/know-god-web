@@ -122,9 +122,14 @@
             </ng-container>
 
             <!-- Image content -->
-            <ng-container *ngIf="card.image!=''">
-              <ng-container *ngFor="let cardimage of card.image">                  
-                <img class="imageContent" *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null" [src]="cardimage.image" />
+            <ng-container *ngIf="isArray(card.content[i])==false && card.image!=undefined && card.image[i]!=''">
+              <img class="imageContent" [src]="card.image[i]" />
+            </ng-container>
+            <ng-container *ngIf="isArray(card.content[i])==true">
+              <ng-container *ngFor="let cardimage of card.image[i]">
+                <ng-container *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null">
+                  <img class="imageContent" [src]="cardimage.image" />
+                </ng-container>
               </ng-container>
             </ng-container>
 
