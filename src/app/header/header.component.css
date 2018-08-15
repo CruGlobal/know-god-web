@@ -1,113 +1,112 @@
-.dropdown-menu>li>a {
-    display: block;
-    padding: 3px 20px;
-    clear: both;
-    font-weight: normal;
-    line-height: 1.8125;
-    color: #333333;
-    white-space: nowrap;
-    font-size: 13px;
-}
-
-.navbar-nav>li>a {
-    padding-top: 13.5px;
-    padding-bottom: 17.5px;
-}
-
-.navbar{min-height: 50px;}
-.center{
-    margin-left: 10%;
-    margin-right: 10%;
-}
-
-
-
-.thumbnail {
-    border: 1px solid #ddd; /* Gray border */
-    border-radius: 4px;  /* Rounded border */
-    padding: 5px; /* Some padding */
-    width: auto; /* Set a small width */
-    /*max-width: 100px;*/
-    height: auto;
-    
-}
-
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-}
-
-.align{
-    margin-top:25px;
-    margin-left: 150px;
-    margin-right:180px;
-}
-.back{
-    background-color: #000;
-}
-
-
-.container1 {
-    position: relative;
-    width: 100%;
-   
-}
-
-.image {
-  opacity: 1;
-  display: block;
-  width: 100%;
-  height: auto;
-  transition: .5s ease;
-  backface-visibility: hidden;
-  border: 1px solid lightgray;
-}
-
-.middle {
-  transition: .5s ease;
-  opacity: 0;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  -ms-transform: translate(-50%, -50%);
+.homeHeaderFooter {
+  background-color: #1EAAF1;
+  color: white;
+  padding-top: 12px;
+  padding-bottom: 12px;
   text-align: center;
 }
 
-.container1:hover .image {
-  opacity: 0.1;
+#homeHeader {
+  font-size: 0;
 }
 
-.container1:hover .middle {
-  opacity: 1;
+#homeHeader img {
+  display: inline-block;
+  height: 24px;
 }
 
-.text {
-  background-color: #4CAF50;
-  color: white;
-  font-size: 16px;
-  padding: 16px 32px;
+#homeTools {
+  padding-top: 30px;
+  padding-bottom: 30px;
 }
 
-.custoum{
-    margin-left: 27%;
+#homeTools .bs-card {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow .2s;
+  text-decoration: none;
+  max-width: 100%;
+  margin-bottom: 30px;
 }
 
-.row{margin: 20px 30px;}
+#homeTools .bs-card:last-child {
+  margin-bottom: 0;
+}
 
-.RowHeaderCSS{
-    margin-left: 25%
+#homeTools .bs-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+}
+
+#homeTools .bs-card:hover .bs-card-text {
+  color: #323C5A;
+}
+
+#homeTools .bs-card-body {
+  padding: 20px;
+}
+
+#homeTools .bs-card-title {
+  font-size: 1rem;
+  color: #3BA3DA;
+  margin-bottom: 4px;
+  letter-spacing: unset;
+  line-height: 1.2;
+}
+
+#homeTools .bs-card-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #323C5A;
+}
+
+#homeFooter {
+  font-size: 14px;
 }
 
 
-@media only screen and (max-width: 768px) {
-    .RowHeaderCSS{
-        margin-left: 0%
-    }
+@media (min-width: 576px) {
+  #homeTools .bs-card {
+    max-width: 240px;
+    flex-basis: 50%;
+  }
+}
+@media screen and (min-width: 768px) {
+  .homeHeaderFooter {
+    padding-top: 34px;
+    padding-bottom: 34px;
+  }
+  #homeHeader {
+    text-align: left;
+  }
+  #homeHeader img {
+    height: 25px;
+  }
+  #homeTools {
+    padding-top: 45px;
+    padding-bottom: 45px;
+  }
+  #homeTools .bs-card {
+    max-width: 330px;
+    margin-bottom: 45px;
+  }
+}
+@media screen and (min-width: 992px) {
+  #homeTools {
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  #homeTools .bs-card {
+    max-width: 290px;
+    flex-basis: 33.3333%;
+  }
+}
+@media screen and (min-width: 1200px) {
+  #homeTools {
+    padding-top: 75px;
+    padding-bottom: 75px;
+  }
+  #homeTools .bs-card {
+    max-width: 350px;
+    margin-bottom: 60px;
+  }
 }
 
-.pointer {
-    cursor: pointer;
-}

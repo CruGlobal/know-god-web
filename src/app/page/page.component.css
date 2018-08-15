@@ -34,64 +34,6 @@ p {
 }
 
 
-/***** Bootstrap-ish *****/
-.container {
-    max-width: 100%;
-}
-
-.row {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
-}
-
-.col-3, .col-4, .col-5, .col-7, .col-8, .col-9 {
-    position: relative;
-    width: 100%;
-    min-height: 1px;
-    padding-right: 15px;
-    padding-left: 15px;
-}
-
-.col-3 {
-    -ms-flex: 0 0 25%;
-    flex: 0 0 25%;
-    max-width: 25%;
-}
-
-.col-4 {
-    -ms-flex: 0 0 33.33333%;
-    flex: 0 0 33.33333%;
-    max-width: 33.33333%;
-}
-
-.col-5 {
-    -ms-flex: 0 0 41.66667%;
-    flex: 0 0 41.66667%;
-    max-width: 41.66667%;
-}
-
-.col-7 {
-    -ms-flex: 0 0 58.33333%;
-    flex: 0 0 58.33333%;
-    max-width: 58.33333%;
-}
-
-.col-8 {
-    -ms-flex: 0 0 66.66667%;
-    flex: 0 0 66.66667%;
-    max-width: 66.66667%;
-}
-
-.col-9 {
-    -ms-flex: 0 0 75%;
-    flex: 0 0 75%;
-    max-width: 75%;
-}
-
-
 /***** Language Selector *****/
 .language-selector-toggle {
     line-height: 36px;
@@ -112,6 +54,7 @@ p {
 
 #tool-navigation .buttons {
     width: calc(50% - 2px);
+    cursor: pointer;
 }
 
 
@@ -166,6 +109,12 @@ p.firstContent {
     margin-top: 48px;
 }
 
+.imageContent {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
 .imageContent:not(:first-child) {
     margin-bottom: 30px;
 }
@@ -214,6 +163,7 @@ p.firstContent {
     line-height: 1.4;
     overflow-x: hidden;
     vertical-align: top;
+    cursor: pointer;
 }
 
 .linkContent { 
