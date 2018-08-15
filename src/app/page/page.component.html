@@ -3,9 +3,9 @@
   <!-- Tools Consistent Header -->
   <header id="toolHeader">
     <div class="header tc relative">
-      <span class="l absolute kg-gray-dark ng-binding language-selector-toggle">
+      <span class="l absolute kg-gray-dark ng-binding language-selector-toggle" (click)="Languages()">
         <img src="assets/img/lang.png" class="langicon"> {{selectLan}}
-        <i class="fas fa-chevron-up flip" (click)="Languages()"></i>
+        <i class="fas fa-chevron-up flip"></i>
       </span>
       <sharing-modal [book]="selectbook"></sharing-modal>
     </div>
