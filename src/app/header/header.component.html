@@ -1,51 +1,25 @@
-<div>
-  <div class="header tc relative">
-    <span (click)="expandBookDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding pointer" style="margin-left: 5%;">
-      <i class="fas fa-book"></i>{{selectedLookup.bookname}}
-      <i class="fas fa-chevron-up flip"></i>
-    </span>
-    <span (click)="expandLanguageDropdown(null)" class="l p25 absolute kg-gray-dark ng-binding pointer" style="margin-left: 75%;">
-      <i class="fas fa-language"></i> {{selectedLookup.language}}
-      <i class="fas fa-chevron-up flip"></i>
-    </span>
+<header id="homeHeader" class="homeHeaderFooter">
+  <div class="bs-container">
+    <img src="/assets/img/kg-logo.png" />
   </div>
+</header>
 
-  <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="isBooksSelected">
-
-    <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let book of allBooks">
-
-      <a class="w100 dib pill-inside ng-binding" (click)="selectBookFromDropdown(book)"> {{book.attributes.name}}</a>
-    </span>
-  </div>
-  <div class="px100 py25 kg-bg-gray-light ng-hide" *ngIf="isLanguagesSelected">
-    <span class="w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
-
-      <a class="w100 dib pill-inside ng-binding" (click)="selecteLanguageFromDropdown(lang)">{{lang.attributes.name}}</a>
-    </span>
-
-  </div>
-</div>
-
-<!-- <app-header></app-header> -->
-<div class="row bg-light">
-  <div class="col-md-6" *ngFor="let banner of Images;let i = index; let isFirstRow=last" [ngClass]="{'RowHeaderCSS' : isFirstRow}">
-    <div class="container1" >
-      <!-- <div *ngIf="i%2==0"> -->
-      <div class="thumbnail image" style="height: 350px; max-height: 600px; overflow-y:auto;">
-        <img [src]="banner.ImgUrl" style="width: 100%;">
-        <p>{{banner.description}}</p>
-        <div class="caption">
-          <h3 (click)="navigateToPage(banner.id)">
-            <a href="javascript:void(0)" class="btn btn-primary">{{banner.resource}}</a>
-          </h3>
+<section id="homeTools">
+  <div class="bs-container">
+    <div class="bs-card-deck">
+      <a href="javascript:void(0)" class="bs-card" (click)="navigateToPage(banner.id)" *ngFor="let banner of Images;let i = index; let isFirstRow=last">
+        <img class="bs-card-img-top" [src]="banner.ImgUrl" />
+        <div class="bs-card-body">
+          <h5 class="bs-card-title">{{banner.resource}}</h5>
+          <p class="bs-card-text">{{banner.description}}</p>
         </div>
-      </div>
-      <div class="middle">
-        <img src="/assets/img/circle.png" (click)="navigateToPage(banner.id)">
-
-      </div>
-   
+      </a>
     </div>
-    
   </div>
-</div>
+</section>
+
+<footer id="homeFooter" class="homeHeaderFooter">
+  <div class="bs-container">
+    ©1994-2018 Cru. All Rights Reserved.
+  </div>
+</footer>
