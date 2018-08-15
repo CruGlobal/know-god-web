@@ -8,22 +8,22 @@
     <div>
       <div class="sharemax" *ngIf="ShareState == 'max'">
         <a title="Close" class="btn shareclose"  (click)="ShareState = 'min'">
-          <div class="fa fa-close"></div>
+          <div class="fas fa-times"></div>
         </a>
         <a title="Twitter" class="btn"  (click)="shareTo('TWITTER')">
-          <div class="fa fa-twitter"></div>
+          <div class="fab fa-twitter"></div>
         </a>
         <a title="Facebook" class="btn"  (click)="shareTo('FACEBOOK')">
-          <div class="fa fa-facebook"></div>
+          <div class="fab fa-facebook-f"></div>
         </a>
         <a title="Google+" class="btn"  (click)="shareTo('GOOGLEPLUS')">
-          <div class="fa fa-google-plus"></div>
+          <div class="fab fa-google-plus-g"></div>
         </a>
         <a class="btn"  (click)="shareTo('MAILTO')" title="Email">
-          <div class="fa fa-envelope"></div>
+          <div class="fas fa-envelope"></div>
         </a>
         <a class="btn" id="lnkCopy"  (click)="CopyToClipboard(event)" title="Copy URL to Clipboard">
-            <div class="fa fa-link"></div>
+            <div class="fas fa-link"></div>
           </a>
         <!-- <button class="btn"    ngclipboard data-clipboard-text="Just because you can doesn't mean you should — clipboard.js" 
         ngclipboard-success="CopySuccess(e);" ngclipboard-error="CopyError(e);"  title="Email">

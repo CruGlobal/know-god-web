@@ -6,6 +6,7 @@
 .share img {
     display: block;
     padding: 22px 24px;
+    cursor: pointer;
 }
 
 .sharemax{
