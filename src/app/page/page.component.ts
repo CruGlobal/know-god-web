@@ -766,16 +766,13 @@ export class PageComponent implements OnInit {
   allPages = [];
   getImageName(contentImage) {
 
-    console.log('getImageName: restrictTo -' + contentImage["@attributes"]["restrictTo"])
     var ImageName = '';
     var ImagePath = '';
     if (contentImage["@attributes"]["restrictTo"] == undefined ||
       contentImage["@attributes"]["restrictTo"] == null ||
       contentImage["@attributes"]["restrictTo"] == "web") {
       ImageName = contentImage["@attributes"]["resource"];
-      console.log('getImageName: ImageName -' + ImageName)
       ImagePath = this.getImages(ImageName);
-      console.log('getImageName: ImagePath -' + ImagePath)
       return ImagePath
     }
     else return '';
