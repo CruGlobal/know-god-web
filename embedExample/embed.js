@@ -1,0 +1,10 @@
+var knowGodEmbed = document.getElementById('knowGodEmbed');
+var dataLang = knowGodEmbed.getAttribute('data-lang');
+var dataBook = knowGodEmbed.getAttribute('data-book');
+var knowGodIframe = document.createElement('iframe');
+var baseUrl = 'http://stage.knowgod.com/home/';
+knowGodIframe.src = baseUrl + dataBook + '/' + dataLang;
+knowGodIframe.id = 'knowGodEmbed';
+knowGodIframe.frameBorder = 0;
+knowGodIframe.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;';
+knowGodEmbed.parentNode.replaceChild(knowGodIframe, knowGodEmbed);
