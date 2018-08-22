@@ -1,2 +1,14 @@
-# CRU_Angular_KG
-The Angular front end for the KnowGod S3 APIs
+# KnowGod.com embedable web app
+
+## Development
+
+### Install & Run
+
+1. `npm install`
+2. `npm start`
+3. Browse to [`http://localhost:4200`](http://localhost:4200)
+
+### Deploy
+
+- Push to `staging` to auto-deploy to stage.knowgod.com
+- Push to `master` to auto-deploy to knowgod.com
