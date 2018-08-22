@@ -64,7 +64,7 @@ export class PageComponent implements OnInit {
   AllPagesContent = [];
   FirstPage = false;
   LastPage = false;
-
+  showCounter = true;
 
   private sub: any;
   constructor(public commonService: CommonService,
@@ -419,6 +419,8 @@ export class PageComponent implements OnInit {
     this.loaderService.display(true);
     //this.loading = true;
     this.BookID = book.attributes.abbreviation
+    // remove numbered heading from The Four and Satisfied tools 
+    this.showCounter = (['thefour', 'satisfied'].includes(this.BookID) ? false : true);
     this.selectLan = '';
     this.selectedBookLanguauageTranslations = [];
 
