@@ -16,11 +16,6 @@ p {
     margin: 0 auto;
 }
 
-/*.contentWrapper .innerWrapper {
-    margin-left: 24px;
-    margin-right: 24px;
-}*/
-
 .mw568 {
     width: calc(100% - 48px);
     margin-left: 24px;
@@ -59,16 +54,16 @@ p {
 
 
 /***** Content *****/
-#toolContent > *:first-child:not([class*="stepHeading"]) {
+#toolContent > *:first-child:not([class*="stepHeading"]):not(.firstHeading) {
     margin-top: 48px;
 }
 
-#toolContent > *:not(footer) {
+#toolContent > *:not(footer):not(.firstHeading) {
     margin-bottom: 30px;
 }
 
 .firstHeading { 
-    margin-top: 60px;
+    margin-top: 53px;
     margin-bottom: 36px !important;
 }
 
@@ -125,7 +120,6 @@ p.firstContent {
 
 .arrayContent span {
     display: block;
-    margin-bottom: 24px;
 }
 
 .calltoaction {
@@ -202,18 +196,25 @@ p.firstContent {
 }*/
 
 
-/***** Alerts *****/
-.jumbotron {
-    margin-top: 20%;
-    margin-bottom: 30px;
-    /*padding: 30px 15px;
-    color: inherit;
-    background-color: #eeeeee;*/
-    border-radius: 3px;
+/***** Forms *****/
+
+.formContent label {
+    display: block;
+    font-size: 16px;
+    color: var(--kg-blue);
+    line-height: 20px;
 }
 
-.jumbotron h2 {
-    margin-bottom: 0;
+.formContent label + input[type=text] {
+    margin-top: 10px;
+}
+
+.formContent input[type=text] {
+    display: block;
+}
+
+.formContent .form-group + .form-group {
+    margin-top: 24px;
 }
 
 
@@ -226,23 +227,13 @@ footer {
     text-align: left;
 }
 
-footer img {
-    height: 45px;
-    display: inline-block;
-    margin-right: 12px;
-    vertical-align: bottom;
-}
-
-footer div {
-    position: absolute;
-    right: 24px;
-    bottom: 12px;
-    text-align: right;
-}
-
 footer span {
     display: block;
     line-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 
@@ -282,11 +273,6 @@ footer span {
          /* height:250px;
          overflow: scroll; */
     }
-
-/*.footer{
-    margin-left: 10px; 
-    margin-top: 15px;    
-}*/
 
 .buttons{
     text-align: center; 
@@ -348,10 +334,19 @@ a.kg-bg-blue:hover{
 
 
 /***** Responsive *****/
-@media screen and (min-width: 550px) {
-    .jumbotron {
-        padding: 48px 60px;
+@media screen and (min-width: 440px) {
+    footer {
+        padding: 12px 0;
     }
+    footer span {
+        display: inline-block;
+        text-align: left;
+    }
+    footer span:last-child {
+        float: right;
+    }
+}
+@media screen and (min-width: 550px) {
     #languageList ul {
         columns: 3;
     }
@@ -366,12 +361,6 @@ a.kg-bg-blue:hover{
         margin-left: 0;
         margin-right: 0;
     }
-    footer.mw568 {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        max-width: 100%;
-    }
 }
 
 @media screen and (min-width: 616px) { /* 568 + 48 */
@@ -385,21 +374,6 @@ a.kg-bg-blue:hover{
     .indent {
         padding-left: 44px;
         padding-right: 44px;
-    }
-
-    footer {
-        padding: 12px 0;
-    }
-    footer div {
-        position: unset;
-        display: inline-block;
-        text-align: left;
-        margin-top: 25px;
-        bottom: unset;
-    }
-    footer #learnmore {
-        position: absolute;
-        right: 0;
     }
 }
 

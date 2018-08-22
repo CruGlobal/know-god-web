@@ -22,11 +22,11 @@
   </header>
 
   <!-- Main Content -->
-  <div id="toolContent" [hidden]="showLoader" [ngClass]="{'tc' : FirstPage || LastPage}">
+  <div id="toolContent" [hidden]="showLoader" [ngClass]="{'tc' : FirstPage || LastPage, 'firstPage' : FirstPage}">
 
     <!-- Error message -->
     <ng-container *ngIf="showNoRecordFound || errorpresent">
-      <div class="jumbotron tc">
+      <div class="bs-jumbotron tc">
         <h2 *ngIf="showNoRecordFound">This book isn't available in the currently selected language.</h2>
         <h2 *ngIf="errorpresent">{{errorMsg}}</h2>
       </div>
@@ -99,7 +99,7 @@
 
       <!-- Cards -->
       <ng-container *ngIf="Cards!=''">
-        <div *ngFor="let card of Cards" [hidden]="card.hidden">
+        <div class="cardContent" *ngFor="let card of Cards" [hidden]="card.hidden">
 
           <!-- Card heading -->
           <ng-container *ngIf="!card.isForm">
@@ -165,7 +165,7 @@
 
           <!-- Card form content -->
           <ng-container *ngIf="card.forms.length > 0">
-            <form *ngFor="let cardform of card.forms;let j= index" class="mx44">
+            <form *ngFor="let cardform of card.forms;let j= index" class="formContent mw568 indent">
               <div class="form-group" *ngFor="let element of cardform.elements">
                 <label [for]="element.name">{{element.label}}</label>
                 <input [type]="element.type" class="form-control" [value]="element.value" [name]="element.name" [placeholder]="element.placeholder"
@@ -213,7 +213,9 @@
         </ng-container>
       </ng-container>
       
-      <h4 class="calltoaction mw568 px44" *ngIf="call_to_action!=''">{{call_to_action}}</h4>
+      <ng-container  *ngIf="call_to_action!=''">
+        <h4 class="calltoaction mw568 px44">{{call_to_action}}</h4>
+      </ng-container>
 
       <ng-container *ngIf="!displayForm">
 
@@ -226,12 +228,9 @@
         </div>
 
         <!-- Footer -->
-        <footer id="toolFooter" class="mw568">
-          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
-          <div>
-            <span id="learnmore">Learn more at <a href="http://godtoolsapp.com" target="_blank">godtoolsapp.com</a></span>
-            <span>© 1994-2018 Cru. All Rights Reserved.</span>
-          </div>
+        <footer id="toolFooter">
+          <span><a href="http://godtoolsapp.com" target="_blank">Learn more at godtoolsapp.com</a></span>
+          <span>© 1994-2018 <a href="http://cru.org" target="_blank">Cru</a>. All Rights Reserved.</span>
         </footer>
 
       </ng-container>
