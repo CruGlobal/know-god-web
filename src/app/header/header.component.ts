@@ -142,7 +142,7 @@ export class HeaderComponent {
         let url = APIURL.GET_ALL_BOOKS  + "?include=attachments";
         this.commonService.getBooks(url)
             .subscribe((data: any) => {
-                data.data = data.data.filter(data => data.attributes.name != 'Questions About God?');
+                data.data = data.data.filter(data => data.attributes["resource-type"] == 'tract');
                 for(let k=0;k<data.data.length;k++){
                     this.description = data.data[k].attributes.description;
                     let resourceName = data.data[k].attributes.name;
