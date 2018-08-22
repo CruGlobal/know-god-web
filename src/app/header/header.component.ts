@@ -40,6 +40,8 @@ export class HeaderComponent {
     selectedBook: any;
     selectedLanguage: any;
     resourceId: any;
+    ImageUrl;
+    Images = [];
 
     constructor(public route: Router,
         public router: ActivatedRoute,
@@ -48,12 +50,12 @@ export class HeaderComponent {
      //   private ngxXml2jsonService: NgxXml2jsonService
     ) {
         //fetch All the books and langauges
-     //   this.AllBooks();
-     this. getAttachments();
+        // this.AllBooks();
+        this.getAttachments();
         this.getAllBooksFromApi();
-
         this.getAllLangaugesFromApi();
     }
+
     getAllBooksFromApi(id = "") {
         if (this.commonService.allBooks.length > 0) {
             this.allBooks = this.commonService.allBooks;
@@ -76,6 +78,7 @@ export class HeaderComponent {
                 });
         }
     }
+
     getAllLangaugesFromApi(id = "") {
         if (this.commonService.allLanguages.length > 0) {
             this.allLanguages = this.commonService.allLanguages;
@@ -110,14 +113,15 @@ export class HeaderComponent {
     }
 
     loadBookFromUrl() {
-
     }
+
     selectBookFromDropdown(item) {
         this.isBooksSelected = !this.isBooksSelected;
         this.selectedBook = item;
         this.selectedLookup.bookname = item.attributes.name;
         this.route.navigateByUrl('home/' + item.attributes.abbreviation + '/' + this.selectedLookup.languageId);
     }
+
     selecteLanguageFromDropdown(item) {
         this.isLanguagesSelected = !this.isLanguagesSelected;
         this.selectedLanguage = item;
@@ -125,6 +129,7 @@ export class HeaderComponent {
         this.selectedLookup.languageId = item.attributes.code;
         this.commonService.selectedLan=item;
     }
+
     expandBookDropdown(item) {
         this.isBooksSelected = !this.isBooksSelected;
     }
@@ -133,9 +138,6 @@ export class HeaderComponent {
         this.isLanguagesSelected = !this.isLanguagesSelected;
     }
 
-
-    ImageUrl;
-    Images = [];
     getAttachments() {
         let url = APIURL.GET_ALL_BOOKS  + "?include=attachments";
         this.commonService.getBooks(url)
@@ -154,18 +156,12 @@ export class HeaderComponent {
                         }
                     }
                 }
-                
-
             })
     }
-
 
     navigateToPage(id) {
         let book = this.allBooks.find(x => x.id == id).attributes.abbreviation;
         this.route.navigateByUrl('home/' + book + '/' + this.selectedLookup.languageId);
     }
-
-
-
-
+    
 }
