@@ -44,7 +44,10 @@
       <ng-container *ngIf="!FirstPage && !LastPage && !displayModel">
         <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9}">
           <ng-container *ngIf="currentPageContent">
-            <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}><span class="ng-binding" *ngIf="counter>0 && !displayForm">{{counter}}</span>{{currentPageContent?.heading}}</h1>
+            <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}>
+              <span class="ng-binding" *ngIf="counter>0 && !displayForm && showCounter">{{counter}}</span>
+              {{currentPageContent?.heading}}
+            </h1>
           </ng-container>
         </div>
       </ng-container>
