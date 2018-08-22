@@ -6,6 +6,8 @@
   <title>Know God</title>
   <base href="/">
 
+  <script id="adobeLaunch"></script>
+
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="assets/style.css" rel=stylesheet />
   <link href="assets/css/toastr.css" rel=stylesheet />
@@ -16,7 +18,7 @@
 
   <script>
     history.pushState({}, "entry page", location.hash.substring(1));
- 
+
     window.addEventListener('popstate', function (e) {
       // The popstate event is fired each time when the current history entry changes.
 
