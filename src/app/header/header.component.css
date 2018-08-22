@@ -28,10 +28,6 @@
   margin-bottom: 30px;
 }
 
-#homeTools .bs-card:last-child {
-  margin-bottom: 0;
-}
-
 #homeTools .bs-card:hover {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
 }
