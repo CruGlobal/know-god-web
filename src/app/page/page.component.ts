@@ -420,7 +420,7 @@ export class PageComponent implements OnInit {
     //this.loading = true;
     this.BookID = book.attributes.abbreviation
     // remove numbered heading from The Four and Satisfied tools 
-    this.showCounter = (['thefour', 'satisfied'].includes(this.BookID) ? false : true);
+    this.showCounter = !['thefour', 'satisfied'].includes(this.BookID)
     this.selectLan = '';
     this.selectedBookLanguauageTranslations = [];
 
