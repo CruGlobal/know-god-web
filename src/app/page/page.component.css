@@ -4,7 +4,7 @@ html{
 }
 
 p {
-    line-height: 28px;
+    line-height: 24px;
 }
 
 
@@ -55,16 +55,16 @@ p {
 
 /***** Content *****/
 #toolContent > *:first-child:not([class*="stepHeading"]):not(.firstHeading) {
-    margin-top: 48px;
+    /*margin-top: 48px;*/
 }
 
-#toolContent > *:not(footer):not(.firstHeading) {
-    margin-bottom: 30px;
+#toolContent > *:not(footer) {
+    /*margin-bottom: 30px;*/
 }
 
 .firstHeading { 
     margin-top: 53px;
-    margin-bottom: 36px !important;
+    /*margin-bottom: 36px !important;*/
 }
 
 p.firstContent {
@@ -76,7 +76,7 @@ p.firstContent {
     padding-bottom: 25px;
     color: white;
     background-color: var(--kg-blue);
-    margin-bottom: 0 !important;
+    /*margin-bottom: 0 !important;*/
 }
 
 .stepHeading h1 {
@@ -205,12 +205,19 @@ p.firstContent {
     line-height: 20px;
 }
 
-.formContent label + input[type=text] {
+.formContent label + .form-control {
     margin-top: 10px;
 }
 
-.formContent input[type=text] {
+.formContent .form-control {
     display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-family: "Source Sans Pro", sans-serif;
+    border: 1px solid #3ba4db;
+    border-radius: 8px;
+
 }
 
 .formContent .form-group + .form-group {
@@ -305,9 +312,7 @@ a.kg-bg-blue:hover{
 }
 
 
-.form-control{
-    border: 1px solid #3ba4db !important;
-}
+
 
 #languageList {
     background-color: #f0f0f0;

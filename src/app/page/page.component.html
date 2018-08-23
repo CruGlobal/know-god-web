@@ -49,9 +49,6 @@
         </div>
       </ng-container>
 
-      <!-- Spacer -->
-      <!--<div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>-->
-
       <!-- Summary? -->
       <ng-container *ngIf="summary_line || item">
         <div class="ng-scope">
@@ -217,22 +214,38 @@
         <h4 class="calltoaction mw568 px44">{{call_to_action}}</h4>
       </ng-container>
 
+
+      <!-- Tool navigation -->
       <ng-container *ngIf="!displayForm">
-
-        <!-- Tool navigation -->
         <div id="tool-navigation" class="mw568">
-          <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
-          <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
-          <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="buttons kg-white  fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
-          <a *ngIf="counter==allPages.length-1" dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
-        </div>
+          <!-- If first page -->
+          <ng-container *ngIf="FirstPage">
+            <a dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
+          </ng-container>
 
-        <!-- Footer -->
+          <!-- If not first page -->
+          <ng-container *ngIf="!FirstPage">
+            <a (click)="previous()"  dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
+          </ng-container>
+
+          <!-- If not last page -->
+          <ng-container *ngIf="!LastPage">
+            <a (click)="next()" dir={{pageGetparameters.dir}} dir="pageGetparameters.dir" class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
+          </ng-container>
+
+          <!-- If last page -->
+          <ng-container *ngIf="LastPage">
+            <a dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <!-- Footer -->
+      <ng-container *ngIf="!displayForm">
         <footer id="toolFooter">
           <span><a href="http://godtoolsapp.com" target="_blank">Learn more at godtoolsapp.com</a></span>
           <span>© 1994-2018 <a href="http://cru.org" target="_blank">Cru</a>. All Rights Reserved.</span>
         </footer>
-
       </ng-container>
           
     </ng-container>
