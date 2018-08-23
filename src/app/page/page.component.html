@@ -42,9 +42,9 @@
 
       <!-- Additional Pages Header -->
       <ng-container *ngIf="!FirstPage && !LastPage && !displayModel">
-        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9}">
+        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9, 'headerCounter' : headerCounter != null }">
           <ng-container *ngIf="currentPageContent">
-            <h1 [ngClass]="{'headerCounter' : headerCounter != null }" class="ng-binding mw568" dir={{pageGetparameters.dir}}>
+            <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}>
               <span class="ng-binding" *ngIf="counter>0 && !displayForm && headerCounter">{{headerCounter}}</span>
               {{currentPageContent?.heading}}
             </h1>
