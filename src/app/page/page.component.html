@@ -154,10 +154,10 @@
 
           <!-- Card table content -->
           <ng-container *ngIf="card.tabs.length > 0">
-            <table>
-              <tr style="overflow:hidden">
+            <table class=cardtabs>
+              <tr *ngFor="let cardtab of card.tabs;let j= index"  style="overflow:hidden">
                 <!-- comparison table -->
-                <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
+                <td>
                   <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
                   <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
                   <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>

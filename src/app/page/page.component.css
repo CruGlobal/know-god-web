@@ -274,14 +274,18 @@ footer span {
         margin-top: -7%;
     }
 
-    .cardtabs{
-        /* float:left; */
-         width: 48%;
-         border: 1px solid #ddd;
-         text-align: center;
-         /* height:250px;
-         overflow: scroll; */
-    }
+.cardtabs {
+    border-spacing: 0px;
+}
+
+.cardtabs td {
+    /* float:left; */
+    width: 48%;
+    border: 1px solid #ddd;
+    text-align: center;
+    /* height:250px;
+    overflow: scroll; */
+}
 
 /*.footer{
     margin-left: 10px; 
