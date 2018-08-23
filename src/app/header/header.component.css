@@ -1,11 +1,14 @@
+/***** Shared header and footer styles *****/
 .homeHeaderFooter {
-  background-color: #1EAAF1;
+  background-color: #3BA4DB;
   color: white;
   padding-top: 12px;
   padding-bottom: 12px;
   text-align: center;
 }
 
+
+/***** Header *****/
 #homeHeader {
   font-size: 0;
 }
@@ -15,25 +18,22 @@
   height: 24px;
 }
 
+
+/***** Tools *****/
 #homeTools {
   padding-top: 30px;
-  padding-bottom: 30px;
 }
 
 #homeTools .bs-card {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
   transition: box-shadow .2s;
   text-decoration: none;
-  max-width: 100%;
   margin-bottom: 30px;
+  flex-grow: 0;
 }
 
 #homeTools .bs-card:hover {
   box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
-}
-
-#homeTools .bs-card:hover .bs-card-text {
-  color: #323C5A;
 }
 
 #homeTools .bs-card-body {
@@ -54,15 +54,17 @@
   color: #323C5A;
 }
 
+
+/***** Footer *****/
 #homeFooter {
   font-size: 14px;
 }
 
 
+/***** Responsive *****/
 @media (min-width: 576px) {
   #homeTools .bs-card {
-    max-width: 240px;
-    flex-basis: 50%;
+    flex-basis: calc(50% - 30px);
   }
 }
 @media screen and (min-width: 768px) {
@@ -78,30 +80,25 @@
   }
   #homeTools {
     padding-top: 45px;
-    padding-bottom: 45px;
   }
   #homeTools .bs-card {
-    max-width: 330px;
     margin-bottom: 45px;
   }
 }
 @media screen and (min-width: 992px) {
   #homeTools {
     padding-top: 60px;
-    padding-bottom: 60px;
+    padding-bottom: 15px;
   }
   #homeTools .bs-card {
-    max-width: 290px;
-    flex-basis: 33.3333%;
+    flex-basis: calc(33.3333% - 30px);
   }
 }
 @media screen and (min-width: 1200px) {
   #homeTools {
     padding-top: 75px;
-    padding-bottom: 75px;
   }
   #homeTools .bs-card {
-    max-width: 350px;
     margin-bottom: 60px;
   }
 }

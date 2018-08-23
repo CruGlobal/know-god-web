@@ -4,7 +4,7 @@ html{
 }
 
 p {
-    line-height: 28px;
+    line-height: 24px;
 }
 
 
@@ -15,11 +15,6 @@ p {
     max-width: 768px;
     margin: 0 auto;
 }
-
-/*.contentWrapper .innerWrapper {
-    margin-left: 24px;
-    margin-right: 24px;
-}*/
 
 .mw568 {
     width: calc(100% - 48px);
@@ -59,17 +54,17 @@ p {
 
 
 /***** Content *****/
-#toolContent > *:first-child:not([class*="stepHeading"]) {
-    margin-top: 48px;
+#toolContent > *:first-child:not([class*="stepHeading"]):not(.firstHeading) {
+    /*margin-top: 48px;*/
 }
 
 #toolContent > *:not(footer) {
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
 }
 
 .firstHeading { 
-    margin-top: 60px;
-    margin-bottom: 36px !important;
+    margin-top: 53px;
+    /*margin-bottom: 36px !important;*/
 }
 
 p.firstContent {
@@ -81,7 +76,7 @@ p.firstContent {
     padding-bottom: 25px;
     color: white;
     background-color: var(--kg-blue);
-    margin-bottom: 0 !important;
+    /*margin-bottom: 0 !important;*/
 }
 
 .stepHeading h1 {
@@ -125,7 +120,6 @@ p.firstContent {
 
 .arrayContent span {
     display: block;
-    margin-bottom: 24px;
 }
 
 .calltoaction {
@@ -202,18 +196,32 @@ p.firstContent {
 }*/
 
 
-/***** Alerts *****/
-.jumbotron {
-    margin-top: 20%;
-    margin-bottom: 30px;
-    /*padding: 30px 15px;
-    color: inherit;
-    background-color: #eeeeee;*/
-    border-radius: 3px;
+/***** Forms *****/
+
+.formContent label {
+    display: block;
+    font-size: 16px;
+    color: var(--kg-blue);
+    line-height: 20px;
 }
 
-.jumbotron h2 {
-    margin-bottom: 0;
+.formContent label + .form-control {
+    margin-top: 10px;
+}
+
+.formContent .form-control {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    font-family: "Source Sans Pro", sans-serif;
+    border: 1px solid #3ba4db;
+    border-radius: 8px;
+
+}
+
+.formContent .form-group + .form-group {
+    margin-top: 24px;
 }
 
 
@@ -226,23 +234,13 @@ footer {
     text-align: left;
 }
 
-footer img {
-    height: 45px;
-    display: inline-block;
-    margin-right: 12px;
-    vertical-align: bottom;
-}
-
-footer div {
-    position: absolute;
-    right: 24px;
-    bottom: 12px;
-    text-align: right;
-}
-
 footer span {
     display: block;
     line-height: 20px;
+    white-space: nowrap;
+    text-align: center;
+    padding-left: 24px;
+    padding-right: 24px;
 }
 
 
@@ -287,11 +285,6 @@ footer span {
     overflow: scroll; */
 }
 
-/*.footer{
-    margin-left: 10px; 
-    margin-top: 15px;    
-}*/
-
 .buttons{
     text-align: center; 
     padding-top: 15px;
@@ -323,9 +316,7 @@ a.kg-bg-blue:hover{
 }
 
 
-.form-control{
-    border: 1px solid #3ba4db !important;
-}
+
 
 #languageList {
     background-color: #f0f0f0;
@@ -352,10 +343,19 @@ a.kg-bg-blue:hover{
 
 
 /***** Responsive *****/
-@media screen and (min-width: 550px) {
-    .jumbotron {
-        padding: 48px 60px;
+@media screen and (min-width: 440px) {
+    footer {
+        padding: 12px 0;
     }
+    footer span {
+        display: inline-block;
+        text-align: left;
+    }
+    footer span:last-child {
+        float: right;
+    }
+}
+@media screen and (min-width: 550px) {
     #languageList ul {
         columns: 3;
     }
@@ -370,12 +370,6 @@ a.kg-bg-blue:hover{
         margin-left: 0;
         margin-right: 0;
     }
-    footer.mw568 {
-        margin-left: 0;
-        margin-right: 0;
-        width: 100%;
-        max-width: 100%;
-    }
 }
 
 @media screen and (min-width: 616px) { /* 568 + 48 */
@@ -389,21 +383,6 @@ a.kg-bg-blue:hover{
     .indent {
         padding-left: 44px;
         padding-right: 44px;
-    }
-
-    footer {
-        padding: 12px 0;
-    }
-    footer div {
-        position: unset;
-        display: inline-block;
-        text-align: left;
-        margin-top: 25px;
-        bottom: unset;
-    }
-    footer #learnmore {
-        position: absolute;
-        right: 0;
     }
 }
 
