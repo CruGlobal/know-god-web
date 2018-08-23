@@ -64,7 +64,7 @@ export class PageComponent implements OnInit {
   AllPagesContent = [];
   FirstPage = false;
   LastPage = false;
-  showCounter = true;
+  headerCounter;
 
   private sub: any;
   constructor(public commonService: CommonService,
@@ -419,8 +419,6 @@ export class PageComponent implements OnInit {
     this.loaderService.display(true);
     //this.loading = true;
     this.BookID = book.attributes.abbreviation
-    // remove numbered heading from The Four and Satisfied tools 
-    this.showCounter = !['thefour', 'satisfied'].includes(this.BookID)
     this.selectLan = '';
     this.selectedBookLanguauageTranslations = [];
 
@@ -1352,6 +1350,12 @@ export class PageComponent implements OnInit {
 
       }
       //this.loading = false;
+    }
+
+    if (this.currentPageContent.header != null &&  this.currentPageContent.header.number != null) {
+      this.headerCounter =  this.currentPageContent.header.number['content:text'];
+    } else {
+      this.headerCounter = null;
     }
 
     this.showLoader = false;
