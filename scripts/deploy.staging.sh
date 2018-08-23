@@ -2,7 +2,7 @@
 
 #Add Adobe Launch script
 adobePlaceholderTag='<script id="adobeLaunch"></script>'
-adobeScriptTag='<script src="//assets.adobedtm.com/launch-ENf664c8891dce4257a7691213181ae53c-development.min.js" async></script>'
+adobeScriptTag='<script src="//assets.adobedtm.com/launch-ENf664c8891dce4257a7691213181ae53c-development.min.js"></script>'
 sed -i "s%$adobePlaceholderTag%$adobeScriptTag%g" dist/knowgod/index.html
 
 #Deploy to S3
