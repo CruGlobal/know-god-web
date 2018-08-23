@@ -64,7 +64,7 @@ export class PageComponent implements OnInit {
   AllPagesContent = [];
   FirstPage = false;
   LastPage = false;
-
+  headerCounter;
 
   private sub: any;
   constructor(public commonService: CommonService,
@@ -1350,6 +1350,12 @@ export class PageComponent implements OnInit {
 
       }
       //this.loading = false;
+    }
+
+    if (this.currentPageContent.header != null &&  this.currentPageContent.header.number != null) {
+      this.headerCounter =  this.currentPageContent.header.number['content:text'];
+    } else {
+      this.headerCounter = null;
     }
 
     this.showLoader = false;
