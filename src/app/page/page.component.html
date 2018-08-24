@@ -14,19 +14,16 @@
         <ul>
           <li class="ng-binding" dir='ltr' (click)="selectLanguage(lang,true)" *ngFor="let lang of selectedBookLanguauageTranslations">{{lang.attributes.name}}</li>
         </ul>
-        <!-- <span class="w-sm-50 w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
-          <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectLanguage(lang,true)"> {{lang.attributes.name}}</span>
-        </span> -->
       </div>
     </div>
   </header>
 
   <!-- Main Content -->
-  <div id="toolContent" [hidden]="showLoader" [ngClass]="{'tc' : FirstPage || LastPage}">
+  <div id="toolContent" [hidden]="showLoader" [ngClass]="{'tc' : FirstPage || LastPage, 'firstPage' : FirstPage}">
 
     <!-- Error message -->
     <ng-container *ngIf="showNoRecordFound || errorpresent">
-      <div class="jumbotron tc">
+      <div class="bs-jumbotron tc">
         <h2 *ngIf="showNoRecordFound">This book isn't available in the currently selected language.</h2>
         <h2 *ngIf="errorpresent">{{errorMsg}}</h2>
       </div>
@@ -42,7 +39,7 @@
 
       <!-- Additional Pages Header -->
       <ng-container *ngIf="!FirstPage && !LastPage && !displayModel">
-        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9, 'headerCounter' : headerCounter != null }">
+        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9, 'noCounter' : headerCounter == null }">
           <ng-container *ngIf="currentPageContent">
             <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}>
               <span class="ng-binding" *ngIf="counter>0 && !displayForm && headerCounter">{{headerCounter}}</span>
@@ -51,9 +48,6 @@
           </ng-container>
         </div>
       </ng-container>
-
-      <!-- Spacer -->
-      <!--<div style="min-height: 60px;" *ngIf="!FirstPage">&nbsp;</div>-->
 
       <!-- Summary? -->
       <ng-container *ngIf="summary_line || item">
@@ -102,7 +96,7 @@
 
       <!-- Cards -->
       <ng-container *ngIf="Cards!=''">
-        <div *ngFor="let card of Cards" [hidden]="card.hidden">
+        <div class="cardContent" *ngFor="let card of Cards" [hidden]="card.hidden">
 
           <!-- Card heading -->
           <ng-container *ngIf="!card.isForm">
@@ -154,37 +148,28 @@
 
           <!-- Card table content -->
           <ng-container *ngIf="card.tabs.length > 0">
-            <table>
-              <tr style="overflow:hidden">
-                <!-- comparison table -->
-                <td *ngFor="let cardtab of card.tabs;let j= index" class="cardtabs">
-                  <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
-                  <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
-                  <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
-                </td>
-              </tr>
-            </table>
+            <div class="tabContent">
+              <ng-container *ngFor="let cardtab of card.tabs;let j= index">
+                <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
+                <img class="imageContent" *ngFor="let image1 of cardtab.images" [src]="image1">
+                <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
+              </ng-container>
+            </div>
           </ng-container>
 
           <!-- Card form content -->
           <ng-container *ngIf="card.forms.length > 0">
-            <form *ngFor="let cardform of card.forms;let j= index" class="mx44">
+            <form *ngFor="let cardform of card.forms;let j= index" class="formContent mw568 indent">
               <div class="form-group" *ngFor="let element of cardform.elements">
                 <label [for]="element.name">{{element.label}}</label>
                 <input [type]="element.type" class="form-control" [value]="element.value" [name]="element.name" [placeholder]="element.placeholder"
                   [required]="element.required">
               </div>
-              <div class="form-group" *ngFor="let button of cardform.buttons">
-                <p class="mx44 tc">
-                  <span class="cardbutton">
-                    <a (click)="formAction(button[1])">{{button[0]}}</a>
-                  </span>
-                </p>
+              <div class="form-group tc buttonContent" *ngFor="let button of cardform.buttons">
+                <a (click)="formAction(button[1])">{{button[0]}}</a>
               </div>
-              <div class="form-group" *ngFor="let link of cardform.links">
-                <span class="cardlink">
-                  <a (click)="formAction(link[1])">{{link[0]}}</a>
-                </span>
+              <div class="form-group tc cardLink" *ngFor="let link of cardform.links">
+                <a (click)="formAction(link[1])">{{link[0]}}</a>
               </div>
             </form>
           </ng-container>
@@ -216,27 +201,42 @@
         </ng-container>
       </ng-container>
       
-      <h4 class="calltoaction mw568 px44" *ngIf="call_to_action!=''">{{call_to_action}}</h4>
+      <ng-container  *ngIf="call_to_action!=''">
+        <h4 class="calltoaction mw568 indent">{{call_to_action}}</h4>
+      </ng-container>
 
+
+      <!-- Tool navigation -->
       <ng-container *ngIf="!displayForm">
-
-        <!-- Tool navigation -->
         <div id="tool-navigation" class="mw568">
-          <a (click)="previous()" *ngIf="counter>0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
-          <a *ngIf="counter==0" dir={{pageGetparameters.dir}} class="buttons kg-white  fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
-          <a (click)="next()" dir={{pageGetparameters.dir}} *ngIf="counter<allPages.length-1" dir="pageGetparameters.dir" class="buttons kg-white  fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
-          <a *ngIf="counter==allPages.length-1" dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
+          <!-- If first page -->
+          <ng-container *ngIf="FirstPage">
+            <a dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
+          </ng-container>
+
+          <!-- If not first page -->
+          <ng-container *ngIf="!FirstPage">
+            <a (click)="previous()"  dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
+          </ng-container>
+
+          <!-- If not last page -->
+          <ng-container *ngIf="!LastPage">
+            <a (click)="next()" dir={{pageGetparameters.dir}} dir="pageGetparameters.dir" class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
+          </ng-container>
+
+          <!-- If last page -->
+          <ng-container *ngIf="LastPage">
+            <a dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
+          </ng-container>
         </div>
+      </ng-container>
 
-        <!-- Footer -->
-        <footer id="toolFooter" class="mw568">
-          <img ng-src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png" src="https://cdn2-www.cru.org/images/cru_logo.png.pagespeed.ce.wqT8QlyTsR.png">
-          <div>
-            <span id="learnmore">Learn more at <a href="http://godtoolsapp.com" target="_blank">godtoolsapp.com</a></span>
-            <span>© 1994-2018 Cru. All Rights Reserved.</span>
-          </div>
+      <!-- Footer -->
+      <ng-container *ngIf="!displayForm">
+        <footer id="toolFooter">
+          <span><a href="http://godtoolsapp.com" target="_blank">Learn more at godtoolsapp.com</a></span>
+          <span>© 1994-2018 <a href="http://cru.org" target="_blank">Cru</a>. All Rights Reserved.</span>
         </footer>
-
       </ng-container>
           
     </ng-container>

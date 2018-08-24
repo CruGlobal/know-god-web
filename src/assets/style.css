@@ -11,7 +11,7 @@
 }
 
 html {
-  -webkit-font-smoothing:antialiased;
+  -webkit-font-smoothing: antialiased;
 }
 body {
   margin: 0;
@@ -372,6 +372,19 @@ img {
   margin-bottom: 0;
 }
 
+.bs-jumbotron {
+  padding: 30px 24px;
+  margin-top: 20%;
+  margin-bottom: 30px;
+  background-color: #eeeeee;
+  border-radius: 3px;
+  color: inherit;
+}
+
+.bs-jumbotron h2 {
+  margin-bottom: 0;
+}
+
 @media (min-width: 576px) {
   .bs-container {
     max-width: 540px;
@@ -388,6 +401,9 @@ img {
     margin-left: 15px;
     margin-right: 15px;
     margin-bottom: 0;
+  }
+  .bs-jumbotron {
+    padding: 48px 60px;
   }
 }
 @media (min-width: 768px) {
