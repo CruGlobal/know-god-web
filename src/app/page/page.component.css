@@ -174,8 +174,9 @@ p.firstContent {
 
 }
 
-.formContent .form-group + .form-group {
-    margin-top: 24px;
+.formContent .cardLink a {
+    color: var(--kg-blue);
+    cursor: pointer;
 }
 
 
@@ -291,7 +292,8 @@ a.kg-bg-blue:hover{
     #toolContent .cardContent > .arrayContent > span + span,
     #toolContent .cardContent > .textContent + .arrayContent,
     #toolContent > .tabContent > .textContent + .textContent,
-    #toolContent .cardContent .buttonContent + .buttonContent {
+    #toolContent .cardContent .buttonContent + .buttonContent,
+    #toolContent .formContent label + input {
         margin-top: 12px;
     }
 

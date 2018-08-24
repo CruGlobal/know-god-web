@@ -168,10 +168,8 @@
               <div class="form-group tc buttonContent" *ngFor="let button of cardform.buttons">
                 <a (click)="formAction(button[1])">{{button[0]}}</a>
               </div>
-              <div class="form-group" *ngFor="let link of cardform.links">
-                <span class="cardlink">
-                  <a (click)="formAction(link[1])">{{link[0]}}</a>
-                </span>
+              <div class="form-group tc cardLink" *ngFor="let link of cardform.links">
+                <a (click)="formAction(link[1])">{{link[0]}}</a>
               </div>
             </form>
           </ng-container>
