@@ -46,11 +46,6 @@ p {
 
 
 /***** Tool Navigation *****/
-/*#tool-navigation {
-    margin-top: 30px;
-    margin-bottom: 30px;
-}*/
-
 #tool-navigation .buttons {
     width: calc(50% - 2px);
     cursor: pointer;
@@ -58,17 +53,10 @@ p {
 
 
 /***** Content *****/
-#toolContent > *:first-child:not([class*="stepHeading"]):not(.firstHeading) {
-    /*margin-top: 48px;*/
-}
-
-#toolContent > *:not(footer) {
-    /*margin-bottom: 30px;*/
-}
 
 .firstHeading { 
     margin-top: 53px;
-    /*margin-bottom: 36px !important;*/
+    margin-bottom: 36px !important;
 }
 
 p.firstContent {
@@ -80,7 +68,6 @@ p.firstContent {
     padding-bottom: 25px;
     color: white;
     background-color: var(--kg-blue);
-    /*margin-bottom: 0 !important;*/
 }
 
 .stepHeading h1 {
@@ -104,22 +91,10 @@ p.firstContent {
     margin-left: 12px;
 }
 
-.stepHeading + *:not([class*="imageContent"]) {
-    /*margin-top: 48px;*/
-}
-
 .imageContent {
     display: block;
     margin-left: auto;
     margin-right: auto;
-}
-
-.imageContent:not(:first-child) {
-    /*margin-bottom: 30px;*/
-}
-
-.arrayContent {
-    /*margin-bottom: 30px;*/
 }
 
 .arrayContent span {
@@ -129,8 +104,6 @@ p.firstContent {
 .calltoaction {
     text-align: center;
     font-weight: lighter;
-    /*margin-top: 48px;*/
-    /*margin-bottom: 48px !important;*/
     font-size: 24px;
     line-height: 30px;
 }
@@ -172,32 +145,9 @@ p.firstContent {
 }
 
 .linkContent a {
-    color:#3ba4db;    
-}
-
-/*.actionbutton {
-    background-color: #3ba4db;
-    width: 264px;
-    height: 64px;
-    text-align: center;
-    border-radius: 50px 50px 50px 50px;
-    padding: 15px 35px; 
-}
-
-.actionbutton a {
-    color:white;
-    text-decoration: none;
-    min-width: 310px;
-    display: inline-block;
-}
-
-.actionbutton a:hover {
     color:#3ba4db;
+    cursor: pointer;
 }
-
-.actionbutton:hover {   
-    background-color: #7fbfe0;    
-}*/
 
 
 /***** Forms *****/
@@ -249,11 +199,6 @@ footer span {
 
 
 /***** Other *****/
-/*.mr25{
-    margin-right:25px;
-    margin-bottom: 40px;
-}*/
-
 .rtlpageno{
     margin-top: -8%;
     line-height : 30px;
@@ -272,27 +217,13 @@ footer span {
     top: 19px;
 }
 
-    .top{
-        margin-top: -7%;
-    }
-
-/*.cardtabs {
-    border-spacing: 0px;
-}*/
-
-.cardtabs td {
-    /* float:left; */
-    /*width: 48%;
-    border: 1px solid #ddd;
-    text-align: center;*/
-    /* height:250px;
-    overflow: scroll; */
+.top{
+    margin-top: -7%;
 }
 
 .buttons{
     text-align: center; 
     padding-top: 15px;
-    /* padding-bottom: 25px; */
     width: 264px;
     height:64px;
 }
@@ -355,46 +286,30 @@ a.kg-bg-blue:hover{
 
     #toolContent > .textContent + .textContent,
     #toolContent > .arrayContent > span + span,
+    #toolContent > .textContent + .buttonContent,
     #toolContent .cardContent > .textContent + .textContent,
     #toolContent .cardContent > .arrayContent > span + span,
-    #toolContent > .tabContent > .textContent + .textContent {
+    #toolContent .cardContent > .textContent + .arrayContent,
+    #toolContent > .tabContent > .textContent + .textContent,
+    #toolContent .cardContent .buttonContent + .buttonContent {
         margin-top: 12px;
     }
 
     #toolContent .firstHeading + .imageContent,
-    #toolContent .stepHeading + .imageContent {
+    #toolContent .stepHeading + .imageContent,
+    #toolContent .cardContent .cardHeading,
+    #toolContent .cardContent .arrayContent span:first-child,
+    #toolContent .cardContent .buttonContent a {
         margin-top: 0;
+    }
+
+    #toolContent > .textContent + .buttonContent + .textContent {
+        margin-top: 32px;
     }
 
     #toolContent > .stepHeading + *:not(.imageContent) {
         margin-top: 48px;
     }
-
-    /*#toolContent > .textContent + .textContent,
-    .cardContent > .textContent + .textContent,
-    .tabContent > .textContent + .textContent,
-    .arrayContent > span + span {
-        margin-top: 12px;
-    }
-
-    #toolContent > * + *:not(:first-child):not(#tool-navigation):not(#toolFooter),
-    .cardContent + .cardContent,
-    .tabContent + .tabContent,
-    .cardContent > *:not(.cardHeading):not(.tabContent),
-    .tabContent > * {
-        margin-top: 24px;
-    }
-
-    .firstHeading + *,
-    .firstHeading ~ * + *:not(#tool-navigation):not(#toolFooter) {
-        margin-top: 36px;
-    }
-
-    #toolContent > *:first-child:not(.firstHeading):not(.stepHeading),
-    .stepHeading + *:not(.imageContent):not(.cardContent),
-    .stepHeading + .cardContent > *:first-child:not(.imageContent) {
-        margin-top: 48px;
-    }*/
 
     .calltoaction,
     #tool-navigation,
