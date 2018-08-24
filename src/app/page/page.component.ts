@@ -608,7 +608,6 @@ export class PageComponent implements OnInit {
 
   getXmlFileForEachPage(page) {
     //this.loading = true;
-    console.log(APIURL.GET_XML_FILES_FOR_MANIFEST + page.translationId + "/" + page.src);
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + page.translationId + "/" + page.src)
       .subscribe((data: any) => {
 
