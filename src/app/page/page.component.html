@@ -14,9 +14,6 @@
         <ul>
           <li class="ng-binding" dir='ltr' (click)="selectLanguage(lang,true)" *ngFor="let lang of selectedBookLanguauageTranslations">{{lang.attributes.name}}</li>
         </ul>
-        <!-- <span class="w-sm-50 w33 dib pill kg-bg-white-hover ng-scope" *ngFor="let lang of selectedBookLanguauageTranslations">
-          <span class="w100 dib pill-inside ng-binding" dir='ltr' (click)="selectLanguage(lang,true)"> {{lang.attributes.name}}</span>
-        </span> -->
       </div>
     </div>
   </header>
@@ -42,7 +39,7 @@
 
       <!-- Additional Pages Header -->
       <ng-container *ngIf="!FirstPage && !LastPage && !displayModel">
-        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9, 'headerCounter' : headerCounter != null }">
+        <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9, 'noCounter' : headerCounter == null }">
           <ng-container *ngIf="currentPageContent">
             <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}>
               <span class="ng-binding" *ngIf="counter>0 && !displayForm && headerCounter">{{headerCounter}}</span>
@@ -151,16 +148,13 @@
 
           <!-- Card table content -->
           <ng-container *ngIf="card.tabs.length > 0">
-            <table class=cardtabs>
-              <tr *ngFor="let cardtab of card.tabs;let j= index"  style="overflow:hidden">
-                <!-- comparison table -->
-                <td>
-                  <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
-                  <img *ngFor="let image1 of cardtab.images" [src]="image1" height="auto" style="margin-left: 12%;width:200px">
-                  <p class="mx44 ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
-                </td>
-              </tr>
-            </table>
+            <div class="tabContent">
+              <ng-container *ngFor="let cardtab of card.tabs;let j= index">
+                <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
+                <img class="imageContent" *ngFor="let image1 of cardtab.images" [src]="image1">
+                <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
+              </ng-container>
+            </div>
           </ng-container>
 
           <!-- Card form content -->
@@ -171,12 +165,8 @@
                 <input [type]="element.type" class="form-control" [value]="element.value" [name]="element.name" [placeholder]="element.placeholder"
                   [required]="element.required">
               </div>
-              <div class="form-group" *ngFor="let button of cardform.buttons">
-                <p class="mx44 tc">
-                  <span class="cardbutton">
-                    <a (click)="formAction(button[1])">{{button[0]}}</a>
-                  </span>
-                </p>
+              <div class="form-group tc buttonContent" *ngFor="let button of cardform.buttons">
+                <a (click)="formAction(button[1])">{{button[0]}}</a>
               </div>
               <div class="form-group" *ngFor="let link of cardform.links">
                 <span class="cardlink">

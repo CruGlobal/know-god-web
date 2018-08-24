@@ -3,6 +3,10 @@ html{
     background-color: white !important;
 }
 
+h1, h2, h3, h4, h5, h6, p {
+    margin-bottom: 0;
+}
+
 p {
     line-height: 24px;
 }
@@ -42,10 +46,10 @@ p {
 
 
 /***** Tool Navigation *****/
-#tool-navigation {
+/*#tool-navigation {
     margin-top: 30px;
     margin-bottom: 30px;
-}
+}*/
 
 #tool-navigation .buttons {
     width: calc(50% - 2px);
@@ -101,7 +105,7 @@ p.firstContent {
 }
 
 .stepHeading + *:not([class*="imageContent"]) {
-    margin-top: 48px;
+    /*margin-top: 48px;*/
 }
 
 .imageContent {
@@ -111,11 +115,11 @@ p.firstContent {
 }
 
 .imageContent:not(:first-child) {
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
 }
 
 .arrayContent {
-    margin-bottom: 30px;
+    /*margin-bottom: 30px;*/
 }
 
 .arrayContent span {
@@ -125,8 +129,8 @@ p.firstContent {
 .calltoaction {
     text-align: center;
     font-weight: lighter;
-    margin-top: 48px;
-    margin-bottom: 48px !important;
+    /*margin-top: 48px;*/
+    /*margin-bottom: 48px !important;*/
     font-size: 24px;
     line-height: 30px;
 }
@@ -245,10 +249,10 @@ footer span {
 
 
 /***** Other *****/
-.mr25{
+/*.mr25{
     margin-right:25px;
     margin-bottom: 40px;
-}
+}*/
 
 .rtlpageno{
     margin-top: -8%;
@@ -272,15 +276,15 @@ footer span {
         margin-top: -7%;
     }
 
-.cardtabs {
+/*.cardtabs {
     border-spacing: 0px;
-}
+}*/
 
 .cardtabs td {
     /* float:left; */
-    width: 48%;
+    /*width: 48%;
     border: 1px solid #ddd;
-    text-align: center;
+    text-align: center;*/
     /* height:250px;
     overflow: scroll; */
 }
@@ -342,6 +346,63 @@ a.kg-bg-blue:hover{
 }
 
 
+    /* Content vertical spacing */
+
+    #toolContent > *:not(.firstHeading):not(.stepHeading),
+    #toolContent .cardContent *:not(.cardHeading) {
+        margin-top: 24px;
+    }
+
+    #toolContent > .textContent + .textContent,
+    #toolContent > .arrayContent > span + span,
+    #toolContent .cardContent > .textContent + .textContent,
+    #toolContent .cardContent > .arrayContent > span + span,
+    #toolContent > .tabContent > .textContent + .textContent {
+        margin-top: 12px;
+    }
+
+    #toolContent .firstHeading + .imageContent,
+    #toolContent .stepHeading + .imageContent {
+        margin-top: 0;
+    }
+
+    #toolContent > .stepHeading + *:not(.imageContent) {
+        margin-top: 48px;
+    }
+
+    /*#toolContent > .textContent + .textContent,
+    .cardContent > .textContent + .textContent,
+    .tabContent > .textContent + .textContent,
+    .arrayContent > span + span {
+        margin-top: 12px;
+    }
+
+    #toolContent > * + *:not(:first-child):not(#tool-navigation):not(#toolFooter),
+    .cardContent + .cardContent,
+    .tabContent + .tabContent,
+    .cardContent > *:not(.cardHeading):not(.tabContent),
+    .tabContent > * {
+        margin-top: 24px;
+    }
+
+    .firstHeading + *,
+    .firstHeading ~ * + *:not(#tool-navigation):not(#toolFooter) {
+        margin-top: 36px;
+    }
+
+    #toolContent > *:first-child:not(.firstHeading):not(.stepHeading),
+    .stepHeading + *:not(.imageContent):not(.cardContent),
+    .stepHeading + .cardContent > *:first-child:not(.imageContent) {
+        margin-top: 48px;
+    }*/
+
+    .calltoaction,
+    #tool-navigation,
+    #toolFooter {
+        margin-top: 48px !important;
+    }
+
+
 /***** Responsive *****/
 @media screen and (min-width: 440px) {
     footer {
@@ -389,6 +450,10 @@ a.kg-bg-blue:hover{
 @media screen and (min-width: 768px) {
     .stepHeading {
         min-height: 134px;
+    }
+    .stepHeading.noCounter {
+        min-height: unset;
+        text-align: center;
     }
 
     .stepHeading.tenSteps h1 {
