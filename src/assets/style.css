@@ -1,5 +1,6 @@
 :root {
-  --kg-blue: #3BA4DB; 
+  --kg-blue: #3BA4DB;
+  --kg-blue-light: #7fbfe0;
   --kg-gray: #BEBEBE;
   --kg-gray-light: #E6E6E6;
   --kg-gray-dark: #5A5A5A;
@@ -82,25 +83,6 @@ img {
 }
 .b-white {
   border: 2px solid var(--kg-white);
-}
-.button {
-/*  font-family: $font-family; */
-  display: inline-block;
-  font-weight: 600;
-  text-align: center;
-  vertical-align: middle;
-  cursor: pointer;
-  border-width: 1px;
-  border-style: solid;
-  border-color: transparent;
-  padding: 9px 15px 9px 15px;
-  font-size: 1rem;
-  line-height: 1.5;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.button:hover {
-  text-decoration: none;
 }
 .pill {
   border-radius: 20px;

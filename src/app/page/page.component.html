@@ -19,7 +19,7 @@
   </header>
 
   <!-- Main Content -->
-  <div id="toolContent" [hidden]="showLoader" [ngClass]="{'tc' : FirstPage || LastPage, 'firstPage' : FirstPage}">
+  <div id="toolContent" [hidden]="showLoader" [ngClass]="{'tc' : FirstPage || LastPage, 'firstPage' : FirstPage, 'lastPage' : LastPage}">
 
     <!-- Error message -->
     <ng-container *ngIf="showNoRecordFound || errorpresent">
@@ -87,7 +87,7 @@
           <!-- Button content -->
           <ng-container *ngIf="item.type=='button'">
             <div class="mw568 buttonContent tc" dir={{pageGetparameters.dir}}>
-              <a [href]="'http://' + item.text" target="_blank">{{hostnameUrlFromLink(item.text)}}</a>
+              <a [href]="'http://' + item.text" class="button" target="_blank">{{hostnameUrlFromLink(item.text)}}</a>
             </div>
           </ng-container>
 
@@ -133,7 +133,7 @@
             <!-- Button content -->
             <ng-container *ngIf="card.button!=undefined && card.button[i]!=''">
               <div class="mw568 buttonContent tc indent">
-                <a (click)="formAction(card.button[i][1])">{{card.button[i][0]}}</a>
+                <a (click)="formAction(card.button[i][1])" class="button">{{card.button[i][0]}}</a>
               </div>
             </ng-container>
 
@@ -166,7 +166,7 @@
                   [required]="element.required">
               </div>
               <div class="form-group tc buttonContent" *ngFor="let button of cardform.buttons">
-                <a (click)="formAction(button[1])">{{button[0]}}</a>
+                <a (click)="formAction(button[1])" class="button">{{button[0]}}</a>
               </div>
               <div class="form-group tc cardLink" *ngFor="let link of cardform.links">
                 <a (click)="formAction(link[1])">{{link[0]}}</a>
@@ -179,25 +179,25 @@
       
       <ng-container *ngIf="displayModel">
         <ng-container *ngFor="let modal of Modals">
-          <div class="kg-bg-blue kg-white">
+          <div class="stepHeading noCounter">
             <ng-container *ngIf="currentPageContent">
-              <h2 class="mx100 kg-white ng-binding tc" style="min-height:70px">{{modal.title}}</h2>
+              <h1 class="mw568 ng-binding">{{modal.title}}</h1>
             </ng-container>
           </div>
-          <div *ngIf="modal.paras?.length > 0" class="tc">
-            <div class="mx44" dir={{pageGetparameters.dir}} *ngFor="let item of modal.paras; let i= index">
-              <p class="mx44" dir={{pageGetparameters.dir}}>
-                <span class="ng-binding ng-scope" dir={{pageGetparameters.dir}} *ngIf="item.type== 'text'">
+          <ng-container *ngIf="modal.paras?.length > 0">
+            <ng-container *ngFor="let item of modal.paras; let i= index">
+              <ng-container *ngIf="item.type== 'text'">
+                <p class="mw568 textContent indent ng-binding ng-scope" dir={{pageGetparameters.dir}}>
                   {{item.text}}
-                </span>
-              </p>
-              <p class="mx44 tc">
-                <span class="cardbutton" *ngIf="item.type=='button'">
-                  <a (click)="formAction(item.button[1])">{{item.button[0]}}</a>
-                </span>
-              </p>
-            </div>
-          </div>
+                </p>
+              </ng-container>
+              <ng-container *ngIf="item.type=='button'">
+                <div class="mw568 buttonContent tc buttonDone">
+                  <a (click)="formAction(item.button[1])" class="button">{{item.button[0]}}</a>
+                </div>
+              </ng-container>
+            </ng-container>
+          </ng-container>
         </ng-container>
       </ng-container>
       
@@ -208,25 +208,15 @@
 
       <!-- Tool navigation -->
       <ng-container *ngIf="!displayForm">
-        <div id="tool-navigation" class="mw568">
-          <!-- If first page -->
-          <ng-container *ngIf="FirstPage">
-            <a dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-left kg-bg-gray pill-left"></a>
-          </ng-container>
-
+        <div id="tool-navigation" class="mw568 tc">
           <!-- If not first page -->
           <ng-container *ngIf="!FirstPage">
-            <a (click)="previous()"  dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-left kg-bg-blue pill-left"></a>
+            <a (click)="previous()"  dir={{pageGetparameters.dir}} class="button button-white fas fa-arrow-left"></a>
           </ng-container>
 
           <!-- If not last page -->
           <ng-container *ngIf="!LastPage">
-            <a (click)="next()" dir={{pageGetparameters.dir}} dir="pageGetparameters.dir" class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-blue pill-right"></a>
-          </ng-container>
-
-          <!-- If last page -->
-          <ng-container *ngIf="LastPage">
-            <a dir={{pageGetparameters.dir}} class="buttons kg-white fas fa-2x fa-arrow-right kg-bg-gray pill-right"></a>
+            <a (click)="next()" dir={{pageGetparameters.dir}} dir="pageGetparameters.dir" class="button fas fa-arrow-right"></a>
           </ng-container>
         </div>
       </ng-container>

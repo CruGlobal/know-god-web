@@ -59,6 +59,12 @@
 #homeFooter {
   font-size: 14px;
 }
+#homeFooter a {
+  color: var(--kg-white);
+}
+#homeFooter a:hover {
+  text-decoration: underline;
+}
 
 
 /***** Responsive *****/
