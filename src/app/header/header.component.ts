@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
 import { DomSanitizer } from '@angular/platform-browser';
-//import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
 
 
@@ -68,12 +67,7 @@ export class HeaderComponent {
                     this.allBooks = data.data;
                     if (id != "") {
                         this.selectedBook = this.allBooks.filter(x => x.attributes.abbreviation == id)[0];
-                        console.log(this.selectedBook);
                         this.selectedLookup.bookname = this.selectedBook.attributes.name;
-                    }
-                    else {
-                        // let book = this.allBooks.filter(x=>x.attributes.abbreviation==id)[0];
-                        // this.selectedLookup.bookname =book.attributes.name;
                     }
                 });
         }
@@ -82,8 +76,7 @@ export class HeaderComponent {
     getAllLangaugesFromApi(id = "") {
         if (this.commonService.allLanguages.length > 0) {
             this.allLanguages = this.commonService.allLanguages;
-        }
-        else {
+        } else {
             this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
                 .subscribe((data: any) => {
                     this.allLanguages = data.data;
@@ -98,15 +91,12 @@ export class HeaderComponent {
                         let item;
                         if(!this.commonService.selectedLan){
                             item = this.allLanguages.filter(x => x.attributes.code == "en")[0];
-                          
-                        }
-                        else{
+
+                        } else {
                             item = this.allLanguages.filter(x => x.attributes.code == this.commonService.selectedLan.attributes.code)[0];
                         }
                         this.selectedLookup.languageId = item.attributes.code;
                         this.selectedLookup.language = item.attributes.name;
-                       
-                        //this.route.navigateByUrl('/home/'+ this.selectedLookup.languageId);
                     }
                 });
         }
@@ -119,7 +109,7 @@ export class HeaderComponent {
         this.isBooksSelected = !this.isBooksSelected;
         this.selectedBook = item;
         this.selectedLookup.bookname = item.attributes.name;
-        this.route.navigateByUrl('home/' + item.attributes.abbreviation + '/' + this.selectedLookup.languageId);
+        this.route.navigateByUrl(item.attributes.abbreviation + '/' + this.selectedLookup.languageId);
     }
 
     selecteLanguageFromDropdown(item) {
@@ -152,7 +142,7 @@ export class HeaderComponent {
                         if (bannerId == data.included[i].id) {
                             this.ImageUrl = data.included[i].attributes.file
                             this.Images.push({ description: this.description, ImgUrl: this.ImageUrl, resource: resourceName, id: resourceId })
-                           
+
                         }
                     }
                 }
@@ -161,7 +151,7 @@ export class HeaderComponent {
 
     navigateToPage(id) {
         let book = this.allBooks.find(x => x.id == id).attributes.abbreviation;
-        this.route.navigateByUrl('home/' + book + '/' + this.selectedLookup.languageId);
+        this.route.navigateByUrl(book + '/' + this.selectedLookup.languageId);
     }
-    
+
 }

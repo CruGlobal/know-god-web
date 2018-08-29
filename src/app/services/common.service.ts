@@ -28,10 +28,8 @@ export class CommonService {
       'Access-Control-Allow-Headers': "X-Requested-With, Content-Type, Origin, Authorization, Accept, Client-Security-Token, Accept-Encoding"
 
     });
-    console.log(this.headers.get('Accept'))
-    console.log("Headers:", this.headers);
     this.currenturl=new Subject<any>()
-     
+
   }
   getUrl(){
     return this.currenturl.asObservable();
@@ -40,7 +38,7 @@ export class CommonService {
   this.currenturl.next(url);
   }
   getBooks(url) {
-    return this.http.get(url); 
+    return this.http.get(url);
   }
 
   getLanguages(url) {
@@ -48,7 +46,7 @@ export class CommonService {
   }
 
   downloadFile(url) {
-    return this.http.get(url,{ headers: this.headers, responseType:"arraybuffer"}); 
+    return this.http.get(url,{ headers: this.headers, responseType:"arraybuffer"});
   }
 
 }
