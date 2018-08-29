@@ -1,5 +1,12 @@
 # KnowGod.com embedable web app
 
+## Embed
+
+```html
+ <div id="knowGodEmbed" data-book="kgp-us" data-lang="en"></div>
+ <script src="https://knowgod.com/embed.js"></script>
+```
+
 ## Development
 
 ### Install & Run

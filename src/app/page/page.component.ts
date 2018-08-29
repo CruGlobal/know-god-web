@@ -1353,7 +1353,6 @@ export class PageComponent implements OnInit {
     }
 
     this.showLoader = false;
-
   }
 
   // getCards(isForm) {

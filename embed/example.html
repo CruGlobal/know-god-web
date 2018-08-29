@@ -1,0 +1,27 @@
+<html>
+    <head>
+        <style>
+            body {
+                background-color: lightblue;
+            }
+
+            .test_container {
+                display: flex;
+                flex-direction: column;  /* make main axis vertical */
+                justify-content: center; /* center items vertically, in this case */
+                align-items: center; 
+            }
+
+            .test_container > div {
+                width:900px;
+                background-color: white; 
+            }
+        </style>
+    </head>
+    <body>
+        <div class="test_container">
+            <div id="knowGodEmbed" data-book="kgp-us" data-lang="en"></div>
+            <script src="embed.js" type="text/javascript"></script>
+        </div>
+    </body>
+</html>

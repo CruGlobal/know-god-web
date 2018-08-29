@@ -43,6 +43,27 @@
   <app-root></app-root>
 
   <script>if(window._satellite){ _satellite.pageBottom(); }</script>
+
+  <script>
+    //send iframe height to parent
+    (function(){
+      if(!parent.postMessage) { return; }
+
+      var docBody = document.body;
+      var sendHeight = function() {
+        parent.postMessage(docBody.offsetHeight, '*');
+      };
+      var observer = new MutationObserver(function(){
+        sendHeight();
+
+        //give time for images to load
+        setTimeout(sendHeight, 500);
+        setTimeout(sendHeight, 1000);
+        setTimeout(sendHeight, 2000);
+      });
+      observer.observe(docBody, { childList: true, subtree: true, characterData: true });
+    })();
+  </script>
 </body>
 
 </html>
