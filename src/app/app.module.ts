@@ -9,22 +9,18 @@ import { CommonModule } from '@angular/common';
 import { PageComponent } from './page/page.component';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
-//import { LoadingModule } from 'ngx-loading';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 import { HttpModule } from '@angular/http';
 import { LoaderService } from './services/loader-service/loader.service';
-import { LoaderComponent } from './shared/loader/loader.component'; 
+import { LoaderComponent } from './shared/loader/loader.component';
 import {ToastrModule } from 'ngx-toastr';
-//import { CustomOption } from './shared/custom-options';
- 
+
 
 const appRoutes: Routes =[
-  { path: 'home/:bookid/:langid/:page', component: PageComponent },
-  { path: 'home/:bookid/:langid', component: PageComponent},
-  { path: 'home/:bookid', component: PageComponent},
-  { path: 'base', component: HeaderComponent} ,
-  { path: '', redirectTo: '/base', pathMatch: 'full'} ,
-  { path: "", redirectTo: '/base', pathMatch: 'full'}
+  { path: ':bookid/:langid/:page', component: PageComponent },
+  { path: ':bookid/:langid', component: PageComponent},
+  { path: ':bookid', component: PageComponent},
+  { path: '', component: HeaderComponent} ,
 ];
 
 @NgModule({
@@ -33,23 +29,22 @@ const appRoutes: Routes =[
     HeaderComponent,
     PageComponent,
     HomeComponent,
-    SharingModalComponent,  
-    LoaderComponent  
+    SharingModalComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    //LoadingModule,
     HttpModule,
     RouterModule.forRoot(appRoutes) ,
     BrowserAnimationsModule,
     ToastrModule.forRoot() ,
-    
+
   ],
   providers: [
     CommonModule,
-    LoaderService, 
+    LoaderService,
   ],
   bootstrap: [AppComponent]
 })
