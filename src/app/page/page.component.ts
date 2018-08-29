@@ -1354,6 +1354,23 @@ export class PageComponent implements OnInit {
 
     this.showLoader = false;
 
+    //send iframe height to parent
+    let newHeight;
+    let counter = 2;
+    let sendHeightToIframe = function() {
+        counter *= 2;
+        let docBody = document.body;
+        if (docBody.offsetHeight != newHeight) {
+          parent.postMessage(docBody.offsetHeight, '*');
+          newHeight = docBody.offsetHeight;
+        }
+        let timeLoop = setTimeout(sendHeightToIframe, counter);
+        if(counter > 10000){
+          clearInterval(timeLoop);
+        }
+    }
+    sendHeightToIframe();
+
   }
 
   // getCards(isForm) {
