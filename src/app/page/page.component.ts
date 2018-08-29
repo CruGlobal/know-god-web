@@ -2,14 +2,11 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
 import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
-//import { Parser } from 'xml2js';
 import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-//import { isArray } from 'util';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
-//import { listeners } from 'cluster'; 
 
 @Component({
   selector: 'app-page',
@@ -139,7 +136,7 @@ export class PageComponent implements OnInit {
 
     })
   }
-  
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     let RIGHT_ARROW = 39;
@@ -148,7 +145,7 @@ export class PageComponent implements OnInit {
     if (event.keyCode === RIGHT_ARROW && this.counter<this.allPages.length-1) {
       this.next();
     }
-    
+
     if (event.keyCode === LEFT_ARROW && this.counter>0) {
       this.previous();
     }
@@ -180,7 +177,7 @@ export class PageComponent implements OnInit {
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
-        // this.selectedBookLanguauageTranslations = []; 
+        // this.selectedBookLanguauageTranslations = [];
         //this.loading = false;
       })
   }
@@ -198,7 +195,7 @@ export class PageComponent implements OnInit {
 
           });
         }
-        // this.selectedBookLanguauageTranslations = []; 
+        // this.selectedBookLanguauageTranslations = [];
         //this.loading = false;
       })
   }
@@ -924,7 +921,7 @@ export class PageComponent implements OnInit {
     //handle card heading
     card.label = resourcePage.page.cards.card[i].label["content:text"];
 
-    //handle card paragraph 
+    //handle card paragraph
     let paragraphs = [];
     if (resourcePage.page.cards.card[i]["content:paragraph"]) {
       if (resourcePage.page.cards.card[i]["content:paragraph"].length == undefined) {
@@ -968,7 +965,7 @@ export class PageComponent implements OnInit {
         card.image.push("");
       }
 
-      //handle content tabs      
+      //handle content tabs
       if (formpara["content:tabs"]) {
         let tab;
         for (let k = 0; k < formpara["content:tabs"]["content:tab"].length; k++) {
@@ -1050,7 +1047,7 @@ export class PageComponent implements OnInit {
       }
 
 
-      //handle form paragraph 
+      //handle form paragraph
       let paragraphs = [];
       if (forms["content:paragraph"] != undefined) {
         if (forms["content:paragraph"].length == undefined) {
@@ -1100,7 +1097,7 @@ export class PageComponent implements OnInit {
     //handle modal heading
     modal.title = currentModal.title["content:text"];
 
-    //handle card paragraph 
+    //handle card paragraph
     let paragraphs = [];
     if (currentModal["content:paragraph"]) {
       if (currentModal["content:paragraph"].length == undefined) {
@@ -1359,24 +1356,6 @@ export class PageComponent implements OnInit {
     }
 
     this.showLoader = false;
-
-    //send iframe height to parent
-    let newHeight;
-    let counter = 2;
-    let sendHeightToIframe = function() {
-        counter *= 2;
-        let docBody = document.body;
-        if (docBody.offsetHeight != newHeight) {
-          parent.postMessage(docBody.offsetHeight, '*');
-          newHeight = docBody.offsetHeight;
-        }
-        let timeLoop = setTimeout(sendHeightToIframe, counter);
-        if(counter > 10000){
-          clearInterval(timeLoop);
-        }
-    }
-    sendHeightToIframe();
-
   }
 
   // getCards(isForm) {
