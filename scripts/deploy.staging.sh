@@ -2,7 +2,7 @@
 
 #Set Domain
 appDomainPlaceholder='{appDomain}'
-appDomain='http://stage.knowgod.com'
+appDomain='https://stage.knowgod.com'
 sed -i "s%$appDomainPlaceholder%$appDomain%g" dist/embed.js
 
 #Add Adobe Launch script
