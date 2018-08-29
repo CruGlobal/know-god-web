@@ -64,7 +64,7 @@ export class PageComponent implements OnInit {
   AllPagesContent = [];
   FirstPage = false;
   LastPage = false;
-
+  headerCounter;
 
   private sub: any;
   constructor(public commonService: CommonService,
@@ -993,7 +993,7 @@ export class PageComponent implements OnInit {
           if (tab["content:image"].length == undefined) eachtab.images.push(this.getImageName(tab["content:image"])); //(tab["content:image"]["@attributes"]["resource"])
           else {
             tab["content:image"].forEach(tabimage => {
-              eachtab.images.push(tabimage["content:text"])
+              eachtab.images.push(this.getImageName(tabimage))
             });
           }
 
@@ -1350,6 +1350,12 @@ export class PageComponent implements OnInit {
 
       }
       //this.loading = false;
+    }
+
+    if (this.currentPageContent.header != null &&  this.currentPageContent.header.number != null) {
+      this.headerCounter =  this.currentPageContent.header.number['content:text'];
+    } else {
+      this.headerCounter = null;
     }
 
     this.showLoader = false;
