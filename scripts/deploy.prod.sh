@@ -3,7 +3,7 @@
 #Set Domain
 appDomainPlaceholder='{appDomain}'
 appDomain='https://knowgod.com'
-sed -i "s%appDomainPlaceholder%appDomain%g" dist/embed.js
+sed -i "s%$appDomainPlaceholder%$appDomain%g" dist/embed.js
 
 #Add Adobe Launch script
 adobePlaceholderTag='<script id="adobeLaunch"></script>'
