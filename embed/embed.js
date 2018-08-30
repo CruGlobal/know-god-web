@@ -23,12 +23,23 @@
     knowGodEmbed.appendChild(iframe);
 
     //listen for iframe height changes
+    var previousHeight = 0, iframeTop = iframe.offsetTop;
     var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
     var eventer = window[eventMethod];
     var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
     eventer(messageEvent, function(e) {
-      if (isNaN(e.data)) return;
+      if (isNaN(e.data) || previousHeight === e.data) return;
+
       iframe.style.height = e.data + 'px';
+
+      //scroll to top of iframe
+      if(window.pageYOffset > iframeTop){
+        window.scrollTo({
+          top: iframeTop
+        });
+      }
+
+      previousHeight = e.data;
     }, false);
   };
 })();
