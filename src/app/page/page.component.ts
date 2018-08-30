@@ -795,8 +795,14 @@ export class PageComponent implements OnInit {
       obj = resourcePage.page;
       paragraph = '';
       if (resourcePage.page.cards != undefined) {
-        for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
-          let card = this.getCardContent(resourcePage, i);
+        if (resourcePage.page.cards.card.length != undefined) {
+          for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
+            let card = this.getCardContent(resourcePage, i);
+            cards.push(card);
+          }
+        } else {
+          resourcePage.page.cards.card = [resourcePage.page.cards.card]
+          let card = this.getCardContent(resourcePage, 0);
           cards.push(card);
         }
       }
