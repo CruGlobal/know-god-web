@@ -8,7 +8,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PageComponent } from './page/page.component';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 import { HttpModule } from '@angular/http';
 import { LoaderService } from './services/loader-service/loader.service';
@@ -28,7 +27,6 @@ const appRoutes: Routes =[
     AppComponent,
     HeaderComponent,
     PageComponent,
-    HomeComponent,
     SharingModalComponent,
     LoaderComponent
   ],

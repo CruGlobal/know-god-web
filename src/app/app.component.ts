@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoaderService } from './services/loader-service/loader.service';
+import { Router, NavigationEnd } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +10,35 @@ import { LoaderService } from './services/loader-service/loader.service';
 export class AppComponent implements OnInit {
   showLoader: boolean;
 
-  constructor(private loaderService: LoaderService){}
+  constructor(private loaderService: LoaderService, private router: Router){}
 
-  ngOnInit(){
-    this.loaderService.status.subscribe((val: boolean)=>{
-      this.showLoader = val; 
+  ngOnInit() {
+    this.loaderService.status.subscribe((val: boolean) => {
+      this.showLoader = val;
     });
+
+    // analytics events
+    if(CustomEvent !== undefined){
+      (<any>window).digitalData = { page: {} };
+      this.router.events
+        .subscribe((event) => {
+          if (event instanceof NavigationEnd) {
+            const pathParts = event.url.split('/');
+            pathParts[0] = 'know god';
+            (<any>window).digitalData.page = {
+              pageInfo: {
+                pageName: pathParts[0] + ' : ' + (pathParts[1] || 'home'),
+                language: pathParts[2]
+              },
+              category: {
+                primaryCategory: pathParts[1]
+              }
+            };
+
+            const evt = new CustomEvent('content: all pages');
+            document.querySelector('body').dispatchEvent(evt);
+          }
+        });
+    }
   }
 }
