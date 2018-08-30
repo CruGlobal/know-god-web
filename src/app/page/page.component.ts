@@ -813,8 +813,14 @@ export class PageComponent implements OnInit {
       obj = resourcePage.page;
 
       if (cards.length == 0) { //dont process card, if already done in header
-        for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
-          let card = this.getCardContent(resourcePage, i);
+        if (resourcePage.page.cards.card.length != undefined) {
+          for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
+            let card = this.getCardContent(resourcePage, i);
+            cards.push(card);
+          }
+        } else {
+          resourcePage.page.cards.card = [resourcePage.page.cards.card]
+          let card = this.getCardContent(resourcePage, 0);
           cards.push(card);
         }
       }
