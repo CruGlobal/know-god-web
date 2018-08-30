@@ -604,7 +604,7 @@ export class PageComponent implements OnInit {
     //this.loading = true;
     this.commonService.downloadFile(APIURL.GET_XML_FILES_FOR_MANIFEST + page.translationId + "/" + page.src)
       .subscribe((data: any) => {
-        
+
         //Convertion of array buffer to xml
         let enc = new TextDecoder("utf-8");
         let arr = new Uint8Array(data);
@@ -811,7 +811,7 @@ export class PageComponent implements OnInit {
     if (resourcePage.page.cards) {
 
       obj = resourcePage.page;
-      
+
       if (cards.length == 0) { //dont process card, if already done in header
         if (resourcePage.page.cards.card.length != undefined) {
           for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
