@@ -311,7 +311,8 @@ a.kg-bg-blue:hover{
     #toolContent .stepHeading + .imageContent,
     #toolContent .cardContent .cardHeading,
     #toolContent .cardContent .arrayContent span:first-child,
-    #toolContent .cardContent .buttonContent a {
+    #toolContent .cardContent .buttonContent a,
+    #toolContent .cardContent .textContent * {
         margin-top: 0;
     }
 
