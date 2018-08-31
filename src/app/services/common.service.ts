@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import {Headers, RequestOptions} from '@angular/http';
 import { Subject } from 'rxjs';
-//import { map } from 'rxjs/operators';
 
 
 @Injectable({
@@ -30,12 +28,6 @@ export class CommonService {
     });
     this.currenturl=new Subject<any>()
 
-  }
-  getUrl(){
-    return this.currenturl.asObservable();
-  }
-  setCurrentUrl(url){
-  this.currenturl.next(url);
   }
   getBooks(url) {
     return this.http.get(url);

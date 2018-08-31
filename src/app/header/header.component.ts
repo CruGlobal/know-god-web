@@ -150,8 +150,8 @@ export class HeaderComponent {
     }
 
     navigateToPage(id) {
-        let book = this.allBooks.find(x => x.id == id).attributes.abbreviation;
-        this.route.navigateByUrl(book + '/' + this.selectedLookup.languageId);
+        const book = this.allBooks.find(x => x.id === id).attributes.abbreviation;
+        this.route.navigateByUrl( this.selectedLookup.languageId + '/' + book);
     }
 
 }
