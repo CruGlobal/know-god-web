@@ -241,7 +241,6 @@ export class PageComponent implements OnInit {
     this.pageGetparameters.langid = lang.attributes.code;
     this.pageGetparameters.dir = lang.attributes.direction;
     if (!this.pageGetparameters.pageid) {
-      this.setPrevURL();
       const Url = this.router.createUrlTree([lang.attributes.code, this.BookID]).toString();
       this.location.go(Url);
     }
@@ -266,7 +265,6 @@ export class PageComponent implements OnInit {
 
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
-          this.setPrevURL();
           const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
           this.location.go(Url);
           this.getXmlFiles(this.currentTranslations[0]);
@@ -862,11 +860,6 @@ export class PageComponent implements OnInit {
     return modal;
   }
 
-
-  setPrevURL() {
-    (<HTMLInputElement>document.getElementById("prevURL")).value = location.href;
-  }
-
   Cards = [];
   Modals = [];
   cardsContent = [];
@@ -896,7 +889,6 @@ export class PageComponent implements OnInit {
     if (this.counter < this.allPages.length - 1) {
       this.counter++;
       this.pageGetparameters.pageid = this.counter;
-      this.setPrevURL();
       const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
       this.location.go(Url);
       this.LoadPage(this.counter);
@@ -920,7 +912,6 @@ export class PageComponent implements OnInit {
       this.counter = 0;
     }
 
-    this.setPrevURL();
     const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
     this.location.go(Url);
     this.LoadPage(this.counter);

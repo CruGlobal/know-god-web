@@ -18,24 +18,10 @@
 
   <script>
     history.pushState({}, "entry page", location.hash.substring(1));
-
-    window.addEventListener('popstate', function (e) {
-      // The popstate event is fired each time when the current history entry changes.
-
-      if (e.currentTarget.location.href.indexOf('home') > -1) {
-        console.log('index addEventListener')
-        e.preventDefault();
-        e.stopPropagation();
-        e.stopImmediatePropagation();
-        window.location.assign(document.getElementById("prevURL").value);
-      }
-    }, false);
-
   </script>
 </head>
 
 <body class="en en_index booklet-none locale-en">
-  <input type="hidden" id="prevURL" />
   <app-root></app-root>
 
   <script>if(window._satellite){ _satellite.pageBottom(); }</script>
