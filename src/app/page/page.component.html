@@ -212,12 +212,12 @@
         <div id="tool-navigation" class="mw568 tc">
           <!-- If not first page -->
           <ng-container *ngIf="!FirstPage">
-            <a (click)="previous()"  dir={{pageGetparameters.dir}} class="button button-white fas fa-arrow-left"></a>
+            <a (click)="previous()"  dir={{pageGetparameters.dir}} class="button button-white far fa-arrow-left"></a>
           </ng-container>
 
           <!-- If not last page -->
           <ng-container *ngIf="!LastPage">
-            <a (click)="next()" dir={{pageGetparameters.dir}} dir="pageGetparameters.dir" class="button fas fa-arrow-right"></a>
+            <a (click)="next()" dir={{pageGetparameters.dir}} dir="pageGetparameters.dir" class="button far fa-arrow-right"></a>
           </ng-container>
         </div>
       </ng-container>

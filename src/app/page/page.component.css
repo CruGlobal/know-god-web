@@ -49,7 +49,7 @@ p {
 .button {
     cursor: pointer;
     font-size: 20px;
-    line-height: 48px;
+    line-height: 46px;
     border: var(--kg-blue) 1px solid;
     color: var(--kg-white);
     background-color: var(--kg-blue);
@@ -72,7 +72,7 @@ p {
 /***** Tool Navigation *****/
 #tool-navigation .button {
     width: 120px;
-    font-size: 18px;
+    font-size: 14.4px;
 }
 #tool-navigation .button:first-child:not(:last-child) {
     border-right-width: 0;

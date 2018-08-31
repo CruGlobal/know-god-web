@@ -59,7 +59,6 @@ img {
 /*Specific Area css*/
 .header {
   height: 60px;
-  border-bottom: 1px var(--kg-gray-light) solid;
 }
 .share {
   width: 24px;
