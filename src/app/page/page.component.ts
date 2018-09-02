@@ -804,6 +804,16 @@ export class PageComponent implements OnInit {
         }
       }
 
+      // handle links that are not on the form node
+      if (forms["content:link"] != undefined) {
+        if (forms["content:link"].length != undefined) {
+          for (let index = 0; index < forms["content:link"].length; index++) {
+            cardforms.links.push([forms["content:link"][index]["content:text"], forms["content:link"][index]["@attributes"].events]);
+          }
+        } else {
+          cardforms.links.push([forms["content:link"]["content:text"], forms["content:link"]["@attributes"].events]);
+        }
+      }
 
       card.forms.push(cardforms);
 
