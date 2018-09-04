@@ -16,6 +16,7 @@ import {ToastrModule } from 'ngx-toastr';
 
 
 const appRoutes: Routes =[
+  { path: ':langid/embed/:bookid', component: PageComponent},
   { path: ':langid/:bookid/:page', component: PageComponent },
   { path: ':langid/:bookid', component: PageComponent},
   { path: '', component: HeaderComponent} ,
