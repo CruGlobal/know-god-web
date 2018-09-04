@@ -17,7 +17,13 @@
   <script id="adobeLaunch"></script>
 
   <script>
-    history.pushState({}, "entry page", location.hash.substring(1));
+    history.pushState({}, 'entry page', location.hash.substring(1));
+
+    window.addEventListener('popstate', function (e) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+    }, false);
   </script>
 </head>
 

@@ -18,7 +18,7 @@
     iframe.style.minHeight = '450px';
     iframe.setAttribute('allowtransparency', 'true');
     iframe.setAttribute('scrolling', 'no');
-    iframe.src = [baseUrl, dataLang, dataBook].join('/');
+    iframe.src = [baseUrl, '#', dataLang, dataBook].join('/');
 
     knowGodEmbed.appendChild(iframe);
 
