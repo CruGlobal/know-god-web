@@ -78,12 +78,13 @@ export class PageComponent implements OnInit {
   ngOnDestroy() {
     this.sub.unsubscribe();
   }
+
   pageGetparameters = {
     bookid: null,
     langid: null,
     pageid: null,
     dir: 'rtl'
-  }
+  };
 
   ngOnInit() {
 
@@ -159,21 +160,6 @@ export class PageComponent implements OnInit {
     this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
         this.allLanguages = data.data;
-      });
-  }
-
-  AllLanguages_old() {
-    this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
-      .subscribe((data: any) => {
-        this.allLanguages = data.data;
-        if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
-          this.allLanguages.forEach(x => {
-            if (x.attributes.code == this.pageGetparameters.langid) {
-              this.selectLanguage(x)
-            }
-
-          });
-        }
       });
   }
 

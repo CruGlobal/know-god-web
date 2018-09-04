@@ -7,11 +7,11 @@
 <section id="homeTools">
   <div class="bs-container">
     <div class="bs-card-deck">
-      <a href="javascript:void(0)" class="bs-card" (click)="navigateToPage(banner.id)" *ngFor="let banner of Images;let i = index; let isFirstRow=last">
+      <a href="javascript:void(0)" class="bs-card" (click)="navigateToPage(banner.abbreviation)" *ngFor="let banner of Images;let i = index; let isFirstRow=last">
         <img class="bs-card-img-top" [src]="banner.ImgUrl" />
         <div class="bs-card-body">
           <h5 class="bs-card-title">{{banner.resource}}</h5>
-          <p class="bs-card-text">{{banner.description}}</p>
+          <p class="bs-card-text">{{banner.tagline}}</p>
         </div>
       </a>
     </div>

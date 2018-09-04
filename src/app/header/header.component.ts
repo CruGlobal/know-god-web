@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL } from '../api/url';
-import { DomSanitizer } from '@angular/platform-browser';
-import { Router, ActivatedRoute } from '@angular/router';
-
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-header',
@@ -11,147 +9,46 @@ import { Router, ActivatedRoute } from '@angular/router';
     styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
-    // allBooks: any;
-    imageUrl: any;
-    resourceIds = [];
-    images = [];
-    image1: any;
-    image2: any;
-    image3: any;
-    image4: any;
-    image5: any;
-    image6: any;
-    image7: any;
-    description: any;
-    allBooks = [];
-    allLanguages = [];
-    selectedBookLanguauageTranslations = [];
-    isBooksSelected = false;
-    isLanguagesSelected = false;
-    selectedLookup = {
-        bookname: '',
-        language: '',
-        languageId: "",
-        bookId: "",
-        pageId: '',
-
-    };
-    selectedBook: any;
-    selectedLanguage: any;
-    resourceId: any;
-    ImageUrl;
     Images = [];
+    englishLangId = 1;
 
     constructor(public route: Router,
-        public router: ActivatedRoute,
         public commonService: CommonService,
-        public sanitizer: DomSanitizer,
-     //   private ngxXml2jsonService: NgxXml2jsonService
     ) {
-        //fetch All the books and langauges
-        // this.AllBooks();
+        // fetch all books
         this.getAttachments();
-        this.getAllBooksFromApi();
-        this.getAllLangaugesFromApi();
     }
 
-    getAllBooksFromApi(id = "") {
-        if (this.commonService.allBooks.length > 0) {
-            this.allBooks = this.commonService.allBooks;
-        }
-        else {
-            this.commonService.getBooks(APIURL.GET_ALL_BOOKS)
-                .subscribe((data: any) => {
-                    data.data = data.data.filter(data => data.attributes.name != 'Questions About God?');
-                    this.commonService.allBooks = data.data;
-                    this.allBooks = data.data;
-                    if (id != "") {
-                        this.selectedBook = this.allBooks.filter(x => x.attributes.abbreviation == id)[0];
-                        this.selectedLookup.bookname = this.selectedBook.attributes.name;
-                    }
-                });
-        }
-    }
+  getAttachments() {
+    const url = APIURL.GET_ALL_BOOKS + '?include=latest-translations,attachments';
+    this.commonService.getBooks(url)
+      .subscribe((data: any) => {
+        const attachments = data.included.filter(included => included.type === 'attachment');
+        const englishTranslations = data.included.filter(
+          included => included.type === 'translation' && Number(included.relationships.language.data.id) === this.englishLangId
+        );
 
-    getAllLangaugesFromApi(id = "") {
-        if (this.commonService.allLanguages.length > 0) {
-            this.allLanguages = this.commonService.allLanguages;
-        } else {
-            this.commonService.getLanguages(APIURL.GET_ALL_LANGUAGES)
-                .subscribe((data: any) => {
-                    this.allLanguages = data.data;
-                    if (id != "") {
-                        this.selectedBookLanguauageTranslations = this.allLanguages.filter(x => x.id == id);
-                        console.log(this.selectedBookLanguauageTranslations);
-                        this.selectedLookup.language = this.allLanguages.filter(x => x.attributes.code == id)[0].attributes.name;
-                        this.selectedLookup.languageId = this.allLanguages.filter(x => x.attributes.code == id)[0].attributes.code;
-                    }
-                    else {
-                        this.selectedBookLanguauageTranslations = this.allLanguages;
-                        let item;
-                        if(!this.commonService.selectedLan){
-                            item = this.allLanguages.filter(x => x.attributes.code == "en")[0];
+        data.data.forEach(resource => {
+          if (resource.attributes['resource-type'] !== 'tract') {
+            return;
+          }
 
-                        } else {
-                            item = this.allLanguages.filter(x => x.attributes.code == this.commonService.selectedLan.attributes.code)[0];
-                        }
-                        this.selectedLookup.languageId = item.attributes.code;
-                        this.selectedLookup.language = item.attributes.name;
-                    }
-                });
-        }
-    }
+          const resourceId = resource.id;
+          const bannerId = resource.attributes['attr-banner'];
 
-    loadBookFromUrl() {
-    }
+          this.Images.push({
+            ImgUrl: attachments.find(x => x.id === bannerId).attributes.file,
+            resource: resource.attributes.name,
+            id: resourceId,
+            abbreviation: resource.attributes.abbreviation,
+            tagline: englishTranslations.find(x => x.relationships.resource.data.id === resourceId).attributes['translated-tagline']
+          });
+        });
+      });
+  }
 
-    selectBookFromDropdown(item) {
-        this.isBooksSelected = !this.isBooksSelected;
-        this.selectedBook = item;
-        this.selectedLookup.bookname = item.attributes.name;
-        this.route.navigateByUrl(item.attributes.abbreviation + '/' + this.selectedLookup.languageId);
-    }
-
-    selecteLanguageFromDropdown(item) {
-        this.isLanguagesSelected = !this.isLanguagesSelected;
-        this.selectedLanguage = item;
-        this.selectedLookup.language = item.attributes.name;
-        this.selectedLookup.languageId = item.attributes.code;
-        this.commonService.selectedLan=item;
-    }
-
-    expandBookDropdown(item) {
-        this.isBooksSelected = !this.isBooksSelected;
-    }
-
-    expandLanguageDropdown(item) {
-        this.isLanguagesSelected = !this.isLanguagesSelected;
-    }
-
-    getAttachments() {
-        let url = APIURL.GET_ALL_BOOKS  + "?include=attachments";
-        this.commonService.getBooks(url)
-            .subscribe((data: any) => {
-                data.data = data.data.filter(data => data.attributes["resource-type"] == 'tract');
-                for(let k=0;k<data.data.length;k++){
-                    this.description = data.data[k].attributes.description;
-                    let resourceName = data.data[k].attributes.name;
-                    let resourceId = data.data[k].id;
-                   let bannerId = data.data[k].attributes["attr-banner"];
-                   for (let i = 0; i < data.included.length; i++) {
-                        if (bannerId == data.included[i].id) {
-                            this.ImageUrl = data.included[i].attributes.file
-                            this.Images.push({ description: this.description, ImgUrl: this.ImageUrl, resource: resourceName, id: resourceId })
-
-                        }
-                    }
-                }
-            })
-    }
-
-    navigateToPage(id) {
-        const book = this.allBooks.find(x => x.id === id).attributes.abbreviation;
-        this.route.navigateByUrl( this.selectedLookup.languageId + '/' + book);
-    }
+  navigateToPage(abbreviation) {
+    this.route.navigateByUrl('en/' + abbreviation);
+  }
 
 }
