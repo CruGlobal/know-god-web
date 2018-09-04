@@ -7,7 +7,7 @@ sed -i "s%$appDomainPlaceholder%$appDomain%g" dist/embed.js
 
 #Add Adobe Launch script
 adobePlaceholderTag='<script id="adobeLaunch"></script>'
-adobeScriptTag=''
+adobeScriptTag='<script src="//assets.adobedtm.com/launch-EN3e5a6e0e0e90493a9cafe79d5646b2b7.min.js" async></script>'
 sed -i "s%$adobePlaceholderTag%$adobeScriptTag%g" dist/knowgod/index.html
 
 #Deploy to S3
