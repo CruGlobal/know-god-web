@@ -16,6 +16,7 @@ script: ng build --prod
 before_deploy:
 - pip install --user awscli
 - cp embed/embed.js dist/embed.js
+- cp -r mobile/ dist/mobile/
 
 deploy:
 - provider: script

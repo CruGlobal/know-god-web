@@ -14,3 +14,4 @@ sed -i "s%$adobePlaceholderTag%$adobeScriptTag%g" dist/knowgod/index.html
 ~/.local/bin/aws s3 sync dist/knowgod s3://stage.knowgod.com --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
 ~/.local/bin/aws s3 sync dist/knowgod s3://stage.knowgod.com --acl public-read --include '*.html' --cache-control 'no-cache' --delete
 ~/.local/bin/aws s3 cp dist/embed.js s3://stage.knowgod.com --acl public-read --cache-control 'no-cache'
+~/.local/bin/aws s3 sync dist/mobile s3://stage.knowgod.com --acl public-read --cache-control 'no-cache' --delete
