@@ -1,5 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 
+@import url('https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400,600');
 @import './assets/style.css';
 @import './assets/css/toastr.css';
 @import './assets/fontawesome/css/all.css';

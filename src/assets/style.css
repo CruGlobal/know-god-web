@@ -20,30 +20,28 @@ body {
   color: var(--kg-gray-dark);
 }
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 400;
   margin: 0 0 14.5px;
   color: var(--kg-blue);
+}
+h1, h2, h3, h4 {
+  font-weight: 200;
+}
+h5, h6 {
+  font-weight: 400;
 }
 h1 {
   font-size: 96px;
   margin: 0;
-  font-weight: 100;
 }
 h2 {
   font-size: 36px;
-  font-weight: 200;
 }
 h3 {
   font-size: 24px;
-  font-weight: 200;
   text-align: center;
 }
 h4 {
   font-size: 36px;
-  font-weight: 200;
-}
-h5, h6 {
-  font-weight: 500;
 }
 p {
   margin:0 0 14.5px;

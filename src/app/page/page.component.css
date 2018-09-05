@@ -7,6 +7,12 @@ h1, h2, h3, h4, h5, h6, p {
     margin-bottom: 0;
 }
 
+h4 {
+    font-size: 24px;
+    line-height: 30px;
+    font-weight: 300;
+}
+
 p {
     line-height: 24px;
 }
@@ -69,6 +75,13 @@ p {
 }
 
 
+/***** Tool Header *****/
+#toolHeader {
+    position: relative;
+    z-index: 1;
+}
+
+
 /***** Tool Navigation *****/
 #tool-navigation .button {
     width: 120px;
@@ -96,8 +109,8 @@ p {
 /***** Content *****/
 
 .firstHeading { 
-    margin-top: 53px;
-    margin-bottom: 36px !important;
+    margin-top: 48px;
+    margin-bottom: 31px !important;
 }
 
 p.firstContent {
@@ -113,19 +126,14 @@ p.firstContent {
 
 .stepHeading h1 {
     position: relative;
-    font-size: 36px;
-    line-height: 42px;
+    font-size: 24px;
+    line-height: 30px;
     color: white;
-}
-
-.stepHeading span:after {
-    display: inline-block;
-    content: ")";
+    font-weight: 300;
 }
 
 .stepHeading span {
     margin-right: 12px;
-    font-weight: 400;
 }
 
 .stepHeading h1[dir=rtl] span {
@@ -144,7 +152,7 @@ p.firstContent {
 
 .calltoaction {
     text-align: center;
-    font-weight: lighter;
+    font-weight: 300;
     font-size: 24px;
     line-height: 30px;
 }
@@ -307,6 +315,7 @@ a.kg-bg-blue:hover{
         margin-top: 12px;
     }
 
+    #toolContent > *.imageContent:first-child,
     #toolContent .firstHeading + .imageContent,
     #toolContent .stepHeading + .imageContent,
     #toolContent .cardContent .cardHeading,
@@ -334,6 +343,14 @@ a.kg-bg-blue:hover{
 
 /***** Responsive *****/
 @media screen and (min-width: 440px) {
+    .stepHeading h1, h4 {
+        font-size: 32px;
+        line-height: 1.1667;
+        font-weight: 200;
+    }
+    .calltoaction {
+        font-weight: 200;
+    }
     footer {
         padding: 12px 0;
     }
@@ -378,7 +395,7 @@ a.kg-bg-blue:hover{
 
 @media screen and (min-width: 768px) {
     .stepHeading {
-        min-height: 134px;
+        min-height: 124px;
     }
     .stepHeading.noCounter {
         min-height: unset;
@@ -389,18 +406,14 @@ a.kg-bg-blue:hover{
         padding-left: 40px;
     }
 
-    .stepHeading span:after {
-        display: none;
-    }
-
     .stepHeading span {
         position: absolute;
         top: -10px;
         left: -64px;
         margin-left: 0;
         margin-right: 0;
-        font-weight: 100;
-        font-size: 96px;
+        font-weight: 200;
+        font-size: 90px;
         line-height: 1;
     }
 
