@@ -631,7 +631,8 @@ export class PageComponent implements OnInit {
       hidden: false,
       listener: '',
       dismiss: '',
-      isForm: false
+      isForm: false,
+      contentList: []
     };
 
     if (resourcePage.page.cards.card[i]["@attributes"]) {
@@ -644,6 +645,7 @@ export class PageComponent implements OnInit {
 
     //handle card heading
     card.label = resourcePage.page.cards.card[i].label["content:text"];
+    card.contentList.push({'label': resourcePage.page.cards.card[i].label["content:text"]})
 
     //handle card paragraph
     let paragraphs = [];
@@ -657,23 +659,30 @@ export class PageComponent implements OnInit {
     for (let j = 0; j < paragraphs.length; j++) {
       var formpara = paragraphs[j];
       card.content.push(formpara["content:text"]);
+      if (formpara["content:text"]) {
+        card.contentList.push({'paragraph': formpara["content:text"]})
+      }
 
       //handle buttons
       if (formpara["content:button"]) {
         card.button.push([formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]);
+        card.contentList.push({'button':[formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]})
       } else card.button.push('');
 
       //handle links
       if (formpara["content:link"]) {
         card.link.push([formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]);
+        card.contentList.push({'link': [formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]})
       } else card.link.push('');
 
 
       //handle image
       if (formpara["content:image"]) {
 
-        if (formpara["content:image"].length == undefined)
+        if (formpara["content:image"].length == undefined){
           card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
+          card.contentList.push({"image": this.getImageName(formpara["content:image"])});
+        }
         else {
           var imgArr = [];
           formpara["content:image"].forEach(cardimage => {
@@ -683,6 +692,7 @@ export class PageComponent implements OnInit {
             imgArr.push(paracontent);
           });
           card.image.push(imgArr);
+          card.contentList.push({"images": imgArr});
         }
       }
       else {
@@ -726,7 +736,7 @@ export class PageComponent implements OnInit {
             });
           }
           card.tabs.push(eachtab);
-
+          card.contentList.push({"tab": eachtab})
         }
       }
 
@@ -766,10 +776,9 @@ export class PageComponent implements OnInit {
           if (formelement["content:placeholder"]) htmlelement.placeholder = formelement["content:placeholder"]["content:text"];
 
           cardforms.elements.push(htmlelement)
-
+          
         }
       }
-
 
       //handle form paragraph
       let paragraphs = [];
@@ -802,7 +811,7 @@ export class PageComponent implements OnInit {
       }
 
       card.forms.push(cardforms);
-
+      card.contentList.push({'cardforms': cardforms});
     }
     return card;
   }
@@ -934,6 +943,8 @@ export class PageComponent implements OnInit {
     return retValue;
 
   }
+
+  isString(val) { return typeof val === 'string'; }
 
   ClearContent() {
     this.tagline = "";
