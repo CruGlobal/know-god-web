@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
+import { isArray } from 'util';
 
 @Component({
   selector: 'app-page',
@@ -709,28 +710,60 @@ export class PageComponent implements OnInit {
             paras: [],
             images: [],
             localImage: [],
-            texts: []
+            texts: [],
+            tabList: []
           }
           eachtab.heading = tab["content:label"]["content:text"];
 
-          if (tab["content:paragraph"].length == undefined) eachtab.paras.push(tab["content:paragraph"]["content:text"])
-          else {
+          Object.entries(tab).forEach(node => {
+            if (node[0] == "content:paragraph") {
+              if (!isArray(node[1])) {
+                eachtab.tabList.push({"paragraph":node[1]["content:text"]})
+              } else {
+              Object.entries(node[1]["content:text"]).forEach(tabpara => {
+                  eachtab.tabList.push({"paragraph":tabpara[1]})
+                });
+              }
+            } else if (node[0] == "content:image") {
+              if (!isArray(node[1])) {
+                eachtab.tabList.push({"image":this.getImageName(node[1])})
+              } else {
+                Object.entries(node[1]).forEach(tabimage => {
+                  eachtab.tabList.push({"image":this.getImageName(tabimage[1])})
+                });
+              }
+            } else if (node[0] == "content:text") {
+              if (!isArray(node[1])) {
+                eachtab.tabList.push({"text":node[1]})
+              } else {
+                Object.entries(node[1]).forEach(tabtext => {
+                  eachtab.tabList.push({"text":tabtext})
+                });
+              }
+            }
+          })
+
+          if (tab["content:paragraph"].length == undefined) {
+            eachtab.paras.push(tab["content:paragraph"]["content:text"])
+          } else {
             tab["content:paragraph"].forEach(tabpara => {
               eachtab.paras.push(tabpara["content:text"])
             });
           }
 
           //this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]))
-          if (tab["content:image"].length == undefined) eachtab.images.push(this.getImageName(tab["content:image"])); //(tab["content:image"]["@attributes"]["resource"])
-          else {
+          if (tab["content:image"].length == undefined) {
+            eachtab.images.push(this.getImageName(tab["content:image"])); //(tab["content:image"]["@attributes"]["resource"])
+          } else {
             tab["content:image"].forEach(tabimage => {
               eachtab.images.push(this.getImageName(tabimage))
             });
           }
 
           if (tab["content:text"] == undefined) eachtab.texts.push('');
-          else if (typeof tab["content:text"] == 'string') eachtab.texts.push(tab["content:text"])
-          else {
+          else if (typeof tab["content:text"] == 'string') {
+            eachtab.texts.push(tab["content:text"])
+          } else {
             tab["content:text"].forEach(tabtext => {
               eachtab.texts.push(tabtext)
             });
