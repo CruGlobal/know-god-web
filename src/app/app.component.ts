@@ -27,11 +27,11 @@ export class AppComponent implements OnInit {
             pathParts[0] = 'know god';
             (<any>window).digitalData.page = {
               pageInfo: {
-                pageName: pathParts[0] + ' : ' + (pathParts[1] || 'home'),
-                language: pathParts[2]
+                pageName: pathParts[0] + ' : ' + (pathParts[2] || 'home'),
+                language: pathParts[1]
               },
               category: {
-                primaryCategory: pathParts[1]
+                primaryCategory: pathParts[2]
               }
             };
 
