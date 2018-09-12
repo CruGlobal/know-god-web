@@ -156,11 +156,11 @@
               </ng-container>
             </ng-container>
 
-            <ng-container *ngIf="cardItem.tab">
-              <div class="tabContent">
-                  <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardItem.tab.paras">{{para}}</p>
-                  <img class="imageContent" *ngFor="let image1 of cardItem.tab.images" [src]="image1">
-                  <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardItem.tab.texts">{{text}}</p>
+            <ng-container *ngIf="cardItem.tab && cardItem.tab.tabList">
+              <div *ngFor="let tabItem of cardItem.tab.tabList" class="tabContent">
+                <p *ngIf="tabItem.paragraph" class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}}>{{tabItem.paragraph}}</p>
+                <img *ngIf="tabItem.image" class="imageContent" [src]="tabItem.image">
+                <p *ngIf="tabItem.text" class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}}>{{tabItem.text}}</p>
               </div>
             </ng-container>
 
