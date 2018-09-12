@@ -134,7 +134,12 @@
 
             <ng-container *ngIf="cardItem.button">
               <div class="mw568 buttonContent tc indent">
-                <a (click)="formAction(cardItem.button[1])" class="button">{{cardItem.button[0]}}</a>
+                <ng-container *ngIf="cardItem.button[1]!=undefined; else singleItemButton">
+                  <a (click)="formAction(cardItem.button[1])" class="button">{{cardItem.button[0]}}</a>
+                </ng-container>
+                <ng-template #singleItemButton>
+                  <a [href]="cardItem.button[0]" class="button" target="_blank">{{cardItem.button[0]}}</a>
+                </ng-template>
               </div>
             </ng-container>
 
