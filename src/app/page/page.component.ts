@@ -646,7 +646,7 @@ export class PageComponent implements OnInit {
 
     //handle card heading
     card.label = resourcePage.page.cards.card[i].label["content:text"];
-    card.contentList.push({'label': resourcePage.page.cards.card[i].label["content:text"]})
+    card.contentList.push({label: resourcePage.page.cards.card[i].label["content:text"]})
 
     //handle card paragraph
     let paragraphs = [];
@@ -661,19 +661,19 @@ export class PageComponent implements OnInit {
       var formpara = paragraphs[j];
       card.content.push(formpara["content:text"]);
       if (formpara["content:text"]) {
-        card.contentList.push({'paragraph': formpara["content:text"]})
+        card.contentList.push({paragraph: formpara["content:text"]})
       }
 
       //handle buttons
       if (formpara["content:button"]) {
         card.button.push([formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]);
-        card.contentList.push({'button':[formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]})
+        card.contentList.push({button:[formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]})
       } else card.button.push('');
 
       //handle links
       if (formpara["content:link"]) {
         card.link.push([formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]);
-        card.contentList.push({'link': [formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]})
+        card.contentList.push({link: [formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]})
       } else card.link.push('');
 
 
@@ -682,7 +682,7 @@ export class PageComponent implements OnInit {
 
         if (formpara["content:image"].length == undefined){
           card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
-          card.contentList.push({"image": this.getImageName(formpara["content:image"])});
+          card.contentList.push({image: this.getImageName(formpara["content:image"])});
         }
         else {
           var imgArr = [];
@@ -693,7 +693,7 @@ export class PageComponent implements OnInit {
             imgArr.push(paracontent);
           });
           card.image.push(imgArr);
-          card.contentList.push({"images": imgArr});
+          card.contentList.push({images: imgArr});
         }
       }
       else {
@@ -718,26 +718,26 @@ export class PageComponent implements OnInit {
           Object.entries(tab).forEach(node => {
             if (node[0] == "content:paragraph") {
               if (!isArray(node[1])) {
-                eachtab.tabList.push({"paragraph":node[1]["content:text"]})
+                eachtab.tabList.push({paragraph:node[1]["content:text"]})
               } else {
               Object.entries(node[1]["content:text"]).forEach(tabpara => {
-                  eachtab.tabList.push({"paragraph":tabpara[1]})
+                  eachtab.tabList.push({paragraph:tabpara[1]})
                 });
               }
             } else if (node[0] == "content:image") {
               if (!isArray(node[1])) {
-                eachtab.tabList.push({"image":this.getImageName(node[1])})
+                eachtab.tabList.push({image:this.getImageName(node[1])})
               } else {
                 Object.entries(node[1]).forEach(tabimage => {
-                  eachtab.tabList.push({"image":this.getImageName(tabimage[1])})
+                  eachtab.tabList.push({image:this.getImageName(tabimage[1])})
                 });
               }
             } else if (node[0] == "content:text") {
               if (!isArray(node[1])) {
-                eachtab.tabList.push({"text":node[1]})
+                eachtab.tabList.push({text:node[1]})
               } else {
                 Object.entries(node[1]).forEach(tabtext => {
-                  eachtab.tabList.push({"text":tabtext})
+                  eachtab.tabList.push({text:tabtext})
                 });
               }
             }
@@ -769,7 +769,7 @@ export class PageComponent implements OnInit {
             });
           }
           card.tabs.push(eachtab);
-          card.contentList.push({"tab": eachtab})
+          card.contentList.push({tab: eachtab})
         }
       }
 
