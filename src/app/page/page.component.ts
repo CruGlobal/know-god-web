@@ -706,14 +706,13 @@ export class PageComponent implements OnInit {
         for (let k = 0; k < formpara["content:tabs"]["content:tab"].length; k++) {
           tab = formpara["content:tabs"]["content:tab"][k];
           let eachtab = {
-            heading: '',
+            heading: tab["content:label"]["content:text"],
             paras: [],
             images: [],
             localImage: [],
             texts: [],
             tabList: []
           }
-          eachtab.heading = tab["content:label"]["content:text"];
 
           Object.entries(tab).forEach(node => {
             if (node[0] == "content:paragraph") {
