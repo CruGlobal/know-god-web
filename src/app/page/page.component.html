@@ -155,7 +155,7 @@
 
             <ng-container  *ngIf="cardItem.images && isArray(cardItem.images)">
               <ng-container *ngFor="let cardimage of cardItem.images">
-                <ng-container *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null">
+                <ng-container *ngIf="cardimage?.image">
                   <img class="imageContent" [src]="cardimage.image" />
                 </ng-container>
               </ng-container>
