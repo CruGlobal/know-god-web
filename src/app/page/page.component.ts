@@ -123,6 +123,7 @@ export class PageComponent implements OnInit {
         this.pageGetparameters.bookid = params['bookid'];
       }
     });
+    this.analyticsService.runAnalytics();
   }
 
   @HostListener('window:keyup', ['$event'])
