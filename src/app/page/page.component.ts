@@ -714,30 +714,37 @@ export class PageComponent implements OnInit {
             tabList: []
           }
 
-          Object.entries(tab).forEach(node => {
-            if (node[0] == "content:paragraph") {
-              if (!isArray(node[1])) {
-                eachtab.tabList.push({paragraph:node[1]["content:text"]})
-              } else {
-              Object.entries(node[1]["content:text"]).forEach(tabpara => {
-                  eachtab.tabList.push({paragraph:tabpara[1]})
-                });
+          Object.entries(tab).forEach(([type, content]) => {
+            switch(type) {
+             case "content:paragraph": {
+              if(!isArray(content)) {
+                  eachtab.tabList.push({paragraph:content["content:text"]})
+                } else {
+                Object.entries(content["content:text"]).forEach(([num, paragraph]) => {
+                    eachtab.tabList.push({paragraph:paragraph})
+                  });
+                }
+                break;
+             }
+             case "content:image": {
+              if(!isArray(content)) {
+                  eachtab.tabList.push({image:this.getImageName(content)})
+                } else {
+                  Object.entries(content).forEach(([num, attributes]) => {
+                    eachtab.tabList.push({image:this.getImageName(attributes)})
+                  });
+                }
+                break;
               }
-            } else if (node[0] == "content:image") {
-              if (!isArray(node[1])) {
-                eachtab.tabList.push({image:this.getImageName(node[1])})
-              } else {
-                Object.entries(node[1]).forEach(tabimage => {
-                  eachtab.tabList.push({image:this.getImageName(tabimage[1])})
-                });
-              }
-            } else if (node[0] == "content:text") {
-              if (!isArray(node[1])) {
-                eachtab.tabList.push({text:node[1]})
-              } else {
-                Object.entries(node[1]).forEach(tabtext => {
-                  eachtab.tabList.push({text:tabtext})
-                });
+              case "content:text": {
+                if (!isArray(content)) {
+                  eachtab.tabList.push({text:content})
+                } else {
+                  Object.entries(content).forEach(tabtext => {
+                    eachtab.tabList.push({text:tabtext})
+                  });
+                }
+                break;
               }
             }
           })
