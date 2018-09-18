@@ -109,11 +109,11 @@
             <ng-container *ngIf="cardItem.paragraph">
               <ng-container *ngIf="!isString(cardItem.paragraph); else singleParagraph">
                 <ng-container *ngFor="let paragraph of cardItem.paragraph">
-                    <p class="mw568 textContent indent ng-scope">{{paragraph}}</p>
+                    <p class="mw568 textContent indent">{{paragraph}}</p>
                 </ng-container>
               </ng-container>
               <ng-template #singleParagraph>
-                <p class="mw568 textContent indent ng-scope">{{cardItem.paragraph}}</p>
+                <p class="mw568 textContent indent">{{cardItem.paragraph}}</p>
               </ng-template>
             </ng-container>
 
