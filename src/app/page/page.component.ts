@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
+import { AnalyticsService } from '../services/analytics.service';
 
 @Component({
   selector: 'app-page',
@@ -67,7 +68,8 @@ export class PageComponent implements OnInit {
     private route: ActivatedRoute,
     public router: Router,
     public location: Location,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private analyticsService: AnalyticsService
   ) {
 
     this.showLoader = true;
@@ -253,6 +255,7 @@ export class PageComponent implements OnInit {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
           const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
           this.location.go(Url);
+          this.analyticsService.runAnalytics(Url);
           this.getXmlFiles(this.currentTranslations[0]);
         } else {
           this.getXmlFiles(this.currentTranslations[0]);
@@ -887,7 +890,7 @@ export class PageComponent implements OnInit {
       this.pageGetparameters.pageid = this.counter;
       const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
       this.location.go(Url);
-      this.LoadPage(this.counter);
+      this.LoadPage(this.counter, Url);
       window.scrollTo(0, 0);
     } else {
       this.pageGetparameters.pageid = null;
@@ -910,7 +913,7 @@ export class PageComponent implements OnInit {
 
     const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
     this.location.go(Url);
-    this.LoadPage(this.counter);
+    this.LoadPage(this.counter, Url);
     window.scrollTo(0, 0);
   }
 
@@ -948,7 +951,7 @@ export class PageComponent implements OnInit {
     this.LastPage = false;
   }
 
-  LoadPage(pageid) {
+  LoadPage(pageid, url?) {
     this.displayForm = false;
     this.displayModel = false;
 
@@ -1026,6 +1029,7 @@ export class PageComponent implements OnInit {
     }
 
     this.showLoader = false;
+    if (url) this.analyticsService.runAnalytics(url);
   }
 
   formAction(inputFunctionName) {
