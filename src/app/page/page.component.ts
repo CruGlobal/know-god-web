@@ -123,7 +123,7 @@ export class PageComponent implements OnInit {
         this.pageGetparameters.bookid = params['bookid'];
       }
     });
-    this.analyticsService.runAnalytics();
+    this.analyticsService.runAnalyticsOnHomepages();
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -256,7 +256,7 @@ export class PageComponent implements OnInit {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
           const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
           this.location.go(Url);
-          this.analyticsService.runAnalytics(Url);
+          this.analyticsService.runAnalyticsInsidePages(Url);
           this.getXmlFiles(this.currentTranslations[0]);
         } else {
           this.getXmlFiles(this.currentTranslations[0]);
@@ -1030,7 +1030,7 @@ export class PageComponent implements OnInit {
     }
 
     this.showLoader = false;
-    if (url) this.analyticsService.runAnalytics(url);
+    if (url) this.analyticsService.runAnalyticsInsidePages(url);
   }
 
   formAction(inputFunctionName) {

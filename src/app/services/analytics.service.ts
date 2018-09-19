@@ -8,11 +8,13 @@ import { Router, NavigationEnd } from '@angular/router';
 export class AnalyticsService {
   constructor(private loaderService: LoaderService, private router: Router){}
 
-  runAnalytics(url?) {
-    if (url) {
-      const [_, language, pageName, pageNumber ] = url.split('/');
-      this.setDigitalData(pageName || 'knowgod', language, pageNumber);
-    } else if (CustomEvent !== undefined) {
+  runAnalyticsInsidePages(url) {
+    const [_, language, pageName, pageNumber ] = url.split('/');
+    this.setDigitalData(pageName || 'knowgod', language, pageNumber);
+  }
+
+  runAnalyticsOnHomepages() {
+    if (CustomEvent !== undefined) {
       (<any>window).digitalData = { page: {} };
       this.router.events
         .subscribe((event) => {

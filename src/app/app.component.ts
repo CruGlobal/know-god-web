@@ -20,6 +20,6 @@ export class AppComponent implements OnInit {
       this.showLoader = val;
     });
 
-    this.analyticsService.runAnalytics();
+    this.analyticsService.runAnalyticsOnHomepages();
   }
 }
