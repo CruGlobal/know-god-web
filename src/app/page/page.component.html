@@ -38,7 +38,7 @@
       </ng-container>
 
       <!-- Additional Pages Header -->
-      <ng-container *ngIf="!FirstPage && !LastPage && !displayModel">
+      <ng-container *ngIf="!FirstPage && !displayModel && currentPageContent?.heading">
         <div class="stepHeading" [ngClass]="{'tenSteps' : counter>9, 'noCounter' : headerCounter == null }">
           <ng-container *ngIf="currentPageContent">
             <h1 class="ng-binding mw568" dir={{pageGetparameters.dir}}>
@@ -98,86 +98,81 @@
       <ng-container *ngIf="Cards!=''">
         <div class="cardContent" *ngFor="let card of Cards" [hidden]="card.hidden">
 
-          <!-- Card heading -->
+          <!-- Card Heading -->
           <ng-container *ngIf="!card.isForm">
             <h4 class="mw568 cardHeading ng-binding" dir={{pageGetparameters.dir}}>{{card.label}}</h4>
           </ng-container>
 
           <!-- Card text/button/image content -->
-          <ng-container *ngFor="let cardpara of card.content;let i= index">
+          <ng-container *ngFor="let cardItem of card.contentList;let i= index">
 
-            <!-- Array content -->
-            <ng-container *ngIf="isArray(card.content[i])==true">
-              <p class="mw568 arrayContent indent">
-                <span class="ng-scope" dir={{pageGetparameters.dir}} *ngFor="let cardcont of card.content[i]">{{cardcont}}</span>
-              </p>
-            </ng-container>
-
-            <!-- Text content -->
-            <ng-container *ngIf="isArray(card.content[i])==false">
-              <p class="mw568 textContent indent ng-scope">{{cardpara}}</p>
-            </ng-container>
-
-            <!-- Image content -->
-            <ng-container *ngIf="isArray(card.content[i])==false && card.image!=undefined && card.image[i]!=''">
-              <img class="imageContent" [src]="card.image[i]" />
-            </ng-container>
-            <ng-container *ngIf="isArray(card.content[i])==true">
-              <ng-container *ngFor="let cardimage of card.image[i]">
-                <ng-container *ngIf="cardimage!=undefined && cardimage.image!='' && cardimage.image!=null">
-                  <img class="imageContent" [src]="cardimage.image" />
+            <ng-container *ngIf="cardItem.paragraph">
+              <ng-container *ngIf="!isString(cardItem.paragraph); else singleParagraph">
+                <ng-container *ngFor="let paragraph of cardItem.paragraph">
+                    <p class="mw568 textContent indent">{{paragraph}}</p>
                 </ng-container>
               </ng-container>
+              <ng-template #singleParagraph>
+                <p class="mw568 textContent indent">{{cardItem.paragraph}}</p>
+              </ng-template>
             </ng-container>
 
-            <!-- Button content -->
-            <ng-container *ngIf="card.button!=undefined && card.button[i]!=''">
-              <div class="mw568 buttonContent tc indent">
-                <a (click)="formAction(card.button[i][1])" class="button">{{card.button[i][0]}}</a>
-              </div>
-            </ng-container>
-
-            <!-- Link content -->
-            <ng-container *ngIf="card.link!=undefined && card.link[i]!=''">
-              <div class="mw568 linkContent indent">
-                <a (click)="formAction(card.link[i][1])">{{card.link[i][0]}}</a>
-              </div>
-            </ng-container>
-
-          </ng-container>
-
-          <!-- Card table content -->
-          <ng-container *ngIf="card.tabs.length > 0">
-            <div class="tabContent">
-              <ng-container *ngFor="let cardtab of card.tabs;let j= index">
-                <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let para of cardtab.paras">{{para}}</p>
-                <img class="imageContent" *ngFor="let image1 of cardtab.images" [src]="image1">
-                <p class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}} *ngFor="let text of cardtab.texts">{{text}}</p>
-              </ng-container>
-            </div>
-          </ng-container>
-
-          <!-- Card form content -->
-          <ng-container *ngIf="card.forms.length > 0">
-            <form *ngFor="let cardform of card.forms;let j= index" class="formContent mw568 indent">
-              <div class="form-group" *ngFor="let element of cardform.elements">
+            <form *ngIf="cardItem.cardforms" class="formContent mw568 indent">
+              <div class="form-group" *ngFor="let element of cardItem.cardforms.elements">
                 <label [for]="element.name">{{element.label}}</label>
                 <input [type]="element.type" class="form-control" [value]="element.value" [name]="element.name" [placeholder]="element.placeholder"
                   [required]="element.required">
               </div>
-              <div class="form-group tc buttonContent" *ngFor="let button of cardform.buttons">
+              <div class="form-group tc buttonContent" *ngFor="let button of cardItem.cardforms.buttons">
                 <a (click)="formAction(button[1])" class="button">{{button[0]}}</a>
               </div>
-              <div class="form-group tc cardLink" *ngFor="let link of cardform.links">
+              <div class="form-group tc cardLink" *ngFor="let link of cardItem.cardforms.links">
                 <a (click)="formAction(link[1])">{{link[0]}}</a>
               </div>
+              <p class="mw568 textContent indent disclaimer tc" dir={{pageGetparameters.dir}}><small>Content provided by Cru. <a href="https://godtoolsapp.com/terms-of-use/" target="_blank">Terms of Use</a>.&nbsp;<a href="https://www.cru.org/us/en/about/privacy.html" target="_blank">Privacy Policy</a>.</small></p>
             </form>
-            <p class="mw568 textContent indent disclaimer tc" dir={{pageGetparameters.dir}}><small>Content provided by Cru. <a href="https://godtoolsapp.com/terms-of-use/" target="_blank">Terms of Use</a>.&nbsp;<a href="https://www.cru.org/us/en/about/privacy.html" target="_blank">Privacy Policy</a>.</small></p>
-          </ng-container>
 
-        </div>
+            <ng-container *ngIf="cardItem.button">
+              <div class="mw568 buttonContent tc indent">
+                <ng-container *ngIf="cardItem.button[1]!=undefined; else singleItemButton">
+                  <a (click)="formAction(cardItem.button[1])" class="button">{{cardItem.button[0]}}</a>
+                </ng-container>
+                <ng-template #singleItemButton>
+                  <a [href]="cardItem.button[0]" class="button" target="_blank">{{cardItem.button[0]}}</a>
+                </ng-template>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="cardItem.link">
+              <div class="mw568 linkContent indent">
+                <a (click)="formAction(cardItem.link[1])">{{cardItem.link[0]}}</a>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="cardItem.image">
+              <img class="imageContent" [src]="cardItem.image" />
+            </ng-container>
+
+            <ng-container *ngFor="let cardimage of cardItem.images">
+              <ng-container *ngIf="cardimage?.image">
+                <img class="imageContent" [src]="cardimage.image" />
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="cardItem.tab && cardItem.tab.tabList">
+              <div *ngFor="let tabItem of cardItem.tab.tabList" class="tabContent">
+                <p *ngIf="tabItem.paragraph" class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}}>{{tabItem.paragraph}}</p>
+                <img *ngIf="tabItem.image" class="imageContent" [src]="tabItem.image">
+                <p *ngIf="tabItem.text" class="textContent mw568 indent ng-scope" dir={{pageGetparameters.dir}}>{{tabItem.text}}</p>
+              </div>
+            </ng-container>
+
+          </ng-container>
+          </div>
       </ng-container>
+
       
+
       <ng-container *ngIf="displayModel">
         <ng-container *ngFor="let modal of Modals">
           <div class="stepHeading noCounter">

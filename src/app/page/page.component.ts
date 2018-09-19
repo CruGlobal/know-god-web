@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { AnalyticsService } from '../services/analytics.service';
+import { isArray } from 'util';
 
 @Component({
   selector: 'app-page',
@@ -635,7 +636,8 @@ export class PageComponent implements OnInit {
       hidden: false,
       listener: '',
       dismiss: '',
-      isForm: false
+      isForm: false,
+      contentList: []
     };
 
     if (resourcePage.page.cards.card[i]["@attributes"]) {
@@ -648,6 +650,7 @@ export class PageComponent implements OnInit {
 
     //handle card heading
     card.label = resourcePage.page.cards.card[i].label["content:text"];
+    card.contentList.push({label: resourcePage.page.cards.card[i].label["content:text"]})
 
     //handle card paragraph
     let paragraphs = [];
@@ -661,23 +664,30 @@ export class PageComponent implements OnInit {
     for (let j = 0; j < paragraphs.length; j++) {
       var formpara = paragraphs[j];
       card.content.push(formpara["content:text"]);
+      if (formpara["content:text"]) {
+        card.contentList.push({paragraph: formpara["content:text"]})
+      }
 
       //handle buttons
       if (formpara["content:button"]) {
         card.button.push([formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]);
+        card.contentList.push({button:[formpara["content:button"]["content:text"], (formpara["content:button"]["@attributes"] == undefined) ? '' : formpara["content:button"]["@attributes"].events]})
       } else card.button.push('');
 
       //handle links
       if (formpara["content:link"]) {
         card.link.push([formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]);
+        card.contentList.push({link: [formpara["content:link"]["content:text"], formpara["content:link"]["@attributes"].events]})
       } else card.link.push('');
 
 
       //handle image
       if (formpara["content:image"]) {
 
-        if (formpara["content:image"].length == undefined)
+        if (formpara["content:image"].length == undefined){
           card.image.push(this.getImageName(formpara["content:image"])); //(formpara["content:image"]["@attributes"]["resource"]);
+          card.contentList.push({image: this.getImageName(formpara["content:image"])});
+        }
         else {
           var imgArr = [];
           formpara["content:image"].forEach(cardimage => {
@@ -687,6 +697,7 @@ export class PageComponent implements OnInit {
             imgArr.push(paracontent);
           });
           card.image.push(imgArr);
+          card.contentList.push({images: imgArr});
         }
       }
       else {
@@ -699,38 +710,76 @@ export class PageComponent implements OnInit {
         for (let k = 0; k < formpara["content:tabs"]["content:tab"].length; k++) {
           tab = formpara["content:tabs"]["content:tab"][k];
           let eachtab = {
-            heading: '',
+            heading: tab["content:label"]["content:text"],
             paras: [],
             images: [],
             localImage: [],
-            texts: []
+            texts: [],
+            tabList: []
           }
-          eachtab.heading = tab["content:label"]["content:text"];
 
-          if (tab["content:paragraph"].length == undefined) eachtab.paras.push(tab["content:paragraph"]["content:text"])
-          else {
+          Object.entries(tab).forEach(([type, content]) => {
+            switch(type) {
+             case "content:paragraph": {
+              if(!isArray(content)) {
+                  eachtab.tabList.push({paragraph:content["content:text"]})
+                } else {
+                Object.entries(content["content:text"]).forEach(([num, paragraph]) => {
+                    eachtab.tabList.push({paragraph:paragraph})
+                  });
+                }
+                break;
+             }
+             case "content:image": {
+              if(!isArray(content)) {
+                  eachtab.tabList.push({image:this.getImageName(content)})
+                } else {
+                  Object.entries(content).forEach(([num, attributes]) => {
+                    eachtab.tabList.push({image:this.getImageName(attributes)})
+                  });
+                }
+                break;
+              }
+              case "content:text": {
+                if (!isArray(content)) {
+                  eachtab.tabList.push({text:content})
+                } else {
+                  Object.entries(content).forEach(tabtext => {
+                    eachtab.tabList.push({text:tabtext})
+                  });
+                }
+                break;
+              }
+            }
+          })
+
+          if (tab["content:paragraph"].length == undefined) {
+            eachtab.paras.push(tab["content:paragraph"]["content:text"])
+          } else {
             tab["content:paragraph"].forEach(tabpara => {
               eachtab.paras.push(tabpara["content:text"])
             });
           }
 
           //this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]))
-          if (tab["content:image"].length == undefined) eachtab.images.push(this.getImageName(tab["content:image"])); //(tab["content:image"]["@attributes"]["resource"])
-          else {
+          if (tab["content:image"].length == undefined) {
+            eachtab.images.push(this.getImageName(tab["content:image"])); //(tab["content:image"]["@attributes"]["resource"])
+          } else {
             tab["content:image"].forEach(tabimage => {
               eachtab.images.push(this.getImageName(tabimage))
             });
           }
 
           if (tab["content:text"] == undefined) eachtab.texts.push('');
-          else if (typeof tab["content:text"] == 'string') eachtab.texts.push(tab["content:text"])
-          else {
+          else if (typeof tab["content:text"] == 'string') {
+            eachtab.texts.push(tab["content:text"])
+          } else {
             tab["content:text"].forEach(tabtext => {
               eachtab.texts.push(tabtext)
             });
           }
           card.tabs.push(eachtab);
-
+          card.contentList.push({tab: eachtab})
         }
       }
 
@@ -770,10 +819,9 @@ export class PageComponent implements OnInit {
           if (formelement["content:placeholder"]) htmlelement.placeholder = formelement["content:placeholder"]["content:text"];
 
           cardforms.elements.push(htmlelement)
-
+          
         }
       }
-
 
       //handle form paragraph
       let paragraphs = [];
@@ -806,7 +854,7 @@ export class PageComponent implements OnInit {
       }
 
       card.forms.push(cardforms);
-
+      card.contentList.push({'cardforms': cardforms});
     }
     return card;
   }
@@ -938,6 +986,8 @@ export class PageComponent implements OnInit {
     return retValue;
 
   }
+
+  isString(val) { return typeof val === 'string'; }
 
   ClearContent() {
     this.tagline = "";
