@@ -6,7 +6,9 @@ import { Router, NavigationEnd } from '@angular/router';
   providedIn: 'root'
 })
 export class AnalyticsService {
-  constructor(private loaderService: LoaderService, private router: Router){}
+  constructor(private loaderService: LoaderService, private router: Router){
+    (<any>window).digitalData = { page: {} };
+  }
 
   runAnalyticsInsidePages(url) {
     const [_, language, pageName, pageNumber ] = url.split('/');
@@ -15,7 +17,6 @@ export class AnalyticsService {
 
   runAnalyticsOnHomepages() {
     if (CustomEvent !== undefined) {
-      (<any>window).digitalData = { page: {} };
       this.router.events
         .subscribe((event) => {
           if (event instanceof NavigationEnd) {
