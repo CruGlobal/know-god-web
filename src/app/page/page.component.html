@@ -68,24 +68,24 @@
         <ng-container *ngFor="let item of paras; let i= index">
 
           <!-- Array content -->
-          <ng-container *ngIf="item.type== 'text' && isArray(item.text)==true">
+          <ng-container *ngIf="item.type == 'text' && isArray(item.text)==true">
             <p class="mw568 arrayContent">
               <span class="ng-binding" dir={{pageGetparameters.dir}} *ngFor="let line of item.text">{{line}}</span>
             </p>
           </ng-container>
 
           <!-- Text content -->
-          <ng-container *ngIf="item.type== 'text' && isArray(item.text)==false">
+          <ng-container *ngIf="item.type == 'text' && isArray(item.text)==false">
             <p class="mw568 textContent ng-binding" [ngClass]="{'firstContent' : FirstPage}" dir={{pageGetparameters.dir}}>{{item.text}}</p>
           </ng-container>
 
           <!-- Image content -->
-          <ng-container *ngIf="item.type == 'image' && item.image!=undefined && item.image!=''">
+          <ng-container *ngIf="item.type == 'image' && item.image">
             <img class="imageContent ng-binding" [ngClass]="{'firstImage' : FirstPage}" [src]="item.image">
           </ng-container>
 
           <!-- Button content -->
-          <ng-container *ngIf="item.type=='button'">
+          <ng-container *ngIf="item.type == 'button'">
             <div class="mw568 buttonContent tc" dir={{pageGetparameters.dir}}>
               <a [href]="'http://' + item.text" class="button" target="_blank">{{hostnameUrlFromLink(item.text)}}</a>
             </div>
@@ -95,7 +95,7 @@
       </ng-container>
 
       <!-- Cards -->
-      <ng-container *ngIf="Cards!=''">
+      <ng-container *ngIf="Cards">
         <div class="cardContent" *ngFor="let card of Cards" [hidden]="card.hidden">
 
           <!-- Card Heading -->
@@ -134,7 +134,7 @@
 
             <ng-container *ngIf="cardItem.button">
               <div class="mw568 buttonContent tc indent">
-                <ng-container *ngIf="cardItem.button[1]!=undefined; else singleItemButton">
+                <ng-container *ngIf="cardItem.button[1]; else singleItemButton">
                   <a (click)="formAction(cardItem.button[1])" class="button">{{cardItem.button[0]}}</a>
                 </ng-container>
                 <ng-template #singleItemButton>
@@ -171,8 +171,6 @@
           </div>
       </ng-container>
 
-      
-
       <ng-container *ngIf="displayModel">
         <ng-container *ngFor="let modal of Modals">
           <div class="stepHeading noCounter">
@@ -197,10 +195,9 @@
         </ng-container>
       </ng-container>
       
-      <ng-container  *ngIf="call_to_action!=''">
+      <ng-container *ngIf="call_to_action">
         <h4 class="calltoaction mw568 indent">{{call_to_action}}</h4>
       </ng-container>
-
 
       <!-- Tool navigation -->
       <ng-container *ngIf="!displayForm">
