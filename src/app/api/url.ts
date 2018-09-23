@@ -4,7 +4,8 @@ export const APIURL = {
   GET_ZIP_FILES: 'https://mobile-content-api.cru.org/translations/',
   GET_INDEX_FILE: 'https://mobile-content-api.cru.org/resources/{0}?include=latest-translations,attachments',
   GET_XML_FILES_FOR_MANIFEST: 'https://s3.amazonaws.com/know-god-assets/',
-  GET_ATTACHMENTS: '/attachments/'
+  GET_ATTACHMENTS: '/attachments/',
+  POST_CREATE_SUBSCRIBER: 'https://mobile-content-api.cru.org/follow_ups/',
 };
 
 

@@ -8,7 +8,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { AnalyticsService } from '../services/analytics.service';
-import { isArray } from 'util';
+import { isArray, log } from 'util';
+import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-page',
@@ -1083,8 +1084,35 @@ export class PageComponent implements OnInit {
     if (url) this.analyticsService.runAnalyticsInsidePages(url);
   }
 
-  formAction(inputFunctionName) {
+  onSubmitSubscriberInfo(form) {
+    const httpOptions = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' })
+    };
 
+    let subscriberData = {
+      "data": {
+        "type": "follow_up",
+        "attributes": {
+          "name": form.value.name,
+          "email": form.value.email,
+          "language_id": Number(this.selectedLanguageId),
+          "destination_id":  Number(form.value.destination_id)
+        }
+      }
+    }
+
+    this.commonService.createSubscriber(APIURL.POST_CREATE_SUBSCRIBER, subscriberData, httpOptions)
+      .subscribe(
+        data => {
+          // console.log("post", data);
+        },
+        error => {
+          // console.log("error", error);
+        }
+      );
+  }
+
+  formAction(inputFunctionName) {
     let functionName = inputFunctionName;
 
     if (functionName.indexOf(' ') > -1) {

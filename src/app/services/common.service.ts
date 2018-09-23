@@ -23,4 +23,7 @@ export class CommonService {
     return this.http.get(url, { responseType: 'arraybuffer' });
   }
 
+  createSubscriber(url, data, httpOptions) {
+    return this.http.post(url, data, httpOptions)
+  }
 }
