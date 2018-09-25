@@ -9,7 +9,6 @@ import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { AnalyticsService } from '../services/analytics.service';
 import { isArray, log } from 'util';
-import { HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-page',
@@ -1085,11 +1084,7 @@ export class PageComponent implements OnInit {
   }
 
   onSubmitSubscriberInfo(form) {
-    const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' })
-    };
-
-    let subscriberData = {
+    const subscriberData = {
       "data": {
         "type": "follow_up",
         "attributes": {
@@ -1101,15 +1096,7 @@ export class PageComponent implements OnInit {
       }
     }
 
-    this.commonService.createSubscriber(APIURL.POST_CREATE_SUBSCRIBER, subscriberData, httpOptions)
-      .subscribe(
-        data => {
-          // console.log("post", data);
-        },
-        error => {
-          // console.log("error", error);
-        }
-      );
+    this.commonService.createSubscriber(subscriberData).subscribe();
   }
 
   formAction(inputFunctionName) {
