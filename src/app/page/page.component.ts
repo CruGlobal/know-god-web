@@ -8,7 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { AnalyticsService } from '../services/analytics.service';
-import { isArray } from 'util';
+import { isArray, log } from 'util';
 
 @Component({
   selector: 'app-page',
@@ -1083,8 +1083,23 @@ export class PageComponent implements OnInit {
     if (url) this.analyticsService.runAnalyticsInsidePages(url);
   }
 
-  formAction(inputFunctionName) {
+  onSubmitSubscriberInfo(form) {
+    const subscriberData = {
+      "data": {
+        "type": "follow_up",
+        "attributes": {
+          "name": form.value.name,
+          "email": form.value.email,
+          "language_id": Number(this.selectedLanguageId),
+          "destination_id":  Number(form.value.destination_id)
+        }
+      }
+    }
 
+    this.commonService.createSubscriber(subscriberData).subscribe();
+  }
+
+  formAction(inputFunctionName) {
     let functionName = inputFunctionName;
 
     if (functionName.indexOf(' ') > -1) {
