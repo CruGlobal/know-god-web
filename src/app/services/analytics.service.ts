@@ -13,6 +13,11 @@ export class AnalyticsService {
   runAnalyticsInsidePages(url) {
     const [_, language, pageName, pageNumber ] = url.split('/');
     this.setDigitalData(pageName || 'knowgod', language, pageNumber);
+
+    if (CustomEvent !== undefined) {
+      const evt = new CustomEvent('content: all pages');
+      document.querySelector('body').dispatchEvent(evt);
+    }
   }
 
   runAnalyticsOnHomepages() {
