@@ -62,6 +62,8 @@ export class PageComponent implements OnInit {
   LastPage = false;
   headerCounter;
 
+  currentYear = (new Date()).getFullYear();
+
   private sub: any;
   constructor(public commonService: CommonService,
     private ngxXml2jsonService: NgxXml2jsonService,

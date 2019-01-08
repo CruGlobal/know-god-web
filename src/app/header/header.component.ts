@@ -12,6 +12,8 @@ export class HeaderComponent {
     Images = [];
     englishLangId = 1;
 
+    currentYear = (new Date()).getFullYear();
+
     constructor(public route: Router,
         public commonService: CommonService,
     ) {
