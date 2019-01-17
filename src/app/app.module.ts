@@ -13,12 +13,14 @@ import { HttpModule } from '@angular/http';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import {ToastrModule } from 'ngx-toastr';
+import { SitemapComponent } from './sitemap/sitemap.component';
 
 
 const appRoutes: Routes =[
   { path: ':langid/embed/:bookid', component: PageComponent},
   { path: ':langid/:bookid/:page', component: PageComponent },
   { path: ':langid/:bookid', component: PageComponent},
+  { path: 'sitemap', component: SitemapComponent},
   { path: '', component: HeaderComponent} ,
 ];
 
@@ -28,7 +30,8 @@ const appRoutes: Routes =[
     HeaderComponent,
     PageComponent,
     SharingModalComponent,
-    LoaderComponent
+    LoaderComponent,
+    SitemapComponent
   ],
   imports: [
     BrowserModule,
