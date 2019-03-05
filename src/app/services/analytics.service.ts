@@ -39,7 +39,8 @@ export class AnalyticsService {
     (<any>window).digitalData.page = {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
-        language: language || 'en'
+        language: language || 'en',
+        embedded: (<any>window).isEmbedded === true ? 'embed' : ''
       },
       category: {
         primaryCategory: appName
