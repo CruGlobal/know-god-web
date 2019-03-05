@@ -25,11 +25,13 @@ export class AnalyticsService {
       this.router.events
         .subscribe((event) => {
           if (event instanceof NavigationEnd) {
-            const [_, language, pageName ] = event.url.split('/');
-            this.setDigitalData(pageName || 'knowgod', language);
+            const [_, language, pageName, pageNumber] = event.url.split('/');
+            if (pageNumber === undefined) {
+              this.setDigitalData(pageName || 'knowgod', language);
 
-            const evt = new CustomEvent('content: all pages');
-            document.querySelector('body').dispatchEvent(evt);
+              const evt = new CustomEvent('content: all pages');
+              document.querySelector('body').dispatchEvent(evt);
+            }
           }
         });
     }
