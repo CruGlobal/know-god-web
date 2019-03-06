@@ -107,13 +107,8 @@ export class PageComponent implements OnInit {
 
     this.sub = this.route.params.subscribe(params => {
       this.showLoader = true;
-      if (params['bookid'] && params['langid'] && params['pageid']) {
-        this.selectedPage(params['pageid']);
-        this.pageGetparameters.bookid = params['bookid']
-        this.pageGetparameters.langid = params['langid']
-        this.pageGetparameters.pageid = params['pageid']
-      }
       if (params['bookid'] && params['langid'] && params['page']) {
+        this.selectedPage(params['page']);
         this.pageGetparameters.bookid = params['bookid']
         this.pageGetparameters.langid = params['langid']
         this.pageGetparameters.pageid = Number(params['page'])
@@ -234,7 +229,7 @@ export class PageComponent implements OnInit {
     this.pageGetparameters.dir = lang.attributes.direction;
     if (!this.pageGetparameters.pageid) {
       const Url = this.router.createUrlTree([lang.attributes.code, this.BookID]).toString();
-      this.location.go(Url);
+      this.router.navigateByUrl(Url.toString())
     }
     this.language = false;
     this.selectLan = lang.attributes.name;
@@ -258,7 +253,7 @@ export class PageComponent implements OnInit {
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(this.currentTranslations[this.pageGetparameters.pageid]);
           const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
-          this.location.go(Url);
+          this.router.navigateByUrl(Url.toString())
           this.analyticsService.runAnalyticsInsidePages(Url);
           this.getXmlFiles(this.currentTranslations[0]);
         } else {
@@ -940,7 +935,7 @@ export class PageComponent implements OnInit {
       this.counter++;
       this.pageGetparameters.pageid = this.counter;
       const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
-      this.location.go(Url);
+      this.router.navigateByUrl(Url.toString())
       this.LoadPage(this.counter, Url);
       window.scrollTo(0, 0);
     } else {
@@ -963,7 +958,7 @@ export class PageComponent implements OnInit {
     }
 
     const Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
-    this.location.go(Url);
+    this.router.navigateByUrl(Url.toString())
     this.LoadPage(this.counter, Url);
     window.scrollTo(0, 0);
   }
@@ -1054,15 +1049,6 @@ export class PageComponent implements OnInit {
     this.paras = this.currentPageContent.paras;
 
     if (this.currentPageContent.cards.length > 0) {
-      let Url;
-      if (this.counter > 0) {
-        Url = this.router.createUrlTree([this.lang, this.BookID, this.counter]).toString();
-      } else {
-        Url = this.router.createUrlTree([this.lang, this.BookID]).toString();
-      }
-
-
-      this.location.go(Url);
       this.Modals = this.currentPageContent.modals;
       this.Cards = this.currentPageContent.cards;
       for (let i = 0; i < this.Cards.length; i++) {
