@@ -7,11 +7,16 @@
 <section id="homeTools">
   <div class="bs-container">
     <div class="bs-card-deck">
-      <a href="javascript:void(0)" class="bs-card" (click)="navigateToPage(banner.abbreviation)" *ngFor="let banner of Images;let i = index; let isFirstRow=last">
+      <a
+        href="javascript:void(0)"
+        class="bs-card"
+        (click)="navigateToPage(banner.abbreviation)"
+        *ngFor="let banner of Images; let i = index; let isFirstRow = last"
+      >
         <img class="bs-card-img-top" [src]="banner.ImgUrl" />
         <div class="bs-card-body">
-          <h5 class="bs-card-title">{{banner.resource}}</h5>
-          <p class="bs-card-text">{{banner.tagline}}</p>
+          <h5 class="bs-card-title">{{ banner.resource }}</h5>
+          <p class="bs-card-text">{{ banner.tagline }}</p>
         </div>
       </a>
     </div>
@@ -20,6 +25,12 @@
 
 <footer id="homeFooter" class="homeHeaderFooter">
   <div class="bs-container">
-    ©1994-{{currentYear}} Cru. All Rights Reserved. <a href="https://godtoolsapp.com/terms-of-use/" target="_blank">Terms of Use</a>. <a href="https://www.cru.org/us/en/about/privacy.html" target="_blank">Privacy Policy</a>.
+    ©1994-{{ currentYear }} Cru. All Rights Reserved.
+    <a href="https://godtoolsapp.com/terms-of-use/" target="_blank"
+      >Terms of Use</a
+    >.
+    <a href="https://www.cru.org/us/en/about/privacy.html" target="_blank"
+      >Privacy Policy</a
+    >.
   </div>
 </footer>

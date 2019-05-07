@@ -1,27 +1,36 @@
 <div class="r absolute">
   <a class="db share">
-    <img src="assets/img/share.png" *ngIf="ShareState == 'min'" (click)="ShareState = 'max'">
+    <img
+      src="assets/img/share.png"
+      *ngIf="ShareState == 'min'"
+      (click)="ShareState = 'max'"
+    />
   </a>
   <div>
     <div class="sharemax" *ngIf="ShareState == 'max'">
-      <a title="Close" class="btn shareclose"  (click)="ShareState = 'min'">
+      <a title="Close" class="btn shareclose" (click)="ShareState = 'min'">
         <div class="fas fa-times"></div>
       </a>
-      <a title="Twitter" class="btn"  (click)="shareTo('TWITTER')">
+      <a title="Twitter" class="btn" (click)="shareTo('TWITTER')">
         <div class="fab fa-twitter"></div>
       </a>
-      <a title="Facebook" class="btn"  (click)="shareTo('FACEBOOK')">
+      <a title="Facebook" class="btn" (click)="shareTo('FACEBOOK')">
         <div class="fab fa-facebook-f"></div>
       </a>
-      <a title="Google+" class="btn"  (click)="shareTo('GOOGLEPLUS')">
+      <a title="Google+" class="btn" (click)="shareTo('GOOGLEPLUS')">
         <div class="fab fa-google-plus-g"></div>
       </a>
-      <a class="btn"  (click)="shareTo('MAILTO')" title="Email">
+      <a class="btn" (click)="shareTo('MAILTO')" title="Email">
         <div class="fas fa-envelope"></div>
       </a>
-      <a class="btn" id="lnkCopy"  (click)="CopyToClipboard(event)" title="Copy URL to Clipboard">
-          <div class="fas fa-link"></div>
-        </a>
+      <a
+        class="btn"
+        id="lnkCopy"
+        (click)="CopyToClipboard(event)"
+        title="Copy URL to Clipboard"
+      >
+        <div class="fas fa-link"></div>
+      </a>
     </div>
   </div>
 </div>

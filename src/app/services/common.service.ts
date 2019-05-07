@@ -3,9 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { APIURL } from '../api/url';
 import { log } from 'util';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CommonService {
   allBooks = [];
@@ -27,9 +26,9 @@ export class CommonService {
 
   createSubscriber(data) {
     const httpOptions = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' })
+      headers: new HttpHeaders({ 'Content-Type': 'application/vnd.api+json' }),
     };
 
-    return this.http.post(APIURL.POST_CREATE_SUBSCRIBER, data, httpOptions)
+    return this.http.post(APIURL.POST_CREATE_SUBSCRIBER, data, httpOptions);
   }
 }
