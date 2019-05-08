@@ -5,7 +5,7 @@ import { CommonService } from './common.service';
 describe('CommonService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [CommonService]
+      providers: [CommonService],
     });
   });
 

@@ -1,9 +1,9 @@
-.loader-center{
-  position : absolute;    
-  width    : 200px;
-  height   : 200px;
-  left     : 45%;
-  top      : 40%;
-  margin-left : -100px; /* half of the width  */
-  margin-top  : -100px; /* half of the height */
+.loader-center {
+  position: absolute;
+  width: 200px;
+  height: 200px;
+  left: 45%;
+  top: 40%;
+  margin-left: -100px; /* half of the width  */
+  margin-top: -100px; /* half of the height */
 }

@@ -7,7 +7,10 @@
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "prettier:check": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
+    "prettier:write": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
+    "precommit": "pretty-quick --staged"
   },
   "private": true,
   "dependencies": {
@@ -21,9 +24,12 @@
     "@angular/platform-browser-dynamic": "^6.0.3",
     "@angular/router": "^6.0.3",
     "core-js": "^2.5.4",
+    "husky": "^2.2.0",
     "ngx-loading": "^1.0.14",
     "ngx-toastr": "^8.8.0",
     "ngx-xml2json": "^1.0.2",
+    "prettier": "^1.17.0",
+    "pretty-quick": "^1.10.0",
     "rxjs": "^6.0.0",
     "text-encoding": "^0.6.4",
     "ts-clipboard": "^1.0.16",

@@ -12,14 +12,13 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 import { HttpModule } from '@angular/http';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
-import {ToastrModule } from 'ngx-toastr';
+import { ToastrModule } from 'ngx-toastr';
 
-
-const appRoutes: Routes =[
-  { path: ':langid/embed/:bookid', component: PageComponent},
+const appRoutes: Routes = [
+  { path: ':langid/embed/:bookid', component: PageComponent },
   { path: ':langid/:bookid/:page', component: PageComponent },
-  { path: ':langid/:bookid', component: PageComponent},
-  { path: '', component: HeaderComponent} ,
+  { path: ':langid/:bookid', component: PageComponent },
+  { path: '', component: HeaderComponent },
 ];
 
 @NgModule({
@@ -28,22 +27,18 @@ const appRoutes: Routes =[
     HeaderComponent,
     PageComponent,
     SharingModalComponent,
-    LoaderComponent
+    LoaderComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes) ,
+    RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
-    ToastrModule.forRoot() ,
-
+    ToastrModule.forRoot(),
   ],
-  providers: [
-    CommonModule,
-    LoaderService,
-  ],
-  bootstrap: [AppComponent]
+  providers: [CommonModule, LoaderService],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -6,14 +6,15 @@ import { AnalyticsService } from './services/analytics.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
   showLoader: boolean;
 
-  constructor(private loaderService: LoaderService,
+  constructor(
+    private loaderService: LoaderService,
     private analyticsService: AnalyticsService,
-  ){}
+  ) {}
 
   ngOnInit() {
     this.loaderService.status.subscribe((val: boolean) => {

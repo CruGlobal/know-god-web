@@ -3,15 +3,12 @@ import { SHAREDURL } from '../../api/url';
 import { ToastrService } from 'ngx-toastr';
 import { Clipboard } from 'ts-clipboard';
 
-
 @Component({
   selector: 'sharing-modal',
   templateUrl: './sharing-modal.component.html',
-  styleUrls: ['./sharing-modal.component.css']
+  styleUrls: ['./sharing-modal.component.css'],
 })
-
 export class SharingModalComponent implements OnInit {
-
   @Input()
   book: any;
   currentUrl: string;
@@ -21,7 +18,6 @@ export class SharingModalComponent implements OnInit {
 
   ngOnInit() {
     this.ShareState = 'min';
-
   }
 
   CopyToClipboard(event) {
@@ -31,30 +27,30 @@ export class SharingModalComponent implements OnInit {
     var options = {
       messageClass: 'toast-message1',
       positionClass: 'toast-top-right1',
-
     };
-    this.toastr.success(url + '     ', "Link copied to clipboard");
+    this.toastr.success(url + '     ', 'Link copied to clipboard');
 
-    document.getElementById("toast-container").style.top = "261px";
-    document.getElementById("toast-container").style.left = "650px";
+    document.getElementById('toast-container').style.top = '261px';
+    document.getElementById('toast-container').style.left = '650px';
   }
-
-
 
   shareTo(type): void {
     this.currentUrl = window.location.href;
     let url = '';
     switch (type) {
       case 'TWITTER':
-        url = SHAREDURL.get(type).replace("BOOK_NAME", this.book).replace("BOOK_LINK", this.currentUrl)
+        url = SHAREDURL.get(type)
+          .replace('BOOK_NAME', this.book)
+          .replace('BOOK_LINK', this.currentUrl);
         break;
       case 'MAILTO':
-        url = SHAREDURL.get(type).replace("MAIL_SUBJECT", this.book).replace("MAIL_BODY", this.currentUrl)
+        url = SHAREDURL.get(type)
+          .replace('MAIL_SUBJECT', this.book)
+          .replace('MAIL_BODY', this.currentUrl);
         break;
       default:
         url = SHAREDURL.get(type) + this.currentUrl;
     }
-    window.open(url, "_blank");
+    window.open(url, '_blank');
   }
-
 }

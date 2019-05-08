@@ -5,11 +5,14 @@ import { AnalyticsService } from './analytics.service';
 describe('AnalyticsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AnalyticsService]
+      providers: [AnalyticsService],
     });
   });
 
-  it('should be created', inject([AnalyticsService], (service: AnalyticsService) => {
-    expect(service).toBeTruthy();
-  }));
+  it('should be created', inject(
+    [AnalyticsService],
+    (service: AnalyticsService) => {
+      expect(service).toBeTruthy();
+    },
+  ));
 });

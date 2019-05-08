@@ -3,15 +3,15 @@ import { LoaderService } from './loader-service/loader.service';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnalyticsService {
-  constructor(private loaderService: LoaderService, private router: Router){
+  constructor(private loaderService: LoaderService, private router: Router) {
     (<any>window).digitalData = { page: {} };
   }
 
   runAnalyticsInsidePages(url) {
-    const [_, language, pageName, pageNumber ] = url.split('/');
+    const [_, language, pageName, pageNumber] = url.split('/');
     this.setDigitalData(pageName || 'knowgod', language, pageNumber);
 
     if (CustomEvent !== undefined) {
@@ -22,18 +22,17 @@ export class AnalyticsService {
 
   runAnalyticsOnHomepages() {
     if (CustomEvent !== undefined) {
-      this.router.events
-        .subscribe((event) => {
-          if (event instanceof NavigationEnd) {
-            const [_, language, pageName, pageNumber] = event.url.split('/');
-            if (pageNumber === undefined) {
-              this.setDigitalData(pageName || 'knowgod', language);
+      this.router.events.subscribe(event => {
+        if (event instanceof NavigationEnd) {
+          const [_, language, pageName, pageNumber] = event.url.split('/');
+          if (pageNumber === undefined) {
+            this.setDigitalData(pageName || 'knowgod', language);
 
-              const evt = new CustomEvent('content: all pages');
-              document.querySelector('body').dispatchEvent(evt);
-            }
+            const evt = new CustomEvent('content: all pages');
+            document.querySelector('body').dispatchEvent(evt);
           }
-        });
+        }
+      });
     }
   }
 
@@ -42,12 +41,11 @@ export class AnalyticsService {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
         language: language || 'en',
-        embedded: (<any>window).isEmbedded === true ? 'embed' : ''
+        embedded: (<any>window).isEmbedded === true ? 'embed' : '',
       },
       category: {
-        primaryCategory: appName
-      }
+        primaryCategory: appName,
+      },
     };
   }
-
 }
