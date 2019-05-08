@@ -1,7 +1,7 @@
-(function(){
-  window.onload = function () {
+(function() {
+  window.onload = function() {
     var knowGodEmbed = document.getElementById('knowGodEmbed');
-    if(!knowGodEmbed){
+    if (!knowGodEmbed) {
       console.log('Know God element not found.');
       return;
     }
@@ -23,23 +23,30 @@
     knowGodEmbed.appendChild(iframe);
 
     //listen for iframe height changes
-    var previousHeight = 0, iframeTop = iframe.offsetTop;
-    var eventMethod = window.addEventListener ? 'addEventListener' : 'attachEvent';
+    var previousHeight = 0,
+      iframeTop = iframe.offsetTop;
+    var eventMethod = window.addEventListener
+      ? 'addEventListener'
+      : 'attachEvent';
     var eventer = window[eventMethod];
     var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
-    eventer(messageEvent, function(e) {
-      if (isNaN(e.data) || previousHeight === e.data) return;
+    eventer(
+      messageEvent,
+      function(e) {
+        if (isNaN(e.data) || previousHeight === e.data) return;
 
-      iframe.style.height = e.data + 'px';
+        iframe.style.height = e.data + 'px';
 
-      //scroll to top of iframe
-      if(window.pageYOffset > iframeTop){
-        window.scrollTo({
-          top: iframeTop
-        });
-      }
+        //scroll to top of iframe
+        if (window.pageYOffset > iframeTop) {
+          window.scrollTo({
+            top: iframeTop,
+          });
+        }
 
-      previousHeight = e.data;
-    }, false);
+        previousHeight = e.data;
+      },
+      false,
+    );
   };
 })();

@@ -8,8 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "prettier:check": "prettier '{src/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
-    "prettier:write": "prettier '{src/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
+    "prettier:check": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
+    "prettier:write": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
     "precommit": "pretty-quick --staged"
   },
   "private": true,
