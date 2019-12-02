@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css'],
+  styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
   Images = [];
@@ -24,13 +24,12 @@ export class HeaderComponent {
       APIURL.GET_ALL_BOOKS + '?include=latest-translations,attachments';
     this.commonService.getBooks(url).subscribe((data: any) => {
       const attachments = data.included.filter(
-        included => included.type === 'attachment',
+        included => included.type === 'attachment'
       );
       const englishTranslations = data.included.filter(
         included =>
           included.type === 'translation' &&
-          Number(included.relationships.language.data.id) ===
-            this.englishLangId,
+          Number(included.relationships.language.data.id) === this.englishLangId
       );
 
       data.data.forEach(resource => {
@@ -47,8 +46,8 @@ export class HeaderComponent {
           id: resourceId,
           abbreviation: resource.attributes.abbreviation,
           tagline: englishTranslations.find(
-            x => x.relationships.resource.data.id === resourceId,
-          ).attributes['translated-tagline'],
+            x => x.relationships.resource.data.id === resourceId
+          ).attributes['translated-tagline']
         });
       });
     });

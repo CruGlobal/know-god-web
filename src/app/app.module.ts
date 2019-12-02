@@ -18,7 +18,7 @@ const appRoutes: Routes = [
   { path: ':langid/embed/:bookid', component: PageComponent },
   { path: ':langid/:bookid/:page', component: PageComponent },
   { path: ':langid/:bookid', component: PageComponent },
-  { path: '', component: HeaderComponent },
+  { path: '', component: HeaderComponent }
 ];
 
 @NgModule({
@@ -27,7 +27,7 @@ const appRoutes: Routes = [
     HeaderComponent,
     PageComponent,
     SharingModalComponent,
-    LoaderComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -36,9 +36,9 @@ const appRoutes: Routes = [
     HttpModule,
     RouterModule.forRoot(appRoutes),
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   providers: [CommonModule, LoaderService],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
