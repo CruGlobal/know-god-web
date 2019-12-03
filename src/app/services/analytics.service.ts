@@ -3,7 +3,7 @@ import { LoaderService } from './loader-service/loader.service';
 import { Router, NavigationEnd } from '@angular/router';
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
 export class AnalyticsService {
   constructor(private loaderService: LoaderService, private router: Router) {
@@ -41,11 +41,11 @@ export class AnalyticsService {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
         language: language || 'en',
-        embedded: (<any>window).isEmbedded === true ? 'embed' : '',
+        embedded: (<any>window).isEmbedded === true ? 'embed' : ''
       },
       category: {
-        primaryCategory: appName,
-      },
+        primaryCategory: appName
+      }
     };
   }
 }

@@ -8,7 +8,7 @@ describe('SharingModalComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [SharingModalComponent],
+      declarations: [SharingModalComponent]
     }).compileComponents();
   }));
 

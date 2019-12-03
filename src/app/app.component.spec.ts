@@ -3,7 +3,7 @@ import { AppComponent } from './app.component';
 describe('AppComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [AppComponent],
+      declarations: [AppComponent]
     }).compileComponents();
   }));
   it('should create the app', async(() => {
@@ -21,7 +21,7 @@ describe('AppComponent', () => {
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
     expect(compiled.querySelector('h1').textContent).toContain(
-      'Welcome to knowgod!',
+      'Welcome to knowgod!'
     );
   }));
 });

@@ -5,7 +5,7 @@ import { AnalyticsService } from './analytics.service';
 describe('AnalyticsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [AnalyticsService],
+      providers: [AnalyticsService]
     });
   });
 
@@ -13,6 +13,6 @@ describe('AnalyticsService', () => {
     [AnalyticsService],
     (service: AnalyticsService) => {
       expect(service).toBeTruthy();
-    },
+    }
   ));
 });

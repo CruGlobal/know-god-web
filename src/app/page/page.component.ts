@@ -13,7 +13,7 @@ import { isArray, log } from 'util';
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
-  styleUrls: ['./page.component.css'],
+  styleUrls: ['./page.component.css']
 })
 export class PageComponent implements OnInit {
   showLoader: boolean;
@@ -46,12 +46,12 @@ export class PageComponent implements OnInit {
   page = {
     translationId: '',
     filename: '',
-    src: '',
+    src: ''
   };
   resource = {
     translationId: '',
     filename: '',
-    src: '',
+    src: ''
   };
   counter = 0;
   pages = [];
@@ -73,7 +73,7 @@ export class PageComponent implements OnInit {
     public router: Router,
     public location: Location,
     private loaderService: LoaderService,
-    private analyticsService: AnalyticsService,
+    private analyticsService: AnalyticsService
   ) {
     this.showLoader = true;
     this.AllBooks();
@@ -88,7 +88,7 @@ export class PageComponent implements OnInit {
     bookid: null,
     langid: null,
     pageid: null,
-    dir: 'rtl',
+    dir: 'rtl'
   };
 
   ngOnInit() {
@@ -201,7 +201,7 @@ export class PageComponent implements OnInit {
   checkIfPreSelectedLanguageExists() {
     if (this.pageGetparameters.langid) {
       let x = this.selectedBookLanguauageTranslations.find(
-        x => x.attributes.code == this.pageGetparameters.langid,
+        x => x.attributes.code == this.pageGetparameters.langid
       );
       return x && x.length > 0;
     } else {
@@ -248,7 +248,7 @@ export class PageComponent implements OnInit {
           data.data.relationships.translations.data;
         this.translationsMapper(
           this.currentBookTranslations,
-          this.currentLanguageTransalations,
+          this.currentLanguageTransalations
         );
 
         if (this.currentTranslations.length === 0) {
@@ -262,7 +262,7 @@ export class PageComponent implements OnInit {
 
         if (this.pageGetparameters.pageid) {
           this.getXmlFiles(
-            this.currentTranslations[this.pageGetparameters.pageid],
+            this.currentTranslations[this.pageGetparameters.pageid]
           );
           const Url = this.router
             .createUrlTree([this.lang, this.BookID, this.counter])
@@ -330,7 +330,7 @@ export class PageComponent implements OnInit {
           APIURL.GET_XML_FILES_FOR_MANIFEST +
             translationId +
             '/' +
-            manifest_name,
+            manifest_name
         )
         .subscribe(
           data => {
@@ -408,7 +408,7 @@ export class PageComponent implements OnInit {
             this.loaderService.display(false);
             this.errorpresent = true;
             this.errorMsg = 'Problem loading book content.';
-          },
+          }
         );
     }
   }
@@ -416,7 +416,7 @@ export class PageComponent implements OnInit {
   getXmlFileForEachPage(page) {
     this.commonService
       .downloadFile(
-        APIURL.GET_XML_FILES_FOR_MANIFEST + page.translationId + '/' + page.src,
+        APIURL.GET_XML_FILES_FOR_MANIFEST + page.translationId + '/' + page.src
       )
       .subscribe((data: any) => {
         // Convertion of array buffer to xml
@@ -427,7 +427,7 @@ export class PageComponent implements OnInit {
           xmlFile: result,
           filename: page.filename,
           translationId: page.translationId,
-          src: page.src,
+          src: page.src
         };
 
         // convertion of xml to json
@@ -690,7 +690,7 @@ export class PageComponent implements OnInit {
       listener: '',
       dismiss: '',
       isForm: false,
-      contentList: [],
+      contentList: []
     };
 
     if (resourcePage.page.cards.card[i]['@attributes']) {
@@ -709,7 +709,7 @@ export class PageComponent implements OnInit {
     //handle card heading
     card.label = resourcePage.page.cards.card[i].label['content:text'];
     card.contentList.push({
-      label: resourcePage.page.cards.card[i].label['content:text'],
+      label: resourcePage.page.cards.card[i].label['content:text']
     });
 
     //handle card paragraph
@@ -735,15 +735,15 @@ export class PageComponent implements OnInit {
           formpara['content:button']['content:text'],
           formpara['content:button']['@attributes'] == undefined
             ? ''
-            : formpara['content:button']['@attributes'].events,
+            : formpara['content:button']['@attributes'].events
         ]);
         card.contentList.push({
           button: [
             formpara['content:button']['content:text'],
             formpara['content:button']['@attributes'] == undefined
               ? ''
-              : formpara['content:button']['@attributes'].events,
-          ],
+              : formpara['content:button']['@attributes'].events
+          ]
         });
       } else card.button.push('');
 
@@ -751,13 +751,13 @@ export class PageComponent implements OnInit {
       if (formpara['content:link']) {
         card.link.push([
           formpara['content:link']['content:text'],
-          formpara['content:link']['@attributes'].events,
+          formpara['content:link']['@attributes'].events
         ]);
         card.contentList.push({
           link: [
             formpara['content:link']['content:text'],
-            formpara['content:link']['@attributes'].events,
-          ],
+            formpara['content:link']['@attributes'].events
+          ]
         });
       } else card.link.push('');
 
@@ -766,7 +766,7 @@ export class PageComponent implements OnInit {
         if (formpara['content:image'].length == undefined) {
           card.image.push(this.getImageName(formpara['content:image'])); //(formpara["content:image"]["@attributes"]["resource"]);
           card.contentList.push({
-            image: this.getImageName(formpara['content:image']),
+            image: this.getImageName(formpara['content:image'])
           });
         } else {
           var imgArr = [];
@@ -798,7 +798,7 @@ export class PageComponent implements OnInit {
             images: [],
             localImage: [],
             texts: [],
-            tabList: [],
+            tabList: []
           };
 
           Object.entries(tab).forEach(([type, content]) => {
@@ -810,7 +810,7 @@ export class PageComponent implements OnInit {
                   Object.entries(content['content:text']).forEach(
                     ([num, paragraph]) => {
                       eachtab.tabList.push({ paragraph: paragraph });
-                    },
+                    }
                   );
                 }
                 break;
@@ -821,7 +821,7 @@ export class PageComponent implements OnInit {
                 } else {
                   Object.entries(content).forEach(([num, attributes]) => {
                     eachtab.tabList.push({
-                      image: this.getImageName(attributes),
+                      image: this.getImageName(attributes)
                     });
                   });
                 }
@@ -876,7 +876,7 @@ export class PageComponent implements OnInit {
     let cardforms = {
       elements: [],
       buttons: [],
-      links: [],
+      links: []
     };
     let forms = resourcePage.page.cards.card[i]['content:form'];
     if (forms != undefined) {
@@ -893,7 +893,7 @@ export class PageComponent implements OnInit {
             value: '',
             required: '',
             label: '',
-            placeholder: '',
+            placeholder: ''
           };
 
           if (formelement['@attributes'].name)
@@ -928,12 +928,12 @@ export class PageComponent implements OnInit {
         if (formpara['content:button']) {
           cardforms.buttons.push([
             formpara['content:button']['content:text'],
-            formpara['content:button']['@attributes'].events,
+            formpara['content:button']['@attributes'].events
           ]);
         } else if (formpara['content:link']) {
           cardforms.links.push([
             formpara['content:link']['content:text'],
-            formpara['content:link']['@attributes'].events,
+            formpara['content:link']['@attributes'].events
           ]);
         }
       }
@@ -944,13 +944,13 @@ export class PageComponent implements OnInit {
           for (let index = 0; index < forms['content:link'].length; index++) {
             cardforms.links.push([
               forms['content:link'][index]['content:text'],
-              forms['content:link'][index]['@attributes'].events,
+              forms['content:link'][index]['@attributes'].events
             ]);
           }
         } else {
           cardforms.links.push([
             forms['content:link']['content:text'],
-            forms['content:link']['@attributes'].events,
+            forms['content:link']['@attributes'].events
           ]);
         }
       }
@@ -968,11 +968,11 @@ export class PageComponent implements OnInit {
         {
           text: '',
           button: [],
-          type: '',
-        },
+          type: ''
+        }
       ],
       listener: '',
-      dismiss: '',
+      dismiss: ''
     };
 
     let currentModal =
@@ -1005,7 +1005,7 @@ export class PageComponent implements OnInit {
         modal.paras.push({
           text: modalpara['content:text'],
           button: [],
-          type: 'text',
+          type: 'text'
         });
       }
 
@@ -1016,8 +1016,8 @@ export class PageComponent implements OnInit {
           type: 'button',
           button: [
             modalpara['content:button']['content:text'],
-            modalpara['content:button']['@attributes'].events,
-          ],
+            modalpara['content:button']['@attributes'].events
+          ]
         });
       }
     }
@@ -1209,9 +1209,9 @@ export class PageComponent implements OnInit {
           name: form.value.name,
           email: form.value.email,
           language_id: Number(this.selectedLanguageId),
-          destination_id: Number(form.value.destination_id),
-        },
-      },
+          destination_id: Number(form.value.destination_id)
+        }
+      }
     };
 
     this.commonService.createSubscriber(subscriberData).subscribe();
