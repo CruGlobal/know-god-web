@@ -26,7 +26,6 @@ p {
 /***** High level *****/
 .outerbox {
   width: 100%;
-  min-width: 320px;
   max-width: 768px;
   margin: 0 auto;
 }
