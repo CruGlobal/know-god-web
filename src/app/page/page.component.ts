@@ -97,6 +97,17 @@ export class PageComponent implements OnInit {
       this.showLoader = val;
     });
 
+    if (!Object.entries) {
+      Object.entries = function(obj) {
+        let ownProps = Object.keys(obj),
+          i = ownProps.length,
+          resArray = new Array(i); // preallocate the Array
+        while (i--) resArray[i] = [ownProps[i], obj[ownProps[i]]];
+
+        return resArray;
+      };
+    }
+
     if (this.commonService.selectedLan !== undefined) {
       this.selectLan = this.commonService.selectedLan.attributes.name;
       this.selectedLanguageId = this.commonService.selectedLan.id;
