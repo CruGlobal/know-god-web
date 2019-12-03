@@ -18,6 +18,7 @@ script:
 before_deploy:
   - pip install --user awscli
   - cp embed/embed.js dist/embed.js
+  - cp embed/example.html dist/example.html
   - cp -r mobile/ dist/mobile/
 
 deploy:
