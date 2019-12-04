@@ -26,7 +26,6 @@ p {
 /***** High level *****/
 .outerbox {
   width: 100%;
-  min-width: 300px;
   max-width: 768px;
   margin: 0 auto;
 }
@@ -334,6 +333,12 @@ a.kg-bg-blue:hover {
 }
 
 /***** Responsive *****/
+@media screen and (max-width: 319px) {
+  #tool-navigation .button {
+    width: 100px;
+  }
+}
+
 @media screen and (min-width: 440px) {
   .stepHeading h1,
   h4 {
