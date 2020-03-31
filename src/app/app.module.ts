@@ -18,6 +18,7 @@ const appRoutes: Routes = [
   { path: ':langid/embed/:bookid', component: PageComponent },
   { path: ':langid/:bookid/:page', component: PageComponent },
   { path: ':langid/:bookid', component: PageComponent },
+  { path: ':langid', component: HeaderComponent },
   { path: '', component: HeaderComponent }
 ];
 
