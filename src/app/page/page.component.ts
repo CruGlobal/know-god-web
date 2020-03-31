@@ -219,6 +219,7 @@ export class PageComponent implements OnInit {
       return true;
     }
   }
+
   lang = '';
   selectLanguage(lang, selectChoice = false) {
     this.loaderService.display(true);
@@ -288,7 +289,6 @@ export class PageComponent implements OnInit {
   }
 
   BookID = '';
-
   selectBook(book, fromChoice = false) {
     this.loaderService.display(true);
     this.BookID = book.attributes.abbreviation;
@@ -526,6 +526,7 @@ export class PageComponent implements OnInit {
     this.language = !this.language;
     this.books = false;
   }
+
   Books() {
     this.language = false;
     this.books = !this.books;
@@ -564,16 +565,20 @@ export class PageComponent implements OnInit {
     modals = [];
 
     attributes = {};
-    if (resourcePage.page.hero) {
+
+    if (resourcePage.page.hero && !this.isRestricted(resourcePage.page.hero)) {
       heading =
-        resourcePage.page.hero.heading == undefined
+        resourcePage.page.hero.heading == undefined ||
+        this.isRestricted(resourcePage.page.hero.heading) ||
+        this.isRestricted(resourcePage.page.hero.heading['content:text'])
           ? ''
           : resourcePage.page.hero.heading['content:text'];
-      //paragraph = resourcePage.page.hero;
       obj = resourcePage.page;
-
       paras = this.getHeroContent(resourcePage.page.hero);
+    } else {
+      heading = '';
     }
+
     if (resourcePage.page.header) {
       heading = resourcePage.page.header.title['content:text'];
       obj = resourcePage.page;
@@ -582,12 +587,16 @@ export class PageComponent implements OnInit {
         if (resourcePage.page.cards.card.length != undefined) {
           for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
             let card = this.getCardContent(resourcePage, i);
-            cards.push(card);
+            if (!card.isRestricted) {
+              cards.push(card);
+            }
           }
         } else {
           resourcePage.page.cards.card = [resourcePage.page.cards.card];
           let card = this.getCardContent(resourcePage, 0);
-          cards.push(card);
+          if (!card.isRestricted) {
+            cards.push(card);
+          }
         }
       }
     }
@@ -600,12 +609,16 @@ export class PageComponent implements OnInit {
         if (resourcePage.page.cards.card.length != undefined) {
           for (let i = 0; i < resourcePage.page.cards.card.length; i++) {
             let card = this.getCardContent(resourcePage, i);
-            cards.push(card);
+            if (!card.isRestricted) {
+              cards.push(card);
+            }
           }
         } else {
           resourcePage.page.cards.card = [resourcePage.page.cards.card];
           let card = this.getCardContent(resourcePage, 0);
-          cards.push(card);
+          if (!card.isRestricted) {
+            cards.push(card);
+          }
         }
       }
     }
@@ -613,11 +626,15 @@ export class PageComponent implements OnInit {
     if (resourcePage.page.modals) {
       if (resourcePage.page.modals.modal.length == undefined) {
         let modal = this.getModalContent(resourcePage, null);
-        modals.push(modal);
+        if (!this.isRestricted(modal)) {
+          modals.push(modal);
+        }
       } else {
         for (let i = 0; i < resourcePage.page.modals.modal.length; i++) {
           let modal = this.getModalContent(resourcePage, i);
-          modals.push(modal);
+          if (!this.isRestricted(modal)) {
+            modals.push(modal);
+          }
         }
       }
     }
@@ -645,39 +662,72 @@ export class PageComponent implements OnInit {
       hero['content:paragraph'] != undefined &&
       hero['content:paragraph'].length != undefined
     ) {
-      heroparagraphs = hero['content:paragraph'];
+      hero['content:paragraph'].forEach(tItem => {
+        if (!this.isRestricted(tItem)) {
+          heroparagraphs.push(tItem);
+        }
+      });
     } else if (
       hero['content:paragraph'] != undefined &&
       hero['content:paragraph'].length == undefined
     ) {
-      heroparagraphs.push(hero['content:paragraph']);
+      if (!this.isRestricted(hero['content:paragraph'])) {
+        heroparagraphs.push(hero['content:paragraph']);
+      }
     }
 
     heroparagraphs.forEach(para => {
+      const paracontent = {
+        type: '',
+        text: '',
+        image: '',
+        url: '',
+        events: ''
+      };
+
       if (para['content:text'] != undefined) {
-        var paracontent = { type: '', text: '', image: '' };
         paracontent.type = 'text';
         paracontent.text = para['content:text'];
         heropara.push(paracontent);
       }
-      if (para['content:button'] != undefined) {
-        var paracontent = { type: '', text: '', image: '' };
-        paracontent.type = 'button';
-        paracontent.text = para['content:button']['content:text'];
-        heropara.push(paracontent);
+
+      let parabuttons = this.getParagraphButtons(para);
+      if (parabuttons.length > 0) {
+        parabuttons.forEach(pbutton => {
+          let pcontent = { type: '', text: '', image: '', url: '', events: '' };
+          pcontent.type = 'button';
+          pcontent.text = pbutton[0];
+          if (pbutton[1]) {
+            pcontent.events = pbutton[1];
+          } else if (pbutton[2]) {
+            pcontent.url = pbutton[2];
+          }
+          heropara.push(pcontent);
+        });
       }
+
       if (para['content:image'] != undefined) {
-        if (para['content:image'].length == undefined) {
-          var paracontent = { type: '', text: '', image: '' };
+        if (
+          para['content:image'].length == undefined &&
+          !this.isRestricted(para['content:image'])
+        ) {
           paracontent.type = 'image';
           paracontent.image = this.getImageName(para['content:image']); //para["content:image"]["@attributes"]["resource"];
+          paracontent.text = '';
+          paracontent.url = '';
+          paracontent.events = '';
           heropara.push(paracontent);
-        } else {
+        } else if (para['content:image'].length != undefined) {
           para['content:image'].forEach(heroimage => {
-            var paracontent = { type: '', text: '', image: '' };
-            paracontent.type = 'image';
-            paracontent.image = this.getImageName(heroimage); //para["content:image"]["@attributes"]["resource"];
-            heropara.push(paracontent);
+            let pimage = { type: '', text: '', image: '', url: '', events: '' };
+            pimage.type = 'image';
+            pimage.image = this.getImageName(heroimage); //para["content:image"]["@attributes"]["resource"];
+            pimage.text = '';
+            pimage.url = '';
+            pimage.events = '';
+            if (!this.isRestricted(heroimage)) {
+              heropara.push(pimage);
+            }
           });
         }
       }
@@ -701,7 +751,8 @@ export class PageComponent implements OnInit {
       listener: '',
       dismiss: '',
       isForm: false,
-      contentList: []
+      contentList: [],
+      isRestricted: this.isRestricted(resourcePage.page.cards.card[i])
     };
 
     if (resourcePage.page.cards.card[i]['@attributes']) {
@@ -713,12 +764,16 @@ export class PageComponent implements OnInit {
       if (resourcePage.page.cards.card[i]['@attributes']['dismiss-listeners'])
         card.dismiss =
           resourcePage.page.cards.card[i]['@attributes']['dismiss-listeners'];
-
       if (card.listener != '' && card.dismiss != '') card.isForm = true;
     }
 
     //handle card heading
-    card.label = resourcePage.page.cards.card[i].label['content:text'];
+    card.label =
+      resourcePage.page.cards.card[i].label &&
+      !this.isRestricted(resourcePage.page.cards.card[i].label)
+        ? resourcePage.page.cards.card[i].label['content:text']
+        : '';
+
     card.contentList.push({
       label: resourcePage.page.cards.card[i].label['content:text']
     });
@@ -727,10 +782,22 @@ export class PageComponent implements OnInit {
     let paragraphs = [];
     if (resourcePage.page.cards.card[i]['content:paragraph']) {
       if (
-        resourcePage.page.cards.card[i]['content:paragraph'].length == undefined
+        resourcePage.page.cards.card[i]['content:paragraph'].length ==
+          undefined &&
+        !this.isRestricted(resourcePage.page.cards.card[i]['content:paragraph'])
       ) {
         paragraphs.push(resourcePage.page.cards.card[i]['content:paragraph']);
-      } else paragraphs = resourcePage.page.cards.card[i]['content:paragraph'];
+      } else if (
+        resourcePage.page.cards.card[i]['content:paragraph'].length != undefined
+      ) {
+        let _cardParagraphs =
+          resourcePage.page.cards.card[i]['content:paragraph'];
+        _cardParagraphs.forEach(tItem => {
+          if (!this.isRestricted(tItem)) {
+            paragraphs.push(tItem);
+          }
+        });
+      }
     }
 
     for (let j = 0; j < paragraphs.length; j++) {
@@ -741,61 +808,79 @@ export class PageComponent implements OnInit {
       }
 
       //handle buttons
-      if (formpara['content:button']) {
-        card.button.push([
-          formpara['content:button']['content:text'],
-          formpara['content:button']['@attributes'] == undefined
-            ? ''
-            : formpara['content:button']['@attributes'].events
-        ]);
-        card.contentList.push({
-          button: [
-            formpara['content:button']['content:text'],
-            formpara['content:button']['@attributes'] == undefined
-              ? ''
-              : formpara['content:button']['@attributes'].events
-          ]
+      let formbuttons = this.getParagraphButtons(formpara);
+      if (formbuttons.length > 0) {
+        formbuttons.forEach(fbutton => {
+          card.button.push(fbutton);
+          card.contentList.push({ button: fbutton });
         });
-      } else card.button.push('');
+      } else {
+        card.button.push('');
+      }
 
       //handle links
       if (formpara['content:link']) {
-        card.link.push([
-          formpara['content:link']['content:text'],
-          formpara['content:link']['@attributes'].events
-        ]);
-        card.contentList.push({
-          link: [
-            formpara['content:link']['content:text'],
-            formpara['content:link']['@attributes'].events
-          ]
-        });
+        if (formpara['content:link'].length == undefined) {
+          if (!this.isRestricted(formpara['content:link'])) {
+            card.link.push([
+              formpara['content:link']['content:text'],
+              formpara['content:link']['@attributes'].events
+            ]);
+            card.contentList.push({
+              link: [
+                formpara['content:link']['content:text'],
+                formpara['content:link']['@attributes'].events
+              ]
+            });
+          }
+        } else {
+          let _links = formpara['content:link'];
+          _links.forEach(_link => {
+            if (!this.isRestricted(_link)) {
+              card.link.push([
+                _link['content:text'],
+                _link['@attributes'].events
+              ]);
+              card.contentList.push({
+                link: [_link['content:text'], _link['@attributes'].events]
+              });
+            }
+          });
+        }
       } else card.link.push('');
 
       //handle image
       if (formpara['content:image']) {
         if (formpara['content:image'].length == undefined) {
-          card.image.push(this.getImageName(formpara['content:image'])); //(formpara["content:image"]["@attributes"]["resource"]);
-          card.contentList.push({
-            image: this.getImageName(formpara['content:image'])
-          });
+          if (!this.isRestricted(formpara['content:image'])) {
+            card.image.push(this.getImageName(formpara['content:image'])); //(formpara["content:image"]["@attributes"]["resource"]);
+            card.contentList.push({
+              image: this.getImageName(formpara['content:image'])
+            });
+          }
         } else {
           var imgArr = [];
           formpara['content:image'].forEach(cardimage => {
-            var paracontent = { type: '', text: '', image: '' };
-            paracontent.type = 'image';
+            const paracontent = { type: 'image', text: '', image: '' };
             paracontent.image = this.getImageName(cardimage); //para["content:image"]["@attributes"]["resource"];
-            imgArr.push(paracontent);
+            if (!this.isRestricted(cardimage)) {
+              imgArr.push(paracontent);
+            }
           });
-          card.image.push(imgArr);
-          card.contentList.push({ images: imgArr });
+          if (imgArr.length > 0) {
+            card.image.push(imgArr);
+            card.contentList.push({ images: imgArr });
+          }
         }
       } else {
         card.image.push('');
       }
 
       //handle content tabs
-      if (formpara['content:tabs']) {
+      if (
+        formpara['content:tabs'] &&
+        !this.isRestricted(formpara['content:tabs'])
+      ) {
         let tab;
         for (
           let k = 0;
@@ -816,24 +901,34 @@ export class PageComponent implements OnInit {
             switch (type) {
               case 'content:paragraph': {
                 if (!isArray(content)) {
-                  eachtab.tabList.push({ paragraph: content['content:text'] });
+                  if (!this.isRestricted(content)) {
+                    eachtab.tabList.push({
+                      paragraph: content['content:text']
+                    });
+                  }
                 } else {
-                  Object.entries(content['content:text']).forEach(
-                    ([num, paragraph]) => {
-                      eachtab.tabList.push({ paragraph: paragraph });
+                  Object.entries(content).forEach(([num, attributes]) => {
+                    if (!this.isRestricted(attributes)) {
+                      eachtab.tabList.push({
+                        paragraph: attributes['content:text']
+                      });
                     }
-                  );
+                  });
                 }
                 break;
               }
               case 'content:image': {
                 if (!isArray(content)) {
-                  eachtab.tabList.push({ image: this.getImageName(content) });
+                  if (!this.isRestricted(content)) {
+                    eachtab.tabList.push({ image: this.getImageName(content) });
+                  }
                 } else {
                   Object.entries(content).forEach(([num, attributes]) => {
-                    eachtab.tabList.push({
-                      image: this.getImageName(attributes)
-                    });
+                    if (!this.isRestricted(attributes)) {
+                      eachtab.tabList.push({
+                        image: this.getImageName(attributes)
+                      });
+                    }
                   });
                 }
                 break;
@@ -852,19 +947,27 @@ export class PageComponent implements OnInit {
           });
 
           if (tab['content:paragraph'].length == undefined) {
-            eachtab.paras.push(tab['content:paragraph']['content:text']);
+            if (!this.isRestricted(tab['content:paragraph'])) {
+              eachtab.paras.push(tab['content:paragraph']['content:text']);
+            }
           } else {
             tab['content:paragraph'].forEach(tabpara => {
-              eachtab.paras.push(tabpara['content:text']);
+              if (!this.isRestricted(tabpara)) {
+                eachtab.paras.push(tabpara['content:text']);
+              }
             });
           }
 
           //this.sanitizer.bypassSecurityTrustUrl(localStorage.getItem(this.Cards[i].image[j]))
           if (tab['content:image'].length == undefined) {
-            eachtab.images.push(this.getImageName(tab['content:image'])); //(tab["content:image"]["@attributes"]["resource"])
+            if (!this.isRestricted(tab['content:image'])) {
+              eachtab.images.push(this.getImageName(tab['content:image']));
+            }
           } else {
             tab['content:image'].forEach(tabimage => {
-              eachtab.images.push(this.getImageName(tabimage));
+              if (!this.isRestricted(tabimage)) {
+                eachtab.images.push(this.getImageName(tabimage));
+              }
             });
           }
 
@@ -876,8 +979,10 @@ export class PageComponent implements OnInit {
               eachtab.texts.push(tabtext);
             });
           }
-          card.tabs.push(eachtab);
-          card.contentList.push({ tab: eachtab });
+          if (!this.isRestricted(tab)) {
+            card.tabs.push(eachtab);
+            card.contentList.push({ tab: eachtab });
+          }
         }
       }
     }
@@ -889,8 +994,9 @@ export class PageComponent implements OnInit {
       buttons: [],
       links: []
     };
+
     let forms = resourcePage.page.cards.card[i]['content:form'];
-    if (forms != undefined) {
+    if (forms != undefined && !this.isRestricted(forms)) {
       //handle input elements
       let elements = forms['content:input'];
       card.isForm = true;
@@ -929,23 +1035,46 @@ export class PageComponent implements OnInit {
       let paragraphs = [];
       if (forms['content:paragraph'] != undefined) {
         if (forms['content:paragraph'].length == undefined) {
-          paragraphs.push(forms['content:paragraph']);
-        } else paragraphs = forms['content:paragraph'];
+          if (!this.isRestricted(forms['content:paragraph'])) {
+            paragraphs.push(forms['content:paragraph']);
+          }
+        } else {
+          let _tParagraphs = forms['content:paragraph'];
+          _tParagraphs.forEach(_tParagraph => {
+            if (!this.isRestricted(_tParagraph)) {
+              paragraphs.push(_tParagraph);
+            }
+          });
+        }
       }
 
       //handle form buttons and links
       for (let j = 0; j < paragraphs.length; j++) {
         var formpara = paragraphs[j];
-        if (formpara['content:button']) {
-          cardforms.buttons.push([
-            formpara['content:button']['content:text'],
-            formpara['content:button']['@attributes'].events
-          ]);
-        } else if (formpara['content:link']) {
-          cardforms.links.push([
-            formpara['content:link']['content:text'],
-            formpara['content:link']['@attributes'].events
-          ]);
+        var formbuttons = this.getParagraphButtons(formpara);
+        if (formbuttons.length > 0) {
+          cardforms.buttons = cardforms.buttons.concat(formbuttons);
+        }
+
+        if (formpara['content:link']) {
+          if (formpara['content:link'].length == undefined) {
+            if (!this.isRestricted(formpara['content:link'])) {
+              cardforms.links.push([
+                formpara['content:link']['content:text'],
+                formpara['content:link']['@attributes'].events
+              ]);
+            }
+          } else {
+            let _links = formpara['content:link'];
+            _links.forEach(_link => {
+              if (!this.isRestricted(_link)) {
+                cardforms.links.push([
+                  _link['content:text'],
+                  _link['@attributes'].events
+                ]);
+              }
+            });
+          }
         }
       }
 
@@ -953,22 +1082,27 @@ export class PageComponent implements OnInit {
       if (forms['content:link'] != undefined) {
         if (forms['content:link'].length != undefined) {
           for (let index = 0; index < forms['content:link'].length; index++) {
-            cardforms.links.push([
-              forms['content:link'][index]['content:text'],
-              forms['content:link'][index]['@attributes'].events
-            ]);
+            if (!this.isRestricted(forms['content:link'][index])) {
+              cardforms.links.push([
+                forms['content:link'][index]['content:text'],
+                forms['content:link'][index]['@attributes'].events
+              ]);
+            }
           }
         } else {
-          cardforms.links.push([
-            forms['content:link']['content:text'],
-            forms['content:link']['@attributes'].events
-          ]);
+          if (!this.isRestricted(forms['content:link'])) {
+            cardforms.links.push([
+              forms['content:link']['content:text'],
+              forms['content:link']['@attributes'].events
+            ]);
+          }
         }
       }
 
       card.forms.push(cardforms);
       card.contentList.push({ cardforms: cardforms });
     }
+
     return card;
   }
 
@@ -1005,8 +1139,17 @@ export class PageComponent implements OnInit {
     let paragraphs = [];
     if (currentModal['content:paragraph']) {
       if (currentModal['content:paragraph'].length == undefined) {
-        paragraphs.push(currentModal['content:paragraph']);
-      } else paragraphs = currentModal['content:paragraph'];
+        if (!this.isRestricted(currentModal['content:paragraph'])) {
+          paragraphs.push(currentModal['content:paragraph']);
+        }
+      } else {
+        let _tParagraphs = currentModal['content:paragraph'];
+        _tParagraphs.forEach(_tParagraph => {
+          if (!this.isRestricted(_tParagraph)) {
+            paragraphs.push(_tParagraph);
+          }
+        });
+      }
     }
 
     for (let j = 0; j < paragraphs.length; j++) {
@@ -1021,17 +1164,18 @@ export class PageComponent implements OnInit {
       }
 
       //handle buttons
-      if (modalpara['content:button']) {
-        modal.paras.push({
-          text: '',
-          type: 'button',
-          button: [
-            modalpara['content:button']['content:text'],
-            modalpara['content:button']['@attributes'].events
-          ]
+      var modalbuttons = this.getParagraphButtons(modalpara);
+      if (modalbuttons.length > 0) {
+        modalbuttons.forEach(mbutton => {
+          modal.paras.push({
+            text: '',
+            type: 'button',
+            button: mbutton
+          });
         });
       }
     }
+
     return modal;
   }
 
@@ -1306,5 +1450,74 @@ export class PageComponent implements OnInit {
     parser.href = link;
     let hostnameFromLink = parser.hostname;
     return hostnameFromLink;
+  }
+
+  getParagraphButtons(paragraph): Array<any> {
+    var _pButtons = [];
+
+    if (paragraph['content:button']) {
+      if (
+        paragraph['content:button'].length == undefined &&
+        !this.isRestricted(paragraph['content:button'])
+      ) {
+        const _btn_text = paragraph['content:button']['content:text'];
+        const _btn_events =
+          paragraph['content:button']['@attributes'] == undefined
+            ? ''
+            : paragraph['content:button']['@attributes'].events;
+        const _btn_is_url =
+          paragraph['content:button']['@attributes'] &&
+          paragraph['content:button']['@attributes'].type &&
+          paragraph['content:button']['@attributes'].type === 'url' &&
+          paragraph['content:button']['@attributes'].url;
+        const _btn_url = _btn_is_url
+          ? paragraph['content:button']['@attributes'].url
+          : '';
+        let _btn = [];
+
+        if (_btn_is_url) {
+          _btn = [_btn_text, '', _btn_url];
+        } else {
+          _btn = [_btn_text, _btn_events, ''];
+        }
+
+        _pButtons.push(_btn);
+      } else if (paragraph['content:button'].length != undefined) {
+        const _buttons = paragraph['content:button'];
+        _buttons.forEach(_button => {
+          if (!this.isRestricted(_button)) {
+            const _btn_text = _button['content:text'];
+            const _btn_events =
+              _button['@attributes'] == undefined
+                ? ''
+                : _button['@attributes'].events;
+            const _btn_is_url =
+              _button['@attributes'] &&
+              _button['@attributes'].type &&
+              _button['@attributes'].type === 'url' &&
+              _button['@attributes'].url;
+            const _btn_url = _btn_is_url ? _button['@attributes'].url : '';
+
+            let _btn = [];
+            if (_btn_is_url) {
+              _btn = [_btn_text, '', _btn_url];
+            } else {
+              _btn = [_btn_text, _btn_events, ''];
+            }
+            _pButtons.push(_btn);
+          }
+        });
+      }
+    }
+
+    return _pButtons;
+  }
+
+  private isRestricted(pItem: any): boolean {
+    return (
+      pItem['@attributes'] &&
+      pItem['@attributes']['restrictTo'] &&
+      pItem['@attributes']['restrictTo'] != 'web'
+    );
   }
 }
