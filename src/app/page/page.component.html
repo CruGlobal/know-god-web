@@ -120,8 +120,8 @@
                 class="ng-binding"
                 dir="{{ pageGetparameters.dir }}"
                 *ngFor="let line of item.text"
-                >{{ line }}</span
-              >
+                [innerHTML]="line"
+              ></span>
             </p>
           </ng-container>
 
@@ -132,10 +132,9 @@
             <p
               class="mw568 textContent ng-binding"
               [ngClass]="{ firstContent: FirstPage }"
+              [innerHTML]="item.text"
               dir="{{ pageGetparameters.dir }}"
-            >
-              {{ item.text }}
-            </p>
+            ></p>
           </ng-container>
 
           <!-- Image content -->
@@ -207,11 +206,17 @@
                 *ngIf="!isString(cardItem.paragraph); else singleParagraph"
               >
                 <ng-container *ngFor="let paragraph of cardItem.paragraph">
-                  <p class="mw568 textContent indent">{{ paragraph }}</p>
+                  <p
+                    class="mw568 textContent indent"
+                    [innerHTML]="paragraph"
+                  ></p>
                 </ng-container>
               </ng-container>
               <ng-template #singleParagraph>
-                <p class="mw568 textContent indent">{{ cardItem.paragraph }}</p>
+                <p
+                  class="mw568 textContent indent"
+                  [innerHTML]="cardItem.paragraph"
+                ></p>
               </ng-template>
             </ng-container>
 
@@ -380,9 +385,8 @@
                 <p
                   class="mw568 textContent indent ng-binding ng-scope"
                   dir="{{ pageGetparameters.dir }}"
-                >
-                  {{ item.text }}
-                </p>
+                  [innerHTML]="item.text"
+                ></p>
               </ng-container>
               <ng-container *ngIf="item.type == 'button' && item.button[1]">
                 <div class="mw568 buttonContent tc buttonDone">

@@ -434,6 +434,7 @@ export class PageComponent implements OnInit {
         let enc = new TextDecoder('utf-8');
         let arr = new Uint8Array(data);
         let result = enc.decode(arr);
+
         let obj = {
           xmlFile: result,
           filename: page.filename,
@@ -685,11 +686,11 @@ export class PageComponent implements OnInit {
         events: ''
       };
 
-      if (para['content:text'] != undefined) {
-        paracontent.type = 'text';
-        paracontent.text = para['content:text'];
-        heropara.push(paracontent);
-      }
+      //handle texts
+      const tParaTexts = this.getParagraphTexts(para);
+      tParaTexts.forEach(paraText => {
+        heropara.push({ type: 'text', text: paraText });
+      });
 
       let parabuttons = this.getParagraphButtons(para);
       if (parabuttons.length > 0) {
@@ -802,10 +803,10 @@ export class PageComponent implements OnInit {
 
     for (let j = 0; j < paragraphs.length; j++) {
       var formpara = paragraphs[j];
-      card.content.push(formpara['content:text']);
-      if (formpara['content:text']) {
-        card.contentList.push({ paragraph: formpara['content:text'] });
-      }
+
+      //handle texts
+      const tParaTexts = this.getParagraphTexts(formpara);
+      card.contentList.push({ paragraph: tParaTexts });
 
       //handle buttons
       let formbuttons = this.getParagraphButtons(formpara);
@@ -1155,13 +1156,11 @@ export class PageComponent implements OnInit {
     for (let j = 0; j < paragraphs.length; j++) {
       var modalpara = paragraphs[j];
 
-      if (modalpara['content:text']) {
-        modal.paras.push({
-          text: modalpara['content:text'],
-          button: [],
-          type: 'text'
-        });
-      }
+      //handle texts
+      const modalParaTexts = this.getParagraphTexts(modalpara);
+      modalParaTexts.forEach(modalParaText => {
+        modal.paras.push({ text: modalParaText, button: [], type: 'text' });
+      });
 
       //handle buttons
       var modalbuttons = this.getParagraphButtons(modalpara);
@@ -1450,6 +1449,35 @@ export class PageComponent implements OnInit {
     parser.href = link;
     let hostnameFromLink = parser.hostname;
     return hostnameFromLink;
+  }
+
+  getParagraphTexts(paragraph): Array<string> {
+    let _tTexts = [];
+
+    if (paragraph['content:text'] != undefined) {
+      const tParaText = paragraph['content:text'];
+      if (tParaText && !Array.isArray(tParaText)) {
+        if (!this.isRestricted(tParaText)) {
+          const _tDisplayText: string = (tParaText as string).replace(
+            /(?:\r\n|\r|\n)/g,
+            '<br>'
+          );
+          _tTexts.push(_tDisplayText);
+        }
+      } else if (tParaText && Array.isArray(tParaText)) {
+        tParaText.forEach(tText => {
+          if (!this.isRestricted(tText)) {
+            const _tDisplayText: string = (tText as string).replace(
+              /(?:\r\n|\r|\n)/g,
+              '<br>'
+            );
+            _tTexts.push(_tDisplayText);
+          }
+        });
+      }
+    }
+
+    return _tTexts;
   }
 
   getParagraphButtons(paragraph): Array<any> {
