@@ -1504,7 +1504,7 @@ export class PageComponent implements OnInit {
         let _btn = [];
 
         if (_btn_is_url) {
-          _btn = [_btn_text, '', _btn_url];
+          _btn = [_btn_text, '', this.toAbsoluteUrl(_btn_url)];
         } else {
           _btn = [_btn_text, _btn_events, ''];
         }
@@ -1528,7 +1528,7 @@ export class PageComponent implements OnInit {
 
             let _btn = [];
             if (_btn_is_url) {
-              _btn = [_btn_text, '', _btn_url];
+              _btn = [_btn_text, '', this.toAbsoluteUrl(_btn_url)];
             } else {
               _btn = [_btn_text, _btn_events, ''];
             }
@@ -1539,6 +1539,16 @@ export class PageComponent implements OnInit {
     }
 
     return _pButtons;
+  }
+
+  private toAbsoluteUrl(link: string): string {
+    if (!link || link.trim().length === 0) {
+      return '';
+    }
+    if (!link.startsWith('http://') && !link.startsWith('https://')) {
+      link = `http://${link}`;
+    }
+    return link;
   }
 
   private isRestricted(pItem: any): boolean {
