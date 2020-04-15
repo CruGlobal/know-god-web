@@ -120,8 +120,8 @@
                 class="ng-binding"
                 dir="{{ pageGetparameters.dir }}"
                 *ngFor="let line of item.text"
-                >{{ line }}</span
-              >
+                [innerHTML]="line"
+              ></span>
             </p>
           </ng-container>
 
@@ -132,10 +132,9 @@
             <p
               class="mw568 textContent ng-binding"
               [ngClass]="{ firstContent: FirstPage }"
+              [innerHTML]="item.text"
               dir="{{ pageGetparameters.dir }}"
-            >
-              {{ item.text }}
-            </p>
+            ></p>
           </ng-container>
 
           <!-- Image content -->
@@ -154,6 +153,23 @@
               dir="{{ pageGetparameters.dir }}"
             >
               <a
+                *ngIf="item.url"
+                [href]="item.url"
+                class="button"
+                target="_blank"
+                >{{ item.text }}</a
+              >
+
+              <a
+                *ngIf="item.events"
+                (click)="formAction(item.events)"
+                class="button"
+                target="_blank"
+                >{{ item.text }}</a
+              >
+
+              <a
+                *ngIf="!item.url && !item.events"
                 [href]="'http://' + item.text"
                 class="button"
                 target="_blank"
@@ -190,11 +206,17 @@
                 *ngIf="!isString(cardItem.paragraph); else singleParagraph"
               >
                 <ng-container *ngFor="let paragraph of cardItem.paragraph">
-                  <p class="mw568 textContent indent">{{ paragraph }}</p>
+                  <p
+                    class="mw568 textContent indent"
+                    [innerHTML]="paragraph"
+                  ></p>
                 </ng-container>
               </ng-container>
               <ng-template #singleParagraph>
-                <p class="mw568 textContent indent">{{ cardItem.paragraph }}</p>
+                <p
+                  class="mw568 textContent indent"
+                  [innerHTML]="cardItem.paragraph"
+                ></p>
               </ng-template>
             </ng-container>
 
@@ -223,10 +245,7 @@
                 *ngFor="let button of cardItem.cardforms.buttons"
               >
                 <ng-container
-                  *ngIf="
-                    button[1].includes('followup:send');
-                    else nonSubmitButton
-                  "
+                  *ngIf="button[1] && button[1].includes('followup:send')"
                 >
                   <a
                     (click)="
@@ -237,11 +256,24 @@
                     >{{ button[0] }}</a
                   >
                 </ng-container>
-                <ng-template #nonSubmitButton>
+
+                <ng-container
+                  *ngIf="button[1] && !button[1].includes('followup:send')"
+                >
                   <a (click)="formAction(button[1])" class="button">{{
                     button[0]
                   }}</a>
-                </ng-template>
+                </ng-container>
+
+                <ng-container *ngIf="!button[1]">
+                  <a
+                    class="button"
+                    target="_blank"
+                    [href]="button[2] ? button[2] : button[0]"
+                  >
+                    {{ button[0] }}
+                  </a>
+                </ng-container>
               </div>
               <div
                 class="form-group tc cardLink"
@@ -270,19 +302,25 @@
 
             <ng-container *ngIf="cardItem.button">
               <div class="mw568 buttonContent tc indent">
-                <ng-container *ngIf="cardItem.button[1]; else singleItemButton">
+                <ng-container *ngIf="cardItem.button[1]">
                   <a (click)="formAction(cardItem.button[1])" class="button">{{
                     cardItem.button[0]
                   }}</a>
                 </ng-container>
-                <ng-template #singleItemButton>
+
+                <ng-container *ngIf="!cardItem.button[1]">
                   <a
-                    [href]="cardItem.button[0]"
                     class="button"
                     target="_blank"
-                    >{{ cardItem.button[0] }}</a
+                    [href]="
+                      cardItem.button[2]
+                        ? cardItem.button[2]
+                        : cardItem.button[0]
+                    "
                   >
-                </ng-template>
+                    {{ cardItem.button[0] }}
+                  </a>
+                </ng-container>
               </div>
             </ng-container>
 
@@ -347,15 +385,25 @@
                 <p
                   class="mw568 textContent indent ng-binding ng-scope"
                   dir="{{ pageGetparameters.dir }}"
-                >
-                  {{ item.text }}
-                </p>
+                  [innerHTML]="item.text"
+                ></p>
               </ng-container>
-              <ng-container *ngIf="item.type == 'button'">
+              <ng-container *ngIf="item.type == 'button' && item.button[1]">
                 <div class="mw568 buttonContent tc buttonDone">
                   <a (click)="formAction(item.button[1])" class="button">{{
                     item.button[0]
                   }}</a>
+                </div>
+              </ng-container>
+              <ng-container *ngIf="item.type == 'button' && !item.button[1]">
+                <div class="mw568 buttonContent tc buttonDone">
+                  <a
+                    class="button"
+                    target="_blank"
+                    [href]="item.button[2] ? item.button[2] : item.button[0]"
+                  >
+                    {{ item.button[0] }}
+                  </a>
                 </div>
               </ng-container>
             </ng-container>
