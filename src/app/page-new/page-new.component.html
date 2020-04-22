@@ -1,0 +1,405 @@
+<div class="outerbox">
+  <!-- Tools Consistent Header -->
+  <header id="toolHeader">
+    <div class="header tc relative">
+      <span
+        class="l absolute kg-gray-dark ng-binding language-selector-toggle"
+        (click)="toggleLanguages()"
+      >
+        <img src="assets/img/lang.png" class="langicon" /> {{ selectLan }}
+        <i class="fas fa-chevron-up flip"></i>
+      </span>
+      <sharing-modal [book]="selectbook"></sharing-modal>
+    </div>
+    <div
+      id="languageList"
+      class="py25 ng-hide"
+      *ngIf="
+        (hasLanguages$ | async) === true && (showLanguages$ | async) === true
+      "
+    >
+      <div class="mw568">
+        <ul>
+          <li
+            class="ng-binding"
+            dir="ltr"
+            (click)="selectLanguage(lang, true)"
+            *ngFor="let lang of selectedBookLanguauageTranslations"
+          >
+            {{ lang.attributes.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div
+    id="toolContent"
+    *ngIf="!(showLoader$ | async)"
+    [ngClass]="{
+      tc: isFirstPage || isLastPage,
+      firstPage: isFirstPage,
+      lastPage: isLastPage
+    }"
+  >
+    <!-- Error message -->
+    <ng-container
+      *ngIf="
+        (showNoRecordFound$ | async) === true || (hasError$ | async) === true
+      "
+    >
+      <div class="bs-jumbotron tc">
+        <h2 *ngIf="(showNoRecordFound$ | async) === true">
+          This book isn't available in the currently selected language.
+        </h2>
+        <h2 *ngIf="(hasError$ | async) === true">{{ errorMsg }}</h2>
+      </div>
+    </ng-container>
+
+    <!-- If no error -->
+    <ng-container *ngIf="!(showNoRecordFound$ | async) && !(hasError$ | async)">
+      <!-- First Page Header -->
+      <ng-container *ngIf="isFirstPage && !displayModal && currentPageContent">
+        <h2
+          class="mw568 tc firstHeading ng-binding"
+          dir="{{ pageGetparameters.dir }}"
+        >
+          {{ currentPageContent?.heading }}
+        </h2>
+      </ng-container>
+
+      <!-- Additional Pages Header -->
+      <ng-container
+        *ngIf="
+          !isFirstPage &&
+          currentPageContent?.items &&
+          currentPageContent?.items.header
+        "
+        [ngTemplateOutlet]="stepHeader"
+        [ngTemplateOutletContext]="{
+          $implicit: currentPageContent.items.header
+        }"
+      >
+      </ng-container>
+
+      <!-- Hero -->
+      <ng-container
+        *ngIf="
+          !isFirstPage &&
+          currentPageContent?.items &&
+          currentPageContent?.items?.hero &&
+          currentPageContent?.items?.hero.heading
+        "
+        [ngTemplateOutlet]="stepHeader"
+        [ngTemplateOutletContext]="{
+          $implicit: currentPageContent.items.hero.heading
+        }"
+      >
+      </ng-container>
+
+      <ng-container
+        *ngIf="
+          !displayForm &&
+          currentPageContent?.items?.hero &&
+          currentPageContent?.items?.hero?.items &&
+          currentPageContent?.items?.hero?.items.length > 0
+        "
+      >
+        <ng-container *ngFor="let item of currentPageContent.items.hero.items">
+          <ng-container
+            *ngIf="
+              item.type === 'paragraph' &&
+              item.elements &&
+              item.elements.items &&
+              item.elements.items.length > 0
+            "
+          >
+            <ng-container
+              *ngTemplateOutlet="
+                paragraph;
+                context: { $implicit: item.elements.items }
+              "
+            ></ng-container>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+
+      <!-- Cards -->
+      <ng-container
+        *ngIf="
+          currentPageContent &&
+          currentPageContent.items &&
+          currentPageContent.items.cards &&
+          currentPageContent.items.cards.length > 0
+        "
+      >
+        <ng-container
+          *ngFor="let card of currentPageContent.items.cards"
+          [ngTemplateOutlet]="cardElement"
+          [ngTemplateOutletContext]="{ $implicit: card }"
+        >
+        </ng-container>
+      </ng-container>
+
+      <!-- Tool Call to action -->
+      <ng-container *ngIf="currentPageContent?.items?.callToAction">
+        <h4
+          class="calltoaction mw568 indent"
+          [innerHTML]="currentPageContent.items.callToAction.text.text"
+        ></h4>
+      </ng-container>
+
+      <!-- Tool navigation -->
+      <ng-container *ngIf="!displayForm">
+        <div id="tool-navigation" class="mw568 tc">
+          <!-- If not first page -->
+          <ng-container *ngIf="!isFirstPage">
+            <a
+              (click)="previous()"
+              dir="{{ pageGetparameters.dir }}"
+              class="button button-white far fa-arrow-left"
+            ></a>
+          </ng-container>
+
+          <!-- If not last page -->
+          <ng-container *ngIf="!isLastPage">
+            <a
+              (click)="next()"
+              dir="{{ pageGetparameters.dir }}"
+              class="button far fa-arrow-right"
+            ></a>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <!-- Footer -->
+      <ng-container *ngIf="!displayForm">
+        <footer id="toolFooter">
+          <span
+            ><a href="http://godtoolsapp.com" target="_blank"
+              >Learn more at godtoolsapp.com</a
+            ></span
+          >
+          <span
+            >© 1994-{{ currentYear }}
+            <a href="http://cru.org" target="_blank">Cru</a>. All Rights
+            Reserved.</span
+          >
+        </footer>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #stepHeader let-heading>
+  <div
+    class="stepHeading"
+    [ngClass]="{
+      tenSteps: heading.number && heading.number > 9,
+      noCounter: !heading.number
+    }"
+  >
+    <h1 class="ng-binding mw568" dir="{{ pageGetparameters.dir }}">
+      <span
+        class="ng-binding"
+        *ngIf="heading.number && heading.number > 0 && !displayForm"
+        >{{ heading.number }}</span
+      >
+      {{ heading.title.text }}
+    </h1>
+  </div>
+</ng-template>
+
+<ng-template #cardElement let-card>
+  <div class="cardContent" [hidden]="card.hidden">
+    <h4
+      *ngIf="!(card.listeners && card.dismissListeners)"
+      class="mw568 cardHeading ng-binding"
+      dir="{{ pageGetparameters.dir }}"
+    >
+      {{ card.label.text }}
+    </h4>
+    <ng-container *ngIf="card.items && card.items.length > 0">
+      <ng-container *ngFor="let item of card.items">
+        <ng-container
+          *ngIf="
+            item.type === 'paragraph' &&
+            item.elements &&
+            item.elements.items &&
+            item.elements.items.length > 0
+          "
+        >
+          <ng-container
+            *ngTemplateOutlet="
+              paragraph;
+              context: { $implicit: item.elements.items }
+            "
+          ></ng-container>
+        </ng-container>
+        <ng-container
+          *ngIf="
+            item.type === 'form' &&
+            item.elements &&
+            item.elements.items &&
+            item.elements.items.length > 0
+          "
+        >
+          <ng-container
+            *ngTemplateOutlet="
+              formElement;
+              context: { $implicit: item.elements.items }
+            "
+          ></ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</ng-template>
+
+<ng-template #paragraph let-items>
+  <ng-container *ngIf="items && items.length > 0">
+    <ng-container *ngFor="let item of items">
+      <ng-container *ngIf="item.type === 'text' && item.content">
+        <ng-container
+          *ngTemplateOutlet="text; context: { $implicit: item.content }"
+        ></ng-container>
+      </ng-container>
+      <ng-container *ngIf="item.type === 'image' && item.content">
+        <ng-container
+          *ngTemplateOutlet="image; context: { $implicit: item.content }"
+        ></ng-container>
+      </ng-container>
+      <ng-container *ngIf="item.type === 'button' && item.content">
+        <ng-container
+          *ngTemplateOutlet="button; context: { $implicit: item.content }"
+        ></ng-container>
+      </ng-container>
+      <ng-container *ngIf="item.type === 'link' && item.content">
+        <ng-container
+          *ngTemplateOutlet="link; context: { $implicit: item.content }"
+        ></ng-container>
+      </ng-container>
+      <ng-container
+        *ngIf="
+          item.type === 'paragraph' &&
+          item.content &&
+          item.content.items &&
+          item.content.items.length > 0
+        "
+      >
+        <ng-container
+          *ngTemplateOutlet="
+            paragraph;
+            context: { $implicit: item.content.items }
+          "
+        ></ng-container>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</ng-template>
+
+<ng-template #formElement let-items>
+  <form class="formContent mw568 indent" #emailSignupForm="ngForm">
+    <ng-container *ngIf="items && items.length > 0">
+      <ng-container *ngFor="let item of items">
+        <ng-container *ngIf="item.type === 'text' && item.content">
+          <ng-container
+            *ngTemplateOutlet="text; context: { $implicit: item.content }"
+          ></ng-container>
+        </ng-container>
+        <ng-container *ngIf="item.type === 'image' && item.content">
+          <ng-container
+            *ngTemplateOutlet="image; context: { $implicit: item.content }"
+          ></ng-container>
+        </ng-container>
+        <ng-container *ngIf="item.type === 'button' && item.content">
+          <ng-container
+            *ngTemplateOutlet="button; context: { $implicit: item.content }"
+          ></ng-container>
+        </ng-container>
+        <ng-container *ngIf="item.type === 'link' && item.content">
+          <ng-container
+            *ngTemplateOutlet="link; context: { $implicit: item.content }"
+          ></ng-container>
+        </ng-container>
+        <ng-container *ngIf="item.type === 'input' && item.content">
+          <ng-container
+            *ngTemplateOutlet="formInput; context: { $implicit: item.content }"
+          ></ng-container>
+        </ng-container>
+        <ng-container
+          *ngIf="
+            item.type === 'paragraph' &&
+            item.content &&
+            item.content.items &&
+            item.content.items.length > 0
+          "
+        >
+          <ng-container
+            *ngTemplateOutlet="
+              paragraph;
+              context: { $implicit: item.content.items }
+            "
+          ></ng-container>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </form>
+</ng-template>
+
+<ng-template #button let-element>
+  <div class="mw568 buttonContent tc" dir="{{ pageGetparameters.dir }}">
+    <a
+      *ngIf="element.type === 'url'"
+      [href]="element.url"
+      class="button"
+      target="_blank"
+      >{{ element.text.text }}</a
+    >
+    <a
+      *ngIf="element.type === 'event'"
+      class="button"
+      (click)="formAction(element.events)"
+      >{{ element.text.text }}</a
+    >
+  </div>
+</ng-template>
+
+<ng-template #image let-element>
+  <img
+    class="imageContent ng-binding"
+    [ngClass]="{ firstImage: isFirstPage }"
+    [src]="element.resource"
+  />
+</ng-template>
+
+<ng-template #link let-element>
+  <div class="mw568 linkContent indent">
+    <a (click)="formAction(element.events)">{{ element.text.text }}</a>
+  </div>
+</ng-template>
+
+<ng-template #text let-element>
+  <p
+    class="mw568 textContent indent"
+    [innerHTML]="element.text"
+    dir="{{ pageGetparameters.dir }}"
+  ></p>
+</ng-template>
+<ng-template #formInput let-element>
+  <div class="form-group">
+    <label [for]="element.name" *ngIf="element.label">{{
+      element.label.text
+    }}</label>
+    <input
+      [type]="element.type"
+      class="form-control"
+      [value]="element.value"
+      [name]="element.name"
+      [placeholder]="element.placeholder ? element.placeholder.text : ''"
+      [required]="element.required"
+      [(ngModel)]="element.value"
+    />
+  </div>
+</ng-template>
