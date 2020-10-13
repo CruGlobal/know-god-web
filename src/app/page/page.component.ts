@@ -1,14 +1,28 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { CommonService } from '../services/common.service';
-import { APIURL } from '../api/url';
+import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
 import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
 import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Location } from '@angular/common';
+import { Location, ViewportScroller } from '@angular/common';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { AnalyticsService } from '../services/analytics.service';
-import { isArray, log } from 'util';
+import { isArray } from 'util';
+import * as ActionCable from '@rails/actioncable';
+
+interface LiveShareSubscriptionPayload {
+  data?: {
+    type: 'navigation-event';
+    id: string;
+    attributes: {
+      card?: number;
+      locale: string;
+      page: number;
+      tool: string;
+    };
+  };
+}
 
 @Component({
   selector: 'app-page',
@@ -65,6 +79,7 @@ export class PageComponent implements OnInit {
   currentYear = new Date().getFullYear();
 
   private sub: any;
+  private liveShareSubscription: ActionCable.Channel;
   constructor(
     public commonService: CommonService,
     private ngxXml2jsonService: NgxXml2jsonService,
@@ -73,7 +88,8 @@ export class PageComponent implements OnInit {
     public router: Router,
     public location: Location,
     private loaderService: LoaderService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private viewportScroller: ViewportScroller
   ) {
     this.showLoader = true;
     this.AllBooks();
@@ -82,6 +98,7 @@ export class PageComponent implements OnInit {
 
   ngOnDestroy() {
     this.sub.unsubscribe();
+    this.liveShareSubscription && this.liveShareSubscription.unsubscribe();
   }
 
   pageGetparameters = {
@@ -128,8 +145,54 @@ export class PageComponent implements OnInit {
       } else if (params['bookid']) {
         this.pageGetparameters.bookid = params['bookid'];
       }
+      if (this.route.snapshot.fragment) {
+        // Wait a tick for new page DOM layout to finish and scrolling to anchor again
+        setTimeout(
+          () =>
+            this.viewportScroller.scrollToAnchor(this.route.snapshot.fragment),
+          0
+        );
+      }
     });
     this.analyticsService.runAnalyticsOnHomepages();
+
+    const liveShareStreamId = this.route.snapshot.queryParams.liveShareStream;
+    if (liveShareStreamId) {
+      this.liveShareSubscription = ActionCable.createConsumer(
+        MOBILE_CONTENT_API_WS_URL
+      ).subscriptions.create(
+        {
+          channel: 'SubscribeChannel',
+          channelId: liveShareStreamId
+        },
+        {
+          received: async ({ data }: LiveShareSubscriptionPayload) => {
+            if (!data || data.type !== 'navigation-event') {
+              return;
+            }
+
+            const Url = this.router
+              .createUrlTree(
+                [
+                  data.attributes.locale,
+                  data.attributes.tool,
+                  data.attributes.page
+                ],
+                {
+                  queryParams: this.route.snapshot.queryParams,
+
+                  ...(data.attributes.card !== undefined
+                    ? { fragment: `card-${data.attributes.card}` }
+                    : {})
+                }
+              )
+              .toString();
+            this.router.navigateByUrl(Url.toString());
+            this.analyticsService.runAnalyticsInsidePages(Url);
+          }
+        }
+      );
+    }
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -244,7 +307,9 @@ export class PageComponent implements OnInit {
     this.pageGetparameters.dir = lang.attributes.direction;
     if (!this.pageGetparameters.pageid) {
       const Url = this.router
-        .createUrlTree([lang.attributes.code, this.BookID])
+        .createUrlTree([lang.attributes.code, this.BookID], {
+          queryParams: this.route.snapshot.queryParams
+        })
         .toString();
       this.router.navigateByUrl(Url.toString());
     }
@@ -277,7 +342,9 @@ export class PageComponent implements OnInit {
             this.currentTranslations[this.pageGetparameters.pageid]
           );
           const Url = this.router
-            .createUrlTree([this.lang, this.BookID, this.counter])
+            .createUrlTree([this.lang, this.BookID, this.counter], {
+              queryParams: this.route.snapshot.queryParams
+            })
             .toString();
           this.router.navigateByUrl(Url.toString());
           this.analyticsService.runAnalyticsInsidePages(Url);
@@ -1206,12 +1273,14 @@ export class PageComponent implements OnInit {
       this.counter++;
       this.pageGetparameters.pageid = this.counter;
       const Url = this.router
-        .createUrlTree([this.lang, this.BookID, this.counter])
+        .createUrlTree([this.lang, this.BookID, this.counter], {
+          queryParams: this.route.snapshot.queryParams
+        })
         .toString();
       this.router.navigateByUrl(Url.toString());
       this.LoadPage(this.counter, Url);
 
-      window.scrollTo(0, 0);
+      this.viewportScroller.scrollToPosition([0, 0]);
     } else {
       this.pageGetparameters.pageid = null;
     }
@@ -1233,11 +1302,13 @@ export class PageComponent implements OnInit {
     }
 
     const Url = this.router
-      .createUrlTree([this.lang, this.BookID, this.counter])
+      .createUrlTree([this.lang, this.BookID, this.counter], {
+        queryParams: this.route.snapshot.queryParams
+      })
       .toString();
     this.router.navigateByUrl(Url.toString());
     this.LoadPage(this.counter, Url);
-    window.scrollTo(0, 0);
+    this.viewportScroller.scrollToPosition([0, 0]);
   }
 
   selectedPage(pageid) {

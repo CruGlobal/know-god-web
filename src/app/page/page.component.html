@@ -183,8 +183,9 @@
       <!-- Cards -->
       <ng-container *ngIf="Cards">
         <div
+          attr.id="card-{{ cardIndex }}"
           class="cardContent"
-          *ngFor="let card of Cards"
+          *ngFor="let card of Cards; index as cardIndex"
           [hidden]="card.hidden"
         >
           <!-- Card Heading -->

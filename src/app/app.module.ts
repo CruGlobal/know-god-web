@@ -35,7 +35,10 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {
+      anchorScrolling: 'enabled',
+      scrollPositionRestoration: 'enabled' // Scrolls to top when fragment is removed
+    }),
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
