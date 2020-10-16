@@ -11,6 +11,12 @@ import { AnalyticsService } from '../services/analytics.service';
 import { isArray } from 'util';
 import * as ActionCable from '@rails/actioncable';
 
+interface PageParams {
+  bookid: string;
+  langid: string;
+  page: string;
+}
+
 interface LiveShareSubscriptionPayload {
   data?: {
     type: 'navigation-event';
@@ -101,7 +107,12 @@ export class PageComponent implements OnInit {
     this.liveShareSubscription && this.liveShareSubscription.unsubscribe();
   }
 
-  pageGetparameters = {
+  pageGetparameters: {
+    bookid: string | null;
+    langid: string | null;
+    pageid: number | null;
+    dir: 'rtl' | 'ltr';
+  } = {
     bookid: null,
     langid: null,
     pageid: null,
@@ -130,21 +141,15 @@ export class PageComponent implements OnInit {
       this.selectedLanguageId = this.commonService.selectedLan.id;
     }
 
-    this.sub = this.route.params.subscribe(params => {
+    this.sub = this.route.params.subscribe((params: PageParams) => {
       this.showLoader = true;
-      if (params['bookid'] && params['langid'] && params['page']) {
-        this.selectedPage(params['page']);
-        this.pageGetparameters.bookid = params['bookid'];
-        this.pageGetparameters.langid = params['langid'];
-        this.pageGetparameters.pageid = Number(params['page']);
+      this.selectedPage(params.page);
+      this.pageGetparameters.bookid = params.bookid;
+      this.pageGetparameters.langid = params.langid;
+      this.pageGetparameters.pageid = Number(params.page);
 
-        this.counter = Number(params['page']);
-      } else if (params['bookid'] && params['langid']) {
-        this.pageGetparameters.bookid = params['bookid'];
-        this.pageGetparameters.langid = params['langid'];
-      } else if (params['bookid']) {
-        this.pageGetparameters.bookid = params['bookid'];
-      }
+      this.counter = Number(params.page);
+
       if (this.route.snapshot.fragment) {
         // Wait a tick for new page DOM layout to finish and scrolling to anchor again
         setTimeout(
