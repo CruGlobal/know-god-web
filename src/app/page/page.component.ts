@@ -110,12 +110,12 @@ export class PageComponent implements OnInit {
   pageGetparameters: {
     bookid: string | null;
     langid: string | null;
-    pageid: number | null;
+    pageid: number;
     dir: 'rtl' | 'ltr';
   } = {
     bookid: null,
     langid: null,
-    pageid: null,
+    pageid: 0,
     dir: 'rtl'
   };
 
@@ -332,21 +332,15 @@ export class PageComponent implements OnInit {
           this.errorpresent = false;
         }
 
-        if (this.pageGetparameters.pageid) {
-          this.getXmlFiles(
-            this.currentTranslations[this.pageGetparameters.pageid]
-          );
-          const Url = this.router
-            .createUrlTree([this.lang, this.BookID, this.counter], {
-              queryParams: this.route.snapshot.queryParams
-            })
-            .toString();
-          this.router.navigateByUrl(Url.toString());
-
-          this.getXmlFiles(this.currentTranslations[0]);
-        } else {
-          this.getXmlFiles(this.currentTranslations[0]);
-        }
+        this.getXmlFiles(
+          this.currentTranslations[this.pageGetparameters.pageid]
+        );
+        const Url = this.router
+          .createUrlTree([this.lang, this.BookID, this.counter], {
+            queryParams: this.route.snapshot.queryParams
+          })
+          .toString();
+        this.router.navigateByUrl(Url.toString());
       });
   }
 
@@ -1276,8 +1270,6 @@ export class PageComponent implements OnInit {
       this.LoadPage(this.counter, Url);
 
       this.viewportScroller.scrollToPosition([0, 0]);
-    } else {
-      this.pageGetparameters.pageid = null;
     }
   }
 
@@ -1291,9 +1283,6 @@ export class PageComponent implements OnInit {
     if (this.counter > 1) {
       this.counter--;
       this.pageGetparameters.pageid = this.counter;
-    } else {
-      this.pageGetparameters.pageid = null;
-      this.counter = 0;
     }
 
     const Url = this.router
