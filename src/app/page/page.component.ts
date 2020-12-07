@@ -308,14 +308,6 @@ export class PageComponent implements OnInit {
     this.lang = lang.attributes.code;
     this.pageGetparameters.langid = lang.attributes.code;
     this.pageGetparameters.dir = lang.attributes.direction;
-    if (!this.pageGetparameters.pageid) {
-      const Url = this.router
-        .createUrlTree([lang.attributes.code, this.BookID], {
-          queryParams: this.route.snapshot.queryParams
-        })
-        .toString();
-      this.router.navigateByUrl(Url.toString());
-    }
     this.language = false;
     this.selectLan = lang.attributes.name;
     this.commonService.selectedLan = lang;
