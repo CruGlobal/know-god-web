@@ -159,7 +159,6 @@ export class PageComponent implements OnInit {
         );
       }
     });
-    this.analyticsService.runAnalyticsOnHomepages();
 
     const liveShareStreamId = this.route.snapshot.queryParams.liveShareStream;
     if (liveShareStreamId) {
@@ -193,7 +192,6 @@ export class PageComponent implements OnInit {
               )
               .toString();
             this.router.navigateByUrl(Url.toString());
-            this.analyticsService.runAnalyticsInsidePages(Url);
           }
         }
       );
@@ -352,7 +350,7 @@ export class PageComponent implements OnInit {
             })
             .toString();
           this.router.navigateByUrl(Url.toString());
-          this.analyticsService.runAnalyticsInsidePages(Url);
+
           this.getXmlFiles(this.currentTranslations[0]);
         } else {
           this.getXmlFiles(this.currentTranslations[0]);
@@ -1428,7 +1426,6 @@ export class PageComponent implements OnInit {
     }
 
     this.showLoader = false;
-    if (url) this.analyticsService.runAnalyticsInsidePages(url);
   }
 
   onSubmitSubscriberInfo(form) {

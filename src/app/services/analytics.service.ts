@@ -24,31 +24,31 @@ declare global {
 })
 export class AnalyticsService {
   constructor(private router: Router) {
-    window.dataLayer = [];
     window.digitalData = {};
   }
 
-  runAnalyticsInsidePages(url) {
-    const [_, language, pageName, pageNumber] = url.split('/');
-    this.setDigitalData(pageName || 'knowgod', language, pageNumber);
-
-    this.fireAnalyticsVirtualPageView();
-  }
-
-  runAnalyticsOnHomepages() {
+  subscribeToRouterEvents() {
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const [_, language, pageName, pageNumber] = event.url.split('/');
-        if (pageNumber === undefined) {
-          this.setDigitalData(pageName || 'knowgod', language);
 
-          this.fireAnalyticsVirtualPageView();
+        this.setDigitalData(pageName || 'knowgod', language, pageNumber);
+
+        // Google Analytics
+        window.dataLayer.push({
+          event: 'virtual-page-view'
+        });
+
+        // Adobe Analytics
+        if (CustomEvent !== undefined) {
+          const evt = new CustomEvent('content: all pages');
+          document.querySelector('body').dispatchEvent(evt);
         }
       }
     });
   }
 
-  setDigitalData(appName, language, pageNumber?) {
+  setDigitalData(appName: string, language: string, pageNumber?: string) {
     window.digitalData.page = {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
@@ -59,18 +59,5 @@ export class AnalyticsService {
         primaryCategory: appName
       }
     };
-  }
-
-  fireAnalyticsVirtualPageView() {
-    // Google Analytics
-    window.dataLayer.push({
-      event: 'virtual-page-view'
-    });
-
-    // Adobe Analytics
-    if (CustomEvent !== undefined) {
-      const evt = new CustomEvent('content: all pages');
-      document.querySelector('body').dispatchEvent(evt);
-    }
   }
 }
