@@ -17,11 +17,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   Images = [];
   englishLangId = 1;
   englishLangCode = 'en';
+  englishLangDirection = 'ltr';
 
   allLanguages: any;
   currentYear = new Date().getFullYear();
   dispLanguage: number;
   dispLanguageCode: string;
+  dispLanguageDirection: string;
 
   constructor(
     public route: Router,
@@ -35,6 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
       if (!_langId || _langId == null || _langId.trim() == '') {
         this.dispLanguage = this.englishLangId;
         this.dispLanguageCode = this.englishLangCode;
+        this.dispLanguageDirection = this.englishLangDirection;
         this.getAttachments();
       } else {
         this.AllLanguages(_langId);
@@ -67,12 +70,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
           ) {
             this.dispLanguage = parseInt(tLanguage.id as string);
             this.dispLanguageCode = tLanguage.attributes.code;
+            this.dispLanguageDirection = tLanguage.attributes.direction;
           }
         });
 
         if (!this.dispLanguage) {
           this.dispLanguage = this.englishLangId;
           this.dispLanguageCode = this.englishLangCode;
+          this.dispLanguageDirection = this.englishLangDirection;
         }
 
         //console.log('ROUTE LANG:', this.dispLanguage);

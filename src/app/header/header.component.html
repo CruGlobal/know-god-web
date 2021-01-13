@@ -15,8 +15,12 @@
       >
         <img class="bs-card-img-top" [src]="banner.ImgUrl" />
         <div class="bs-card-body">
-          <h5 class="bs-card-title">{{ banner.resource }}</h5>
-          <p class="bs-card-text">{{ banner.tagline }}</p>
+          <h5 class="bs-card-title" dir="{{ dispLanguageDirection }}">
+            {{ banner.resource }}
+          </h5>
+          <p class="bs-card-text" dir="{{ dispLanguageDirection }}">
+            {{ banner.tagline }}
+          </p>
         </div>
       </a>
     </div>
