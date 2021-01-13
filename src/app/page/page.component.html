@@ -209,6 +209,7 @@
                 <ng-container *ngFor="let paragraph of cardItem.paragraph">
                   <p
                     class="mw568 textContent indent"
+                    dir="{{ pageGetparameters.dir }}"
                     [innerHTML]="paragraph"
                   ></p>
                 </ng-container>
@@ -216,6 +217,7 @@
               <ng-template #singleParagraph>
                 <p
                   class="mw568 textContent indent"
+                  dir="{{ pageGetparameters.dir }}"
                   [innerHTML]="cardItem.paragraph"
                 ></p>
               </ng-template>
@@ -234,6 +236,7 @@
                 <input
                   [type]="element.type"
                   class="form-control"
+                  dir="{{ pageGetparameters.dir }}"
                   [value]="element.value"
                   [name]="element.name"
                   [placeholder]="element.placeholder"
@@ -413,7 +416,9 @@
       </ng-container>
 
       <ng-container *ngIf="call_to_action">
-        <h4 class="calltoaction mw568 indent">{{ call_to_action }}</h4>
+        <h4 class="calltoaction mw568 indent" dir="{{ pageGetparameters.dir }}">
+          {{ call_to_action }}
+        </h4>
       </ng-container>
 
       <!-- Tool navigation -->
