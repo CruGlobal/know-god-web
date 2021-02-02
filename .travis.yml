@@ -5,12 +5,13 @@ env:
   global:
     - AWS_ACCESS_KEY_ID=AKIAIUNZNIIIBQJLE6XA
     - secure: 'hz4+5LvlQdHdbkgBPYbO6D7BF7BG3Exk0uuibkYMJ+txQswaLx4oWHs4rctEcOgNNdmXG7h85flEW3tdXxjDo14qEtLGk3PHaB2un36UXuAmNZJUKupWZyVhUWxVgI9Su0bVrVeGthKvx9okZZKknlMWQo2/7OQoZZIiyidjx6Bk7Erpf73MiyxIC8Dci2zSrlcjbQ+BlIXYV5wbVmSDUHR+5IC4KeYN7icK64gE2p68YUVrMpve5du1LWezgBP8IIRfneJR1Dkri/SdtfUc9EP3Z+ZGyfkezwK1lmR7t/JfNh9EhBjzBrzahNlzEw5yjkKI9XIxJYkqAl+cxyQBtopzR1uta59dF0nh/64OfOytZWmOnnjJ7yIy3grRz+b5p7C0WcNHTxDdaJ2LrK+HjmowvuInnOIOKlKVe/RLajIL+Zt30t6dlXeeD5QeE6+06JQUnh8lfTkI76kuUvvXjuJ3EFzGzcBEh7i73sgc2ssQuoD2E5GQl8x63S0PDMIYm09s6dgVpWgCl9Cou2okuo2GmUCaWe3WeI3+/O9/+LdmdfDT9snMBHBH81N6NLlNA2nwvHsmIGyQMH81SfIleqhnl2blJ5Tlnzgt9EtOH8pxZuS/gfA677tW916iLWHIVFjgKz0y2C/lyOhFWF55V8YLpxwS73lm8UqwTNXSats='
-cache:
-  directories:
-    - node_modules
+branches:
+  only:
+    - master
+    - staging
 
-before_script:
-  - npm install
+cache: npm
+
 script:
   - ng build --prod
   - yarn prettier:check
