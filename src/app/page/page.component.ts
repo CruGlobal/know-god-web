@@ -331,10 +331,8 @@ export class PageComponent implements OnInit {
         } else {
           this.errorpresent = false;
         }
-
-        this.getXmlFiles(
-          this.currentTranslations[this.pageGetparameters.pageid]
-        );
+        // Use the first index to get files
+        this.getXmlFiles(this.currentTranslations[0]);
         const Url = this.router
           .createUrlTree([this.lang, this.BookID, this.counter], {
             queryParams: this.route.snapshot.queryParams
