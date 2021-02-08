@@ -32,7 +32,7 @@
     "prettier": "^1.17.0",
     "pretty-quick": "^2.0.2",
     "rxjs": "^6.0.0",
-    "text-encoding": "^0.6.4",
+    "text-encoding": "^0.7.0",
     "ts-clipboard": "^1.0.17",
     "zone.js": "^0.8.26"
   },
