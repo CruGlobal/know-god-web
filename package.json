@@ -27,7 +27,7 @@
     "core-js": "^2.5.4",
     "husky": "^4.3.8",
     "ngx-loading": "^3.0.1",
-    "ngx-toastr": "^8.8.0",
+    "ngx-toastr": "^10.2.0",
     "ngx-xml2json": "^1.0.2",
     "prettier": "^1.17.0",
     "pretty-quick": "^2.0.2",
