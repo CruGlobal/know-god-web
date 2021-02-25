@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Clipboard } from 'ts-clipboard';
 
 @Component({
-  selector: 'sharing-modal',
+  selector: 'app-sharing-modal',
   templateUrl: './sharing-modal.component.html',
   styleUrls: ['./sharing-modal.component.css']
 })
