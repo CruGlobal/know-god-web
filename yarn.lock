@@ -310,10 +310,10 @@
     "@types/minimatch" "*"
     "@types/node" "*"
 
-"@types/jasmine@*", "@types/jasmine@~3.6.3":
-  version "3.6.3"
-  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.3.tgz#824df555b8a5114f91619e78d8f59624d6f23050"
-  integrity sha512-5QKAG8WfC9XrOgYLXPrxv1G2IIUE6zDyzTWamhNWJO0LqPRUbZ0q0zGHDhDJ7MpFloUuyME/jpBIdPjq3/P3jA==
+"@types/jasmine@*", "@types/jasmine@~3.6.4":
+  version "3.6.4"
+  resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-3.6.4.tgz#22ade1b692d5656f859ef9bc6c62d88632cc27e0"
+  integrity sha512-CTdMERA4iGNcxeqzD7pavb4WLIFq6bGnx6nIJD+1D4Knx24GE6QBPrWVhO8UlIy7gf7rbIt3ZD7iIzryRD2TgA==
 
 "@types/jasminewd2@~2.0.8":
   version "2.0.8"
@@ -347,10 +347,10 @@
   resolved "https://registry.yarnpkg.com/@types/selenium-webdriver/-/selenium-webdriver-3.0.17.tgz#50bea0c3c2acc31c959c5b1e747798b3b3d06d4b"
   integrity sha512-tGomyEuzSC1H28y2zlW6XPCaDaXFaD6soTdb4GNdmte2qfHtrKqhy0ZFs4r/1hpazCfEZqeTSRLvSasmEx89uw==
 
-"@types/text-encoding@0.0.33":
-  version "0.0.33"
-  resolved "https://registry.yarnpkg.com/@types/text-encoding/-/text-encoding-0.0.33.tgz#67618d2da2cb6055c16c7caa2e967c1c6d1e7600"
-  integrity sha512-kAMOjud0Nw3HPY0Cu8cTFk0LVya8skY+ajb2rgrSahPQ6AreN0cpGBNrs8Kjlu9EhFIeh5cp7phovL7v9HrPdQ==
+"@types/text-encoding@0.0.35":
+  version "0.0.35"
+  resolved "https://registry.yarnpkg.com/@types/text-encoding/-/text-encoding-0.0.35.tgz#6f14474e0b232bc70c59677aadc65dcc5a99c3a9"
+  integrity sha512-jfo/A88XIiAweUa8np+1mPbm3h2w0s425YrI8t3wk5QxhH6UI7w517MboNVnGDeMSuoFwA8Rwmklno+FicvV4g==
 
 "@types/xml2js@^0.4.8":
   version "0.4.8"
@@ -5096,10 +5096,10 @@ next-tick@1:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-ngx-loading@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-3.0.1.tgz#c8b2164039394716af67e9dbec788ee66a7f21f2"
-  integrity sha512-tiBeQt9PfT31TkN6cg0Wot+r1rDTq6WCI6yiJas7Sqx5xrqun/x/zDBz9R/hCfPcgWNR3t/0GjRrKEj68eDVXw==
+ngx-loading@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-7.0.0.tgz#09cf9904834944ed3c701f4932da004eefcd2833"
+  integrity sha512-zzWBWbCEaeuhDoV50hO4lJnPUrzleDCh+U+F3HYM04IdvJsiSiWEE36gB1dRK58qBYejtMtOlYvKWaqvSih44g==
   dependencies:
     tslib "^1.9.0"
 
