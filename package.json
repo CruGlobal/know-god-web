@@ -34,7 +34,7 @@
     "rxjs": "^6.0.0",
     "text-encoding": "^0.7.0",
     "ts-clipboard": "^1.0.17",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.29"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.6.6",
