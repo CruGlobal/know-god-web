@@ -13,8 +13,9 @@ branches:
 cache: npm
 
 script:
-  - ng build --prod
   - yarn prettier:check
+  - yarn lint
+  - ng build --prod
 
 before_deploy:
   - pip install --user awscli
