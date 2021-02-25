@@ -5096,10 +5096,10 @@ next-tick@1:
   resolved "https://registry.yarnpkg.com/next-tick/-/next-tick-1.0.0.tgz#ca86d1fe8828169b0120208e3dc8424b9db8342c"
   integrity sha1-yobR/ogoFpsBICCOPchCS524NCw=
 
-ngx-loading@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-3.0.1.tgz#c8b2164039394716af67e9dbec788ee66a7f21f2"
-  integrity sha512-tiBeQt9PfT31TkN6cg0Wot+r1rDTq6WCI6yiJas7Sqx5xrqun/x/zDBz9R/hCfPcgWNR3t/0GjRrKEj68eDVXw==
+ngx-loading@^7.0.0:
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-7.0.0.tgz#09cf9904834944ed3c701f4932da004eefcd2833"
+  integrity sha512-zzWBWbCEaeuhDoV50hO4lJnPUrzleDCh+U+F3HYM04IdvJsiSiWEE36gB1dRK58qBYejtMtOlYvKWaqvSih44g==
   dependencies:
     tslib "^1.9.0"
 
