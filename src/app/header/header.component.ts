@@ -33,8 +33,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.activatedRoute.paramMap.subscribe(params => {
-      let _langId = params.get('langid');
-      if (!_langId || _langId == null || _langId.trim() == '') {
+      const _langId = params.get('langid');
+      if (!_langId || _langId == null || _langId.trim() === '') {
         this.dispLanguage = this.englishLangId;
         this.dispLanguageCode = this.englishLangCode;
         this.dispLanguageDirection = this.englishLangDirection;
@@ -52,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   /*To get all languages*/
   AllLanguages(pRouteLang: string) {
-    //console.log('ROUTE LANG:', pRouteLang);
+    // console.log('ROUTE LANG:', pRouteLang);
     this.dispLanguage = undefined;
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
@@ -66,9 +66,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           if (
             tLanguage.attributes &&
             tLanguage.attributes.code &&
-            tLanguage.attributes.code == pRouteLang
+            tLanguage.attributes.code === pRouteLang
           ) {
-            this.dispLanguage = parseInt(tLanguage.id as string);
+            this.dispLanguage = parseInt(tLanguage.id as string, 10);
             this.dispLanguageCode = tLanguage.attributes.code;
             this.dispLanguageDirection = tLanguage.attributes.direction;
           }
@@ -80,7 +80,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.dispLanguageDirection = this.englishLangDirection;
         }
 
-        //console.log('ROUTE LANG:', this.dispLanguage);
+        // console.log('ROUTE LANG:', this.dispLanguage);
         this.getAttachments();
       });
   }
@@ -120,8 +120,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           );
 
           if (_tTranslation && _tTranslation.attributes) {
-            let _tTranslatedName = _tTranslation.attributes['translated-name'];
-            let _tTranslatedTagLine =
+            const _tTranslatedName =
+              _tTranslation.attributes['translated-name'];
+            const _tTranslatedTagLine =
               _tTranslation.attributes['translated-tagline'];
 
             this.Images.push({
