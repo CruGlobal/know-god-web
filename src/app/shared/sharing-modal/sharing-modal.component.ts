@@ -21,10 +21,10 @@ export class SharingModalComponent implements OnInit {
   }
 
   CopyToClipboard(event) {
-    var url = location.href;
+    const url = location.href;
     Clipboard.copy(url);
 
-    var options = {
+    const options = {
       messageClass: 'toast-message1',
       positionClass: 'toast-top-right1'
     };
