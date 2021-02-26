@@ -1,5 +1,5 @@
-(function() {
-  window.onload = function() {
+(function () {
+  window.onload = function () {
     var knowGodEmbed = document.getElementById('knowGodEmbed');
     if (!knowGodEmbed) {
       console.log('Know God element not found.');
@@ -32,7 +32,7 @@
     var messageEvent = eventMethod === 'attachEvent' ? 'onmessage' : 'message';
     eventer(
       messageEvent,
-      function(e) {
+      function (e) {
         if (isNaN(e.data) || previousHeight === e.data) return;
 
         iframe.style.height = e.data + 'px';

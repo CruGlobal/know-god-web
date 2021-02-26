@@ -28,7 +28,7 @@ export class AnalyticsService {
   }
 
   subscribeToRouterEvents() {
-    this.router.events.subscribe(event => {
+    this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         const [_, language, pageName, pageNumber] = event.url.split('/');
 

@@ -32,7 +32,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(params => {
+    this.activatedRoute.paramMap.subscribe((params) => {
       const _langId = params.get('langid');
       if (!_langId || _langId == null || _langId.trim() === '') {
         this.dispLanguage = this.englishLangId;
@@ -56,13 +56,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.dispLanguage = undefined;
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        take(1)
-      )
+      .pipe(takeUntil(this._unsubscribeAll), take(1))
       .subscribe((data: any) => {
         this.allLanguages = data.data;
-        this.allLanguages.forEach(tLanguage => {
+        this.allLanguages.forEach((tLanguage) => {
           if (
             tLanguage.attributes &&
             tLanguage.attributes.code &&
@@ -91,23 +88,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
     this.commonService
       .getBooks(url)
-      .pipe(
-        takeUntil(this._unsubscribeAll),
-        take(1)
-      )
+      .pipe(takeUntil(this._unsubscribeAll), take(1))
       .subscribe((data: any) => {
         const attachments = data.included.filter(
-          included => included.type === 'attachment'
+          (included) => included.type === 'attachment'
         );
 
         const _translations = data.included.filter(
-          included =>
+          (included) =>
             included.type === 'translation' &&
             Number(included.relationships.language.data.id) ===
               this.dispLanguage
         );
 
-        data.data.forEach(resource => {
+        data.data.forEach((resource) => {
           if (resource.attributes['resource-type'] !== 'tract') {
             return;
           }
@@ -116,7 +110,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
           const bannerId = resource.attributes['attr-banner'];
 
           const _tTranslation = _translations.find(
-            x => x.relationships.resource.data.id === resourceId
+            (x) => x.relationships.resource.data.id === resourceId
           );
 
           if (_tTranslation && _tTranslation.attributes) {
@@ -126,7 +120,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
               _tTranslation.attributes['translated-tagline'];
 
             this.Images.push({
-              ImgUrl: attachments.find(x => x.id === bannerId).attributes.file,
+              ImgUrl: attachments.find((x) => x.id === bannerId).attributes
+                .file,
               resource: _tTranslatedName,
               id: resourceId,
               abbreviation: resource.attributes.abbreviation,

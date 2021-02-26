@@ -134,7 +134,7 @@ export class PageComponent implements OnInit, OnDestroy {
     });
 
     if (!Object.entries) {
-      Object.entries = function(obj) {
+      Object.entries = function (obj) {
         const ownProps = Object.keys(obj),
           resArray = new Array(ownProps.length); // preallocate the Array
         let i = ownProps.length;
@@ -237,7 +237,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService.getBooks(APIURL.GET_ALL_BOOKS).subscribe((data: any) => {
       this.allBooks = data.data;
       if (this.pageGetparameters.bookid) {
-        this.allBooks.forEach(x => {
+        this.allBooks.forEach((x) => {
           if (x.attributes.abbreviation === this.pageGetparameters.bookid) {
             this.selectBook(x, false);
           }
@@ -295,7 +295,7 @@ export class PageComponent implements OnInit, OnDestroy {
   checkIfPreSelectedLanguageExists() {
     if (this.pageGetparameters.langid) {
       const translations = this.selectedBookLanguauageTranslations.find(
-        x => x.attributes.code === this.pageGetparameters.langid
+        (x) => x.attributes.code === this.pageGetparameters.langid
       );
       return translations && translations.length > 0;
     } else {
@@ -313,7 +313,7 @@ export class PageComponent implements OnInit, OnDestroy {
 
     if (lang === '') {
       if (this.pageGetparameters.bookid && this.pageGetparameters.langid) {
-        this.allLanguages.forEach(x => {
+        this.allLanguages.forEach((x) => {
           if (x.attributes.code === this.pageGetparameters.langid) {
             lang = x;
           }
@@ -415,7 +415,7 @@ export class PageComponent implements OnInit, OnDestroy {
             manifest_name
         )
         .subscribe(
-          data => {
+          (data) => {
             /*Convertion of array buffer to xml*/
             const enc = new TextDecoder('utf-8');
             const arr = new Uint8Array(data);
@@ -485,7 +485,7 @@ export class PageComponent implements OnInit, OnDestroy {
               }
             }
           },
-          err => {
+          (err) => {
             console.log('Error reading manifest file.');
             this.loaderService.display(false);
             this.errorpresent = true;
@@ -545,8 +545,8 @@ export class PageComponent implements OnInit, OnDestroy {
           this.currentBookTranslations = [];
           this.IndexContent.data.relationships[
             'latest-translations'
-          ].data.forEach(translation => {
-            const required = this.IndexContent.included.filter(row => {
+          ].data.forEach((translation) => {
+            const required = this.IndexContent.included.filter((row) => {
               if (row.type === 'translation' && row.id === translation.id) {
                 return true;
               } else {
@@ -554,7 +554,7 @@ export class PageComponent implements OnInit, OnDestroy {
               }
             });
 
-            required.forEach(element => {
+            required.forEach((element) => {
               this.currentBookTranslations.push(element);
             });
           });
@@ -571,7 +571,7 @@ export class PageComponent implements OnInit, OnDestroy {
     }
 
     if (this.IndexContent !== undefined && this.IndexContent != null) {
-      const attachments = this.IndexContent.included.filter(row => {
+      const attachments = this.IndexContent.included.filter((row) => {
         if (
           row.type.toLowerCase() === 'attachment' &&
           row.attributes['file-file-name'].toLowerCase() ===
@@ -744,7 +744,7 @@ export class PageComponent implements OnInit, OnDestroy {
       hero['content:paragraph'] !== undefined &&
       hero['content:paragraph'].length !== undefined
     ) {
-      hero['content:paragraph'].forEach(tItem => {
+      hero['content:paragraph'].forEach((tItem) => {
         if (!this.isRestricted(tItem)) {
           heroparagraphs.push(tItem);
         }
@@ -758,7 +758,7 @@ export class PageComponent implements OnInit, OnDestroy {
       }
     }
 
-    heroparagraphs.forEach(para => {
+    heroparagraphs.forEach((para) => {
       const paracontent = {
         type: '',
         text: '',
@@ -769,13 +769,13 @@ export class PageComponent implements OnInit, OnDestroy {
 
       // handle texts
       const tParaTexts = this.getParagraphTexts(para);
-      tParaTexts.forEach(paraText => {
+      tParaTexts.forEach((paraText) => {
         heropara.push({ type: 'text', text: paraText });
       });
 
       const parabuttons = this.getParagraphButtons(para);
       if (parabuttons.length > 0) {
-        parabuttons.forEach(pbutton => {
+        parabuttons.forEach((pbutton) => {
           const pcontent = {
             type: '',
             text: '',
@@ -806,7 +806,7 @@ export class PageComponent implements OnInit, OnDestroy {
           paracontent.events = '';
           heropara.push(paracontent);
         } else if (para['content:image'].length !== undefined) {
-          para['content:image'].forEach(heroimage => {
+          para['content:image'].forEach((heroimage) => {
             const pimage = {
               type: '',
               text: '',
@@ -892,7 +892,7 @@ export class PageComponent implements OnInit, OnDestroy {
       ) {
         const _cardParagraphs =
           resourcePage.page.cards.card[i]['content:paragraph'];
-        _cardParagraphs.forEach(tItem => {
+        _cardParagraphs.forEach((tItem) => {
           if (!this.isRestricted(tItem)) {
             paragraphs.push(tItem);
           }
@@ -910,7 +910,7 @@ export class PageComponent implements OnInit, OnDestroy {
       // handle buttons
       const formbuttons = this.getParagraphButtons(formpara);
       if (formbuttons.length > 0) {
-        formbuttons.forEach(fbutton => {
+        formbuttons.forEach((fbutton) => {
           card.button.push(fbutton);
           card.contentList.push({ button: fbutton });
         });
@@ -935,7 +935,7 @@ export class PageComponent implements OnInit, OnDestroy {
           }
         } else {
           const _links = formpara['content:link'];
-          _links.forEach(_link => {
+          _links.forEach((_link) => {
             if (!this.isRestricted(_link)) {
               card.link.push([
                 _link['content:text'],
@@ -962,7 +962,7 @@ export class PageComponent implements OnInit, OnDestroy {
           }
         } else {
           const imgArr = [];
-          formpara['content:image'].forEach(cardimage => {
+          formpara['content:image'].forEach((cardimage) => {
             const paracontent = { type: 'image', text: '', image: '' };
             paracontent.image = this.getImageName(cardimage); // para["content:image"]["@attributes"]["resource"];
             if (!this.isRestricted(cardimage)) {
@@ -1039,7 +1039,7 @@ export class PageComponent implements OnInit, OnDestroy {
                 if (!isArray(content)) {
                   eachtab.tabList.push({ text: content });
                 } else {
-                  Object.entries(content).forEach(tabtext => {
+                  Object.entries(content).forEach((tabtext) => {
                     eachtab.tabList.push({ text: tabtext });
                   });
                 }
@@ -1053,7 +1053,7 @@ export class PageComponent implements OnInit, OnDestroy {
               eachtab.paras.push(tab['content:paragraph']['content:text']);
             }
           } else {
-            tab['content:paragraph'].forEach(tabpara => {
+            tab['content:paragraph'].forEach((tabpara) => {
               if (!this.isRestricted(tabpara)) {
                 eachtab.paras.push(tabpara['content:text']);
               }
@@ -1066,7 +1066,7 @@ export class PageComponent implements OnInit, OnDestroy {
               eachtab.images.push(this.getImageName(tab['content:image']));
             }
           } else {
-            tab['content:image'].forEach(tabimage => {
+            tab['content:image'].forEach((tabimage) => {
               if (!this.isRestricted(tabimage)) {
                 eachtab.images.push(this.getImageName(tabimage));
               }
@@ -1078,7 +1078,7 @@ export class PageComponent implements OnInit, OnDestroy {
           } else if (typeof tab['content:text'] === 'string') {
             eachtab.texts.push(tab['content:text']);
           } else {
-            tab['content:text'].forEach(tabtext => {
+            tab['content:text'].forEach((tabtext) => {
               eachtab.texts.push(tabtext);
             });
           }
@@ -1149,7 +1149,7 @@ export class PageComponent implements OnInit, OnDestroy {
           }
         } else {
           const _tParagraphs = forms['content:paragraph'];
-          _tParagraphs.forEach(_tParagraph => {
+          _tParagraphs.forEach((_tParagraph) => {
             if (!this.isRestricted(_tParagraph)) {
               formParagraphs.push(_tParagraph);
             }
@@ -1175,7 +1175,7 @@ export class PageComponent implements OnInit, OnDestroy {
             }
           } else {
             const _links = formpara['content:link'];
-            _links.forEach(_link => {
+            _links.forEach((_link) => {
               if (!this.isRestricted(_link)) {
                 cardforms.links.push([
                   _link['content:text'],
@@ -1255,7 +1255,7 @@ export class PageComponent implements OnInit, OnDestroy {
         }
       } else {
         const _tParagraphs = currentModal['content:paragraph'];
-        _tParagraphs.forEach(_tParagraph => {
+        _tParagraphs.forEach((_tParagraph) => {
           if (!this.isRestricted(_tParagraph)) {
             paragraphs.push(_tParagraph);
           }
@@ -1268,14 +1268,14 @@ export class PageComponent implements OnInit, OnDestroy {
 
       // handle texts
       const modalParaTexts = this.getParagraphTexts(modalpara);
-      modalParaTexts.forEach(modalParaText => {
+      modalParaTexts.forEach((modalParaText) => {
         modal.paras.push({ text: modalParaText, button: [], type: 'text' });
       });
 
       // handle buttons
       const modalbuttons = this.getParagraphButtons(modalpara);
       if (modalbuttons.length > 0) {
-        modalbuttons.forEach(mbutton => {
+        modalbuttons.forEach((mbutton) => {
           modal.paras.push({
             text: '',
             type: 'button',
@@ -1392,7 +1392,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.FirstPage = this.counter === 0;
     this.LastPage = this.counter === this.allPages.length - 1;
 
-    const selected_page = this.allPages.filter(row => {
+    const selected_page = this.allPages.filter((row) => {
       return row.pagename === page_name;
     });
 
@@ -1482,7 +1482,7 @@ export class PageComponent implements OnInit, OnDestroy {
         splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
     }
 
-    const show_card = this.Cards.filter(row => {
+    const show_card = this.Cards.filter((row) => {
       return row.listener === functionName;
     });
 
@@ -1492,7 +1492,7 @@ export class PageComponent implements OnInit, OnDestroy {
       this.displayForm = true;
 
       // hide other regular cards
-      const other_cards = this.Cards.filter(row => {
+      const other_cards = this.Cards.filter((row) => {
         return row.listener !== functionName;
       });
 
@@ -1504,12 +1504,12 @@ export class PageComponent implements OnInit, OnDestroy {
       this.call_to_action = '';
       this.currentPageContent.heading = show_card[0].label;
 
-      other_cards.forEach(card => {
+      other_cards.forEach((card) => {
         card.hidden = true;
       });
     }
 
-    const hide_card = this.Cards.filter(row => {
+    const hide_card = this.Cards.filter((row) => {
       return row.dismiss === functionName;
     });
 
@@ -1518,7 +1518,7 @@ export class PageComponent implements OnInit, OnDestroy {
       this.next();
     }
 
-    const show_modal = this.Modals.filter(row => {
+    const show_modal = this.Modals.filter((row) => {
       return row.listener === functionName;
     });
 
@@ -1527,7 +1527,7 @@ export class PageComponent implements OnInit, OnDestroy {
       this.LoadModal(show_modal[0]);
     }
 
-    const hide_modal = this.Modals.filter(row => {
+    const hide_modal = this.Modals.filter((row) => {
       return row.dismiss === functionName;
     });
 
@@ -1566,7 +1566,7 @@ export class PageComponent implements OnInit, OnDestroy {
           _tTexts.push(_tDisplayText);
         }
       } else if (tParaText && Array.isArray(tParaText)) {
-        tParaText.forEach(tText => {
+        tParaText.forEach((tText) => {
           if (!this.isRestricted(tText)) {
             const _tDisplayText: string = (tText as string).replace(
               /(?:\r\n|\r|\n)/g,
@@ -1613,7 +1613,7 @@ export class PageComponent implements OnInit, OnDestroy {
         _pButtons.push(_btn);
       } else if (paragraph['content:button'].length !== undefined) {
         const _buttons = paragraph['content:button'];
-        _buttons.forEach(_button => {
+        _buttons.forEach((_button) => {
           if (!this.isRestricted(_button)) {
             const _btn_text = _button['content:text'];
             const _btn_events =
