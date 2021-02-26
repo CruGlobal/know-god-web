@@ -3,7 +3,7 @@
   <head>
     <!-- Google Tag Manager -->
     <script>
-      (function(w, d, s, l, i) {
+      (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({
           'gtm.start': new Date().getTime(),
@@ -50,7 +50,7 @@
 
         window.addEventListener(
           'popstate',
-          function(e) {
+          function (e) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -68,7 +68,7 @@
         src="https://www.googletagmanager.com/ns.html?id=GTM-M2FKJRN"
         height="0"
         width="0"
-        style="display:none;visibility:hidden"
+        style="display: none; visibility: hidden"
       ></iframe
     ></noscript>
     <!-- End Google Tag Manager (noscript) -->
@@ -83,16 +83,16 @@
 
     <script>
       //send iframe height to parent
-      (function() {
+      (function () {
         if (!parent.postMessage) {
           return;
         }
 
         var docBody = document.body;
-        var sendHeight = function() {
+        var sendHeight = function () {
           parent.postMessage(docBody.offsetHeight, '*');
         };
-        var observer = new MutationObserver(function() {
+        var observer = new MutationObserver(function () {
           sendHeight();
 
           //give time for images to load
