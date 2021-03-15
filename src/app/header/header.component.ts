@@ -14,6 +14,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
   private _languagesReady = new Subject<any>();
   private _languageChanged = new Subject<any>();
+  private _prepareDataForLanguage = new Subject<any>();
+  private _booksData: any;
+  private _languagesData: any;
 
   Images = [];
   englishLangId = 1;
@@ -38,6 +41,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.awaitBooks();
+
     this.activatedRoute.paramMap.subscribe((params) => {
       const _langId = params.get('langid');
       if (!_langId || _langId == null || _langId.trim() === '') {
@@ -45,8 +50,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
         this.dispLanguageCode = this.englishLangCode;
         this.dispLanguageName = this.englishLangName;
         this.dispLanguageDirection = this.englishLangDirection;
-        this.getAttachments();
         this.prepareLanguageSwitcher();
+        this._prepareDataForLanguage.next();
       } else {
         this.checkRouteLang(_langId);
       }
@@ -58,9 +63,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.complete();
     this._languageChanged.complete();
     this._languagesReady.complete();
+    this._prepareDataForLanguage.complete();
   }
 
-  private prepareLanguageSwitcher(pLanguages?: any): void {
+  private prepareLanguageSwitcher(): void {
     this._languagesReady
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -68,18 +74,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.availableLangs = pLanguages.map((lang) => ({
+        this.availableLangs = this._languagesData.map((lang) => ({
           code: lang.attributes.code,
           name: lang.attributes.name
         }));
       });
 
-    if (!pLanguages) {
+    if (!this._languagesData) {
       this.commonService
         .getLanguages(APIURL.GET_ALL_LANGUAGES)
         .pipe(takeUntil(this._unsubscribeAll), take(1))
         .subscribe((data: any) => {
-          pLanguages = data.data;
+          this._languagesData = data.data;
           this._languagesReady.next();
         });
     } else {
@@ -89,37 +95,50 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private checkRouteLang(pRouteLang: string): void {
     this.dispLanguage = undefined;
-    this.commonService
-      .getLanguages(APIURL.GET_ALL_LANGUAGES)
-      .pipe(takeUntil(this._unsubscribeAll), take(1))
-      .subscribe((data: any) => {
-        const tLanguages = data.data;
-        tLanguages.forEach((tLanguage) => {
-          if (
-            tLanguage.attributes &&
-            tLanguage.attributes.code &&
-            tLanguage.attributes.code === pRouteLang
-          ) {
-            this.dispLanguage = parseInt(tLanguage.id as string, 10);
-            this.dispLanguageCode = tLanguage.attributes.code;
-            this.dispLanguageName = tLanguage.attributes.name;
-            this.dispLanguageDirection = tLanguage.attributes.direction;
-          }
+
+    if (this._languagesData) {
+      this.setDisplayLanguage(pRouteLang);
+    } else {
+      this.commonService
+        .getLanguages(APIURL.GET_ALL_LANGUAGES)
+        .pipe(takeUntil(this._unsubscribeAll), take(1))
+        .subscribe((data: any) => {
+          this._languagesData = data.data;
+          this.setDisplayLanguage(pRouteLang);
         });
-
-        if (!this.dispLanguage) {
-          this.dispLanguage = this.englishLangId;
-          this.dispLanguageCode = this.englishLangCode;
-          this.dispLanguageName = this.englishLangName;
-          this.dispLanguageDirection = this.englishLangDirection;
-        }
-
-        this.getAttachments();
-        this.prepareLanguageSwitcher(tLanguages);
-      });
+    }
   }
 
-  private getAttachments(): void {
+  private setDisplayLanguage(pRouteLang: string): void {
+    if (!this._languagesData) {
+      return;
+    }
+
+    this._languagesData.forEach((tLanguage) => {
+      if (
+        tLanguage.attributes &&
+        tLanguage.attributes.code &&
+        tLanguage.attributes.code === pRouteLang
+      ) {
+        this.dispLanguage = parseInt(tLanguage.id as string, 10);
+        this.dispLanguageCode = tLanguage.attributes.code;
+        this.dispLanguageName = tLanguage.attributes.name;
+        this.dispLanguageDirection = tLanguage.attributes.direction;
+      }
+    });
+
+    if (!this.dispLanguage) {
+      this.dispLanguage = this.englishLangId;
+      this.dispLanguageCode = this.englishLangCode;
+      this.dispLanguageName = this.englishLangName;
+      this.dispLanguageDirection = this.englishLangDirection;
+    }
+
+    this.prepareLanguageSwitcher();
+    this._prepareDataForLanguage.next();
+  }
+
+  private fetchBooks(): void {
     const url =
       APIURL.GET_ALL_BOOKS + '?include=latest-translations,attachments';
 
@@ -127,49 +146,62 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .getBooks(url)
       .pipe(takeUntil(this._unsubscribeAll), take(1))
       .subscribe((data: any) => {
-        const attachments = data.included.filter(
-          (included) => included.type === 'attachment'
-        );
+        this._booksData = data;
+        this._prepareDataForLanguage.next();
+      });
+  }
 
-        const _translations = data.included.filter(
-          (included) =>
-            included.type === 'translation' &&
-            Number(included.relationships.language.data.id) ===
-              this.dispLanguage
-        );
-
-        data.data.forEach((resource) => {
-          if (resource.attributes['resource-type'] !== 'tract') {
-            return;
-          }
-
-          const resourceId = resource.id;
-          const bannerId = resource.attributes['attr-banner'];
-
-          const _tTranslation = _translations.find(
-            (x) => x.relationships.resource.data.id === resourceId
+  private awaitBooks(): void {
+    this._prepareDataForLanguage
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(() => {
+        if (!this._booksData) {
+          this.fetchBooks();
+        } else {
+          const attachments = this._booksData.included.filter(
+            (included) => included.type === 'attachment'
           );
 
-          if (_tTranslation && _tTranslation.attributes) {
-            const _tTranslatedName =
-              _tTranslation.attributes['translated-name'];
-            const _tTranslatedTagLine =
-              _tTranslation.attributes['translated-tagline'];
+          const _translations = this._booksData.included.filter(
+            (included) =>
+              included.type === 'translation' &&
+              Number(included.relationships.language.data.id) ===
+                this.dispLanguage
+          );
 
-            this.Images.push({
-              ImgUrl: attachments.find((x) => x.id === bannerId).attributes
-                .file,
-              resource: _tTranslatedName,
-              id: resourceId,
-              abbreviation: resource.attributes.abbreviation,
-              tagline: _tTranslatedTagLine
-            });
-          } else {
-            console.log('MISSING TRANSLATION', resource, _tTranslation);
-          }
-        });
+          this._booksData.data.forEach((resource) => {
+            if (resource.attributes['resource-type'] !== 'tract') {
+              return;
+            }
 
-        this.sectionReady = true;
+            const resourceId = resource.id;
+            const bannerId = resource.attributes['attr-banner'];
+
+            const _tTranslation = _translations.find(
+              (x) => x.relationships.resource.data.id === resourceId
+            );
+
+            if (_tTranslation && _tTranslation.attributes) {
+              const _tTranslatedName =
+                _tTranslation.attributes['translated-name'];
+              const _tTranslatedTagLine =
+                _tTranslation.attributes['translated-tagline'];
+
+              this.Images.push({
+                ImgUrl: attachments.find((x) => x.id === bannerId).attributes
+                  .file,
+                resource: _tTranslatedName,
+                id: resourceId,
+                abbreviation: resource.attributes.abbreviation,
+                tagline: _tTranslatedTagLine
+              });
+            } else {
+              console.log('MISSING TRANSLATION', resource, _tTranslation);
+            }
+          });
+
+          this.sectionReady = true;
+        }
       });
   }
 
