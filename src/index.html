@@ -1,6 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <!-- Google Tag Manager -->
+    <script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          'gtm.start': new Date().getTime(),
+          event: 'gtm.js'
+        });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != 'dataLayer' ? '&l=' + l : '';
+        j.async = true;
+        j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, 'script', 'dataLayer', 'GTM-M2FKJRN');
+    </script>
+    <!-- End Google Tag Manager -->
+
     <base href="/" />
     <title>Know God</title>
     <meta charset="utf-8" />
@@ -32,7 +50,7 @@
 
         window.addEventListener(
           'popstate',
-          function(e) {
+          function (e) {
             e.preventDefault();
             e.stopPropagation();
             e.stopImmediatePropagation();
@@ -44,6 +62,17 @@
   </head>
 
   <body class="en en_index booklet-none locale-en">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript
+      ><iframe
+        src="https://www.googletagmanager.com/ns.html?id=GTM-M2FKJRN"
+        height="0"
+        width="0"
+        style="display: none; visibility: hidden"
+      ></iframe
+    ></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <app-root></app-root>
 
     <script>
@@ -54,16 +83,16 @@
 
     <script>
       //send iframe height to parent
-      (function() {
+      (function () {
         if (!parent.postMessage) {
           return;
         }
 
         var docBody = document.body;
-        var sendHeight = function() {
+        var sendHeight = function () {
           parent.postMessage(docBody.offsetHeight, '*');
         };
-        var observer = new MutationObserver(function() {
+        var observer = new MutationObserver(function () {
           sendHeight();
 
           //give time for images to load

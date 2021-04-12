@@ -2,46 +2,58 @@ import { Injectable } from '@angular/core';
 import { LoaderService } from './loader-service/loader.service';
 import { Router, NavigationEnd } from '@angular/router';
 
+declare global {
+  interface Window {
+    dataLayer: { event: string }[];
+    digitalData: {
+      page?: {
+        pageInfo: {
+          pageName: string;
+          language: string;
+          embedded: 'embed' | '';
+        };
+        category: { primaryCategory: string };
+      };
+    };
+    isEmbedded?: boolean;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class AnalyticsService {
-  constructor(private loaderService: LoaderService, private router: Router) {
-    (<any>window).digitalData = { page: {} };
+  constructor(private router: Router) {
+    window.digitalData = {};
   }
 
-  runAnalyticsInsidePages(url) {
-    const [_, language, pageName, pageNumber] = url.split('/');
-    this.setDigitalData(pageName || 'knowgod', language, pageNumber);
+  subscribeToRouterEvents() {
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationEnd) {
+        const [_, language, pageName, pageNumber] = event.url.split('/');
 
-    if (CustomEvent !== undefined) {
-      const evt = new CustomEvent('content: all pages');
-      document.querySelector('body').dispatchEvent(evt);
-    }
-  }
+        this.setDigitalData(pageName || 'knowgod', language, pageNumber);
 
-  runAnalyticsOnHomepages() {
-    if (CustomEvent !== undefined) {
-      this.router.events.subscribe(event => {
-        if (event instanceof NavigationEnd) {
-          const [_, language, pageName, pageNumber] = event.url.split('/');
-          if (pageNumber === undefined) {
-            this.setDigitalData(pageName || 'knowgod', language);
+        // Google Analytics
+        window.dataLayer.push({
+          event: 'virtual-page-view'
+        });
 
-            const evt = new CustomEvent('content: all pages');
-            document.querySelector('body').dispatchEvent(evt);
-          }
+        // Adobe Analytics
+        if (CustomEvent !== undefined) {
+          const evt = new CustomEvent('content: all pages');
+          document.querySelector('body').dispatchEvent(evt);
         }
-      });
-    }
+      }
+    });
   }
 
-  setDigitalData(appName, language, pageNumber?) {
-    (<any>window).digitalData.page = {
+  setDigitalData(appName: string, language: string, pageNumber?: string) {
+    window.digitalData.page = {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
         language: language || 'en',
-        embedded: (<any>window).isEmbedded === true ? 'embed' : ''
+        embedded: window.isEmbedded === true ? 'embed' : ''
       },
       category: {
         primaryCategory: appName

@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { Clipboard } from 'ts-clipboard';
 
 @Component({
-  selector: 'sharing-modal',
+  selector: 'app-sharing-modal',
   templateUrl: './sharing-modal.component.html',
   styleUrls: ['./sharing-modal.component.css']
 })
@@ -21,10 +21,10 @@ export class SharingModalComponent implements OnInit {
   }
 
   CopyToClipboard(event) {
-    var url = location.href;
+    const url = location.href;
     Clipboard.copy(url);
 
-    var options = {
+    const options = {
       messageClass: 'toast-message1',
       positionClass: 'toast-top-right1'
     };

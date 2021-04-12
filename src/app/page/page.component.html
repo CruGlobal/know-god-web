@@ -9,7 +9,7 @@
         <img src="assets/img/lang.png" class="langicon" /> {{ selectLan }}
         <i class="fas fa-chevron-up flip"></i>
       </span>
-      <sharing-modal [book]="selectbook"></sharing-modal>
+      <app-sharing-modal [book]="selectbook"></app-sharing-modal>
     </div>
     <div id="languageList" class="py25 ng-hide" *ngIf="language">
       <div class="mw568">
@@ -98,7 +98,7 @@
                 <span
                   dir="{{ pageGetparameters.dir }}"
                   class="ng-binding ng-scope"
-                  style="margin-bottom: 5px;"
+                  style="margin-bottom: 5px"
                 >
                   {{ item }}
                 </span>
@@ -183,8 +183,9 @@
       <!-- Cards -->
       <ng-container *ngIf="Cards">
         <div
+          attr.id="card-{{ cardIndex }}"
           class="cardContent"
-          *ngFor="let card of Cards"
+          *ngFor="let card of Cards; index as cardIndex"
           [hidden]="card.hidden"
         >
           <!-- Card Heading -->
@@ -208,6 +209,7 @@
                 <ng-container *ngFor="let paragraph of cardItem.paragraph">
                   <p
                     class="mw568 textContent indent"
+                    dir="{{ pageGetparameters.dir }}"
                     [innerHTML]="paragraph"
                   ></p>
                 </ng-container>
@@ -215,6 +217,7 @@
               <ng-template #singleParagraph>
                 <p
                   class="mw568 textContent indent"
+                  dir="{{ pageGetparameters.dir }}"
                   [innerHTML]="cardItem.paragraph"
                 ></p>
               </ng-template>
@@ -233,6 +236,7 @@
                 <input
                   [type]="element.type"
                   class="form-control"
+                  dir="{{ pageGetparameters.dir }}"
                   [value]="element.value"
                   [name]="element.name"
                   [placeholder]="element.placeholder"
@@ -412,7 +416,9 @@
       </ng-container>
 
       <ng-container *ngIf="call_to_action">
-        <h4 class="calltoaction mw568 indent">{{ call_to_action }}</h4>
+        <h4 class="calltoaction mw568 indent" dir="{{ pageGetparameters.dir }}">
+          {{ call_to_action }}
+        </h4>
       </ng-container>
 
       <!-- Tool navigation -->

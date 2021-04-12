@@ -21,6 +21,6 @@ export class AppComponent implements OnInit {
       this.showLoader = val;
     });
 
-    this.analyticsService.runAnalyticsOnHomepages();
+    this.analyticsService.subscribeToRouterEvents();
   }
 }

@@ -1,6 +1,19 @@
 <header id="homeHeader" class="homeHeaderFooter">
   <div class="bs-container">
     <img src="assets/img/kg-logo.png" />
+    <div class="language-switcher">
+      <div
+        class="selector"
+        *ngIf="sectionReady"
+        dir="{{ dispLanguageDirection }}"
+        (click)="onSwitchLanguage()"
+      >
+        <img src="assets/img/lang_white.png" />
+        <span>{{ dispLanguageName }}</span>
+        <i class="fas fa-chevron-up flip"></i>
+      </div>
+      <i class="fas fa-spinner fa-spin" *ngIf="!sectionReady"></i>
+    </div>
   </div>
 </header>
 
@@ -15,15 +28,23 @@
       >
         <img class="bs-card-img-top" [src]="banner.ImgUrl" />
         <div class="bs-card-body">
-          <h5 class="bs-card-title">{{ banner.resource }}</h5>
-          <p class="bs-card-text">{{ banner.tagline }}</p>
+          <h5 class="bs-card-title" dir="{{ dispLanguageDirection }}">
+            {{ banner.resource }}
+          </h5>
+          <p class="bs-card-text" dir="{{ dispLanguageDirection }}">
+            {{ banner.tagline }}
+          </p>
         </div>
       </a>
     </div>
   </div>
 </section>
 
-<footer id="homeFooter" class="homeHeaderFooter">
+<footer
+  id="homeFooter"
+  class="homeHeaderFooter"
+  [ngClass]="{ 'section-loading': !sectionReady }"
+>
   <div class="bs-container">
     ©1994-{{ currentYear }} Cru. All Rights Reserved.
     <a href="https://godtoolsapp.com/terms-of-use/" target="_blank"
@@ -34,3 +55,20 @@
     >.
   </div>
 </footer>
+
+<div id="languageSwitchModal" *ngIf="langSwitchOn">
+  <div class="modal-content">
+    <div class="modal-close">
+      <i class="fas fa-times" (click)="onSwitchLanguage()"></i>
+    </div>
+    <div class="languages-grid">
+      <div
+        class="language"
+        *ngFor="let lang of availableLangs"
+        (click)="onSelectLanguage(lang.code)"
+      >
+        {{ lang.name }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -23,7 +23,11 @@ const appRoutes: Routes = [
   { path: 'page/new/rendered/:langid/:bookid', component: PageNewComponent },
   { path: ':langid/embed/:bookid', component: PageComponent },
   { path: ':langid/:bookid/:page', component: PageComponent },
-  { path: ':langid/:bookid', component: PageComponent },
+  {
+    path: ':langid/:bookid',
+    redirectTo: ':langid/:bookid/0',
+    pathMatch: 'full'
+  },
   { path: ':langid', component: HeaderComponent },
   { path: '', component: HeaderComponent }
 ];
@@ -42,7 +46,10 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     HttpModule,
-    RouterModule.forRoot(appRoutes),
+    RouterModule.forRoot(appRoutes, {
+      anchorScrolling: 'enabled',
+      scrollPositionRestoration: 'enabled' // Scrolls to top when fragment is removed
+    }),
     BrowserAnimationsModule,
     ToastrModule.forRoot()
   ],
