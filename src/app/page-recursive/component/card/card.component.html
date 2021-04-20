@@ -1,0 +1,19 @@
+<div class="cardContent" *ngIf="ready" 
+  [hidden]="card.attributes.hidden"
+  [ngClass]="{'hasHeading': !(card.attributes.listeners && card.attributes.dismissListeners)}">
+  <h4
+    *ngIf="!(card.attributes.listeners && card.attributes.dismissListeners)"
+    class="mw568 cardHeading ng-binding"
+    dir="{{ (dir$|async) }}"
+  >
+    {{ labelText }}
+  </h4>
+
+  <ng-container *ngIf="content">
+    <ng-container *ngFor="let cotentItem of content; let order = index">
+      <app-content-paragraph *ngIf="cotentItem.contentType === 'paragraph'" [item]="cotentItem"></app-content-paragraph>
+      <app-content-form *ngIf="cotentItem.contentType === 'form'" [item]="cotentItem"></app-content-form>
+    </ng-container>
+  </ng-container>
+  
+</div>

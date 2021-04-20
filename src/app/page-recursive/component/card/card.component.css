@@ -1,0 +1,18 @@
+:host {
+  width: 100%;
+  display: block;
+}
+
+div.cardContent {
+  margin-top: 24px;
+}
+
+/*
+div.cardContent .cardHeading,
+div.cardContent .arrayContent span:first-child,
+div.cardContent .buttonContent a,
+div.cardContent .textContent * {
+  margin-top: 0;
+}
+*/
+

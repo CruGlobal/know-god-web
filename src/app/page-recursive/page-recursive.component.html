@@ -1,0 +1,40 @@
+<ng-container *ngIf="pagesLoaded">
+  <div class="outerbox">
+    <header id="toolHeader">
+      <div class="header tc relative">
+        <span
+          class="l absolute kg-gray-dark ng-binding language-selector-toggle"
+          (click)="onToggleLanaguageSelect()"
+        >
+          <img src="assets/img/lang.png" class="langicon" /> {{ selectedLang }}
+          <i class="fas fa-chevron-up flip"></i>
+        </span>
+        <app-sharing-modal [book]="selectedBookName"></app-sharing-modal>
+      </div>
+      <div
+        id="languageList"
+        class="py25 ng-hide"
+        *ngIf="languagesVisible"
+      >
+        <div class="mw568">
+          <ul>
+            <li
+              class="ng-binding"
+              dir="ltr"
+              (click)="selectLanguage(lang, true)"
+              *ngFor="let lang of availableLanguages"
+            >
+              {{ lang.attributes.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </header>
+
+    <app-tract-page *ngIf="activePage" 
+      [page]="activePage" [order]="activePageOrder" [totalPages]="totalPages">
+    </app-tract-page>
+
+  </div>
+
+</ng-container>

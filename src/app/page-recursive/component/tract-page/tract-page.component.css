@@ -1,0 +1,226 @@
+app-tract-page {
+  width: 100%;
+  display: block;
+}
+
+/***** Buttons *****/
+.button {
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 46px;
+  border: var(--kg-blue) 1px solid;
+  color: var(--kg-white);
+  background-color: var(--kg-blue);
+  border-radius: 50px;
+  display: inline-block;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+.button.button-white {
+  color: var(--kg-blue);
+  background-color: var(--kg-white);
+}
+.button:hover {
+  color: var(--kg-white) !important;
+  background-color: var(--kg-blue-light) !important;
+  border-color: var(--kg-blue-light) !important;
+}
+
+/***** Tool Navigation *****/
+#tool-navigation .button {
+  width: 120px;
+  font-size: 14.4px;
+  margin-top: 48px !important;
+}
+
+#tool-navigation .button:first-child:not(:last-child) {
+  border-right-width: 0;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+#tool-navigation .button:last-child:not(:first-child) {
+  border-left-width: 0;
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+#tool-navigation .button:first-child:last-child {
+  border-width: 1px;
+}
+
+.firstPage #tool-navigation .button,
+.lastPage #tool-navigation .button {
+  width: 240px;
+}
+
+@media screen and (max-width: 319px) {
+  #tool-navigation .button {
+    width: 100px;
+  }
+}
+
+/***** Content Heading *****/
+
+.firstHeading {
+  margin-top: 48px;
+  margin-bottom: 31px !important;
+}
+
+.stepHeading {
+  padding-top: 25px;
+  padding-bottom: 25px;
+  color: white;
+  background-color: var(--kg-blue);
+  margin-bottom: -24px;
+}
+
+.stepHeading h1 {
+  position: relative;
+  font-size: 24px;
+  line-height: 30px;
+  color: white;
+  font-weight: 300;
+}
+
+.stepHeading span {
+  margin-right: 12px;
+}
+
+.stepHeading h1[dir='rtl'] span {
+  margin-left: 12px;
+}
+
+@media screen and (min-width: 440px) {
+  .stepHeading h1,
+  h4 {
+    font-size: 32px;
+    line-height: 1.1667;
+    font-weight: 200;    
+  }
+}
+
+@media screen and (min-width: 616px) {
+  /* 568 + 48 */
+  .mw568 {
+    max-width: 568px;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .indent {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .stepHeading {
+    min-height: 124px;
+  }
+  .stepHeading.noCounter {
+    min-height: unset;
+    text-align: center;
+  }
+
+  .stepHeading.tenSteps h1 {
+    padding-left: 40px;
+  }
+
+  .stepHeading span {
+    position: absolute;
+    top: -10px;
+    left: -64px;
+    margin-left: 0;
+    margin-right: 0;
+    font-weight: 200;
+    font-size: 90px;
+    line-height: 1;
+  }
+
+  .stepHeading h1[dir='rtl'] span {
+    left: auto;
+    right: -64px;
+  }  
+}
+
+/***** Content Elements *****/
+
+p.firstContent {
+  font-size: 20px;
+}
+
+.imageContent {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.arrayContent span {
+  display: block;
+}
+
+.calltoaction {
+  text-align: center;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 30px;
+}
+
+.cardHeading + .cardButton {
+  margin-top: 48px;
+}
+
+.cardButton {
+  text-align: center;
+}
+
+.cardButton + .cardButton {
+  margin-top: 12px;
+}
+
+.buttonContent .button {
+  min-width: 200px;
+  max-width: 100%;
+}
+
+.linkContent {
+  text-align: center;
+  margin-top: 24px;
+  width: 100%;
+  display: inherit;
+}
+
+.linkContent a {
+  color: #3ba4db;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 440px) {
+  .calltoaction {
+    font-weight: 200;
+  }
+  footer {
+    padding: 12px 0;
+  }
+  footer span {
+    display: inline-block;
+    text-align: left;
+  }
+  footer span:last-child {
+    float: right;
+  }
+}
+
+@media screen and (min-width: 616px) {
+
+  div.cardContent.hasHeading > app-content-paragraph > app-content-text > p.textContent {
+    padding-left: 44px;
+    padding-right: 44px;
+  }
+  
+  div.cardContent:not(.hasHading) {
+    margin-top: 48px !important;
+  }
+}

@@ -1,0 +1,57 @@
+<ng-container *ngIf="ready">
+
+  <div
+    id="toolContent"
+    [ngClass]="{
+      'tc': (isFirstPage$|async) || (isLastPage$|async),
+      'firstPage': (isFirstPage$|async),
+      'lastPage': (isLastPage$|async)
+    }"
+  >
+
+    <app-page-header *ngIf="header" [header]="header"></app-page-header>
+    <app-page-hero *ngIf="hero" [hero]="hero"></app-page-hero>
+    <app-page-card *ngFor="let card of cards" [card]="card"></app-page-card>
+    <app-page-calltoaction *ngIf="callToAction" [item]="callToAction"></app-page-calltoaction>
+
+    <div id="tool-navigation" class="mw568 tc" *ngIf="!(isForm$|async)">
+      <ng-container *ngIf="(dir$|async) === 'ltr'">
+        <!-- If not first page -->
+        <ng-container *ngIf="!(isFirstPage$|async)">
+          <a
+            (click)="previous()"
+            class="button button-white far fa-arrow-left"
+          ></a>
+        </ng-container>
+
+        <!-- If not last page -->
+        <ng-container *ngIf="!(isLastPage$|async)">
+          <a
+            (click)="next()"
+            class="button far fa-arrow-right"
+          ></a>
+        </ng-container>
+      </ng-container>
+
+      <ng-container *ngIf="(dir$|async) === 'rtl'">
+        <!-- If not first page -->
+        <ng-container *ngIf="!(isLastPage$|async)">
+          <a
+            (click)="next()"
+            class="button far fa-arrow-left"
+          ></a>
+        </ng-container>
+
+        <!-- If not last page -->
+        <ng-container *ngIf="!(isFirstPage$|async)">
+          <a
+            (click)="previous()"
+            class="button button-white far fa-arrow-right"
+          ></a>
+        </ng-container>
+      </ng-container>      
+    </div>
+
+  </div>
+
+</ng-container>

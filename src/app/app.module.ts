@@ -14,6 +14,23 @@ import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { ToastrModule } from 'ngx-toastr';
 import { PageNewComponent } from './page-new/page-new.component';
+import { PageRecursiveComponent } from './page-recursive/page-recursive.component';
+import { PageHeaderComponent } from './page-recursive/component/page-header/page-header.component';
+import { TractPageComponent } from './page-recursive/component/tract-page/tract-page.component';
+import { PageHeroComponent } from './page-recursive/component/page-hero/page-hero.component';
+import { ContentImageComponent } from './page-recursive/component/content-image/content-image.component';
+import { ContentParagraphComponent } from './page-recursive/component/content-paragraph/content-paragraph.component';
+import { ContentFormComponent } from './page-recursive/component/content-form/content-form.component';
+import { CardComponent } from './page-recursive/component/card/card.component';
+import { ContentTextComponent } from './page-recursive/component/content-text/content-text.component';
+import { ContentButtonComponent } from './page-recursive/component/content-button/content-button.component';
+import { ContentLinkComponent } from './page-recursive/component/content-link/content-link.component';
+import { ContentInputComponent } from './page-recursive/component/content-input/content-input.component';
+import { ContentVideoComponent } from './page-recursive/component/content-video/content-video.component';
+import { ContentTabsComponent } from './page-recursive/component/content-tabs/content-tabs.component';
+import { ContentAccordionComponent } from './page-recursive/component/content-accordion/content-accordion.component';
+import { ContentAnimationComponent } from './page-recursive/component/content-animation/content-animation.component';
+import { CalltoactionComponent } from './page-recursive/component/calltoaction/calltoaction.component';
 
 const appRoutes: Routes = [
   {
@@ -21,6 +38,14 @@ const appRoutes: Routes = [
     component: PageNewComponent
   },
   { path: 'page/new/rendered/:langid/:bookid', component: PageNewComponent },
+  {
+    path: 'page/new/recursive/:langid/:bookid/:page', component: PageRecursiveComponent
+  },
+  { 
+    path: 'page/new/recursive/:langid/:bookid', 
+    redirectTo: 'page/new/recursive/:langid/:bookid/0',
+    pathMatch: 'full' 
+  },  
   { path: ':langid/embed/:bookid', component: PageComponent },
   { path: ':langid/:bookid/:page', component: PageComponent },
   {
@@ -39,7 +64,24 @@ const appRoutes: Routes = [
     PageComponent,
     SharingModalComponent,
     LoaderComponent,
-    PageNewComponent
+    PageNewComponent,
+    PageRecursiveComponent,
+    PageHeaderComponent,
+    TractPageComponent,
+    PageHeroComponent,
+    ContentImageComponent,
+    ContentParagraphComponent,
+    ContentFormComponent,
+    CardComponent,
+    ContentTextComponent,
+    ContentButtonComponent,
+    ContentLinkComponent,
+    ContentInputComponent,
+    ContentVideoComponent,
+    ContentTabsComponent,
+    ContentAccordionComponent,
+    ContentAnimationComponent,
+    CalltoactionComponent,
   ],
   imports: [
     BrowserModule,

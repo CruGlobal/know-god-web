@@ -128,6 +128,7 @@ export class PageComponent implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
+    console.log("[PAGE]: onInit");
     this.showLoader = false;
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
@@ -1298,6 +1299,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   next() {
+    console.log("[PAGE]: next!");
     this.tagline = '';
     this.Cards = [];
     this.cardsContent = [];

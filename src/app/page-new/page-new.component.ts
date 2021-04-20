@@ -105,7 +105,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.getAllLanguages();
     this.getAllBooks();
-    this.analyticsService.runAnalyticsOnHomepages();
+    //this.analyticsService.runAnalyticsOnHomepages();
 
     setTimeout(() => {
       this.watchPageParameters();
@@ -204,7 +204,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
             ])
             .toString();
           this.router.navigateByUrl(Url.toString());
-          this.analyticsService.runAnalyticsInsidePages(Url);
+          //this.analyticsService.runAnalyticsInsidePages(Url);
           this.getXmlFiles(this.currentTranslations[0]);
         } else {
           this.getXmlFiles(this.currentTranslations[0]);
@@ -432,6 +432,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
 
     this.selectbook = book.attributes.name;
     this.selectedBookId = book.id;
+    console.log("[PAGEREND]:selectbook:", this.selectbook, book);
 
     this.getIndex();
   }
@@ -928,6 +929,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
     }
     */
     this.toggleLoader(false);
-    if (url) this.analyticsService.runAnalyticsInsidePages(url);
+    /*if (url) this.analyticsService.runAnalyticsInsidePages(url);*/
   }
 }

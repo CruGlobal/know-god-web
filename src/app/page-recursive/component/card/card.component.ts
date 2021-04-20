@@ -1,0 +1,79 @@
+import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Observable } from 'rxjs';
+import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
+import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
+import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
+import { KgwTractComplexTypeCard } from '../../model/xmlns/tract/tract-ct-card';
+import { PageService } from '../../service/page-service.service';
+
+@Component({
+  selector: 'app-page-card',
+  templateUrl: './card.component.html',
+  styleUrls: ['./card.component.css']
+})
+export class CardComponent implements OnInit {
+
+  @Input('card') card : KgwTractComplexTypeCard;
+
+  ready: boolean;
+  label: KgwContentComplexTypeTextchild;
+  labelText: string;
+  content: Array<KgwContentComplexTypeParagraph|KgwContentComplexTypeForm>;
+  dir$: Observable<string>;
+  isForm$: Observable<boolean>;
+  isFirstPage$: Observable<boolean>;
+
+  constructor(
+    private pageService: PageService
+  ) { 
+    this.dir$ = this.pageService.pageDir$;
+    this.isForm$ = this.pageService.isForm$;
+    this.isFirstPage$ = this.pageService.isFirstPage$;
+  }
+
+  ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    for (const propName in changes) {
+      if (changes.hasOwnProperty(propName)) {
+        switch (propName) {
+          case 'card': {
+            if (!changes['card'].previousValue || changes['card'].currentValue !== changes['card'].previousValue) {
+              console.log("[CARD]: Card changed!", changes['card'].previousValue, changes['card'].currentValue);
+              this.ready = false;
+              this.label = null;
+              this.labelText = '';
+              this.content = [];
+              setTimeout(() => { this.init(); }, 0);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private init(): void {
+    if (this.card.label) {
+      this.label = this.card.label;
+      this.labelText = this.label.text && this.label.text.value ? this.label.text.value.trim() : '';
+    }
+    if (this.card.content && this.card.content.length) {
+      this.card.content.forEach(
+        contentChild => {
+          if (contentChild.contentType === 'paragraph') {
+            var tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+            if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
+              this.content.push(tParagraph);
+            }
+          } else if (contentChild.contentType === 'form') {
+            var tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+            this.content.push(tForm);
+          }
+        }
+      );
+    }
+    this.ready = true;
+  }
+
+}
