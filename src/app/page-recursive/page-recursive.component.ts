@@ -45,6 +45,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
   activePage: KgwTractComplexTypePage;
   activePageOrder: number;
   totalPages: number;
+  bookNotAvailableInLanguage: boolean;
 
   constructor(
     private loaderService: LoaderService,
@@ -258,7 +259,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
             languageItem.relationships.translations.data
           ) {
             const languageTranslations = languageItem.relationships.translations.data;
-            this._pageBookTranslations;
 
             let isLanguageForSelectedBook = false;
 
@@ -286,7 +286,13 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
       );
     }
 
-    this.loadBookManifestXML();
+    if (this.checkIfPreSelectedLanguageExists()){
+      this.loadBookManifestXML();
+    } else {
+      this.bookNotAvailableInLanguage = true;
+      this.loaderService.display(false);
+      console.log("[PAGEREC]: Book not available in routed language!", this._pageParams.langid, this._selectedLanguage, this._pageBookTranslations);
+    }
   }
 
   private loadPageBookIndex(): void {
@@ -426,6 +432,23 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
         }
       }
     );    
+  }
+
+  private checkIfPreSelectedLanguageExists() {
+    if (this._selectedLanguage && this._selectedLanguage.id) {
+      let x = this._pageBookTranslations.find(
+        x => {
+          return x.relationships && 
+            x.relationships.language &&
+            x.relationships.language.data &&
+            x.relationships.language.data.id &&
+            x.relationships.language.data.id == this._selectedLanguage.id;
+          }
+      );
+      return x && x.id;
+    } else {
+      return false;
+    }
   }
 
   private awaitPageChanged(): void {
@@ -575,6 +598,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     this.activePage = null;
     this.activePageOrder = 0;
     this.totalPages = 0;
+    this.bookNotAvailableInLanguage = false;
   }
 
   private showPage(page:KgwTract): void {
