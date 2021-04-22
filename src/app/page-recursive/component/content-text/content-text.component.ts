@@ -47,7 +47,6 @@ export class ContentTextComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: init:", this.text);
     this.textValue = this.text && this.text.value ? this.text.value.trim() : '';
     this.ready = true;
   }

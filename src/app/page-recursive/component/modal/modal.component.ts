@@ -1,37 +1,30 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
 import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
 import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
-import { KgwTractComplexTypeCard } from '../../model/xmlns/tract/tract-ct-card';
+import { KgwTractComplexTypeModal } from '../../model/xmlns/tract/tract-ct-modal';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-card',
-  templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  selector: 'app-page-modal',
+  templateUrl: './modal.component.html',
+  styleUrls: ['./modal.component.css']
 })
-export class CardComponent implements OnInit, OnChanges {
+export class ModalComponent implements OnInit, OnChanges {
 
-  @Input('card') card : KgwTractComplexTypeCard;
-
+  @Input('modal') modal : KgwTractComplexTypeModal;
+  
   ready: boolean;
-  label: KgwContentComplexTypeTextchild;
-  labelText: string;
+  title: KgwContentComplexTypeTextchild;
   content: Array<KgwContentElementItem>;
+  titleText: string;
   dir$: Observable<string>;
-  isForm$: Observable<boolean>;
-  isModal$: Observable<boolean>;
-  isFirstPage$: Observable<boolean>;
 
   constructor(
     private pageService: PageService
   ) { 
     this.dir$ = this.pageService.pageDir$;
-    this.isForm$ = this.pageService.isForm$;
-    this.isModal$ = this.pageService.isModal$;
-    this.isFirstPage$ = this.pageService.isFirstPage$;
   }
 
   ngOnInit() {
@@ -41,11 +34,11 @@ export class CardComponent implements OnInit, OnChanges {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
-          case 'card': {
-            if (!changes['card'].previousValue || changes['card'].currentValue !== changes['card'].previousValue) {
+          case 'modal': {
+            if (!changes['modal'].previousValue || changes['modal'].currentValue !== changes['modal'].previousValue) {
               this.ready = false;
-              this.label = null;
-              this.labelText = '';
+              this.title = null;
+              this.titleText = '';
               this.content = [];
               setTimeout(() => { this.init(); }, 0);
             }
@@ -60,12 +53,13 @@ export class CardComponent implements OnInit, OnChanges {
   }
 
   private init(): void {
-    if (this.card.label) {
-      this.label = this.card.label;
-      this.labelText = this.label.text && this.label.text.value ? this.label.text.value.trim() : '';
+    if (this.modal.title) {
+      this.title = this.modal.title;
+      this.titleText = this.title.text && this.title.text.value ? this.title.text.value.trim() : '';
     }
-    if (this.card.content && this.card.content.length) {
-      this.card.content.forEach(
+
+    if (this.modal.content && this.modal.content.length) {
+      this.modal.content.forEach(
         contentChild => {
           if (contentChild.contentType === 'paragraph') {
             var tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
@@ -76,18 +70,11 @@ export class CardComponent implements OnInit, OnChanges {
               };
               this.content.push(tItemToAdd);
             }
-          } else if (contentChild.contentType === 'form') {
-            var tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
-            let tItemToAdd: KgwContentElementItem = {
-              type: 'form',
-              element: tForm
-            };            
-            this.content.push(tItemToAdd);
           }
         }
       );
     }
+
     this.ready = true;
   }
-
 }

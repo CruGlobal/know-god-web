@@ -16,6 +16,8 @@ export class PageService {
     private _previousPage = new Subject<any>();
     private _formAction = new Subject<string>();
     private _changeHeader = new Subject<string>();
+    private _getEmailSignupFormData = new Subject<any>();
+    private _emailSignupFormData = new Subject<any>();
     private _dir = new BehaviorSubject<string>('ltr');
     private _isFirstPage = new BehaviorSubject<boolean>(false);
     private _isLastPage = new BehaviorSubject<boolean>(false);
@@ -25,6 +27,8 @@ export class PageService {
 
     formAction$:Observable<string> = this._formAction.asObservable();
     changeHeader$:Observable<string> = this._changeHeader.asObservable();
+    getEmailSignupFormData$: Observable<any> = this._getEmailSignupFormData.asObservable();
+    emailSignupFormData$: Observable<any> = this._emailSignupFormData.asObservable();
     nextPage$:Observable<any> = this._nextPage.asObservable();
     previousPage$:Observable<any> = this._previousPage.asObservable();
     pageDir$:Observable<string> = this._dir.asObservable();
@@ -59,7 +63,6 @@ export class PageService {
     }
 
     setPageOrder(currentPageOrder: number, numberOfPages:number): void {
-        console.log("[PAGE SERVICE] isFirstPage:", currentPageOrder, (currentPageOrder===0))
         this._isFirstPage.next(currentPageOrder === 0);
         this._isLastPage.next((numberOfPages-1) === currentPageOrder);
     }
@@ -82,6 +85,14 @@ export class PageService {
 
     modalHidden(): void {
         this._isModal.next(false);
+    }
+
+    emailSignumFormDataNeeded(): void {
+        this._getEmailSignupFormData.next();
+    }
+
+    setEmailSignupFormData(data:any): void {
+        this._emailSignupFormData.next(data);
     }
 
     clearImagesDict(): void {

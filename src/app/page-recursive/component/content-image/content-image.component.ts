@@ -33,9 +33,9 @@ export class ContentImageComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+              this.ready = false;
               this.imgResource = '';
               this.image = this.item.element as KgwContentComplexTypeImage;
-              this.ready = false;
               setTimeout(() => { this.init(); }, 0);
             }
           }

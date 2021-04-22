@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { delay, takeUntil } from 'rxjs/operators';
+import { delay, filter, takeUntil } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
@@ -65,6 +65,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     console.log("[PAGEREC]: ngOnInit!");
     this.awaitPageChanged();
     this.awaitPageParameters();
+    this.awaitEmailFormSignupDataSubmitted();
   }
 
   ngOnDestroy() {
@@ -84,7 +85,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     this.languagesVisible = !this.languagesVisible;
   }
 
-  private onPreviosPage(): void {
+  private onPreviousPage(): void {
     let tPageId = this._pageParams.pageid;
     if (tPageId > 0){
       tPageId--;
@@ -96,7 +97,8 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     let tPageId = this._pageParams.pageid;
     tPageId++;
     if (tPageId < this._pageBookSubPagesManifest.length){
-      this.router.navigate(['page/new/recursive', this._pageParams.langid, this._pageParams.bookid, tPageId]);
+      setTimeout(() => {this.router.navigate(['page/new/recursive', this._pageParams.langid, this._pageParams.bookid, tPageId]);}, 0)
+      
     }
   }
 
@@ -525,9 +527,35 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          this.onPreviosPage();
+          this.onPreviousPage();
         }
       );
+  }
+
+  private awaitEmailFormSignupDataSubmitted(): void {
+    this.pageService.emailSignupFormData$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        filter(tData => tData)
+      )
+      .subscribe(
+        data => {
+          if (data.name && data.email && data.destination_id) {
+            const subscriberData = {
+              data: {
+                type: 'follow_up',
+                attributes: {
+                  name: data.name,
+                  email: data.email,
+                  language_id: Number(this._selectedLanguage.id),
+                  destination_id: Number(data.destination_id)
+                }
+              }
+            };
+            this.commonService.createSubscriber(subscriberData).pipe(takeUntil(this._unsubscribeAll)).subscribe(); 
+          }            
+        }
+      )
   }
 
   private clearData(): void {
@@ -558,6 +586,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     setTimeout(()=>{
       this.pagesLoaded = true;
       this.loaderService.display(false);
-    }, 100);       
+    }, 0);       
   }
 }

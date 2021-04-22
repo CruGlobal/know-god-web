@@ -145,6 +145,34 @@ app-tract-page {
   }  
 }
 
+/***** Forms *****/
+
+.formContent label {
+  display: block;
+  font-size: 16px;
+  color: var(--kg-blue);
+  line-height: 20px;
+}
+
+.formContent label + .form-control {
+  margin-top: 10px;
+}
+
+.formContent .form-control {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 16px;
+  font-family: 'Source Sans Pro', sans-serif;
+  border: 1px solid #3ba4db;
+  border-radius: 8px;
+}
+
+.formContent .cardLink a {
+  color: var(--kg-blue);
+  cursor: pointer;
+}
+
 /***** Content Elements *****/
 
 p.firstContent {
@@ -223,4 +251,10 @@ p.firstContent {
   div.cardContent:not(.hasHading) {
     margin-top: 48px !important;
   }
+
+  .modal-paragraph > app-content-text > p.textContent {
+    padding-left: 44px;
+    padding-right: 44px;    
+  }
 }
+

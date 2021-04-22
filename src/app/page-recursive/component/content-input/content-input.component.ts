@@ -20,6 +20,10 @@ export class ContentInputComponent implements OnInit {
   ready: boolean;
   labelText: string;
   placeholderText: string;
+  required: boolean;
+  value: string;
+  name: string;
+  type: string;
   dir$: Observable<string>;
 
   constructor(
@@ -37,12 +41,16 @@ export class ContentInputComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+              this.ready = false;
               this.labelText = '';
               this.placeholderText = '';
               this.input = this.item.element as KgwContentComplexTypeInput;
               this.label = null;
               this.placeholder = null;
-              this.ready = false;
+              this.required = false;
+              this.value = '';
+              this.name = '';
+              this.type = '';
               setTimeout(() => { this.init(); }, 0);
             }
           }
@@ -52,7 +60,23 @@ export class ContentInputComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: input:", this.input);
+    if (this.input.label) {
+      this.label = this.input.label;
+      if (this.label && this.label.text && this.label.text.value) {
+        this.labelText = this.label.text.value.trim();
+      }
+    }
+    if (this.input.placeholder) {
+      this.placeholder = this.input.placeholder;
+      if (this.placeholder && this.placeholder.text && this.placeholder.text.value) {
+        this.placeholderText = this.placeholder.text.value.trim();
+      }
+    }
+  
+    this.required = this.input.attributes.required;
+    this.value = this.input.attributes.value;
+    this.name = this.input.attributes.name;
+    this.type = this.input.attributes.type;
     this.ready = true;
   }
 

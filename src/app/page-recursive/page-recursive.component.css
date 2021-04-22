@@ -104,3 +104,38 @@ p {
     columns: 3;
   }
 }
+
+/***** Tool Footer *****/
+#toolFooter {
+  margin-top: 48px !important;
+}
+
+footer {
+  position: relative;
+  padding: 12px 24px;
+  border-top: var(--kg-gray-light) 2px solid;
+  font-size: 11px;
+  text-align: left;
+}
+
+footer span {
+  display: block;
+  line-height: 20px;
+  white-space: nowrap;
+  text-align: center;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+@media screen and (min-width: 440px) {
+  footer {
+    padding: 12px 0;
+  }
+  footer span {
+    display: inline-block;
+    text-align: left;
+  }
+  footer span:last-child {
+    float: right;
+  }
+}

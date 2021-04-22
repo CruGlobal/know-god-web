@@ -1,0 +1,9 @@
+:host {
+  width: 100%;
+  display: block;
+  margin-top: 24px;
+}
+
+div.formGroup {
+    margin-top: 24px;
+}

@@ -1,3 +1,13 @@
-<p>
-  content-input works!
-</p>
+<ng-container *ngIf="ready">
+  <label [for]="name">{{ labelText }}</label>
+  <input
+    [type]="type"
+    class="form-control"
+    dir="{{ (dir$|async) }}"
+    [value]="value"
+    [name]="name"
+    [placeholder]="placeholderText"
+    [required]="required"
+    [(ngModel)]="value"
+  />  
+</ng-container>

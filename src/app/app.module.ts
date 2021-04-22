@@ -31,6 +31,7 @@ import { ContentTabsComponent } from './page-recursive/component/content-tabs/co
 import { ContentAccordionComponent } from './page-recursive/component/content-accordion/content-accordion.component';
 import { ContentAnimationComponent } from './page-recursive/component/content-animation/content-animation.component';
 import { CalltoactionComponent } from './page-recursive/component/calltoaction/calltoaction.component';
+import { ModalComponent } from './page-recursive/component/modal/modal.component';
 
 const appRoutes: Routes = [
   {
@@ -82,6 +83,7 @@ const appRoutes: Routes = [
     ContentAccordionComponent,
     ContentAnimationComponent,
     CalltoactionComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

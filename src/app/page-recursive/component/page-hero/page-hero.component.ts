@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
 import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
 import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
+import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { KgwTractComplexTypePageHero } from '../../model/xmlns/tract/tract-ct-page-hero';
 import { PageService } from '../../service/page-service.service';
 
@@ -21,7 +22,7 @@ export class PageHeroComponent implements OnInit, OnDestroy {
   ready: boolean;
   heading: KgwContentComplexTypeTextchild;
   headingText: string;
-  content: Array<KgwContentComplexTypeParagraph|KgwContentComplexTypeForm>;
+  content: Array<KgwContentElementItem>;
   dir$: Observable<string>;
   isForm$: Observable<boolean>;
   isFirstPage$: Observable<boolean>;
@@ -74,11 +75,19 @@ export class PageHeroComponent implements OnInit, OnDestroy {
           if (contentChild.contentType === 'paragraph') {
             var tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
             if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
-              this.content.push(tParagraph);
+              let tItemToAdd: KgwContentElementItem = {
+                type: 'paragraph',
+                element: tParagraph
+              };
+              this.content.push(tItemToAdd);
             }
           } else if (contentChild.contentType === 'form') {
             var tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
-            this.content.push(tForm);
+            let tItemToAdd: KgwContentElementItem = {
+              type: 'form',
+              element: tForm
+            };            
+            this.content.push(tItemToAdd);
           }
         }
       );

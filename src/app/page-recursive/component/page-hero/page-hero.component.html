@@ -11,8 +11,8 @@
   </h2>
 </ng-container>
 <ng-container *ngIf="ready && content && !(isForm$|async)">
-  <ng-container *ngFor="let cotentItem of content; let order = index">
-    <app-content-paragraph *ngIf="cotentItem.contentType === 'paragraph'" [item]="cotentItem"></app-content-paragraph>
-    <app-content-form *ngIf="cotentItem.contentType === 'form'" [item]="cotentItem"></app-content-form>
+  <ng-container *ngFor="let cotentItem of content;">
+    <app-content-paragraph *ngIf="cotentItem.type === 'paragraph'" [item]="cotentItem"></app-content-paragraph>
+    <app-content-form *ngIf="cotentItem.type === 'form'" [item]="cotentItem"></app-content-form>
   </ng-container>
 </ng-container>

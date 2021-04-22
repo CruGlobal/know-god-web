@@ -43,7 +43,6 @@ export class ContentVideoComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: video:", this.video);
     this.ready = true;
   }
 

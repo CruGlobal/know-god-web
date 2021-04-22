@@ -43,7 +43,6 @@ export class ContentTabsComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: tabs:", this.tabs);
     this.ready = true;
   }
 

@@ -32,8 +32,8 @@ export class ContentAccordionComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
-              this.accordion = this.item.element as KgwContentComplexTypeAccordion;
               this.ready = false;
+              this.accordion = this.item.element as KgwContentComplexTypeAccordion;
               setTimeout(() => { this.init(); }, 0);
             }
           }
@@ -43,7 +43,6 @@ export class ContentAccordionComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: accordion:", this.accordion);
     this.ready = true;
   }
 

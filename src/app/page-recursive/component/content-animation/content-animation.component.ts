@@ -32,8 +32,8 @@ export class ContentAnimationComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
-              this.animation = this.item.element as KgwContentComplexTypeAnimation;
               this.ready = false;
+              this.animation = this.item.element as KgwContentComplexTypeAnimation;
               setTimeout(() => { this.init(); }, 0);
             }
           }
@@ -43,7 +43,6 @@ export class ContentAnimationComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: animation:", this.animation);
     this.ready = true;
   }
 

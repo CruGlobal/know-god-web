@@ -9,12 +9,18 @@
     }"
   >
 
-    <app-page-header *ngIf="header" [header]="header"></app-page-header>
-    <app-page-hero *ngIf="hero" [hero]="hero"></app-page-hero>
-    <app-page-card *ngFor="let card of cards" [card]="card"></app-page-card>
-    <app-page-calltoaction *ngIf="callToAction" [item]="callToAction"></app-page-calltoaction>
+    <app-page-header *ngIf="header && !(isModal$|async)" [header]="header"></app-page-header>
+    <app-page-hero *ngIf="hero && !(isModal$|async)" [hero]="hero"></app-page-hero>
+    <ng-container *ngIf="cards && cards.length && !(isModal$|async)">
+      <app-page-card *ngFor="let card of cards" [card]="card"></app-page-card>
+    </ng-container>
+    <app-page-calltoaction *ngIf="callToAction && !(isModal$|async)" [item]="callToAction"></app-page-calltoaction>
 
-    <div id="tool-navigation" class="mw568 tc" *ngIf="!(isForm$|async)">
+    <ng-container *ngIf="modal && (isModal$|async)">
+      <app-page-modal [modal]="modal"></app-page-modal>
+    </ng-container>
+
+    <div id="tool-navigation" class="mw568 tc" *ngIf="!(isForm$|async) && !(isModal$|async)">
       <ng-container *ngIf="(dir$|async) === 'ltr'">
         <!-- If not first page -->
         <ng-container *ngIf="!(isFirstPage$|async)">
@@ -52,6 +58,20 @@
       </ng-container>      
     </div>
 
+    <ng-container *ngIf="!(isModal$|async) && !(isModal$|async)">
+      <footer id="toolFooter">
+        <span
+          ><a href="http://godtoolsapp.com" target="_blank"
+            >Learn more at godtoolsapp.com</a
+          ></span
+        >
+        <span
+          >© 1994-{{ currentYear }}
+          <a href="http://cru.org" target="_blank">Cru</a>. All Rights
+          Reserved.</span
+        >
+      </footer>
+    </ng-container>    
   </div>
 
 </ng-container>

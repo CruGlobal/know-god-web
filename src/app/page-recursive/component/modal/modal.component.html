@@ -1,0 +1,14 @@
+<ng-container *ngIf="ready">
+  <div class="stepHeading noCounter">
+    <h1 class="ng-binding mw568" dir="{{ (dir$|async) }}">
+      {{ titleText }}
+    </h1>
+  </div>
+
+  <ng-container *ngIf="content">
+    <ng-container *ngFor="let cotentItem of content; trackBy: trackByFn;">
+      <app-content-paragraph *ngIf="cotentItem.type === 'paragraph'" [item]="cotentItem" class="modal-paragraph"></app-content-paragraph>
+    </ng-container>
+  </ng-container>
+
+</ng-container>

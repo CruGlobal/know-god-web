@@ -23,11 +23,13 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
 
   private _unsubscribeAll: Subject<any>;
   private _page: KgwTractComplexTypePage;
+  private _cardShownOnFormAction: number = -1;
+  private _cardsHiddenOnFormAction: number[] = [];
 
   header: KgwTractComplexTypePageHeader;
   hero: KgwTractComplexTypePageHero;
   cards: KgwTractComplexTypeCard[];
-  modals: KgwTractComplexTypeModal[];
+  modal: KgwTractComplexTypeModal;
   callToAction: KgwTractComplexTypeCallToAction;
   ready: boolean;
   dir$: Observable<string>;
@@ -36,9 +38,10 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
   isModal$: Observable<boolean>;
   isFirstPage$: Observable<boolean>;
   isLastPage$: Observable<boolean>;
-
+  currentYear = new Date().getFullYear();
+  
   constructor(
-    private pageService: PageService
+    private pageService: PageService,
   ) {
     this._unsubscribeAll = new Subject<any>();
     this.dir$ = this.pageService.pageDir$;
@@ -83,7 +86,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
               this.header = null;
               this.hero = null;
               this.cards = [];
-              this.modals = [];
+              this.modal = null;
               this.callToAction = null;
               this.ready = false;
               setTimeout(() => { this.init(); }, 0);
@@ -105,65 +108,118 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
         splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
     }
 
-    console.log("[TRACT COMP]: onFormAction:", functionName);
+    let isShowCard:boolean = false;
+    let isHideCard:boolean = false;
+    let isShowModal:boolean = false;
+    let isHideModal:boolean = false;
 
-    if (this.cards && this.cards.length > 0){
-      const show_card = this.cards.filter(
-        (row) => {
-          return row.attributes.listeners && row.attributes.listeners === functionName;
-        }
-      );
-
-      const hide_card = this.cards.filter(
-        (row) => {
-          return row.attributes.dismissListeners && row.attributes.dismissListeners === functionName;
-        }
-      );
-
-      if (show_card.length > 0) {
-        const card_to_show = show_card[0];
-        card_to_show.attributes.hidden = false;
-        this.pageService.formVisible();
-
-        if (card_to_show.label && card_to_show.label.text) {
-          this.pageService.changeHeader(
-            card_to_show.label.text.value
-          );
-        }
-
-        const other_cards = this.cards.filter(
-          (row) => {
-            return !row.attributes.listeners || row.attributes.listeners !== functionName;
+    if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
+      this.pageService.emailSignumFormDataNeeded();
+      setTimeout(
+        () => {
+          this.onFormAction(functionName);            
+        }, 0
+      )
+      return;
+    } else {
+      if (this.cards && this.cards.length > 0) {
+        for (let index = 0; index < this.cards.length; index++) {
+          const element = this.cards[index];
+          if (element.attributes.listeners && element.attributes.listeners === functionName) {
+            this._cardShownOnFormAction = index;
+            isShowCard = true;
+            break;
           }
-        );
-
-        if (other_cards && other_cards.length > 0) {
-          other_cards.forEach((card) => {
-            card.attributes.hidden = true;
-          });
         }
-      } else if (hide_card.length > 0) {
-        this.next();
+  
+        for (let index = 0; index < this.cards.length; index++) {
+          const element = this.cards[index];
+          if (element.attributes.dismissListeners && element.attributes.dismissListeners === functionName) {
+            isHideCard = true;
+            break;
+          }
+        }        
+      }
+
+      if (!isShowCard && !isHideCard && this.modal ) {
+        isShowModal = this.modal.attributes.listeners && this.modal.attributes.listeners === functionName;
+        isHideModal = this.modal.attributes.dismissListeners && this.modal.attributes.dismissListeners === functionName;
       }
     }
 
-    if (this.modals && this.modals.length > 0) {
-      const show_modal = this.modals.filter(
-        (row) => {
-          return row.attributes.listeners && row.attributes.listeners === functionName;
-        });
+    if (isShowCard) {
+      let card_to_show = this.cards[this._cardShownOnFormAction];
+      card_to_show.attributes.hidden = false;
+      this.pageService.formVisible();
+      this.pageService.modalHidden();
 
-        const hide_modal = this.cards.filter(
-          (row) => {
-            return row.attributes.dismissListeners && row.attributes.dismissListeners === functionName;
+      if (card_to_show.label && card_to_show.label.text) {
+        this.pageService.changeHeader(
+          card_to_show.label.text.value
+        );
+      }
+
+      for (let index = 0; index < this.cards.length; index++) {
+        const element = this.cards[index];
+        if (!element.attributes.hidden && (!element.attributes.listeners || element.attributes.listeners !== functionName)) {
+          this._cardsHiddenOnFormAction.push(index)
+        }
+      }
+
+      if (this._cardsHiddenOnFormAction.length > 0) {
+        this._cardsHiddenOnFormAction.forEach(
+          (cardIndex) => {
+            this.cards[cardIndex].attributes.hidden = true;
           }
         );
+      }      
+    } else if (isHideCard) {
+      this.next();
+      setTimeout(
+        () => {
+          this.pageService.formHidden();
+          this.pageService.modalHidden();
+          if (this._cardsHiddenOnFormAction.length > 0) {
+            this._cardsHiddenOnFormAction.forEach(
+              (cardIndex) => {
+                this.cards[cardIndex].attributes.hidden = false;
+              }
+            );
+          }
 
-        if (show_modal.length > 0) {
-          //this.LoadModal(show_modal[0]);
-        } else if (hide_modal.length > 0) {
-          this.next();
-        }
+          if (this._cardShownOnFormAction >= 0) {
+            this.cards[this._cardShownOnFormAction].attributes.hidden = true;
+          }
+
+          this._cardShownOnFormAction = -1;
+          this._cardsHiddenOnFormAction = [];
+        }, 0
+      )
+    } else if (isShowModal) {
+      this.pageService.modalVisible();
+      this.pageService.formHidden();
+    } else if (isHideModal) {
+      this.pageService.modalHidden();
+      this.pageService.formHidden();
+      this.next();
+      setTimeout(
+        () => {
+          if (this._cardsHiddenOnFormAction.length > 0) {
+            this._cardsHiddenOnFormAction.forEach(
+              (cardIndex) => {
+                this.cards[cardIndex].attributes.hidden = false;
+              }
+            );
+          }
+
+          if (this._cardShownOnFormAction >= 0) {
+            this.cards[this._cardShownOnFormAction].attributes.hidden = true;
+          }
+
+          this._cardShownOnFormAction = -1;
+          this._cardsHiddenOnFormAction = [];          
+        }, 0
+      )
     }
   }
 
@@ -184,8 +240,8 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
       this.cards = this.page.cards;
     }
 
-    if (this.page.modals) {
-      this.modals = this.page.modals;
+    if (this.page.modals && this.page.modals.length) {
+      this.modal = this.page.modals[0];
     }
 
     if (this.page.callToAction) {

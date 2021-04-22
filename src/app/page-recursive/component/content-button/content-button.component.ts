@@ -38,13 +38,13 @@ export class ContentButtonComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+              this.ready = false;
               this.buttonText = '';
               this.type = '';
               this.events = '';
               this.url = '';
               this.text = null;
               this.button = this.item.element as KgwContentComplexTypeButton;
-              this.ready = false;
               setTimeout(() => { this.init(); }, 0);
             }
           }
@@ -60,7 +60,6 @@ export class ContentButtonComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: button:", this.button);
     if (this.button.text) {
       this.text = this.button.text;
       if (this.text && this.text.value) {

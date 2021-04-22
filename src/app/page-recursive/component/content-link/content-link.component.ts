@@ -55,7 +55,6 @@ export class ContentLinkComponent implements OnInit {
   }
 
   private init(): void {
-    console.log("[CONTENT TEXT]: link:", this.link);
     if (this.link.text) {
       this.text = this.link.text;
       if (this.text && this.text.value) {

@@ -10,8 +10,9 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentParagraphComponent implements OnInit {
 
-  @Input('item') item : KgwContentComplexTypeParagraph;
+  @Input('item') item : KgwContentElementItem;
   
+  paragraph: KgwContentComplexTypeParagraph;
   ready: boolean;
   items: Array<KgwContentElementItem>;
 
@@ -30,6 +31,7 @@ export class ContentParagraphComponent implements OnInit {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.ready = false;
               this.items = [];
+              this.paragraph = this.item.element as KgwContentComplexTypeParagraph;
               setTimeout(() => { this.init(); }, 0);
             }
           }
@@ -39,7 +41,7 @@ export class ContentParagraphComponent implements OnInit {
   }
 
   private init(): void {
-    this.items = this.pageService.checkContentElements(this.item.children);
+    this.items = this.pageService.checkContentElements(this.paragraph.children);
     this.ready = true;
   }
 
