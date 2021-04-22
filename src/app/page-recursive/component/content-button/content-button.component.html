@@ -1,7 +1,7 @@
 <ng-container *ngIf="ready">
   <div class="mw568 buttonContent tc" dir="{{ (dir$|async) }}">
     <a
-      *ngIf="typetype === 'url'"
+      *ngIf="type === 'url'"
       [href]="url"
       class="button"
       target="_blank"

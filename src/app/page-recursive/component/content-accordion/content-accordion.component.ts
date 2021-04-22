@@ -34,7 +34,7 @@ export class ContentAccordionComponent implements OnInit {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.ready = false;
               this.accordion = this.item.element as KgwContentComplexTypeAccordion;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

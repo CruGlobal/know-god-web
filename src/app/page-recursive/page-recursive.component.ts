@@ -98,7 +98,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     tPageId++;
     if (tPageId < this._pageBookSubPagesManifest.length){
       setTimeout(() => {this.router.navigate(['page/new/recursive', this._pageParams.langid, this._pageParams.bookid, tPageId]);}, 0)
-      
     }
   }
 

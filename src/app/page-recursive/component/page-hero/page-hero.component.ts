@@ -56,7 +56,7 @@ export class PageHeroComponent implements OnInit, OnDestroy {
               this.heading = null;
               this.headingText = '';
               this.content = [];
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

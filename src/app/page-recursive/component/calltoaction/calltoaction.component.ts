@@ -1,7 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { KgwTractComplexTypeCallToAction } from '../../model/xmlns/tract/tract-ct-call-to-action';
 import { PageService } from '../../service/page-service.service';
 
@@ -18,13 +17,11 @@ export class CalltoactionComponent implements OnInit {
   ready: boolean;
   actionText: string;
   dir$: Observable<string>;
-  isForm$: Observable<boolean>;
 
   constructor(
     private pageService: PageService
   ) { 
     this.dir$ = this.pageService.pageDir$;
-    this.isForm$ = this.pageService.isForm$;
   }
 
   ngOnInit() {
@@ -38,7 +35,7 @@ export class CalltoactionComponent implements OnInit {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.actionText = '';
               this.ready = false;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

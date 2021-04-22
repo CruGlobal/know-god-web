@@ -43,7 +43,7 @@ export class ContentFormComponent implements OnInit, OnDestroy {
               this.ready = false;
               this.items = [];
               this.form = this.item.element as KgwContentComplexTypeForm;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

@@ -34,7 +34,7 @@ export class ContentVideoComponent implements OnInit {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.video = this.item.element as KgwContentComplexTypeVideo;
               this.ready = false;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

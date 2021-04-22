@@ -1,5 +1,6 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
+import { KgwContentComplexTypeTab } from '../../model/xmlns/content/content-ct-tab';
 import { KgwContentComplexTypeTabs } from '../../model/xmlns/content/content-ct-tabs';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
@@ -14,6 +15,7 @@ export class ContentTabsComponent implements OnInit {
   @Input('item') item : KgwContentElementItem;
 
   tabs: KgwContentComplexTypeTabs;
+  content: Array<KgwContentComplexTypeTab>
   ready: boolean;
   dir$: Observable<string>;
 
@@ -33,8 +35,9 @@ export class ContentTabsComponent implements OnInit {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.tabs = this.item.element as KgwContentComplexTypeTabs;
+              this.content = []
               this.ready = false;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }
@@ -42,7 +45,20 @@ export class ContentTabsComponent implements OnInit {
     }
   }
 
+  trackByFn(index, item) {
+    return index;
+  }
+  
   private init(): void {
+    if (this.tabs.tabs && this.tabs.tabs.length) {
+      this.tabs.tabs.forEach(
+        tab => {
+          tab.children = this.pageService.checkContentElements(tab.children);
+          this.content.push(tab);
+        }
+      );
+    }
+    
     this.ready = true;
   }
 

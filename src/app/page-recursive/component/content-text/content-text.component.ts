@@ -38,7 +38,7 @@ export class ContentTextComponent implements OnInit {
               this.textValue = '';
               this.text = this.item.element as KgwContentComplexTypeText;
               this.ready = false;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

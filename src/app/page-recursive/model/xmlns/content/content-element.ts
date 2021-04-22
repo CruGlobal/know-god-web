@@ -126,7 +126,7 @@ export class KgwContentElement {
         } else if (this._xmlNode.nodeName === 'training:tip') {
             item.type = 'tip';
         } else  {
-            console.log("[KgwContentElementItem]: unknowd node:", this._xmlNode);
+            //console.log("[KgwContentElementItem]: unknowd node:", this._xmlNode);
             item.type = '';
         }
         return item;

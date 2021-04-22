@@ -47,7 +47,7 @@ export class CardComponent implements OnInit, OnChanges {
               this.label = null;
               this.labelText = '';
               this.content = [];
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

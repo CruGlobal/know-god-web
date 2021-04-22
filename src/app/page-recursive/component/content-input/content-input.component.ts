@@ -51,7 +51,7 @@ export class ContentInputComponent implements OnInit {
               this.value = '';
               this.name = '';
               this.type = '';
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

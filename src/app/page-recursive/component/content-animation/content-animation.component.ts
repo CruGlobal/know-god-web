@@ -34,7 +34,7 @@ export class ContentAnimationComponent implements OnInit {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.ready = false;
               this.animation = this.item.element as KgwContentComplexTypeAnimation;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

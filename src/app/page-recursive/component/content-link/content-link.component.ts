@@ -40,7 +40,7 @@ export class ContentLinkComponent implements OnInit {
               this.events = '';
               this.link = this.item.element as KgwContentComplexTypeLink;
               this.ready = false;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

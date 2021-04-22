@@ -89,7 +89,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
               this.modal = null;
               this.callToAction = null;
               this.ready = false;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
             break;
           default:

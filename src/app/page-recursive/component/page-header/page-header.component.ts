@@ -43,7 +43,7 @@ export class PageHeaderComponent implements OnInit, OnChanges {
             if (!changes['header'].previousValue || changes['header'].currentValue !== changes['header'].previousValue) {
               this.ready = false;
               this.headerText = "";
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

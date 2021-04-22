@@ -36,7 +36,7 @@ export class ContentImageComponent implements OnInit {
               this.ready = false;
               this.imgResource = '';
               this.image = this.item.element as KgwContentComplexTypeImage;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

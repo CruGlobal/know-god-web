@@ -243,7 +243,8 @@ p.firstContent {
 
 @media screen and (min-width: 616px) {
 
-  div.cardContent.hasHeading > app-content-paragraph > app-content-text > p.textContent {
+  div.cardContent.hasHeading > app-content-paragraph > app-content-text > p.textContent,
+  div.tabContent > app-content-paragraph > app-content-text > p.textContent {
     padding-left: 44px;
     padding-right: 44px;
   }

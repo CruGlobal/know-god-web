@@ -32,7 +32,7 @@ export class ContentParagraphComponent implements OnInit {
               this.ready = false;
               this.items = [];
               this.paragraph = this.item.element as KgwContentComplexTypeParagraph;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

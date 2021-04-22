@@ -1,5 +1,6 @@
 
 import { KgwContentComplexTypeImage } from "../content/content-ct-image";
+import { KgwContentComplexTypeTabs } from "../content/content-ct-tabs";
 import { KgwContentElementItem } from "../content/content-element";
 import { KgwTractCallToAction } from "./tract-call-to-action";
 import { KgwTractCard } from "./tract-card";
@@ -136,7 +137,28 @@ export class KgwTract {
                           let tImage = tItem.element as KgwContentComplexTypeImage;
                           if (tImage && tImage.attributes && tImage.attributes.resource) {
                             images.push(tImage.attributes.resource);
-                          }                   
+                          }
+                        } else if (tItem && tItem.type && tItem.type === 'tabs' && tItem.element) {
+                          let tTab = tItem.element as KgwContentComplexTypeTabs;
+                          if (tTab && tTab.tabs && tTab.tabs.length) {
+                            tTab.tabs.forEach(
+                              tab => {
+                                if (tab && tab.children && tab.children.length) {
+                                  tab.children.forEach(
+                                    tabChild => {
+                                      let tItem: KgwContentElementItem = tabChild as KgwContentElementItem;
+                                      if (tItem && tItem.type && tItem.type === 'image' && tItem.element) {
+                                        let tImage = tItem.element as KgwContentComplexTypeImage;
+                                        if (tImage && tImage.attributes && tImage.attributes.resource) {
+                                          images.push(tImage.attributes.resource);
+                                        }
+                                      }
+                                    }
+                                  );
+                                }
+                              }
+                            );
+                          }
                         }
                       }
                     );

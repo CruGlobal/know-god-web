@@ -1,5 +1,8 @@
 :host {
   width: 100%;
   display: block;
-  margin-top: 48px !important;
+}
+
+h4.calltoaction {
+  margin-top: 48px !important;  
 }

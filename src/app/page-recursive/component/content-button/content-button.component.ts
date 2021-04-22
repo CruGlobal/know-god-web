@@ -45,7 +45,7 @@ export class ContentButtonComponent implements OnInit {
               this.url = '';
               this.text = null;
               this.button = this.item.element as KgwContentComplexTypeButton;
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }

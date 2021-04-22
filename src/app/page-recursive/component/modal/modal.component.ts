@@ -40,7 +40,7 @@ export class ModalComponent implements OnInit, OnChanges {
               this.title = null;
               this.titleText = '';
               this.content = [];
-              setTimeout(() => { this.init(); }, 0);
+              this.init();
             }
           }
         }
