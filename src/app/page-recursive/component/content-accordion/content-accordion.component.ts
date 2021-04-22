@@ -1,6 +1,7 @@
 import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeAccordion } from '../../model/xmlns/content/content-ct-accordion';
+import { KgwContentComplexTypeAccordionSection } from '../../model/xmlns/content/content-ct-accordion-section';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 
@@ -14,6 +15,7 @@ export class ContentAccordionComponent implements OnInit {
   @Input('item') item : KgwContentElementItem;
 
   accordion: KgwContentComplexTypeAccordion;
+  sections: Array<KgwContentComplexTypeAccordionSection>;
   ready: boolean;
   dir$: Observable<string>;
 
@@ -34,6 +36,7 @@ export class ContentAccordionComponent implements OnInit {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
               this.ready = false;
               this.accordion = this.item.element as KgwContentComplexTypeAccordion;
+              this.sections = [];
               this.init();
             }
           }
@@ -43,6 +46,14 @@ export class ContentAccordionComponent implements OnInit {
   }
 
   private init(): void {
+    if (this.accordion.sections && this.accordion.sections.length) {
+      this.accordion.sections.forEach(
+        section => {
+          section.children = this.pageService.checkContentElements(section.children);
+          this.sections.push(section);
+        }
+      );
+    }
     this.ready = true;
   }
 

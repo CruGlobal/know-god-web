@@ -15,7 +15,7 @@ export class ContentTabsComponent implements OnInit {
   @Input('item') item : KgwContentElementItem;
 
   tabs: KgwContentComplexTypeTabs;
-  content: Array<KgwContentComplexTypeTab>
+  content: Array<KgwContentComplexTypeTab>;
   ready: boolean;
   dir$: Observable<string>;
 
@@ -34,9 +34,9 @@ export class ContentTabsComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
-              this.tabs = this.item.element as KgwContentComplexTypeTabs;
-              this.content = []
               this.ready = false;
+              this.tabs = this.item.element as KgwContentComplexTypeTabs;
+              this.content = [];
               this.init();
             }
           }

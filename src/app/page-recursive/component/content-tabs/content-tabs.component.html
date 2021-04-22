@@ -2,7 +2,7 @@
   <ng-container *ngFor="let tab of content; trackBy: trackByFn;">
     <ng-container *ngIf="tab && tab.children">
       <div class="tabContent">
-        <ng-container *ngFor="let item of tab.children">
+        <ng-container *ngFor="let item of tab.children; trackBy: trackByFn;">
           <app-content-accordion *ngIf="item.type === 'accordion'" [item]="item"></app-content-accordion>
           <app-content-animation *ngIf="item.type === 'animation'" [item]="item"></app-content-animation>
           <app-content-button *ngIf="item.type === 'button'" [item]="item"></app-content-button>
