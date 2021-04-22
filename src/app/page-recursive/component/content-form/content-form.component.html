@@ -13,6 +13,7 @@
           <app-content-tabs *ngIf="item.type === 'tabs'" [item]="item"></app-content-tabs>
           <app-content-text *ngIf="item.type === 'text'" [item]="item"></app-content-text>
           <app-content-video *ngIf="item.type === 'video'" [item]="item"></app-content-video>
+          <app-content-spacer *ngIf="item.type === 'spacer'" [item]="item"></app-content-spacer>
         </div>    
   </form>
 </ng-container>
