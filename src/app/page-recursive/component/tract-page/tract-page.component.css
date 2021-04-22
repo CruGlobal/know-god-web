@@ -91,6 +91,14 @@ app-tract-page {
   margin-left: 12px;
 }
 
+#toolContent.hasPageHeader > app-page-hero > .stepHeading {
+  padding: 0;
+}
+
+#toolContent.hasPageHeader > app-page-hero > .stepHeading > h1 {
+  display: none;
+}
+
 @media screen and (min-width: 440px) {
   .stepHeading h1,
   h4 {

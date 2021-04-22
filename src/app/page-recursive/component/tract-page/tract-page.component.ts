@@ -32,6 +32,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
   modal: KgwTractComplexTypeModal;
   callToAction: KgwTractComplexTypeCallToAction;
   ready: boolean;
+  hasPageHeader: boolean;
   dir$: Observable<string>;
   formAction$: Observable<string>;
   isForm$: Observable<boolean>;
@@ -88,6 +89,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
               this.cards = [];
               this.modal = null;
               this.callToAction = null;
+              this.hasPageHeader = false;
               this.ready = false;
               this.init();
             }
@@ -228,12 +230,15 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
+
     if (this._page.header) {
       this.header = this._page.header;
+      this.hasPageHeader = this.header.title && this.header.title.text && !!this.header.title.text.value;
     }
 
     if (this._page.hero) {
       this.hero = this._page.hero;
+      
     }
 
     if (this.page.cards) {
