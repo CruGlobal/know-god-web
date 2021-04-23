@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, HostListener, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
@@ -15,12 +15,12 @@ import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-ti
 import { KgwTraining } from './model/xmlns/training/training-training';
 
 @Component({
-  selector: 'app-page-recursive',
-  templateUrl: './page-recursive.component.html',
-  styleUrls: ['./page-recursive.component.css'],
+  selector: 'app-page-v2',
+  templateUrl: './page-v2.component.html',
+  styleUrls: ['./page-v2.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class PageRecursiveComponent implements OnInit, OnDestroy {
+export class PageV2Component implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
   private _pageChanged = new Subject<any>();
   private _pageParams: IPageParameters;
@@ -67,6 +67,22 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     this.activePageOrder = 0;
   }
 
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    const RIGHT_ARROW = 39;
+    const LEFT_ARROW = 37;
+
+    if (
+      event.keyCode === RIGHT_ARROW
+    ) {
+      this.onNextPage();
+    }
+
+    if (event.keyCode === LEFT_ARROW) {
+      this.onPreviousPage();
+    }
+  }
+
   ngOnInit() {
     this.awaitPageChanged();
     this.awaitPageParameters();
@@ -80,7 +96,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
   }
 
   selectLanguage(lang): void {
-    this.router.navigate(['page/new/recursive', lang.attributes.code, this._pageParams.bookid, '0'])
+    this.router.navigate([lang.attributes.code, this._pageParams.bookid, '0'])
     return; 
   }
 
@@ -92,7 +108,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     let tPageId = this._pageParams.pageid;
     if (tPageId > 0){
       tPageId--;
-      this.router.navigate(['page/new/recursive', this._pageParams.langid, this._pageParams.bookid, tPageId]);
+      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, tPageId]);
     }
   }
 
@@ -100,7 +116,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     let tPageId = this._pageParams.pageid;
     tPageId++;
     if (tPageId < this._pageBookSubPagesManifest.length){
-      setTimeout(() => {this.router.navigate(['page/new/recursive', this._pageParams.langid, this._pageParams.bookid, tPageId]);}, 0)
+      setTimeout(() => {this.router.navigate([this._pageParams.langid, this._pageParams.bookid, tPageId]);}, 0)
     }
   }
 

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
-import { TextDecoder } from '../../../node_modules/text-encoding/index.js';
+import { TextDecoder } from 'text-encoding';
 import { NgxXml2jsonService } from 'ngx-xml2json';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -31,11 +31,11 @@ interface LiveShareSubscriptionPayload {
 }
 
 @Component({
-  selector: 'app-page',
-  templateUrl: './page.component.html',
-  styleUrls: ['./page.component.css']
+  selector: 'app-page-v1',
+  templateUrl: './page-v1.component.html',
+  styleUrls: ['./page-v1.component.css']
 })
-export class PageComponent implements OnInit, OnDestroy {
+export class PageV1Component implements OnInit, OnDestroy {
   constructor(
     public commonService: CommonService,
     private ngxXml2jsonService: NgxXml2jsonService,
@@ -189,6 +189,7 @@ export class PageComponent implements OnInit, OnDestroy {
             const Url = this.router
               .createUrlTree(
                 [
+                  '/page/v/1',
                   data.attributes.locale,
                   data.attributes.tool,
                   data.attributes.page
@@ -351,7 +352,7 @@ export class PageComponent implements OnInit, OnDestroy {
         // Use the first index to get files
         this.getXmlFiles(this.currentTranslations[0]);
         const Url = this.router
-          .createUrlTree([this.lang, this.BookID, this.counter], {
+          .createUrlTree(['/page/v/1', this.lang, this.BookID, this.counter], {
             queryParams: this.route.snapshot.queryParams
           })
           .toString();
@@ -1299,7 +1300,6 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   next() {
-    console.log("[PAGE]: next!");
     this.tagline = '';
     this.Cards = [];
     this.cardsContent = [];
@@ -1307,7 +1307,7 @@ export class PageComponent implements OnInit, OnDestroy {
       this.counter++;
       this.pageGetparameters.pageid = this.counter;
       const Url = this.router
-        .createUrlTree([this.lang, this.BookID, this.counter], {
+        .createUrlTree(['/page/v/1', this.lang, this.BookID, this.counter], {
           queryParams: this.route.snapshot.queryParams
         })
         .toString();
@@ -1331,7 +1331,7 @@ export class PageComponent implements OnInit, OnDestroy {
     }
 
     const Url = this.router
-      .createUrlTree([this.lang, this.BookID, this.counter], {
+      .createUrlTree(['/page/v/1', this.lang, this.BookID, this.counter], {
         queryParams: this.route.snapshot.queryParams
       })
       .toString();

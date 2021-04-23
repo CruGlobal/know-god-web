@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PageRecursiveComponent } from './page-recursive.component';
+import { PageV2Component } from './page-v2.component';
 
-describe('PageRecursiveComponent', () => {
-  let component: PageRecursiveComponent;
-  let fixture: ComponentFixture<PageRecursiveComponent>;
+describe('PageV2Component', () => {
+  let component: PageV2Component;
+  let fixture: ComponentFixture<PageV2Component>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PageRecursiveComponent ]
+      declarations: [ PageV2Component ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PageRecursiveComponent);
+    fixture = TestBed.createComponent(PageV2Component);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
