@@ -41,7 +41,7 @@ const appRoutes: Routes = [
     redirectTo: 'page/v/1/:langid/:bookid/0',
     pathMatch: 'full'
   },
-  { path: ':langid/embed/:bookid', component: PageV1Component },
+  { path: ':langid/embed/:bookid', component: PageV2Component },
   {
     path: ':langid/:bookid/:page', component: PageV2Component
   },
