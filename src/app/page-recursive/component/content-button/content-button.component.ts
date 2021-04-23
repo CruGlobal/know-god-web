@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeButton } from '../../model/xmlns/content/content-ct-button';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
@@ -10,7 +10,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })
-export class ContentButtonComponent implements OnInit {
+export class ContentButtonComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 
@@ -25,7 +25,7 @@ export class ContentButtonComponent implements OnInit {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 

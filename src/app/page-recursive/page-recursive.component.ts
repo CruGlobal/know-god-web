@@ -11,6 +11,8 @@ import { KgwTract } from './model/xmlns/tract/tract-tract';
 import { KgwManifestComplexTypePage } from './model/xmlns/manifest/manifest-ct-page';
 import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
+import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
+import { KgwTraining } from './model/xmlns/training/training-training';
 
 @Component({
   selector: 'app-page-recursive',
@@ -34,7 +36,9 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
   private _pageBookTranslations: Array<any>;
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Array<KgwManifestComplexTypePage>;
+  private _pageBookTipsManifest: Array<KgwManifestComplexTypeTip>;
   private _pageBookSubPages: Array<KgwTract>;
+  private _pageBookTips: Array<KgwTraining>;
   private _selectedLanguage: any;
 
   pagesLoaded: boolean;
@@ -46,6 +50,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
   activePageOrder: number;
   totalPages: number;
   bookNotAvailableInLanguage: boolean;
+  bookNotAvailable: boolean;
 
   constructor(
     private loaderService: LoaderService,
@@ -63,21 +68,18 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log("[PAGEREC]: ngOnInit!");
     this.awaitPageChanged();
     this.awaitPageParameters();
     this.awaitEmailFormSignupDataSubmitted();
   }
 
   ngOnDestroy() {
-    console.log("[PAGEREC]: ngOnDestroy!");
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
     this._pageChanged.complete();
   }
 
   selectLanguage(lang): void {
-    console.log("[PAGEREC]: selectLanguage: _pageParams:langCode", this._pageParams, lang);
     this.router.navigate(['page/new/recursive', lang.attributes.code, this._pageParams.bookid, '0'])
     return; 
   }
@@ -120,13 +122,11 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
       );
 
       if (attachments.length == 0) {
-        console.log('getImages: Image not found in index file');
         return '';
       }
 
       var filename = attachments[0].attributes.file;
 
-      //add name to prefetch
       let link = document.createElement('link');
       link.href = filename;
       link.rel = 'prefetch';
@@ -174,6 +174,41 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
           }
         }
       });    
+  }
+
+  private loadTip(tip:KgwManifestComplexTypeTip): void {
+    this.commonService
+    .downloadFile(
+      APIURL.GET_XML_FILES_FOR_MANIFEST + this._pageBookTranslationId + '/' + tip.src
+    )
+    .pipe(
+      takeUntil(this._unsubscribeAll),
+      takeUntil(this._pageChanged)
+    )
+    .subscribe(
+      data => {
+        let enc = new TextDecoder('utf-8');
+        let arr = new Uint8Array(data);
+        let result = enc.decode(arr);
+
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(result, 'application/xml');
+        let _tTraining: KgwTraining = new KgwTraining(result);
+        _tTraining.id = tip.id;
+        _tTraining.parseXml();
+        if (_tTraining && _tTraining.pages && _tTraining.pages.length) {
+          var _tTrainingImages = _tTraining.getImageResources();
+          if (_tTrainingImages && _tTrainingImages.length){
+            _tTrainingImages.forEach(
+              image => {
+                this.getImage(image);
+              }
+            );
+          }          
+        }
+        this._pageBookTips.push(_tTraining);
+      }
+    )
   }
 
   private loadBookManifestXML(): void {  
@@ -227,7 +262,8 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
             if (
               this._pageBookMainfest.manifest &&
               this._pageBookMainfest.manifest.pages &&
-              this._pageBookMainfest.manifest.pages.length > 0) {
+              this._pageBookMainfest.manifest.pages.length > 0
+              ) {
                 this._pageBookSubPagesManifest = [];
                 this._pageBookSubPages = [];
                 let tPageOrder = 0;
@@ -241,10 +277,26 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
                 this.totalPages = this._pageBookSubPagesManifest.length;
                 this._pageBookMainfestLoaded = true;
             } else {
-              //TODO: Page not found for language
+              this.bookNotAvailableInLanguage = true;
+            }
+
+            if (
+              this._pageBookMainfest.manifest &&
+              this._pageBookMainfest.manifest.tips &&
+              this._pageBookMainfest.manifest.tips.length > 0
+              ) {
+                this._pageBookTipsManifest = [];
+                this._pageBookTips = [];
+                this._pageBookMainfest.manifest.tips.forEach(
+                  tTip => {
+                    this._pageBookTipsManifest.push(tTip);
+                    //You can enable tips to be loaded by uncommenting the following line
+                    //this.loadTip(tTip);
+                  }
+                );
             }
           }
-        );      
+        );
     }
   }
 
@@ -291,7 +343,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     } else {
       this.bookNotAvailableInLanguage = true;
       this.loaderService.display(false);
-      console.log("[PAGEREC]: Book not available in routed language!", this._pageParams.langid, this._selectedLanguage, this._pageBookTranslations);
     }
   }
 
@@ -310,7 +361,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
           let result = enc.decode(arr);
           let jsonResource = JSON.parse(result);
           this._pageBookIndex = jsonResource;
-          console.log("[PAGEREC]: loadPageBookIndex:", this._pageBookIndex);
           
           if (
             jsonResource &&
@@ -320,7 +370,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
             jsonResource.data.attributes['resource-type'] === 'tract'
             ) {
               if (!jsonResource.data.attributes['manifest']) {
-                //TODO: Implement tract manifest not available!
+                this.bookNotAvailable = false;
                 return;
               }
 
@@ -363,7 +413,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
 
               this.getAvailableLanguagesForSelectedBook();
           } else {
-            //TODO: Implement invalid resource type error
+            this.bookNotAvailable = false;
           }
         }
       )
@@ -379,7 +429,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     });
 
     if (!this._pageBook.id) {
-      //TODO: Implement page book not found error
+      this.bookNotAvailable = true;
     } else {
       this._pageBookLoaded = true;
       this.loadPageBookIndex();
@@ -397,7 +447,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
             this._booksLoaded = true;
             this.loadPageBook();
           } else {
-            //TODO: implement books load error
+            this.bookNotAvailable = true;
           }          
         }
       );
@@ -417,7 +467,7 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
           }
           this.getAllBooks();
         } else {
-          //TODO: Implement languages load error
+          this.bookNotAvailable = true;
         }
       });
   }
@@ -459,7 +509,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
       )
       .subscribe(
         () => {
-          console.log("[PAGEREC]: Page changed!", this._pageParams);
           if (!this._allLanguagesLoaded) {
             this.loaderService.display(true);
             this.getAllLanguages();
@@ -514,7 +563,6 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
         if (!bookChanged) {
           this._pageParams.pageid = Number(params['page']);
         } else {
-          console.log("[PAGEREC]: awaitPageParameters: bookChanged!");
           this._pageParams.langid = params['langid'];
           this._pageParams.bookid = params['bookid'];
           this._pageParams.pageid = Number(params['page']);
@@ -599,10 +647,10 @@ export class PageRecursiveComponent implements OnInit, OnDestroy {
     this.activePageOrder = 0;
     this.totalPages = 0;
     this.bookNotAvailableInLanguage = false;
+    this.bookNotAvailable = false;
   }
 
   private showPage(page:KgwTract): void {
-    console.log("[PAGE]: showPage:", page);
     this.activePageOrder = page.pageorder;
     this.activePage = page.page;
     this.awaitPageNavigation();

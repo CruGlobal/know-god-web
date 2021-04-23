@@ -226,7 +226,6 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   private init(): void {
-    console.log("[TRACT COMP]: page:", this._page, this.order, this.totalPages);
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();

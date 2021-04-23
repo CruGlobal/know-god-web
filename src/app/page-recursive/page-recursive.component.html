@@ -1,4 +1,4 @@
-<ng-container *ngIf="pagesLoaded || bookNotAvailableInLanguage">
+<ng-container *ngIf="pagesLoaded || bookNotAvailableInLanguage || bookNotAvailable">
   <div class="outerbox">
     <header id="toolHeader">
       <div class="header tc relative">
@@ -31,7 +31,7 @@
       </div>
     </header>
 
-    <app-tract-page *ngIf="activePage && !bookNotAvailableInLanguage" 
+    <app-tract-page *ngIf="activePage && !bookNotAvailableInLanguage && !bookNotAvailable" 
       [page]="activePage" [order]="activePageOrder" [totalPages]="totalPages">
     </app-tract-page>
 
@@ -43,6 +43,14 @@
       </div>  
     </ng-container>
 
+    <ng-container *ngIf="bookNotAvailable">
+      <div class="bs-jumbotron tc" style="margin-top: 24px;">
+        <h2>
+          Failed to load the book.
+        </h2>
+      </div>  
+    </ng-container>
+        
   </div>
 
 </ng-container>

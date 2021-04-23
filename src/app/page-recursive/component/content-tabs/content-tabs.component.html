@@ -15,6 +15,7 @@
           <app-content-text *ngIf="item.type === 'text'" [item]="item"></app-content-text>
           <app-content-video *ngIf="item.type === 'video'" [item]="item"></app-content-video>
           <app-content-spacer *ngIf="item.type === 'spacer'" [item]="item"></app-content-spacer>
+          <app-training-tip *ngIf="item.type === 'tip'" [item]="item"></app-training-tip>
         </ng-container>        
       </div>
     </ng-container>

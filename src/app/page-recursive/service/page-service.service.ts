@@ -19,6 +19,7 @@ export class PageService {
     private _getEmailSignupFormData = new Subject<any>();
     private _emailSignupFormData = new Subject<any>();
     private _dir = new BehaviorSubject<string>('ltr');
+    private _visibleTip = new BehaviorSubject<string>('');
     private _isFirstPage = new BehaviorSubject<boolean>(false);
     private _isLastPage = new BehaviorSubject<boolean>(false);
     private _isForm = new BehaviorSubject<boolean>(false);
@@ -36,6 +37,7 @@ export class PageService {
     isLastPage$:Observable<boolean> = this._isLastPage.asObservable();
     isForm$:Observable<boolean> = this._isForm.asObservable();
     isModal$:Observable<boolean> = this._isModal.asObservable();
+    visibleTipId$:Observable<string> = this._visibleTip.asObservable();
 
     clear(): void {
         this._isFirstPage.next(false);
@@ -93,6 +95,14 @@ export class PageService {
 
     setEmailSignupFormData(data:any): void {
         this._emailSignupFormData.next(data);
+    }
+
+    showTip(id: string): void {
+        this._visibleTip.next(id);
+    }
+
+    hideTip(): void {
+        this._visibleTip.next('');
     }
 
     clearImagesDict(): void {

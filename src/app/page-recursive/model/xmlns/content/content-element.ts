@@ -125,8 +125,11 @@ export class KgwContentElement {
             item.element = tNode.parse();
         } else if (this._xmlNode.nodeName === 'training:tip') {
             item.type = 'tip';
+            item.element = {} as KgwTrainingComplexTypeTip;
+            if (this._xmlNode.getAttribute('id')) {
+                item.element.id = this._xmlNode.getAttribute('id');
+            }
         } else  {
-            //console.log("[KgwContentElementItem]: unknowd node:", this._xmlNode);
             item.type = '';
         }
         return item;
