@@ -116,7 +116,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     }
   }
 
-  private getImage(resource) {
+  private getImage(resource): string {
     if (resource == undefined || resource == '' || resource == null) return '';
 
     if (this._pageBookIndex != undefined && this._pageBookIndex != null) {
@@ -382,7 +382,8 @@ export class PageV2Component implements OnInit, OnDestroy {
             jsonResource.data.attributes['resource-type'] === 'tract'
             ) {
               if (!jsonResource.data.attributes['manifest']) {
-                this.bookNotAvailable = false;
+                this.bookNotAvailable = true;
+                this.loaderService.display(false);
                 return;
               }
 
@@ -425,7 +426,8 @@ export class PageV2Component implements OnInit, OnDestroy {
 
               this.getAvailableLanguagesForSelectedBook();
           } else {
-            this.bookNotAvailable = false;
+            this.bookNotAvailable = true;
+            this.loaderService.display(false);
           }
         }
       )
@@ -442,6 +444,7 @@ export class PageV2Component implements OnInit, OnDestroy {
 
     if (!this._pageBook.id) {
       this.bookNotAvailable = true;
+      this.loaderService.display(false);
     } else {
       this._pageBookLoaded = true;
       this.loadPageBookIndex();
@@ -460,6 +463,7 @@ export class PageV2Component implements OnInit, OnDestroy {
             this.loadPageBook();
           } else {
             this.bookNotAvailable = true;
+            this.loaderService.display(false);
           }          
         }
       );
@@ -480,6 +484,7 @@ export class PageV2Component implements OnInit, OnDestroy {
           this.getAllBooks();
         } else {
           this.bookNotAvailable = true;
+          this.loaderService.display(false);
         }
       });
   }
@@ -496,7 +501,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     );    
   }
 
-  private checkIfPreSelectedLanguageExists() {
+  private checkIfPreSelectedLanguageExists(): boolean {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       let x = this._pageBookTranslations.find(
         x => {
