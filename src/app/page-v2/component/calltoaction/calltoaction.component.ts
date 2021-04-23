@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
 import { KgwTractComplexTypeCallToAction } from '../../model/xmlns/tract/tract-ct-call-to-action';
@@ -9,7 +9,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './calltoaction.component.html',
   styleUrls: ['./calltoaction.component.css']
 })
-export class CalltoactionComponent implements OnInit {
+export class CalltoactionComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwTractComplexTypeCallToAction;
 
@@ -33,8 +33,8 @@ export class CalltoactionComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
-              this.actionText = '';
               this.ready = false;
+              this.actionText = '';
               this.init();
             }
           }

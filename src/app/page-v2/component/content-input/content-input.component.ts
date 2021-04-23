@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeInput } from '../../model/xmlns/content/content-ct-input';
 import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
@@ -10,7 +10,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-input.component.html',
   styleUrls: ['./content-input.component.css']
 })
-export class ContentInputComponent implements OnInit {
+export class ContentInputComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 

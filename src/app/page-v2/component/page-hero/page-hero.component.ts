@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './page-hero.component.html',
   styleUrls: ['./page-hero.component.css']
 })
-export class PageHeroComponent implements OnInit, OnDestroy {
+export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input('hero') hero : KgwTractComplexTypePageHero;
 

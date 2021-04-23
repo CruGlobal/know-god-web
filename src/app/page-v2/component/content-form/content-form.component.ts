@@ -1,5 +1,5 @@
-import { QueryList } from '@angular/core';
-import { AfterViewInit, Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChildren } from '@angular/core';
+import { OnChanges, QueryList } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, SimpleChanges, ViewChildren } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
@@ -12,7 +12,7 @@ import { ContentInputComponent } from '../content-input/content-input.component'
   templateUrl: './content-form.component.html',
   styleUrls: ['./content-form.component.css']
 })
-export class ContentFormComponent implements OnInit, OnDestroy {
+export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
   @ViewChildren(ContentInputComponent) private _inputChildren: QueryList<ContentInputComponent>;

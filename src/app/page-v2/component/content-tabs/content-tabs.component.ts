@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeTab } from '../../model/xmlns/content/content-ct-tab';
 import { KgwContentComplexTypeTabs } from '../../model/xmlns/content/content-ct-tabs';
@@ -10,7 +10,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })
-export class ContentTabsComponent implements OnInit {
+export class ContentTabsComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 

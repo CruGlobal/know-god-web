@@ -83,6 +83,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
         switch (propName) {
           case 'page': 
             if (!changes['page'].previousValue || changes['page'].currentValue !== changes['page'].previousValue) {
+              this.ready = false;
               this._page = this.page;
               this.header = null;
               this.hero = null;
@@ -90,7 +91,6 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
               this.modal = null;
               this.callToAction = null;
               this.hasPageHeader = false;
-              this.ready = false;
               this.init();
             }
             break;

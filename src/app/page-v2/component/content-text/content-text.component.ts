@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
@@ -9,7 +9,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-text.component.html',
   styleUrls: ['./content-text.component.css']
 })
-export class ContentTextComponent implements OnInit {
+export class ContentTextComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 
@@ -35,9 +35,9 @@ export class ContentTextComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+              this.ready = false;
               this.textValue = '';
               this.text = this.item.element as KgwContentComplexTypeText;
-              this.ready = false;
               this.init();
             }
           }

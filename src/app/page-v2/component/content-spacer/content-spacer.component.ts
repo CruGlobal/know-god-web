@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeSpacer } from '../../model/xmlns/content/content-ct-spacer';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
@@ -9,7 +9,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-spacer.component.html',
   styleUrls: ['./content-spacer.component.css']
 })
-export class ContentSpacerComponent implements OnInit {
+export class ContentSpacerComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 

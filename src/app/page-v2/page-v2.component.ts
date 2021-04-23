@@ -105,18 +105,14 @@ export class PageV2Component implements OnInit, OnDestroy {
   }
 
   private onPreviousPage(): void {
-    let tPageId = this._pageParams.pageid;
-    if (tPageId > 0){
-      tPageId--;
-      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, tPageId]);
+    if (this._pageParams.pageid > 0){
+      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, this._pageParams.pageid-1]);
     }
   }
 
   private onNextPage(): void {
-    let tPageId = this._pageParams.pageid;
-    tPageId++;
-    if (tPageId < this._pageBookSubPagesManifest.length){
-      setTimeout(() => {this.router.navigate([this._pageParams.langid, this._pageParams.bookid, tPageId]);}, 0)
+    if ((this._pageParams.pageid+1) < this._pageBookSubPagesManifest.length){
+      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, this._pageParams.pageid+1]);
     }
   }
 

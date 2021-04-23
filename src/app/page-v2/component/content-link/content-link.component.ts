@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeLink } from '../../model/xmlns/content/content-ct-link';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
@@ -10,7 +10,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-link.component.html',
   styleUrls: ['./content-link.component.css']
 })
-export class ContentLinkComponent implements OnInit {
+export class ContentLinkComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 
@@ -36,10 +36,10 @@ export class ContentLinkComponent implements OnInit {
         switch (propName) {
           case 'item': {
             if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+              this.ready = false;
               this.linkText = '';
               this.events = '';
               this.link = this.item.element as KgwContentComplexTypeLink;
-              this.ready = false;
               this.init();
             }
           }

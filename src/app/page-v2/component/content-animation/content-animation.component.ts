@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeAnimation } from '../../model/xmlns/content/content-ct-animation';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
@@ -9,7 +9,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-animation.component.html',
   styleUrls: ['./content-animation.component.css']
 })
-export class ContentAnimationComponent implements OnInit {
+export class ContentAnimationComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 

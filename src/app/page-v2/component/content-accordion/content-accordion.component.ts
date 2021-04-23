@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeAccordion } from '../../model/xmlns/content/content-ct-accordion';
 import { KgwContentComplexTypeAccordionSection } from '../../model/xmlns/content/content-ct-accordion-section';
@@ -10,7 +10,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })
-export class ContentAccordionComponent implements OnInit {
+export class ContentAccordionComponent implements OnInit, OnChanges {
 
   @Input('item') item : KgwContentElementItem;
 
