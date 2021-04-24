@@ -1,7 +1,5 @@
 export interface KgwContentComplexTypeText {
-
     value?: string;
-
     attributes?: {
         startImage?: string;
         startImageSize?: number;
@@ -14,5 +12,5 @@ export interface KgwContentComplexTypeText {
         text_style?: string;
         version?: number;
         restrictTo?: Array<string>;
-    }    
+    };
 }

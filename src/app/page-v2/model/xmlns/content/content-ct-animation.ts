@@ -7,6 +7,6 @@ export interface KgwContentComplexTypeAnimation {
         events?: string;
         playListeners?: string;
         stopListeners?: string;
-    }
+    };
 
 }

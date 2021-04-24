@@ -12,7 +12,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class TrainingTipComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   tip: KgwTrainingComplexTypeTip;
   ready: boolean;
@@ -24,7 +24,7 @@ export class TrainingTipComponent implements OnInit, OnChanges {
   ) {
     this.dir$ = this.pageService.pageDir$;
     this.visible$ = this.pageService.visibleTipId$
-      .pipe(map(id => { return id && this.tip && this.tip.id && this.tip.id === id; }));
+      .pipe(map(id => id && this.tip && this.tip.id && this.tip.id === id));
   }
 
   ngOnInit() {

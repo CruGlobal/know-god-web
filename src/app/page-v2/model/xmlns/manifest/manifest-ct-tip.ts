@@ -12,11 +12,11 @@ export class KgwManifestTip {
     }
 
     parse(): KgwManifestComplexTypeTip {
-        let item:KgwManifestComplexTypeTip = {src: '', id: ''};
+        const item: KgwManifestComplexTypeTip = {src: '', id: ''};
 
         if (this._xmlNode.getAttribute('id')) {
             item.id = this._xmlNode.getAttribute('id');
-        }        
+        }
 
         if (this._xmlNode.getAttribute('src')) {
             item.src = this._xmlNode.getAttribute('src');

@@ -1,5 +1,5 @@
-import { KgwContentComplexTypeInput } from "./content-ct-input";
-import { KgwContentTextchild } from "./content-textchild";
+import { KgwContentComplexTypeInput } from './content-ct-input';
+import { KgwContentTextchild } from './content-textchild';
 
 export class KgwContentInput {
     private _xmlNode: any;
@@ -7,9 +7,9 @@ export class KgwContentInput {
     constructor(xmlNode: any) {
         this._xmlNode = xmlNode;
     }
-    
+
     parse(): KgwContentComplexTypeInput {
-        let item:KgwContentComplexTypeInput = {attributes:{}};
+        const item: KgwContentComplexTypeInput = {attributes: {}};
 
         if (this._xmlNode.getAttribute('name')) {
             item.attributes.name = this._xmlNode.getAttribute('name');
@@ -26,12 +26,12 @@ export class KgwContentInput {
 
         if (this._xmlNode.childNodes && this._xmlNode.childNodes.length) {
             for (let i = 0; i < this._xmlNode.childNodes.length; i++) {
-                let cNode = this._xmlNode.childNodes[i];
+                const cNode = this._xmlNode.childNodes[i];
                 if (cNode.nodeName === 'content:label') {
-                    let tNode = new KgwContentTextchild(cNode);
+                    const tNode = new KgwContentTextchild(cNode);
                     item.label = tNode.parse();
                 } else if (cNode.nodeName === 'content:placeholder') {
-                    let tNode = new KgwContentTextchild(cNode);
+                    const tNode = new KgwContentTextchild(cNode);
                     item.placeholder = tNode.parse();
                 }
             }

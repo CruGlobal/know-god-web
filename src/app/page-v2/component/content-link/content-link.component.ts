@@ -12,7 +12,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentLinkComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   link: KgwContentComplexTypeLink;
   text: KgwContentComplexTypeText;
@@ -23,7 +23,7 @@ export class ContentLinkComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -59,7 +59,7 @@ export class ContentLinkComponent implements OnInit, OnChanges {
       this.text = this.link.text;
       if (this.text && this.text.value) {
         this.linkText = this.text.value.trim();
-      }      
+      }
     }
 
     this.events = this.link.attributes.events;

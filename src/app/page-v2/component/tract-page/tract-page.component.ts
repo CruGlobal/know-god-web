@@ -17,13 +17,13 @@ import { PageService } from '../../service/page-service.service';
 })
 export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
 
-  @Input('page') page : KgwTractComplexTypePage;
-  @Input('order') order : number;
-  @Input('totalPages') totalPages : number;
+  @Input() page: KgwTractComplexTypePage;
+  @Input() order: number;
+  @Input() totalPages: number;
 
   private _unsubscribeAll: Subject<any>;
   private _page: KgwTractComplexTypePage;
-  private _cardShownOnFormAction: number = -1;
+  private _cardShownOnFormAction = -1;
   private _cardsHiddenOnFormAction: number[] = [];
 
   header: KgwTractComplexTypePageHeader;
@@ -40,7 +40,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
   isFirstPage$: Observable<boolean>;
   isLastPage$: Observable<boolean>;
   currentYear = new Date().getFullYear();
-  
+
   constructor(
     private pageService: PageService,
   ) {
@@ -50,7 +50,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     this.isModal$ = this.pageService.isModal$;
     this.isFirstPage$ = this.pageService.isFirstPage$;
     this.isLastPage$ = this.pageService.isLastPage$;
-    this.formAction$ = this.pageService.formAction$
+    this.formAction$ = this.pageService.formAction$;
   }
 
   ngOnInit() {
@@ -81,7 +81,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
-          case 'page': 
+          case 'page':
             if (!changes['page'].previousValue || changes['page'].currentValue !== changes['page'].previousValue) {
               this.ready = false;
               this._page = this.page;
@@ -101,7 +101,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  private onFormAction(inputFunctionName:string): void {
+  private onFormAction(inputFunctionName: string): void {
     let functionName = inputFunctionName;
 
     if (functionName.indexOf(' ') > -1) {
@@ -110,18 +110,18 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
         splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
     }
 
-    let isShowCard:boolean = false;
-    let isHideCard:boolean = false;
-    let isShowModal:boolean = false;
-    let isHideModal:boolean = false;
+    let isShowCard: boolean;
+    let isHideCard: boolean;
+    let isShowModal: boolean;
+    let isHideModal: boolean;
 
     if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
       this.pageService.emailSignumFormDataNeeded();
       setTimeout(
         () => {
-          this.onFormAction(functionName);            
+          this.onFormAction(functionName);
         }, 0
-      )
+      );
       return;
     } else {
       if (this.cards && this.cards.length > 0) {
@@ -133,14 +133,14 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
             break;
           }
         }
-  
+
         for (let index = 0; index < this.cards.length; index++) {
           const element = this.cards[index];
           if (element.attributes.dismissListeners && element.attributes.dismissListeners === functionName) {
             isHideCard = true;
             break;
           }
-        }        
+        }
       }
 
       if (!isShowCard && !isHideCard && this.modal ) {
@@ -150,7 +150,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     if (isShowCard) {
-      let card_to_show = this.cards[this._cardShownOnFormAction];
+      const card_to_show = this.cards[this._cardShownOnFormAction];
       card_to_show.attributes.hidden = false;
       this.pageService.formVisible();
       this.pageService.modalHidden();
@@ -164,7 +164,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
       for (let index = 0; index < this.cards.length; index++) {
         const element = this.cards[index];
         if (!element.attributes.hidden && (!element.attributes.listeners || element.attributes.listeners !== functionName)) {
-          this._cardsHiddenOnFormAction.push(index)
+          this._cardsHiddenOnFormAction.push(index);
         }
       }
 
@@ -174,7 +174,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
             this.cards[cardIndex].attributes.hidden = true;
           }
         );
-      }      
+      }
     } else if (isHideCard) {
       this.next();
       setTimeout(
@@ -196,7 +196,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
           this._cardShownOnFormAction = -1;
           this._cardsHiddenOnFormAction = [];
         }, 0
-      )
+      );
     } else if (isShowModal) {
       this.pageService.modalVisible();
       this.pageService.formHidden();
@@ -219,9 +219,9 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
           }
 
           this._cardShownOnFormAction = -1;
-          this._cardsHiddenOnFormAction = [];          
+          this._cardsHiddenOnFormAction = [];
         }, 0
-      )
+      );
     }
   }
 
@@ -237,7 +237,6 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this._page.hero) {
       this.hero = this._page.hero;
-      
     }
 
     if (this.page.cards) {
@@ -260,7 +259,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
         action => {
           this.onFormAction(action);
         }
-      )
+      );
 
     this.ready = true;
   }

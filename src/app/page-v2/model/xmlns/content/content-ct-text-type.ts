@@ -6,5 +6,5 @@ export interface KgwContentComplexTypeTexttype {
         text_color?: string;
         text_scale?: string;
         text_style?: string;
-    }
+    };
 }

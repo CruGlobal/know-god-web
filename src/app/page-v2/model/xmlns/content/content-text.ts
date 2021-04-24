@@ -1,4 +1,4 @@
-import { KgwContentComplexTypeText } from "./content-ct-text";
+import { KgwContentComplexTypeText } from './content-ct-text';
 
 export class KgwContentText {
     private _xmlNode: any;
@@ -6,9 +6,9 @@ export class KgwContentText {
     constructor(xmlNode: any) {
         this._xmlNode = xmlNode;
     }
-    
+
     parse(): KgwContentComplexTypeText {
-        let item:KgwContentComplexTypeText = {attributes:{}};
+        const item: KgwContentComplexTypeText = {attributes: {}};
 
         if (this._xmlNode.getAttribute('i18n-id')) {
             item.attributes.i18n_id = this._xmlNode.getAttribute('i18n-id');
@@ -29,28 +29,28 @@ export class KgwContentText {
             item.attributes.startImage = this._xmlNode.getAttribute('start-image');
         }
         if (this._xmlNode.getAttribute('start-image-size')) {
-            item.attributes.startImageSize = parseInt(this._xmlNode.getAttribute('start-image-size'));
+            item.attributes.startImageSize = parseInt(this._xmlNode.getAttribute('start-image-size'), 10);
         }
         if (this._xmlNode.getAttribute('end-image')) {
             item.attributes.startImage = this._xmlNode.getAttribute('end-image');
         }
         if (this._xmlNode.getAttribute('end-image-size')) {
-            item.attributes.startImageSize = parseInt(this._xmlNode.getAttribute('end-image-size'));
+            item.attributes.startImageSize = parseInt(this._xmlNode.getAttribute('end-image-size'), 10);
         }
         if (this._xmlNode.getAttribute('restrictTo')) {
-            var tValue = this._xmlNode.getAttribute('restrictTo') as string;
-            if (tValue && tValue.trim().length > 0){
+            const tValue = this._xmlNode.getAttribute('restrictTo') as string;
+            if (tValue && tValue.trim().length > 0) {
                 item.attributes.restrictTo = tValue.trim().split(' ');
             }
         }
         if (this._xmlNode.getAttribute('version')) {
-            item.attributes.version = parseInt(this._xmlNode.getAttribute('version'));
+            item.attributes.version = parseInt(this._xmlNode.getAttribute('version'), 10);
         }
-                
+
         if (this._xmlNode.textContent) {
             item.value = this._xmlNode.textContent.trim().replace(/(?:\r\n|\r|\n)/g, '<br>');
         }
-        
+
         return item;
     }
 }

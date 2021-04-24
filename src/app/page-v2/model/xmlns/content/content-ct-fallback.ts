@@ -1,7 +1,5 @@
-import { KgwContentElementItem } from "./content-element";
+import { KgwContentElementItem } from './content-element';
 
 export interface KgwContentComplexTypeFallback {
-
     children: Array<KgwContentElementItem>;
-
 }

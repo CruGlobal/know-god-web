@@ -11,7 +11,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class CalltoactionComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwTractComplexTypeCallToAction;
+  @Input() item: KgwTractComplexTypeCallToAction;
 
   text: KgwContentComplexTypeText;
   ready: boolean;
@@ -20,7 +20,7 @@ export class CalltoactionComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -48,7 +48,7 @@ export class CalltoactionComponent implements OnInit, OnChanges {
       this.text = this.item.text;
       if (this.text && this.text.value) {
         this.actionText = this.text.value.trim().replace(/<br\s*[\/]?>/gi, ' ');
-      }      
+      }
     }
     this.ready = true;
   }

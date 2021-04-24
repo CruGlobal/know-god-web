@@ -11,7 +11,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentTextComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   text: KgwContentComplexTypeText;
   ready: boolean;

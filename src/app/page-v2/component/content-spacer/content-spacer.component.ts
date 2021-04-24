@@ -11,7 +11,8 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentSpacerComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  // tslint:disable-next-line:no-input-rename
+  @Input() item: KgwContentElementItem;
 
   spacer: KgwContentComplexTypeSpacer;
   ready: boolean;
@@ -21,7 +22,7 @@ export class ContentSpacerComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 

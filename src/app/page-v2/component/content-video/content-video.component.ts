@@ -11,7 +11,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentVideoComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   video: KgwContentComplexTypeVideo;
   ready: boolean;
@@ -19,7 +19,7 @@ export class ContentVideoComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 

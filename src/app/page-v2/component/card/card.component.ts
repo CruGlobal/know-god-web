@@ -14,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class CardComponent implements OnInit, OnChanges {
 
-  @Input('card') card : KgwTractComplexTypeCard;
+  @Input() card: KgwTractComplexTypeCard;
 
   ready: boolean;
   label: KgwContentComplexTypeTextchild;
@@ -27,7 +27,7 @@ export class CardComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isModal$ = this.pageService.isModal$;
@@ -68,20 +68,20 @@ export class CardComponent implements OnInit, OnChanges {
       this.card.content.forEach(
         contentChild => {
           if (contentChild.contentType === 'paragraph') {
-            var tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+            const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
             if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
-              let tItemToAdd: KgwContentElementItem = {
+              const tItemToAdd: KgwContentElementItem = {
                 type: 'paragraph',
                 element: tParagraph
               };
               this.content.push(tItemToAdd);
             }
           } else if (contentChild.contentType === 'form') {
-            var tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
-            let tItemToAdd: KgwContentElementItem = {
+            const tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+            const tItemToAdd: KgwContentElementItem = {
               type: 'form',
               element: tForm
-            };            
+            };
             this.content.push(tItemToAdd);
           }
         }

@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input('hero') hero : KgwTractComplexTypePageHero;
+  @Input() hero: KgwTractComplexTypePageHero;
 
   private _unsubscribeAll: Subject<any>;
 
@@ -73,20 +73,20 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
       this.hero.content.forEach(
         contentChild => {
           if (contentChild.contentType === 'paragraph') {
-            var tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+            const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
             if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
-              let tItemToAdd: KgwContentElementItem = {
+              const tItemToAdd: KgwContentElementItem = {
                 type: 'paragraph',
                 element: tParagraph
               };
               this.content.push(tItemToAdd);
             }
           } else if (contentChild.contentType === 'form') {
-            var tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
-            let tItemToAdd: KgwContentElementItem = {
+            const tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+            const tItemToAdd: KgwContentElementItem = {
               type: 'form',
               element: tForm
-            };            
+            };
             this.content.push(tItemToAdd);
           }
         }

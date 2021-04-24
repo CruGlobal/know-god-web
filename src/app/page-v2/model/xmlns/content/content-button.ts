@@ -1,6 +1,6 @@
-import { KgwAnalyticsEvents } from "../analytics/analytics-events";
-import { KgwContentComplexTypeButton } from "./content-ct-button";
-import { KgwContentText } from "./content-text";
+import { KgwAnalyticsEvents } from '../analytics/analytics-events';
+import { KgwContentComplexTypeButton } from './content-ct-button';
+import { KgwContentText } from './content-text';
 
 export class KgwContentButton {
     private _xmlNode: any;
@@ -8,9 +8,9 @@ export class KgwContentButton {
     constructor(xmlNode: any) {
         this._xmlNode = xmlNode;
     }
-    
+
     parse(): KgwContentComplexTypeButton {
-        let item:KgwContentComplexTypeButton = {attributes:{}};
+        const item: KgwContentComplexTypeButton = {attributes: {}};
 
         if (this._xmlNode.getAttribute('type')) {
             item.attributes.type = this._xmlNode.getAttribute('type');
@@ -34,28 +34,28 @@ export class KgwContentButton {
             item.attributes.backgroundColor = this._xmlNode.getAttribute('background-color');
         }
         if (this._xmlNode.getAttribute('restrictTo')) {
-            var tValue = this._xmlNode.getAttribute('restrictTo') as string;
-            if (tValue && tValue.trim().length > 0){
+            const tValue = this._xmlNode.getAttribute('restrictTo') as string;
+            if (tValue && tValue.trim().length > 0) {
                 item.attributes.restrictTo = tValue.trim().split(' ');
             }
         }
         if (this._xmlNode.getAttribute('version')) {
-            item.attributes.version = parseInt(this._xmlNode.getAttribute('version'));
+            item.attributes.version = parseInt(this._xmlNode.getAttribute('version'), 10);
         }
 
         if (this._xmlNode.childNodes && this._xmlNode.childNodes.length) {
             for (let i = 0; i < this._xmlNode.childNodes.length; i++) {
-                let cNode = this._xmlNode.childNodes[i];
+                const cNode = this._xmlNode.childNodes[i];
                 if (cNode.nodeName === 'content:text') {
-                    let tNode = new KgwContentText(cNode);
+                    const tNode = new KgwContentText(cNode);
                     item.text = tNode.parse();
                 } else if (cNode.nodeName === 'analytics:events') {
-                    let tNode = new KgwAnalyticsEvents(cNode);
+                    const tNode = new KgwAnalyticsEvents(cNode);
                     item.events = tNode.parse();
                 }
             }
         }
-      
+
         return item;
     }
 }

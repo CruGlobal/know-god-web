@@ -1,5 +1,5 @@
-import { KgwContentTextchild } from "../content/content-textchild";
-import { KgwTractComplexTypePageHeader } from "./tract-ct-page-header";
+import { KgwContentTextchild } from '../content/content-textchild';
+import { KgwTractComplexTypePageHeader } from './tract-ct-page-header';
 
 export class KgwTractPageHeader {
     private _xmlNode: any;
@@ -7,9 +7,9 @@ export class KgwTractPageHeader {
     constructor(xmlNode: any) {
         this._xmlNode = xmlNode;
     }
-    
+
     parse(): KgwTractComplexTypePageHeader {
-        let item:KgwTractComplexTypePageHeader = {attributes:{}};
+        const item: KgwTractComplexTypePageHeader = {attributes: {}};
 
         if (this._xmlNode.getAttribute('training:tip')) {
             item.attributes.tip = this._xmlNode.getAttribute('training:tip');
@@ -21,17 +21,17 @@ export class KgwTractPageHeader {
 
         if (this._xmlNode.childNodes && this._xmlNode.childNodes.length) {
             for (let i = 0; i < this._xmlNode.childNodes.length; i++) {
-                let cNode = this._xmlNode.childNodes[i];
+                const cNode = this._xmlNode.childNodes[i];
                 if (cNode.nodeName === 'number') {
                     if (
                         cNode.getElementsByTagName('content:text') &&
                         cNode.getElementsByTagName('content:text').length > 0
                       ) {
-                        let tNode = cNode.getElementsByTagName('content:text')[0];
-                        item.number = parseInt(tNode.textContent.trim());
-                    }               
+                        const tNode = cNode.getElementsByTagName('content:text')[0];
+                        item.number = parseInt(tNode.textContent.trim(), 10);
+                    }
                 } else if (cNode.nodeName === 'title') {
-                    let node:KgwContentTextchild = new KgwContentTextchild(cNode);
+                    const node: KgwContentTextchild = new KgwContentTextchild(cNode);
                     item.title = node.parse();
                 }
             }

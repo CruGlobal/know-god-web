@@ -10,8 +10,8 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentParagraphComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
-  
+  @Input() item: KgwContentElementItem;
+
   paragraph: KgwContentComplexTypeParagraph;
   ready: boolean;
   items: Array<KgwContentElementItem>;

@@ -13,8 +13,8 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ModalComponent implements OnInit, OnChanges {
 
-  @Input('modal') modal : KgwTractComplexTypeModal;
-  
+  @Input() modal: KgwTractComplexTypeModal;
+
   ready: boolean;
   title: KgwContentComplexTypeTextchild;
   content: Array<KgwContentElementItem>;
@@ -23,7 +23,7 @@ export class ModalComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -62,9 +62,9 @@ export class ModalComponent implements OnInit, OnChanges {
       this.modal.content.forEach(
         contentChild => {
           if (contentChild.contentType === 'paragraph') {
-            var tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+            const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
             if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
-              let tItemToAdd: KgwContentElementItem = {
+              const tItemToAdd: KgwContentElementItem = {
                 type: 'paragraph',
                 element: tParagraph
               };

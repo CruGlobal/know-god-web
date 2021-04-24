@@ -11,7 +11,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentImageComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   image: KgwContentComplexTypeImage;
   ready: boolean;
@@ -20,7 +20,7 @@ export class ContentImageComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
   }
 

@@ -12,11 +12,11 @@ export class KgwManifestPage {
     }
 
     parse(): KgwManifestComplexTypePage {
-        let item:KgwManifestComplexTypePage = {src: ''};
+        const item: KgwManifestComplexTypePage = {src: ''};
 
         if (this._xmlNode.getAttribute('filename')) {
             item.filename = this._xmlNode.getAttribute('filename');
-        }        
+        }
 
         if (this._xmlNode.getAttribute('src')) {
             item.src = this._xmlNode.getAttribute('src');

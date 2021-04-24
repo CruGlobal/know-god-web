@@ -11,7 +11,8 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentAnimationComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  // tslint:disable-next-line:no-input-rename
+  @Input() item: KgwContentElementItem;
 
   animation: KgwContentComplexTypeAnimation;
   ready: boolean;
@@ -19,7 +20,7 @@ export class ContentAnimationComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 

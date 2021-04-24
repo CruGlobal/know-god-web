@@ -12,7 +12,8 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentTabsComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  // tslint:disable-next-line:no-input-rename
+  @Input() item: KgwContentElementItem;
 
   tabs: KgwContentComplexTypeTabs;
   content: Array<KgwContentComplexTypeTab>;
@@ -21,7 +22,7 @@ export class ContentTabsComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -48,7 +49,7 @@ export class ContentTabsComponent implements OnInit, OnChanges {
   trackByFn(index, item) {
     return index;
   }
-  
+
   private init(): void {
     if (this.tabs.tabs && this.tabs.tabs.length) {
       this.tabs.tabs.forEach(
@@ -58,7 +59,7 @@ export class ContentTabsComponent implements OnInit, OnChanges {
         }
       );
     }
-    
+
     this.ready = true;
   }
 

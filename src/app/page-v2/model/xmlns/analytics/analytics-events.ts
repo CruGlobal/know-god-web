@@ -1,5 +1,5 @@
-import { KgwAnalyticsComplexTypeEvents } from "./analytics-ct-events";
-import { KgwAnalyticsEvent } from "./analytics-event";
+import { KgwAnalyticsComplexTypeEvents } from './analytics-ct-events';
+import { KgwAnalyticsEvent } from './analytics-event';
 
 export class KgwAnalyticsEvents {
     private _xmlNode: any;
@@ -9,18 +9,18 @@ export class KgwAnalyticsEvents {
     }
 
     parse(): KgwAnalyticsComplexTypeEvents {
-        let item:KgwAnalyticsComplexTypeEvents = {children:[]};
+        const item: KgwAnalyticsComplexTypeEvents = {children: []};
 
         if (this._xmlNode.childNodes && this._xmlNode.childNodes.length) {
             for (let i = 0; i < this._xmlNode.childNodes.length; i++) {
-                let cNode = this._xmlNode.childNodes[i];
+                const cNode = this._xmlNode.childNodes[i];
                 if (cNode.nodeName === 'analytics:event') {
-                    let tNode = new KgwAnalyticsEvent(cNode);
+                    const tNode = new KgwAnalyticsEvent(cNode);
                     item.children.push(tNode.parse());
                 }
             }
         }
-    
+
         return item;
-    }    
+    }
 }

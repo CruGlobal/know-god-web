@@ -1,9 +1,9 @@
 
-import { KgwContentComplexTypeTextchild } from "../content/content-ct-text-child";
-import { KgwManifestComplexTypeCategory } from "./manifest-ct-category";
-import { KgwManifestComplexTypePage } from "./manifest-ct-page";
-import { KgwManifestComplexTypeResource } from "./manifest-ct-resource";
-import { KgwManifestComplexTypeTip } from "./manifest-ct-tip";
+import { KgwContentComplexTypeTextchild } from '../content/content-ct-text-child';
+import { KgwManifestComplexTypeCategory } from './manifest-ct-category';
+import { KgwManifestComplexTypePage } from './manifest-ct-page';
+import { KgwManifestComplexTypeResource } from './manifest-ct-resource';
+import { KgwManifestComplexTypeTip } from './manifest-ct-tip';
 
 export interface KgwManifestComplexTypeManifest {
     title?: KgwContentComplexTypeTextchild;
@@ -11,7 +11,6 @@ export interface KgwManifestComplexTypeManifest {
     pages?: KgwManifestComplexTypePage[];
     resources?: KgwManifestComplexTypeResource[];
     tips?: KgwManifestComplexTypeTip[];
-
     attributes: {
         tool?: string;
         locale?: string;
@@ -30,5 +29,5 @@ export interface KgwManifestComplexTypeManifest {
         dismissListeners?: string;
         controlColor?: string;
         cardBackgroundColor?: string;
-    }
+    };
 }

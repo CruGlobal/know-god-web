@@ -1,4 +1,4 @@
-import { KgwContentComplexTypeText } from "../content/content-ct-text";
+import { KgwContentComplexTypeText } from '../content/content-ct-text';
 
 export interface KgwTractComplexTypeCallToAction {
     text?: KgwContentComplexTypeText;
@@ -6,5 +6,5 @@ export interface KgwTractComplexTypeCallToAction {
         events?: any;
         controlColor?: string;
         tip?: string;
-    }
+    };
 }

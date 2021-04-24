@@ -31,7 +31,7 @@ export class PageV2Component implements OnInit, OnDestroy {
   private _pageBookLoaded: boolean;
   private _pageBook: any;
   private _pageBookIndex: any;
-  private _pageBookMainfest:KgwManifest;
+  private _pageBookMainfest: KgwManifest;
   private _pageBookMainfestLoaded: boolean;
   private _pageBookTranslations: Array<any>;
   private _pageBookTranslationId: number;
@@ -58,7 +58,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     private pageService: PageService,
     private route: ActivatedRoute,
     public router: Router
-  ) {    
+  ) {
     this._pageParams = {
       langid: '',
       bookid: ''
@@ -69,17 +69,10 @@ export class PageV2Component implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    const RIGHT_ARROW = 39;
-    const LEFT_ARROW = 37;
-
-    if (
-      event.keyCode === RIGHT_ARROW
-    ) {
-      this.onNextPage();
-    }
-
-    if (event.keyCode === LEFT_ARROW) {
+    if (event.key === 'ArrowLeft') {
       this.onPreviousPage();
+    } else if (event.key === 'ArrowRight') {
+      this.onNextPage();
     }
   }
 
@@ -96,8 +89,8 @@ export class PageV2Component implements OnInit, OnDestroy {
   }
 
   selectLanguage(lang): void {
-    this.router.navigate([lang.attributes.code, this._pageParams.bookid, '0'])
-    return; 
+    this.router.navigate([lang.attributes.code, this._pageParams.bookid, '0']);
+    return;
   }
 
   onToggleLanaguageSelect(): void {
@@ -105,41 +98,43 @@ export class PageV2Component implements OnInit, OnDestroy {
   }
 
   private onPreviousPage(): void {
-    if (this._pageParams.pageid > 0){
-      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, this._pageParams.pageid-1]);
+    if (this._pageParams.pageid > 0) {
+      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, this._pageParams.pageid - 1]);
     }
   }
 
   private onNextPage(): void {
-    if ((this._pageParams.pageid+1) < this._pageBookSubPagesManifest.length){
-      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, this._pageParams.pageid+1]);
+    if ((this._pageParams.pageid + 1) < this._pageBookSubPagesManifest.length) {
+      this.router.navigate([this._pageParams.langid, this._pageParams.bookid, this._pageParams.pageid + 1]);
     }
   }
 
   private getImage(resource): string {
-    if (resource == undefined || resource == '' || resource == null) return '';
+    if (resource === undefined || resource === '' || resource === null) {
+      return '';
+    }
 
-    if (this._pageBookIndex != undefined && this._pageBookIndex != null) {
-      var attachments = this._pageBookIndex.included.filter(
+    if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
+      const attachments = this._pageBookIndex.included.filter(
         row => {
           if (
-            row.type.toLowerCase() == 'attachment' &&
-            row.attributes['file-file-name'].toLowerCase() ==
-              resource.toLowerCase()
-          )
+            row.type.toLowerCase() === 'attachment' &&
+            row.attributes['file-file-name'].toLowerCase() === resource.toLowerCase()
+          ) {
             return true;
-          else 
+          } else {
             return false;
+          }
         }
       );
 
-      if (attachments.length == 0) {
+      if (attachments.length === 0) {
         return '';
       }
 
-      var filename = attachments[0].attributes.file;
+      const filename = attachments[0].attributes.file;
 
-      let link = document.createElement('link');
+      const link = document.createElement('link');
       link.href = filename;
       link.rel = 'prefetch';
       document.getElementsByTagName('head')[0].appendChild(link);
@@ -149,33 +144,33 @@ export class PageV2Component implements OnInit, OnDestroy {
     }
   }
 
-  private loadBookPage(page:KgwManifestComplexTypePage, pageorder:number): void {    
+  private loadBookPage(page: KgwManifestComplexTypePage, pageorder: number): void {
     this.commonService
       .downloadFile(
         APIURL.GET_XML_FILES_FOR_MANIFEST + this._pageBookTranslationId + '/' + page.src
       )
       .subscribe((data: any) => {
-        let enc = new TextDecoder('utf-8');
-        let arr = new Uint8Array(data);
-        let result = enc.decode(arr);
+        const enc = new TextDecoder('utf-8');
+        const arr = new Uint8Array(data);
+        const result = enc.decode(arr);
 
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'application/xml');
 
-        let _tTract: KgwTract = new KgwTract(result);
+        const _tTract: KgwTract = new KgwTract(result);
         _tTract.pagename = page.filename;
         _tTract.pageorder = pageorder;
         _tTract.parseXml();
         if (_tTract && _tTract.page) {
-          var _tTractImages = _tTract.getImageResources();
-          if (_tTractImages && _tTractImages.length){
+          const _tTractImages = _tTract.getImageResources();
+          if (_tTractImages && _tTractImages.length) {
             _tTractImages.forEach(
               image => {
                 this.getImage(image);
               }
             );
           }
-          
+
           this._pageBookSubPages.push(_tTract);
 
           if (
@@ -185,10 +180,10 @@ export class PageV2Component implements OnInit, OnDestroy {
             this.showPage(_tTract);
           }
         }
-      });    
+      });
   }
 
-  private loadTip(tip:KgwManifestComplexTypeTip): void {
+  private loadTip(tip: KgwManifestComplexTypeTip): void {
     this.commonService
     .downloadFile(
       APIURL.GET_XML_FILES_FOR_MANIFEST + this._pageBookTranslationId + '/' + tip.src
@@ -199,49 +194,49 @@ export class PageV2Component implements OnInit, OnDestroy {
     )
     .subscribe(
       data => {
-        let enc = new TextDecoder('utf-8');
-        let arr = new Uint8Array(data);
-        let result = enc.decode(arr);
+        const enc = new TextDecoder('utf-8');
+        const arr = new Uint8Array(data);
+        const result = enc.decode(arr);
 
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'application/xml');
-        let _tTraining: KgwTraining = new KgwTraining(result);
+        const _tTraining: KgwTraining = new KgwTraining(result);
         _tTraining.id = tip.id;
         _tTraining.parseXml();
         if (_tTraining && _tTraining.pages && _tTraining.pages.length) {
-          var _tTrainingImages = _tTraining.getImageResources();
-          if (_tTrainingImages && _tTrainingImages.length){
+          const _tTrainingImages = _tTraining.getImageResources();
+          if (_tTrainingImages && _tTrainingImages.length) {
             _tTrainingImages.forEach(
               image => {
                 this.getImage(image);
               }
             );
-          }          
+          }
         }
         this._pageBookTips.push(_tTraining);
       }
-    )
+    );
   }
 
-  private loadBookManifestXML(): void {  
-    this.pageService.clear();  
-    var item:any = {};
+  private loadBookManifestXML(): void {
+    this.pageService.clear();
+    let item: any = {};
     this._pageBookTranslations.forEach(
       translation => {
         if (
           translation &&
           translation.relationships &&
-          translation.relationships.language && 
-          translation.relationships.language.data &&          
-          translation.relationships.language.data.id &&       
-          translation.relationships.language.data.id  == this._selectedLanguage.id
+          translation.relationships.language &&
+          translation.relationships.language.data &&
+          translation.relationships.language.data.id &&
+          translation.relationships.language.data.id  === this._selectedLanguage.id
         ) {
           item = translation;
           return;
         }
       }
     );
-   
+
     if (
       item &&
       item.id &&
@@ -264,9 +259,9 @@ export class PageV2Component implements OnInit, OnDestroy {
         )
         .subscribe(
           data => {
-            let enc = new TextDecoder('utf-8');
-            let arr = new Uint8Array(data);
-            let result = enc.decode(arr);
+            const enc = new TextDecoder('utf-8');
+            const arr = new Uint8Array(data);
+            const result = enc.decode(arr);
             this._pageBookMainfest = new KgwManifest(result);
             this._pageBookMainfest.parseXml();
             this._pageBookTranslationId = translationid;
@@ -302,8 +297,8 @@ export class PageV2Component implements OnInit, OnDestroy {
                 this._pageBookMainfest.manifest.tips.forEach(
                   tTip => {
                     this._pageBookTipsManifest.push(tTip);
-                    //You can enable tips to be loaded by uncommenting the following line
-                    //this.loadTip(tTip);
+                    // You can enable tips to be loaded by uncommenting the following line
+                    // this.loadTip(tTip);
                   }
                 );
             }
@@ -329,12 +324,12 @@ export class PageV2Component implements OnInit, OnDestroy {
             languageTranslations.forEach(
               languageTranslation => {
                 this._pageBookTranslations.forEach(
-                  pageBookTranslation => {                    
-                    if (languageTranslation.id == pageBookTranslation.id) {
+                  pageBookTranslation => {
+                    if (languageTranslation.id === pageBookTranslation.id) {
                       isLanguageForSelectedBook = true;
                       return;
                     }
-                  }                  
+                  }
                 );
                 if (isLanguageForSelectedBook) {
                   return;
@@ -350,7 +345,7 @@ export class PageV2Component implements OnInit, OnDestroy {
       );
     }
 
-    if (this.checkIfPreSelectedLanguageExists()){
+    if (this.checkIfPreSelectedLanguageExists()) {
       this.loadBookManifestXML();
     } else {
       this.bookNotAvailableInLanguage = true;
@@ -367,13 +362,13 @@ export class PageV2Component implements OnInit, OnDestroy {
         takeUntil(this._pageChanged)
       )
       .subscribe(
-        (data:any) => {
-          let enc = new TextDecoder('utf-8');
-          let arr = new Uint8Array(data);
-          let result = enc.decode(arr);
-          let jsonResource = JSON.parse(result);
+        (data: any) => {
+          const enc = new TextDecoder('utf-8');
+          const arr = new Uint8Array(data);
+          const result = enc.decode(arr);
+          const jsonResource = JSON.parse(result);
           this._pageBookIndex = jsonResource;
-          
+
           if (
             jsonResource &&
             jsonResource.data &&
@@ -389,9 +384,9 @@ export class PageV2Component implements OnInit, OnDestroy {
 
               if (
                 jsonResource.data.relationships &&
-                jsonResource.data.relationships['latest-translations'] &&                
+                jsonResource.data.relationships['latest-translations'] &&
                 jsonResource.data.relationships['latest-translations'].data
-              ) {                
+              ) {
                 const tPageBookRequiredTranslations = jsonResource.data.relationships['latest-translations'].data;
                 if (
                   tPageBookRequiredTranslations &&
@@ -402,12 +397,13 @@ export class PageV2Component implements OnInit, OnDestroy {
                   const tIncluded = jsonResource.included;
                   tPageBookRequiredTranslations.forEach(
                     pageBookTranslationItem => {
-                      let translations = tIncluded.filter(
+                      const translations = tIncluded.filter(
                         row => {
-                          if (row.type == 'translation' && row.id == pageBookTranslationItem.id)
+                          if (row.type === 'translation' && row.id === pageBookTranslationItem.id) {
                             return true;
-                          else
-                            return false;                          
+                          } else {
+                            return false;
+                          }
                         }
                       );
                       if (translations && translations.length > 0) {
@@ -421,7 +417,7 @@ export class PageV2Component implements OnInit, OnDestroy {
                   );
                 }
               }
-              
+
               this.selectedBookName = jsonResource.data.attributes['name'];
 
               this.getAvailableLanguagesForSelectedBook();
@@ -430,14 +426,14 @@ export class PageV2Component implements OnInit, OnDestroy {
             this.loaderService.display(false);
           }
         }
-      )
+      );
   }
 
   private loadPageBook(): void {
     this._pageBook = {};
 
     this._books.forEach(x => {
-      if (x.attributes.abbreviation == this._pageParams.bookid) {
+      if (x.attributes.abbreviation === this._pageParams.bookid) {
         this._pageBook = x;
       }
     });
@@ -464,7 +460,7 @@ export class PageV2Component implements OnInit, OnDestroy {
           } else {
             this.bookNotAvailable = true;
             this.loaderService.display(false);
-          }          
+          }
         }
       );
   }
@@ -492,34 +488,34 @@ export class PageV2Component implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach(
       lang => {
-        if (lang && lang.attributes && lang.attributes['code'] && lang.attributes['code'] == this._pageParams.langid) {
+        if (lang && lang.attributes && lang.attributes['code'] && lang.attributes['code'] === this._pageParams.langid) {
           this._selectedLanguage = lang;
           this.selectedLang = lang.attributes.name;
           this.pageService.setDir(lang.attributes.direction);
         }
       }
-    );    
+    );
   }
 
   private checkIfPreSelectedLanguageExists(): boolean {
     if (this._selectedLanguage && this._selectedLanguage.id) {
-      let x = this._pageBookTranslations.find(
+      const y = this._pageBookTranslations.find(
         x => {
-          return x.relationships && 
+          return x.relationships &&
             x.relationships.language &&
             x.relationships.language.data &&
             x.relationships.language.data.id &&
-            x.relationships.language.data.id == this._selectedLanguage.id;
+            x.relationships.language.data.id === this._selectedLanguage.id;
           }
       );
-      return x && x.id;
+      return y && y.id;
     } else {
       return false;
     }
   }
 
   private awaitPageChanged(): void {
-    this._pageChanged    
+    this._pageChanged
       .pipe(
         takeUntil(this._unsubscribeAll),
         delay(0)
@@ -547,7 +543,7 @@ export class PageV2Component implements OnInit, OnDestroy {
               }
 
               if (this._pageBookSubPagesManifest && this._pageBookSubPagesManifest.length > this._pageParams.pageid) {
-                let tSubPageManifest = this._pageBookMainfest[this._pageParams.pageid];
+                const tSubPageManifest = this._pageBookMainfest[this._pageParams.pageid];
                 if (tSubPageManifest) {
                   this.pagesLoaded = false;
                   this.loaderService.display(true);
@@ -559,10 +555,10 @@ export class PageV2Component implements OnInit, OnDestroy {
 
             this.loaderService.display(true);
             this.clearData();
-            this.getAllBooks();            
+            this.getAllBooks();
           }
         }
-      )
+      );
   }
 
   private awaitPageParameters(): void {
@@ -572,9 +568,9 @@ export class PageV2Component implements OnInit, OnDestroy {
 
         let bookChanged = false;
         if (this._pageParams.langid !== params['langid']) {
-          bookChanged = true
+          bookChanged = true;
         } else if (this._pageParams.bookid !== params['bookid']) {
-          bookChanged = true
+          bookChanged = true;
         }
 
         if (!bookChanged) {
@@ -639,15 +635,15 @@ export class PageV2Component implements OnInit, OnDestroy {
                 }
               }
             };
-            this.commonService.createSubscriber(subscriberData).pipe(takeUntil(this._unsubscribeAll)).subscribe(); 
-          }            
+            this.commonService.createSubscriber(subscriberData).pipe(takeUntil(this._unsubscribeAll)).subscribe();
+          }
         }
-      )
+      );
   }
 
   private clearData(): void {
     this._booksLoaded = false;
-    this._books = []
+    this._books = [];
     this._pageBookLoaded = false;
     this._pageBook = {};
     this._pageBookIndex = {};
@@ -658,7 +654,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     this._pageBookSubPagesManifest = [];
     this._pageBookSubPages = [];
     this.availableLanguages = [];
-    this.selectedBookName = "";
+    this.selectedBookName = '';
     this.languagesVisible = false;
     this.activePage = null;
     this.activePageOrder = 0;
@@ -667,13 +663,13 @@ export class PageV2Component implements OnInit, OnDestroy {
     this.bookNotAvailable = false;
   }
 
-  private showPage(page:KgwTract): void {
+  private showPage(page: KgwTract): void {
     this.activePageOrder = page.pageorder;
     this.activePage = page.page;
     this.awaitPageNavigation();
-    setTimeout(()=>{
+    setTimeout(() => {
       this.pagesLoaded = true;
       this.loaderService.display(false);
-    }, 0);       
+    }, 0);
   }
 }

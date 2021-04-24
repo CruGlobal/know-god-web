@@ -12,7 +12,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentInputComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   input: KgwContentComplexTypeInput;
   label: KgwContentComplexTypeTextchild;
@@ -28,7 +28,7 @@ export class ContentInputComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -72,7 +72,7 @@ export class ContentInputComponent implements OnInit, OnChanges {
         this.placeholderText = this.placeholder.text.value.trim();
       }
     }
-  
+
     this.required = this.input.attributes.required;
     this.value = this.input.attributes.value;
     this.name = this.input.attributes.name;

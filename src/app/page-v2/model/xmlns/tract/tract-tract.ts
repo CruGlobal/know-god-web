@@ -1,13 +1,13 @@
 
-import { KgwContentComplexTypeImage } from "../content/content-ct-image";
-import { KgwContentComplexTypeTabs } from "../content/content-ct-tabs";
-import { KgwContentElementItem } from "../content/content-element";
-import { KgwTractCallToAction } from "./tract-call-to-action";
-import { KgwTractCard } from "./tract-card";
-import { KgwTractComplexTypePage } from "./tract-ct-page";
-import { KgwTractModal } from "./tract-modal";
-import { KgwTractPageHeader } from "./tract-page-header";
-import { KgwTractPageHero } from "./tract-page-hero";
+import { KgwContentComplexTypeImage } from '../content/content-ct-image';
+import { KgwContentComplexTypeTabs } from '../content/content-ct-tabs';
+import { KgwContentElementItem } from '../content/content-element';
+import { KgwTractCallToAction } from './tract-call-to-action';
+import { KgwTractCard } from './tract-card';
+import { KgwTractComplexTypePage } from './tract-ct-page';
+import { KgwTractModal } from './tract-modal';
+import { KgwTractPageHeader } from './tract-page-header';
+import { KgwTractPageHero } from './tract-page-hero';
 
 export class KgwTract {
     private _xmlString: string;
@@ -22,8 +22,8 @@ export class KgwTract {
     public parseXml(): void {
       this.page = {attributes: {}};
       const parser = new DOMParser();
-      const xml:any = parser.parseFromString(this._xmlString, 'application/xml');
-      let tNode = xml.childNodes[0];
+      const xml: any = parser.parseFromString(this._xmlString, 'application/xml');
+      const tNode = xml.childNodes[0];
 
       if (tNode.getAttribute('primary-color')) {
         this.page.attributes.primaryColor = tNode.getAttribute('primary-color');
@@ -60,20 +60,20 @@ export class KgwTract {
       }
 
       for (let i = 0; i < tNode.childNodes.length; i++) {
-        let cNode = tNode.childNodes[i];
+        const cNode = tNode.childNodes[i];
         if (cNode.nodeName === 'header') {
-          let t:KgwTractPageHeader = new KgwTractPageHeader(cNode);
+          const t: KgwTractPageHeader = new KgwTractPageHeader(cNode);
           this.page.header = t.parse();
         } else if (cNode.nodeName === 'hero') {
-          let t:KgwTractPageHero = new KgwTractPageHero(cNode);
+          const t: KgwTractPageHero = new KgwTractPageHero(cNode);
           this.page.hero = t.parse();
         } else if (cNode.nodeName === 'cards') {
           this.page.cards = [];
           if (cNode.childNodes && cNode.childNodes.length) {
             for (let j = 0; j < cNode.childNodes.length; j++) {
-              let ccNode = cNode.childNodes[j];
+              const ccNode = cNode.childNodes[j];
               if (ccNode.nodeName === 'card') {
-                let t:KgwTractCard = new KgwTractCard(ccNode);
+                const t: KgwTractCard = new KgwTractCard(ccNode);
                 this.page.cards.push(t.parse());
               }
             }
@@ -82,26 +82,26 @@ export class KgwTract {
           this.page.modals = [];
           if (cNode.childNodes && cNode.childNodes.length) {
             for (let j = 0; j < cNode.childNodes.length; j++) {
-              let ccNode = cNode.childNodes[j];
+              const ccNode = cNode.childNodes[j];
               if (ccNode.nodeName === 'modal') {
-                let t:KgwTractModal = new KgwTractModal(ccNode);
+                const t: KgwTractModal = new KgwTractModal(ccNode);
                 this.page.modals.push(t.parse());
               }
             }
           }
         } else if (cNode.nodeName === 'call-to-action') {
-          let t:KgwTractCallToAction = new KgwTractCallToAction(cNode);
+          const t: KgwTractCallToAction = new KgwTractCallToAction(cNode);
           this.page.callToAction = t.parse();
         }
-      }      
+      }
     }
 
     public getImageResources(): string[] {
-      if (!this.page){
+      if (!this.page) {
         return [];
       }
 
-      var images = [] as string[];
+      const images = [] as string[];
 
       if (this.page.hero && this.page.hero.content && this.page.hero.content.length > 0) {
         this.page.hero.content.forEach(
@@ -109,12 +109,12 @@ export class KgwTract {
             if (element && element.children && element.children.length) {
               element.children.forEach(
                 child => {
-                  let tItem: KgwContentElementItem = child as KgwContentElementItem;
+                  const tItem: KgwContentElementItem = child as KgwContentElementItem;
                   if (tItem && tItem.type && tItem.type === 'image' && tItem.element) {
-                    let tImage = tItem.element as KgwContentComplexTypeImage;
+                    const tImage = tItem.element as KgwContentComplexTypeImage;
                     if (tImage && tImage.attributes && tImage.attributes.resource) {
                       images.push(tImage.attributes.resource);
-                    }                   
+                    }
                   }
                 }
               );
@@ -132,23 +132,23 @@ export class KgwTract {
                   if (element && element.children && element.children.length) {
                     element.children.forEach(
                       child => {
-                        let tItem: KgwContentElementItem = child as KgwContentElementItem;
+                        const tItem: KgwContentElementItem = child as KgwContentElementItem;
                         if (tItem && tItem.type && tItem.type === 'image' && tItem.element) {
-                          let tImage = tItem.element as KgwContentComplexTypeImage;
+                          const tImage = tItem.element as KgwContentComplexTypeImage;
                           if (tImage && tImage.attributes && tImage.attributes.resource) {
                             images.push(tImage.attributes.resource);
                           }
                         } else if (tItem && tItem.type && tItem.type === 'tabs' && tItem.element) {
-                          let tTab = tItem.element as KgwContentComplexTypeTabs;
+                          const tTab = tItem.element as KgwContentComplexTypeTabs;
                           if (tTab && tTab.tabs && tTab.tabs.length) {
                             tTab.tabs.forEach(
                               tab => {
                                 if (tab && tab.children && tab.children.length) {
                                   tab.children.forEach(
                                     tabChild => {
-                                      let tItem: KgwContentElementItem = tabChild as KgwContentElementItem;
-                                      if (tItem && tItem.type && tItem.type === 'image' && tItem.element) {
-                                        let tImage = tItem.element as KgwContentComplexTypeImage;
+                                      const tbItem: KgwContentElementItem = tabChild as KgwContentElementItem;
+                                      if (tbItem && tbItem.type && tbItem.type === 'image' && tbItem.element) {
+                                        const tImage = tbItem.element as KgwContentComplexTypeImage;
                                         if (tImage && tImage.attributes && tImage.attributes.resource) {
                                           images.push(tImage.attributes.resource);
                                         }
@@ -162,7 +162,7 @@ export class KgwTract {
                         }
                       }
                     );
-                  }                
+                  }
                 }
               );
             }
@@ -179,16 +179,16 @@ export class KgwTract {
                   if (element && element.children && element.children.length) {
                     element.children.forEach(
                       child => {
-                        let tItem: KgwContentElementItem = child as KgwContentElementItem;
+                        const tItem: KgwContentElementItem = child as KgwContentElementItem;
                         if (tItem && tItem.type && tItem.type === 'image' && tItem.element) {
-                          let tImage = tItem.element as KgwContentComplexTypeImage;
+                          const tImage = tItem.element as KgwContentComplexTypeImage;
                           if (tImage && tImage.attributes && tImage.attributes.resource) {
                             images.push(tImage.attributes.resource);
-                          }                   
+                          }
                         }
                       }
                     );
-                  }                
+                  }
                 }
               );
             }

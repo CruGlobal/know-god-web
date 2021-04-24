@@ -1,4 +1,4 @@
-import { KgwContentComplexTypeTextchild } from "./content-ct-text-child";
+import { KgwContentComplexTypeTextchild } from './content-ct-text-child';
 
 export class KgwContentTextchild {
 
@@ -9,14 +9,13 @@ export class KgwContentTextchild {
     }
 
     parse(): KgwContentComplexTypeTextchild {
-        let item:KgwContentComplexTypeTextchild = {text: { attributes: {}, value: ''}};
+        const item: KgwContentComplexTypeTextchild = {text: { attributes: {}, value: ''}};
 
         if (
             this._xmlNode.getElementsByTagName('content:text') &&
             this._xmlNode.getElementsByTagName('content:text').length > 0
-          ) 
-          {
-            let tNode = this._xmlNode.getElementsByTagName('content:text')[0];
+          ) {
+            const tNode = this._xmlNode.getElementsByTagName('content:text')[0];
 
             if (tNode.getAttribute('i18n-id')) {
                 item.text.attributes.i18n_id = tNode.getAttribute('i18n-id');
@@ -36,7 +35,7 @@ export class KgwContentTextchild {
 
             if (tNode.textContent) {
                 item.text.value = tNode.textContent.trim().replace(/(?:\r\n|\r|\n)/g, '<br>');
-            }            
+            }
         }
 
         return item;

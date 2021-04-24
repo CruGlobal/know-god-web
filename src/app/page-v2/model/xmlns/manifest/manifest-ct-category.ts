@@ -1,5 +1,5 @@
-import { KgwContentComplexTypeTextchild } from "../content/content-ct-text-child";
-import { KgwContentTextchild } from "../content/content-textchild";
+import { KgwContentComplexTypeTextchild } from '../content/content-ct-text-child';
+import { KgwContentTextchild } from '../content/content-textchild';
 
 export interface KgwManifestComplexTypeCategory {
     id: string;
@@ -7,7 +7,7 @@ export interface KgwManifestComplexTypeCategory {
     label: KgwContentComplexTypeTextchild;
     categoryElements?: {
         aem_tag?: any;
-    }    
+    };
 }
 
 export class KgwManifestCategory {
@@ -18,11 +18,11 @@ export class KgwManifestCategory {
     }
 
     parse(): KgwManifestComplexTypeCategory {
-        let item:KgwManifestComplexTypeCategory = {id: '', banner: '', label: {}};
+        const item: KgwManifestComplexTypeCategory = {id: '', banner: '', label: {}};
 
         if (this._xmlNode.getAttribute('id')) {
             item.id = this._xmlNode.getAttribute('id');
-        }        
+        }
 
         if (this._xmlNode.getAttribute('banner')) {
             item.banner = this._xmlNode.getAttribute('banner');
@@ -32,11 +32,11 @@ export class KgwManifestCategory {
             this._xmlNode.getElementsByTagName('label') &&
             this._xmlNode.getElementsByTagName('label').length > 0
           ) {
-            let tLabelNode = this._xmlNode.getElementsByTagName('label')[0];
-            let _t:KgwContentTextchild = new KgwContentTextchild(tLabelNode);
+            const tLabelNode = this._xmlNode.getElementsByTagName('label')[0];
+            const _t: KgwContentTextchild = new KgwContentTextchild(tLabelNode);
             item.label = _t.parse();
-            }
+        }
 
         return item;
-    }    
+    }
 }

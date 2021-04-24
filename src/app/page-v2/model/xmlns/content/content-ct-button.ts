@@ -1,11 +1,9 @@
-import { KgwAnalyticsComplexTypeEvents } from "../analytics/analytics-ct-events";
-import { KgwContentComplexTypeText } from "./content-ct-text";
+import { KgwAnalyticsComplexTypeEvents } from '../analytics/analytics-ct-events';
+import { KgwContentComplexTypeText } from './content-ct-text';
 
 export interface KgwContentComplexTypeButton {
-    
     text?: KgwContentComplexTypeText;
     events?: KgwAnalyticsComplexTypeEvents;
-
     attributes: {
         type?: string;
         events?: string;
@@ -16,6 +14,5 @@ export interface KgwContentComplexTypeButton {
         backgroundColor?: string;
         version?: number;
         restrictTo?: Array<string>;
-    }
-
+    };
 }

@@ -14,7 +14,7 @@ import { ContentInputComponent } from '../content-input/content-input.component'
 })
 export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
   @ViewChildren(ContentInputComponent) private _inputChildren: QueryList<ContentInputComponent>;
 
   private _unsubscribeAll = new Subject<any>();
@@ -26,7 +26,7 @@ export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -72,12 +72,12 @@ export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
       )
       .subscribe(
         () => {
-          
-          let emailFormInputs = [];
-          let emailFormData = {name:'', email: '', destination_id: ''};
+
+          const emailFormInputs = [];
+          const emailFormData = {name: '', email: '', destination_id: ''};
           this._inputChildren.forEach(
             (item, index) => {
-              switch(item.name) {
+              switch (item.name) {
                 case 'name':
                   emailFormData.name = item.value;
                   emailFormInputs.push(item);
@@ -97,9 +97,12 @@ export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
           );
 
           if (emailFormInputs.length === 3) {
-            setTimeout(() => {this.pageService.setEmailSignupFormData(emailFormData);}, 0);
+            setTimeout(
+              () => {
+                this.pageService.setEmailSignupFormData(emailFormData);
+              }, 0);
           }
         }
-      )
+      );
   }
 }

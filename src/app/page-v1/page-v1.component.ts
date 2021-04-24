@@ -128,7 +128,6 @@ export class PageV1Component implements OnInit, OnDestroy {
   };
 
   ngOnInit() {
-    console.log("[PAGE]: onInit");
     this.showLoader = false;
     this.loaderService.status.subscribe((val: boolean) => {
       this.showLoader = val;
@@ -219,18 +218,10 @@ export class PageV1Component implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    const RIGHT_ARROW = 39;
-    const LEFT_ARROW = 37;
-
-    if (
-      event.keyCode === RIGHT_ARROW &&
-      this.counter < this.allPages.length - 1
-    ) {
-      this.next();
-    }
-
-    if (event.keyCode === LEFT_ARROW && this.counter > 0) {
+    if (event.key === 'ArrowLeft' && this.counter > 0) {
       this.previous();
+    } else if (event.key === 'ArrowRight' && this.counter < this.allPages.length - 1) {
+      this.next();
     }
   }
 
@@ -1004,7 +995,7 @@ export class PageV1Component implements OnInit, OnDestroy {
           Object.entries(tab).forEach(([type, content]) => {
             switch (type) {
               case 'content:paragraph': {
-                if (!isArray(content)) {
+                if (!Array.isArray(content)) {
                   if (!this.isRestricted(content)) {
                     eachtab.tabList.push({
                       paragraph: content['content:text']
@@ -1022,7 +1013,7 @@ export class PageV1Component implements OnInit, OnDestroy {
                 break;
               }
               case 'content:image': {
-                if (!isArray(content)) {
+                if (!Array.isArray(content)) {
                   if (!this.isRestricted(content)) {
                     eachtab.tabList.push({ image: this.getImageName(content) });
                   }
@@ -1038,7 +1029,7 @@ export class PageV1Component implements OnInit, OnDestroy {
                 break;
               }
               case 'content:text': {
-                if (!isArray(content)) {
+                if (!Array.isArray(content)) {
                   eachtab.tabList.push({ text: content });
                 } else {
                   Object.entries(content).forEach((tabtext) => {

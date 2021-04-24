@@ -12,7 +12,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentAccordionComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  @Input() item: KgwContentElementItem;
 
   accordion: KgwContentComplexTypeAccordion;
   sections: Array<KgwContentComplexTypeAccordionSection>;
@@ -21,7 +21,7 @@ export class ContentAccordionComponent implements OnInit, OnChanges {
 
   constructor(
     private pageService: PageService
-  ) { 
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 

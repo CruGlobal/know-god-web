@@ -1,9 +1,9 @@
-import { KgwContentTextchild } from "../content/content-textchild";
-import { KgwManifestCategory } from "./manifest-ct-category";
-import { KgwManifestComplexTypeManifest } from "./manifest-ct-manifest";
-import { KgwManifestPage } from "./manifest-ct-page";
-import { KgwManifestResource } from "./manifest-ct-resource";
-import { KgwManifestTip } from "./manifest-ct-tip";
+import { KgwContentTextchild } from '../content/content-textchild';
+import { KgwManifestCategory } from './manifest-ct-category';
+import { KgwManifestComplexTypeManifest } from './manifest-ct-manifest';
+import { KgwManifestPage } from './manifest-ct-page';
+import { KgwManifestResource } from './manifest-ct-resource';
+import { KgwManifestTip } from './manifest-ct-tip';
 
 export class KgwManifest {
     private _xmlString: string;
@@ -16,8 +16,8 @@ export class KgwManifest {
 
     public parseXml(): void {
         const parser = new DOMParser();
-        const xml:any = parser.parseFromString(this._xmlString, 'application/xml');
-        let tNode = xml.childNodes[0];
+        const xml: any = parser.parseFromString(this._xmlString, 'application/xml');
+        const tNode = xml.childNodes[0];
 
         if (tNode.getAttribute('tool')) {
           this.manifest.attributes['tool'] = tNode.getAttribute('tool');
@@ -72,51 +72,51 @@ export class KgwManifest {
         }
 
         for (let i = 0; i < tNode.childNodes.length; i++) {
-          let cNode = tNode.childNodes[i];
+          const cNode = tNode.childNodes[i];
           if ( cNode.nodeName === 'title') {
-              let t:KgwContentTextchild = new KgwContentTextchild(cNode);
+            const t: KgwContentTextchild = new KgwContentTextchild(cNode);
               this.manifest.title = t.parse();
           } else if ( cNode.nodeName === 'categories') {
-            this.manifest.categories = [];;
+            this.manifest.categories = [];
             if ( cNode.childNodes && cNode.childNodes.length > 0 ) {
               cNode.childNodes.forEach(
                 node => {
-                  let _category:KgwManifestCategory = new KgwManifestCategory(node);
+                  const _category: KgwManifestCategory = new KgwManifestCategory(node);
                   this.manifest.categories.push(_category.parse());
                 }
               );
-            }              
+            }
           } else if ( cNode.nodeName === 'pages') {
-            this.manifest.pages = [];;
+            this.manifest.pages = [];
             if ( cNode.childNodes && cNode.childNodes.length > 0 ) {
               cNode.childNodes.forEach(
                 node => {
-                  let _page:KgwManifestPage = new KgwManifestPage(node);
+                  const _page: KgwManifestPage = new KgwManifestPage(node);
                   this.manifest.pages.push(_page.parse());
                 }
               );
             }
           } else if ( cNode.nodeName === 'resources') {
-            this.manifest.resources = [];;
+            this.manifest.resources = [];
             if ( cNode.childNodes && cNode.childNodes.length > 0 ) {
               cNode.childNodes.forEach(
                 node => {
-                  let _resource:KgwManifestResource = new KgwManifestResource(node);
+                  const _resource: KgwManifestResource = new KgwManifestResource(node);
                   this.manifest.resources.push(_resource.parse());
                 }
               );
-            } 
+            }
           } else if ( cNode.nodeName === 'tips') {
-            this.manifest.tips = [];;
+            this.manifest.tips = [];
             if ( cNode.childNodes && cNode.childNodes.length > 0 ) {
               cNode.childNodes.forEach(
                 node => {
-                  let _tip:KgwManifestTip = new KgwManifestTip(node);
+                  const _tip: KgwManifestTip = new KgwManifestTip(node);
                   this.manifest.tips.push(_tip.parse());
                 }
               );
-            }              
-          }            
+            }
+          }
         }
     }
 }

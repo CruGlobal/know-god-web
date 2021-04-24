@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { BehaviorSubject, Observable, Subject } from "rxjs";
-import { KgwContentComplexTypeParagraph } from "../model/xmlns/content/content-ct-paragraph";
-import { KgwContentComplexTypeText } from "../model/xmlns/content/content-ct-text";
-import { KgwContentComplexTypeImage } from "../model/xmlns/content/content-ct-image";
-import { KgwContentComplexTypeVideo } from "../model/xmlns/content/content-ct-video";
-import { KgwContentComplexTypeButton } from "../model/xmlns/content/content-ct-button";
-import { KgwContentElementItem } from "../model/xmlns/content/content-element";
+import { Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { KgwContentComplexTypeParagraph } from '../model/xmlns/content/content-ct-paragraph';
+import { KgwContentComplexTypeText } from '../model/xmlns/content/content-ct-text';
+import { KgwContentComplexTypeImage } from '../model/xmlns/content/content-ct-image';
+import { KgwContentComplexTypeVideo } from '../model/xmlns/content/content-ct-video';
+import { KgwContentComplexTypeButton } from '../model/xmlns/content/content-ct-button';
+import { KgwContentElementItem } from '../model/xmlns/content/content-element';
 
 @Injectable({
     providedIn: 'root'
@@ -26,18 +26,18 @@ export class PageService {
     private _isModal = new BehaviorSubject<boolean>(false);
     private _imageUrlsDict = new BehaviorSubject<string[]>([]);
 
-    formAction$:Observable<string> = this._formAction.asObservable();
-    changeHeader$:Observable<string> = this._changeHeader.asObservable();
+    formAction$: Observable<string> = this._formAction.asObservable();
+    changeHeader$: Observable<string> = this._changeHeader.asObservable();
     getEmailSignupFormData$: Observable<any> = this._getEmailSignupFormData.asObservable();
     emailSignupFormData$: Observable<any> = this._emailSignupFormData.asObservable();
-    nextPage$:Observable<any> = this._nextPage.asObservable();
-    previousPage$:Observable<any> = this._previousPage.asObservable();
-    pageDir$:Observable<string> = this._dir.asObservable();
-    isFirstPage$:Observable<boolean> = this._isFirstPage.asObservable();
-    isLastPage$:Observable<boolean> = this._isLastPage.asObservable();
-    isForm$:Observable<boolean> = this._isForm.asObservable();
-    isModal$:Observable<boolean> = this._isModal.asObservable();
-    visibleTipId$:Observable<string> = this._visibleTip.asObservable();
+    nextPage$: Observable<any> = this._nextPage.asObservable();
+    previousPage$: Observable<any> = this._previousPage.asObservable();
+    pageDir$: Observable<string> = this._dir.asObservable();
+    isFirstPage$: Observable<boolean> = this._isFirstPage.asObservable();
+    isLastPage$: Observable<boolean> = this._isLastPage.asObservable();
+    isForm$: Observable<boolean> = this._isForm.asObservable();
+    isModal$: Observable<boolean> = this._isModal.asObservable();
+    visibleTipId$: Observable<string> = this._visibleTip.asObservable();
 
     clear(): void {
         this._isFirstPage.next(false);
@@ -56,20 +56,20 @@ export class PageService {
         this._previousPage.next();
     }
 
-    formAction(action:string): void {
+    formAction(action: string): void {
         this._formAction.next(action);
     }
 
-    changeHeader(newHeader:string): void {
+    changeHeader(newHeader: string): void {
         this._changeHeader.next(newHeader);
     }
 
-    setPageOrder(currentPageOrder: number, numberOfPages:number): void {
+    setPageOrder(currentPageOrder: number, numberOfPages: number): void {
         this._isFirstPage.next(currentPageOrder === 0);
-        this._isLastPage.next((numberOfPages-1) === currentPageOrder);
+        this._isLastPage.next((numberOfPages - 1) === currentPageOrder);
     }
 
-    setDir(pDir:string): void {
+    setDir(pDir: string): void {
         this._dir.next(pDir);
     }
 
@@ -93,7 +93,7 @@ export class PageService {
         this._getEmailSignupFormData.next();
     }
 
-    setEmailSignupFormData(data:any): void {
+    setEmailSignupFormData(data: any): void {
         this._emailSignupFormData.next(data);
     }
 
@@ -110,7 +110,7 @@ export class PageService {
     }
 
     addToImagesDict(pImageName: string, pImageUrl: string): void {
-        let tImages = this._imageUrlsDict.getValue();
+        const tImages = this._imageUrlsDict.getValue();
         tImages[pImageName.toLocaleLowerCase()] = pImageUrl;
         this._imageUrlsDict.next(tImages);
     }
@@ -120,12 +120,12 @@ export class PageService {
         if (tImages && tImages[pImageName.toLocaleLowerCase()]) {
             return tImages[pImageName.toLocaleLowerCase()];
         }
-        return pImageName;      
+        return pImageName;
     }
 
-    isRestricted(deviceTypes:string[]): boolean {
+    isRestricted(deviceTypes: string[]): boolean {
         if (deviceTypes && deviceTypes.length) {
-            if (deviceTypes.findIndex(t => t == "web") < 0) {
+            if (deviceTypes.findIndex(t => t === 'web') < 0) {
                 return true;
             }
         }
@@ -134,16 +134,16 @@ export class PageService {
     }
 
     checkContentElements(pItems: KgwContentElementItem[]): KgwContentElementItem[] {
-        if (!pItems || !pItems.length){
+        if (!pItems || !pItems.length) {
             return [];
         }
-        
-        let items:KgwContentElementItem[] = [];
+
+        const items: KgwContentElementItem[] = [];
         pItems.forEach(
             item => {
                 switch (item.type) {
                     case 'paragraph':
-                        let tParagraph: KgwContentComplexTypeParagraph = item.element as KgwContentComplexTypeParagraph;
+                        const tParagraph: KgwContentComplexTypeParagraph = item.element as KgwContentComplexTypeParagraph;
                         if (tParagraph) {
                             if (!this.isRestricted(tParagraph.attributes.restrictTo)) {
                                 items.push(item);
@@ -151,7 +151,7 @@ export class PageService {
                         }
                         break;
                     case 'text':
-                        let tText: KgwContentComplexTypeText = item.element as KgwContentComplexTypeText;
+                        const tText: KgwContentComplexTypeText = item.element as KgwContentComplexTypeText;
                         if (tText) {
                             if (!this.isRestricted(tText.attributes.restrictTo)) {
                                 items.push(item);
@@ -159,7 +159,7 @@ export class PageService {
                         }
                         break;
                     case 'image':
-                        let tImage: KgwContentComplexTypeImage = item.element as KgwContentComplexTypeImage;
+                        const tImage: KgwContentComplexTypeImage = item.element as KgwContentComplexTypeImage;
                         if (tImage) {
                             if (!this.isRestricted(tImage.attributes.restrictTo)) {
                                 items.push(item);
@@ -167,7 +167,7 @@ export class PageService {
                         }
                         break;
                     case 'video':
-                        let tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
+                        const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
                         if (tVideo) {
                             if (!this.isRestricted(tVideo.attributes.restrictTo)) {
                                 items.push(item);
@@ -175,7 +175,7 @@ export class PageService {
                         }
                         break;
                     case 'button':
-                        let tButton: KgwContentComplexTypeButton = item.element as KgwContentComplexTypeButton;
+                        const tButton: KgwContentComplexTypeButton = item.element as KgwContentComplexTypeButton;
                         if (tButton) {
                             if (!this.isRestricted(tButton.attributes.restrictTo)) {
                                 items.push(item);

@@ -1,4 +1,4 @@
-import { KgwContentComplexTypeAnimation } from "./content-ct-animation";
+import { KgwContentComplexTypeAnimation } from './content-ct-animation';
 
 export class KgwContentAnimation {
     private _xmlNode: any;
@@ -6,9 +6,9 @@ export class KgwContentAnimation {
     constructor(xmlNode: any) {
         this._xmlNode = xmlNode;
     }
-    
+
     parse(): KgwContentComplexTypeAnimation {
-        let item:KgwContentComplexTypeAnimation = {attributes:{}};
+        const item: KgwContentComplexTypeAnimation = {attributes: {}};
 
         if (this._xmlNode.getAttribute('resource')) {
             item.attributes.resource = this._xmlNode.getAttribute('resource');
@@ -30,5 +30,5 @@ export class KgwContentAnimation {
         }
 
         return item;
-    }    
+    }
 }

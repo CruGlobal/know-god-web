@@ -45,10 +45,10 @@ const appRoutes: Routes = [
   {
     path: ':langid/:bookid/:page', component: PageV2Component
   },
-  { 
-    path: ':langid/:bookid', 
+  {
+    path: ':langid/:bookid',
     redirectTo: ':langid/:bookid/0',
-    pathMatch: 'full' 
+    pathMatch: 'full'
   },
   { path: ':langid', component: HeaderComponent },
   { path: '', component: HeaderComponent }

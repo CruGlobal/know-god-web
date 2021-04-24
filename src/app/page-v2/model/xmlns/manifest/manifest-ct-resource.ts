@@ -12,11 +12,11 @@ export class KgwManifestResource {
     }
 
     parse(): KgwManifestComplexTypeResource {
-        let item:KgwManifestComplexTypeResource = {src: ''};
+        const item: KgwManifestComplexTypeResource = {src: ''};
 
         if (this._xmlNode.getAttribute('filename')) {
             item.filename = this._xmlNode.getAttribute('filename');
-        }        
+        }
 
         if (this._xmlNode.getAttribute('src')) {
             item.src = this._xmlNode.getAttribute('src');

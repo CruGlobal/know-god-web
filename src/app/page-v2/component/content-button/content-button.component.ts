@@ -12,13 +12,14 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentButtonComponent implements OnInit, OnChanges {
 
-  @Input('item') item : KgwContentElementItem;
+  // tslint:disable-next-line:no-input-rename
+  @Input() item: KgwContentElementItem;
 
   button: KgwContentComplexTypeButton;
   text: KgwContentComplexTypeText;
   ready: boolean;
   buttonText: string;
-  type:string;
+  type: string;
   events: string;
   url: string;
   dir$: Observable<string>;
@@ -64,7 +65,7 @@ export class ContentButtonComponent implements OnInit, OnChanges {
       this.text = this.button.text;
       if (this.text && this.text.value) {
         this.buttonText = this.text.value.trim();
-      }      
+      }
     }
     this.type = this.button.attributes.type;
     if (this.type === 'url') {

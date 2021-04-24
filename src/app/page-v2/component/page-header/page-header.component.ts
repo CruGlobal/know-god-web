@@ -11,8 +11,8 @@ import { PageService } from '../../service/page-service.service';
 })
 export class PageHeaderComponent implements OnInit, OnChanges {
 
-  @Input('header') header : KgwTractComplexTypePageHeader;
-  
+  @Input() header: KgwTractComplexTypePageHeader;
+
   private _unsubscribeAll: Subject<any>;
 
   ready: boolean;
@@ -42,7 +42,7 @@ export class PageHeaderComponent implements OnInit, OnChanges {
           case 'header': {
             if (!changes['header'].previousValue || changes['header'].currentValue !== changes['header'].previousValue) {
               this.ready = false;
-              this.headerText = "";
+              this.headerText = '';
               this.init();
             }
           }

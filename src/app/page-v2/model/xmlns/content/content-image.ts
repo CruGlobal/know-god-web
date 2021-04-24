@@ -1,4 +1,4 @@
-import { KgwContentComplexTypeImage } from "./content-ct-image";
+import { KgwContentComplexTypeImage } from './content-ct-image';
 
 export class KgwContentImage {
     private _xmlNode: any;
@@ -6,18 +6,18 @@ export class KgwContentImage {
     constructor(xmlNode: any) {
         this._xmlNode = xmlNode;
     }
-    
+
     parse(): KgwContentComplexTypeImage {
-        let item:KgwContentComplexTypeImage = {attributes:{}};
+        const item: KgwContentComplexTypeImage = {attributes: {}};
 
         if (this._xmlNode.getAttribute('restrictTo')) {
-            var tValue = this._xmlNode.getAttribute('restrictTo') as string;
-            if (tValue && tValue.trim().length > 0){
+            const tValue = this._xmlNode.getAttribute('restrictTo') as string;
+            if (tValue && tValue.trim().length > 0) {
                 item.attributes.restrictTo = tValue.trim().split(' ');
             }
         }
         if (this._xmlNode.getAttribute('version')) {
-            item.attributes.version = parseInt(this._xmlNode.getAttribute('version'));
+            item.attributes.version = parseInt(this._xmlNode.getAttribute('version'), 10);
         }
         if (this._xmlNode.getAttribute('events')) {
             item.attributes.events = this._xmlNode.getAttribute('events');
@@ -27,5 +27,5 @@ export class KgwContentImage {
         }
 
         return item;
-    }    
+    }
 }

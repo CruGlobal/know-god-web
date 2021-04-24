@@ -1,4 +1,4 @@
-import { KgwAnalyticsComplexTypeAttribute } from "./analytics-ct-attribute";
+import { KgwAnalyticsComplexTypeAttribute } from './analytics-ct-attribute';
 
 export class KgwAnalyticsEventAttribute {
     private _xmlNode: any;
@@ -8,7 +8,7 @@ export class KgwAnalyticsEventAttribute {
     }
 
     parse(): KgwAnalyticsComplexTypeAttribute {
-        let item:KgwAnalyticsComplexTypeAttribute = {key:'', value:''};
+        const item: KgwAnalyticsComplexTypeAttribute = {key: '', value: ''};
 
         if (this._xmlNode.getAttribute('key')) {
             item.key = this._xmlNode.getAttribute('key');
