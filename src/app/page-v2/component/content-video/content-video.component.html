@@ -1,1 +1,7 @@
-<p>content-video works!</p>
+<ng-container *ngIf="ready && provider === 'youtube' && videoId">
+  <!-- YouTube Video Embed -->
+  <div class="video-embed">
+    <iframe [src]="getCleanVideoUrl()" frameborder="0" allowfullscreen></iframe>
+  </div>
+  <!-- YouTube Video Embed -->
+</ng-container>

@@ -5,6 +5,7 @@ import {
   OnInit,
   SimpleChanges
 } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeVideo } from '../../model/xmlns/content/content-ct-video';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
@@ -20,9 +21,14 @@ export class ContentVideoComponent implements OnInit, OnChanges {
 
   video: KgwContentComplexTypeVideo;
   ready: boolean;
+  provider: string;
+  videoId: string;
   dir$: Observable<string>;
 
-  constructor(private pageService: PageService) {
+  constructor(
+    private pageService: PageService,
+    public sanitizer: DomSanitizer
+  ) {
     this.dir$ = this.pageService.pageDir$;
   }
 
@@ -37,8 +43,10 @@ export class ContentVideoComponent implements OnInit, OnChanges {
               !changes['item'].previousValue ||
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
-              this.ready = false;
+              this.provider = '';
+              this.videoId = '';
               this.video = this.item.element as KgwContentComplexTypeVideo;
+              this.ready = false;
               this.init();
             }
           }
@@ -47,7 +55,25 @@ export class ContentVideoComponent implements OnInit, OnChanges {
     }
   }
 
+  getCleanVideoUrl(): SafeResourceUrl {
+    if (this.provider === 'youtube' && this.videoId) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.youtube.com/embed/${this.videoId}`
+      );
+    }
+
+    return '';
+  }
+
   private init(): void {
+    if (this.video.attributes.provider) {
+      this.provider = this.video.attributes.provider;
+    }
+
+    if (this.video.attributes.videoId) {
+      this.videoId = this.video.attributes.videoId;
+    }
+
     this.ready = true;
   }
 }
