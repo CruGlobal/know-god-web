@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeLink } from '../../model/xmlns/content/content-ct-link';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
@@ -11,7 +17,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-link.component.css']
 })
 export class ContentLinkComponent implements OnInit, OnChanges {
-
   @Input() item: KgwContentElementItem;
 
   link: KgwContentComplexTypeLink;
@@ -21,21 +26,21 @@ export class ContentLinkComponent implements OnInit, OnChanges {
   events: string;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.ready = false;
               this.linkText = '';
               this.events = '';
@@ -65,5 +70,4 @@ export class ContentLinkComponent implements OnInit, OnChanges {
     this.events = this.link.attributes.events;
     this.ready = true;
   }
-
 }

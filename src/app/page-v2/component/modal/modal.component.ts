@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
 import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
@@ -12,7 +18,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit, OnChanges {
-
   @Input() modal: KgwTractComplexTypeModal;
 
   ready: boolean;
@@ -21,21 +26,21 @@ export class ModalComponent implements OnInit, OnChanges {
   titleText: string;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'modal': {
-            if (!changes['modal'].previousValue || changes['modal'].currentValue !== changes['modal'].previousValue) {
+            if (
+              !changes['modal'].previousValue ||
+              changes['modal'].currentValue !== changes['modal'].previousValue
+            ) {
               this.ready = false;
               this.title = null;
               this.titleText = '';
@@ -55,24 +60,27 @@ export class ModalComponent implements OnInit, OnChanges {
   private init(): void {
     if (this.modal.title) {
       this.title = this.modal.title;
-      this.titleText = this.title.text && this.title.text.value ? this.title.text.value.trim() : '';
+      this.titleText =
+        this.title.text && this.title.text.value
+          ? this.title.text.value.trim()
+          : '';
     }
 
     if (this.modal.content && this.modal.content.length) {
-      this.modal.content.forEach(
-        contentChild => {
-          if (contentChild.contentType === 'paragraph') {
-            const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
-            if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
-              const tItemToAdd: KgwContentElementItem = {
-                type: 'paragraph',
-                element: tParagraph
-              };
-              this.content.push(tItemToAdd);
-            }
+      this.modal.content.forEach((contentChild) => {
+        if (contentChild.contentType === 'paragraph') {
+          const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+          if (
+            !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
+          ) {
+            const tItemToAdd: KgwContentElementItem = {
+              type: 'paragraph',
+              element: tParagraph
+            };
+            this.content.push(tItemToAdd);
           }
         }
-      );
+      });
     }
 
     this.ready = true;

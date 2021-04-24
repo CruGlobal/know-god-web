@@ -4,7 +4,7 @@ import { KgwContentComplexTypeParagraph } from '../content/content-ct-paragraph'
 import { KgwContentComplexTypeTextchild } from '../content/content-ct-text-child';
 
 export interface KgwTractComplexTypePageHero {
-    heading?: KgwContentComplexTypeTextchild;
-    events?: KgwAnalyticsComplexTypeEvents;
-    content?: Array<KgwContentComplexTypeParagraph|KgwContentComplexTypeForm>;
+  heading?: KgwContentComplexTypeTextchild;
+  events?: KgwAnalyticsComplexTypeEvents;
+  content?: Array<KgwContentComplexTypeParagraph | KgwContentComplexTypeForm>;
 }

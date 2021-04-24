@@ -1,4 +1,11 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
@@ -14,7 +21,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./page-hero.component.css']
 })
 export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
-
   @Input() hero: KgwTractComplexTypePageHero;
 
   private _unsubscribeAll: Subject<any>;
@@ -28,9 +34,7 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
   isFirstPage$: Observable<boolean>;
   changeHeader$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this._unsubscribeAll = new Subject<any>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
@@ -38,8 +42,7 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
     this.changeHeader$ = this.pageService.changeHeader$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
@@ -51,7 +54,10 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'hero': {
-            if (!changes['hero'].previousValue || changes['hero'].currentValue !== changes['hero'].previousValue) {
+            if (
+              !changes['hero'].previousValue ||
+              changes['hero'].currentValue !== changes['hero'].previousValue
+            ) {
               this.ready = false;
               this.heading = null;
               this.headingText = '';
@@ -67,41 +73,40 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
   private init(): void {
     if (this.hero.heading) {
       this.heading = this.hero.heading;
-      this.headingText = this.heading.text && this.heading.text.value ? this.heading.text.value.trim() : '';
+      this.headingText =
+        this.heading.text && this.heading.text.value
+          ? this.heading.text.value.trim()
+          : '';
     }
     if (this.hero.content && this.hero.content.length) {
-      this.hero.content.forEach(
-        contentChild => {
-          if (contentChild.contentType === 'paragraph') {
-            const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
-            if (!this.pageService.isRestricted(tParagraph.attributes.restrictTo)) {
-              const tItemToAdd: KgwContentElementItem = {
-                type: 'paragraph',
-                element: tParagraph
-              };
-              this.content.push(tItemToAdd);
-            }
-          } else if (contentChild.contentType === 'form') {
-            const tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+      this.hero.content.forEach((contentChild) => {
+        if (contentChild.contentType === 'paragraph') {
+          const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+          if (
+            !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
+          ) {
             const tItemToAdd: KgwContentElementItem = {
-              type: 'form',
-              element: tForm
+              type: 'paragraph',
+              element: tParagraph
             };
             this.content.push(tItemToAdd);
           }
+        } else if (contentChild.contentType === 'form') {
+          const tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+          const tItemToAdd: KgwContentElementItem = {
+            type: 'form',
+            element: tForm
+          };
+          this.content.push(tItemToAdd);
         }
-      );
+      });
     }
 
     this.changeHeader$
-      .pipe(
-        takeUntil(this._unsubscribeAll)
-      )
-      .subscribe(
-        newHeader => {
-          this.headingText = newHeader;
-        }
-      );
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((newHeader) => {
+        this.headingText = newHeader;
+      });
 
     this.ready = true;
   }

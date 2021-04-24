@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
 import { KgwTractComplexTypeCallToAction } from '../../model/xmlns/tract/tract-ct-call-to-action';
@@ -10,7 +16,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./calltoaction.component.css']
 })
 export class CalltoactionComponent implements OnInit, OnChanges {
-
   @Input() item: KgwTractComplexTypeCallToAction;
 
   text: KgwContentComplexTypeText;
@@ -18,21 +23,21 @@ export class CalltoactionComponent implements OnInit, OnChanges {
   actionText: string;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.ready = false;
               this.actionText = '';
               this.init();
@@ -52,5 +57,4 @@ export class CalltoactionComponent implements OnInit, OnChanges {
     }
     this.ready = true;
   }
-
 }

@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
@@ -9,29 +15,29 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-paragraph.component.css']
 })
 export class ContentParagraphComponent implements OnInit, OnChanges {
-
   @Input() item: KgwContentElementItem;
 
   paragraph: KgwContentComplexTypeParagraph;
   ready: boolean;
   items: Array<KgwContentElementItem>;
 
-  constructor(
-    private pageService: PageService
-  ) {}
+  constructor(private pageService: PageService) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.ready = false;
               this.items = [];
-              this.paragraph = this.item.element as KgwContentComplexTypeParagraph;
+              this.paragraph = this.item
+                .element as KgwContentComplexTypeParagraph;
               this.init();
             }
           }
@@ -44,5 +50,4 @@ export class ContentParagraphComponent implements OnInit, OnChanges {
     this.items = this.pageService.checkContentElements(this.paragraph.children);
     this.ready = true;
   }
-
 }

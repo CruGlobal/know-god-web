@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeInput } from '../../model/xmlns/content/content-ct-input';
 import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
@@ -11,7 +17,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-input.component.css']
 })
 export class ContentInputComponent implements OnInit, OnChanges {
-
   @Input() item: KgwContentElementItem;
 
   input: KgwContentComplexTypeInput;
@@ -26,21 +31,21 @@ export class ContentInputComponent implements OnInit, OnChanges {
   type: string;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.ready = false;
               this.labelText = '';
               this.placeholderText = '';
@@ -68,7 +73,11 @@ export class ContentInputComponent implements OnInit, OnChanges {
     }
     if (this.input.placeholder) {
       this.placeholder = this.input.placeholder;
-      if (this.placeholder && this.placeholder.text && this.placeholder.text.value) {
+      if (
+        this.placeholder &&
+        this.placeholder.text &&
+        this.placeholder.text.value
+      ) {
         this.placeholderText = this.placeholder.text.value.trim();
       }
     }
@@ -79,5 +88,4 @@ export class ContentInputComponent implements OnInit, OnChanges {
     this.type = this.input.attributes.type;
     this.ready = true;
   }
-
 }

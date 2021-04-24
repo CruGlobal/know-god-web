@@ -43,7 +43,8 @@ const appRoutes: Routes = [
   },
   { path: ':langid/embed/:bookid', component: PageV2Component },
   {
-    path: ':langid/:bookid/:page', component: PageV2Component
+    path: ':langid/:bookid/:page',
+    component: PageV2Component
   },
   {
     path: ':langid/:bookid',
@@ -80,7 +81,7 @@ const appRoutes: Routes = [
     CalltoactionComponent,
     ModalComponent,
     ContentSpacerComponent,
-    TrainingTipComponent,
+    TrainingTipComponent
   ],
   imports: [
     BrowserModule,

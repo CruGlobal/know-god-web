@@ -1,4 +1,6 @@
-<ng-container *ngIf="pagesLoaded || bookNotAvailableInLanguage || bookNotAvailable">
+<ng-container
+  *ngIf="pagesLoaded || bookNotAvailableInLanguage || bookNotAvailable"
+>
   <div class="outerbox">
     <header id="toolHeader">
       <div class="header tc relative">
@@ -11,11 +13,7 @@
         </span>
         <app-sharing-modal [book]="selectedBookName"></app-sharing-modal>
       </div>
-      <div
-        id="languageList"
-        class="py25 ng-hide"
-        *ngIf="languagesVisible"
-      >
+      <div id="languageList" class="py25 ng-hide" *ngIf="languagesVisible">
         <div class="mw568">
           <ul>
             <li
@@ -31,27 +29,24 @@
       </div>
     </header>
 
-    <app-tract-page *ngIf="activePage && !bookNotAvailableInLanguage && !bookNotAvailable" 
-      [page]="activePage" [order]="activePageOrder" [totalPages]="totalPages">
+    <app-tract-page
+      *ngIf="activePage && !bookNotAvailableInLanguage && !bookNotAvailable"
+      [page]="activePage"
+      [order]="activePageOrder"
+      [totalPages]="totalPages"
+    >
     </app-tract-page>
 
     <ng-container *ngIf="bookNotAvailableInLanguage">
-      <div class="bs-jumbotron tc" style="margin-top: 24px;">
-        <h2>
-          This book isn't available in the currently selected language.
-        </h2>
-      </div>  
+      <div class="bs-jumbotron tc" style="margin-top: 24px">
+        <h2>This book isn't available in the currently selected language.</h2>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="bookNotAvailable">
-      <div class="bs-jumbotron tc" style="margin-top: 24px;">
-        <h2>
-          Failed to load the book.
-        </h2>
-      </div>  
+      <div class="bs-jumbotron tc" style="margin-top: 24px">
+        <h2>Failed to load the book.</h2>
+      </div>
     </ng-container>
-        
   </div>
-
 </ng-container>
-

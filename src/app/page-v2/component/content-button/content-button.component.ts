@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeButton } from '../../model/xmlns/content/content-ct-button';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
@@ -11,7 +17,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-button.component.css']
 })
 export class ContentButtonComponent implements OnInit, OnChanges {
-
   // tslint:disable-next-line:no-input-rename
   @Input() item: KgwContentElementItem;
 
@@ -24,21 +29,21 @@ export class ContentButtonComponent implements OnInit, OnChanges {
   url: string;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.ready = false;
               this.buttonText = '';
               this.type = '';

@@ -1,8 +1,8 @@
 export interface KgwContentComplexTypeImage {
-    attributes: {
-        resource?: string;
-        events?: string;
-        version?: number;
-        restrictTo?: Array<string>;
-    };
+  attributes: {
+    resource?: string;
+    events?: string;
+    version?: number;
+    restrictTo?: Array<string>;
+  };
 }

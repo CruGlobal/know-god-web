@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KgwTractComplexTypePageHeader } from '../../model/xmlns/tract/tract-ct-page-header';
@@ -10,7 +16,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./page-header.component.css']
 })
 export class PageHeaderComponent implements OnInit, OnChanges {
-
   @Input() header: KgwTractComplexTypePageHeader;
 
   private _unsubscribeAll: Subject<any>;
@@ -22,9 +27,7 @@ export class PageHeaderComponent implements OnInit, OnChanges {
   isForm$: Observable<boolean>;
   isFirstPage$: Observable<boolean>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this._unsubscribeAll = new Subject<any>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
@@ -32,15 +35,17 @@ export class PageHeaderComponent implements OnInit, OnChanges {
     this.changeHeader$ = this.pageService.changeHeader$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'header': {
-            if (!changes['header'].previousValue || changes['header'].currentValue !== changes['header'].previousValue) {
+            if (
+              !changes['header'].previousValue ||
+              changes['header'].currentValue !== changes['header'].previousValue
+            ) {
               this.ready = false;
               this.headerText = '';
               this.init();
@@ -52,19 +57,20 @@ export class PageHeaderComponent implements OnInit, OnChanges {
   }
 
   private init(): void {
-    if (this.header && this.header.title && this.header.title.text && this.header.title.text.value) {
+    if (
+      this.header &&
+      this.header.title &&
+      this.header.title.text &&
+      this.header.title.text.value
+    ) {
       this.headerText = this.header.title.text.value;
     }
 
     this.changeHeader$
-      .pipe(
-        takeUntil(this._unsubscribeAll)
-      )
-      .subscribe(
-        newHeader => {
-          this.headerText = newHeader;
-        }
-      );
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((newHeader) => {
+        this.headerText = newHeader;
+      });
 
     this.ready = true;
   }

@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeSpacer } from '../../model/xmlns/content/content-ct-spacer';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
@@ -10,7 +16,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-spacer.component.css']
 })
 export class ContentSpacerComponent implements OnInit, OnChanges {
-
   // tslint:disable-next-line:no-input-rename
   @Input() item: KgwContentElementItem;
 
@@ -20,21 +25,21 @@ export class ContentSpacerComponent implements OnInit, OnChanges {
   height: number;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.mode = '';
               this.height = 0;
               this.spacer = this.item.element as KgwContentComplexTypeSpacer;
@@ -52,5 +57,4 @@ export class ContentSpacerComponent implements OnInit, OnChanges {
     this.height = this.spacer.attributes.height;
     this.ready = true;
   }
-
 }

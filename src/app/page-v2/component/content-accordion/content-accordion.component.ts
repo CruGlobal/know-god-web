@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeAccordion } from '../../model/xmlns/content/content-ct-accordion';
 import { KgwContentComplexTypeAccordionSection } from '../../model/xmlns/content/content-ct-accordion-section';
@@ -11,7 +17,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-accordion.component.css']
 })
 export class ContentAccordionComponent implements OnInit, OnChanges {
-
   @Input() item: KgwContentElementItem;
 
   accordion: KgwContentComplexTypeAccordion;
@@ -19,23 +24,24 @@ export class ContentAccordionComponent implements OnInit, OnChanges {
   ready: boolean;
   dir$: Observable<string>;
 
-  constructor(
-    private pageService: PageService
-  ) {
+  constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'item': {
-            if (!changes['item'].previousValue || changes['item'].currentValue !== changes['item'].previousValue) {
+            if (
+              !changes['item'].previousValue ||
+              changes['item'].currentValue !== changes['item'].previousValue
+            ) {
               this.ready = false;
-              this.accordion = this.item.element as KgwContentComplexTypeAccordion;
+              this.accordion = this.item
+                .element as KgwContentComplexTypeAccordion;
               this.sections = [];
               this.init();
             }
@@ -47,14 +53,13 @@ export class ContentAccordionComponent implements OnInit, OnChanges {
 
   private init(): void {
     if (this.accordion.sections && this.accordion.sections.length) {
-      this.accordion.sections.forEach(
-        section => {
-          section.children = this.pageService.checkContentElements(section.children);
-          this.sections.push(section);
-        }
-      );
+      this.accordion.sections.forEach((section) => {
+        section.children = this.pageService.checkContentElements(
+          section.children
+        );
+        this.sections.push(section);
+      });
     }
     this.ready = true;
   }
-
 }

@@ -1,4 +1,12 @@
-import { Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  OnInit,
+  SimpleChanges,
+  ViewEncapsulation
+} from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KgwTractComplexTypeCallToAction } from '../../model/xmlns/tract/tract-ct-call-to-action';
@@ -16,7 +24,6 @@ import { PageService } from '../../service/page-service.service';
   encapsulation: ViewEncapsulation.None
 })
 export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() page: KgwTractComplexTypePage;
   @Input() order: number;
   @Input() totalPages: number;
@@ -41,9 +48,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
   isLastPage$: Observable<boolean>;
   currentYear = new Date().getFullYear();
 
-  constructor(
-    private pageService: PageService,
-  ) {
+  constructor(private pageService: PageService) {
     this._unsubscribeAll = new Subject<any>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
@@ -53,8 +58,7 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     this.formAction$ = this.pageService.formAction$;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
@@ -82,7 +86,10 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
       if (changes.hasOwnProperty(propName)) {
         switch (propName) {
           case 'page':
-            if (!changes['page'].previousValue || changes['page'].currentValue !== changes['page'].previousValue) {
+            if (
+              !changes['page'].previousValue ||
+              changes['page'].currentValue !== changes['page'].previousValue
+            ) {
               this.ready = false;
               this._page = this.page;
               this.header = null;
@@ -117,17 +124,18 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
 
     if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
       this.pageService.emailSignumFormDataNeeded();
-      setTimeout(
-        () => {
-          this.onFormAction(functionName);
-        }, 0
-      );
+      setTimeout(() => {
+        this.onFormAction(functionName);
+      }, 0);
       return;
     } else {
       if (this.cards && this.cards.length > 0) {
         for (let index = 0; index < this.cards.length; index++) {
           const element = this.cards[index];
-          if (element.attributes.listeners && element.attributes.listeners === functionName) {
+          if (
+            element.attributes.listeners &&
+            element.attributes.listeners === functionName
+          ) {
             this._cardShownOnFormAction = index;
             isShowCard = true;
             break;
@@ -136,16 +144,23 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
 
         for (let index = 0; index < this.cards.length; index++) {
           const element = this.cards[index];
-          if (element.attributes.dismissListeners && element.attributes.dismissListeners === functionName) {
+          if (
+            element.attributes.dismissListeners &&
+            element.attributes.dismissListeners === functionName
+          ) {
             isHideCard = true;
             break;
           }
         }
       }
 
-      if (!isShowCard && !isHideCard && this.modal ) {
-        isShowModal = this.modal.attributes.listeners && this.modal.attributes.listeners === functionName;
-        isHideModal = this.modal.attributes.dismissListeners && this.modal.attributes.dismissListeners === functionName;
+      if (!isShowCard && !isHideCard && this.modal) {
+        isShowModal =
+          this.modal.attributes.listeners &&
+          this.modal.attributes.listeners === functionName;
+        isHideModal =
+          this.modal.attributes.dismissListeners &&
+          this.modal.attributes.dismissListeners === functionName;
       }
     }
 
@@ -156,47 +171,43 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
       this.pageService.modalHidden();
 
       if (card_to_show.label && card_to_show.label.text) {
-        this.pageService.changeHeader(
-          card_to_show.label.text.value
-        );
+        this.pageService.changeHeader(card_to_show.label.text.value);
       }
 
       for (let index = 0; index < this.cards.length; index++) {
         const element = this.cards[index];
-        if (!element.attributes.hidden && (!element.attributes.listeners || element.attributes.listeners !== functionName)) {
+        if (
+          !element.attributes.hidden &&
+          (!element.attributes.listeners ||
+            element.attributes.listeners !== functionName)
+        ) {
           this._cardsHiddenOnFormAction.push(index);
         }
       }
 
       if (this._cardsHiddenOnFormAction.length > 0) {
-        this._cardsHiddenOnFormAction.forEach(
-          (cardIndex) => {
-            this.cards[cardIndex].attributes.hidden = true;
-          }
-        );
+        this._cardsHiddenOnFormAction.forEach((cardIndex) => {
+          this.cards[cardIndex].attributes.hidden = true;
+        });
       }
     } else if (isHideCard) {
       this.next();
-      setTimeout(
-        () => {
-          this.pageService.formHidden();
-          this.pageService.modalHidden();
-          if (this._cardsHiddenOnFormAction.length > 0) {
-            this._cardsHiddenOnFormAction.forEach(
-              (cardIndex) => {
-                this.cards[cardIndex].attributes.hidden = false;
-              }
-            );
-          }
+      setTimeout(() => {
+        this.pageService.formHidden();
+        this.pageService.modalHidden();
+        if (this._cardsHiddenOnFormAction.length > 0) {
+          this._cardsHiddenOnFormAction.forEach((cardIndex) => {
+            this.cards[cardIndex].attributes.hidden = false;
+          });
+        }
 
-          if (this._cardShownOnFormAction >= 0) {
-            this.cards[this._cardShownOnFormAction].attributes.hidden = true;
-          }
+        if (this._cardShownOnFormAction >= 0) {
+          this.cards[this._cardShownOnFormAction].attributes.hidden = true;
+        }
 
-          this._cardShownOnFormAction = -1;
-          this._cardsHiddenOnFormAction = [];
-        }, 0
-      );
+        this._cardShownOnFormAction = -1;
+        this._cardsHiddenOnFormAction = [];
+      }, 0);
     } else if (isShowModal) {
       this.pageService.modalVisible();
       this.pageService.formHidden();
@@ -204,24 +215,20 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
       this.pageService.modalHidden();
       this.pageService.formHidden();
       this.next();
-      setTimeout(
-        () => {
-          if (this._cardsHiddenOnFormAction.length > 0) {
-            this._cardsHiddenOnFormAction.forEach(
-              (cardIndex) => {
-                this.cards[cardIndex].attributes.hidden = false;
-              }
-            );
-          }
+      setTimeout(() => {
+        if (this._cardsHiddenOnFormAction.length > 0) {
+          this._cardsHiddenOnFormAction.forEach((cardIndex) => {
+            this.cards[cardIndex].attributes.hidden = false;
+          });
+        }
 
-          if (this._cardShownOnFormAction >= 0) {
-            this.cards[this._cardShownOnFormAction].attributes.hidden = true;
-          }
+        if (this._cardShownOnFormAction >= 0) {
+          this.cards[this._cardShownOnFormAction].attributes.hidden = true;
+        }
 
-          this._cardShownOnFormAction = -1;
-          this._cardsHiddenOnFormAction = [];
-        }, 0
-      );
+        this._cardShownOnFormAction = -1;
+        this._cardsHiddenOnFormAction = [];
+      }, 0);
     }
   }
 
@@ -232,7 +239,10 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
 
     if (this._page.header) {
       this.header = this._page.header;
-      this.hasPageHeader = this.header.title && this.header.title.text && !!this.header.title.text.value;
+      this.hasPageHeader =
+        this.header.title &&
+        this.header.title.text &&
+        !!this.header.title.text.value;
     }
 
     if (this._page.hero) {
@@ -252,16 +262,11 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.formAction$
-      .pipe(
-        takeUntil(this._unsubscribeAll)
-      )
-      .subscribe(
-        action => {
-          this.onFormAction(action);
-        }
-      );
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((action) => {
+        this.onFormAction(action);
+      });
 
     this.ready = true;
   }
-
 }
