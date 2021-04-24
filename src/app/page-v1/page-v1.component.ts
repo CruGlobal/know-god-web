@@ -220,7 +220,10 @@ export class PageV1Component implements OnInit, OnDestroy {
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowLeft' && this.counter > 0) {
       this.previous();
-    } else if (event.key === 'ArrowRight' && this.counter < this.allPages.length - 1) {
+    } else if (
+      event.key === 'ArrowRight' &&
+      this.counter < this.allPages.length - 1
+    ) {
       this.next();
     }
   }
