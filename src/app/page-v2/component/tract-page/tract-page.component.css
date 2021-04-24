@@ -249,6 +249,10 @@ p.firstContent {
   }
 }
 
+div.cardContent:not(.hasHading) {
+  margin-top: 48px !important;
+}
+
 @media screen and (min-width: 616px) {
 
   div.cardContent.hasHeading > app-content-paragraph > app-content-text > p.textContent,
@@ -257,10 +261,6 @@ p.firstContent {
     padding-right: 44px;
   }
   
-  div.cardContent:not(.hasHading) {
-    margin-top: 48px !important;
-  }
-
   .modal-paragraph > app-content-text > p.textContent {
     padding-left: 44px;
     padding-right: 44px;    
