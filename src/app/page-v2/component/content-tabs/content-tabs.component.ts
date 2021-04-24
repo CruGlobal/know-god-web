@@ -24,9 +24,11 @@ export class ContentTabsComponent implements OnInit, OnChanges {
   content: Array<KgwContentComplexTypeTab>;
   ready: boolean;
   dir$: Observable<string>;
+  isModal$: Observable<boolean>;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.isModal$ = this.pageService.isModal$;
   }
 
   ngOnInit() {}
