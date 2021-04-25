@@ -53,6 +53,10 @@
         *ngIf="item.type === 'tip'"
         [item]="item"
       ></app-training-tip>
+      <app-content-fallback
+        *ngIf="item.type === 'fallback'"
+        [item]="item"
+      ></app-content-fallback>
     </div>
   </form>
 </ng-container>

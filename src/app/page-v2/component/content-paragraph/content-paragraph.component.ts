@@ -47,7 +47,20 @@ export class ContentParagraphComponent implements OnInit, OnChanges {
   }
 
   private init(): void {
-    this.items = this.pageService.checkContentElements(this.paragraph.children);
+    const isFallback = this.paragraph.attributes.fallback;
+    if (isFallback) {
+      const tSupportedItem = this.pageService.getFirstSupportedContentElement(
+        this.paragraph.children
+      );
+      if (tSupportedItem) {
+        this.items.push(tSupportedItem);
+      }
+    } else {
+      this.items = this.pageService.checkContentElements(
+        this.paragraph.children
+      );
+    }
+
     this.ready = true;
   }
 }

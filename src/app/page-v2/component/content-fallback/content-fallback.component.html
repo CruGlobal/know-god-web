@@ -1,0 +1,58 @@
+<ng-container *ngIf="ready && content">
+  <app-content-accordion
+    *ngIf="content.type === 'accordion'"
+    [item]="item"
+  ></app-content-accordion>
+  <app-content-animation
+    *ngIf="content.type === 'animation'"
+    [item]="item"
+  ></app-content-animation>
+  <app-content-button
+    *ngIf="content.type === 'button'"
+    [item]="item"
+  ></app-content-button>
+  <app-content-form
+    *ngIf="content.type === 'form'"
+    [item]="item"
+  ></app-content-form>
+  <app-content-image
+    *ngIf="content.type === 'image'"
+    [item]="item"
+  ></app-content-image>
+  <app-content-input
+    *ngIf="content.type === 'input'"
+    [item]="item"
+  ></app-content-input>
+  <app-content-link
+    *ngIf="content.type === 'link'"
+    [item]="item"
+  ></app-content-link>
+  <app-content-paragraph
+    *ngIf="content.type === 'paragraph'"
+    [item]="item"
+  ></app-content-paragraph>
+  <app-content-tabs
+    *ngIf="content.type === 'tabs'"
+    [item]="item"
+  ></app-content-tabs>
+  <app-content-text
+    *ngIf="content.type === 'text'"
+    [item]="item"
+  ></app-content-text>
+  <app-content-video
+    *ngIf="content.type === 'video'"
+    [item]="item"
+  ></app-content-video>
+  <app-content-spacer
+    *ngIf="content.type === 'spacer'"
+    [item]="item"
+  ></app-content-spacer>
+  <app-training-tip
+    *ngIf="content.type === 'tip'"
+    [item]="item"
+  ></app-training-tip>
+  <app-content-fallback
+    *ngIf="content.type === 'fallback'"
+    [item]="item"
+  ></app-content-fallback>
+</ng-container>

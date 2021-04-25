@@ -189,4 +189,49 @@ export class PageService {
 
     return items;
   }
+
+  getFirstSupportedContentElement(
+    pItems: KgwContentElementItem[]
+  ): KgwContentElementItem {
+    if (!pItems || !pItems.length) {
+      return null;
+    }
+
+    let pReturnItem = null;
+
+    pItems.forEach((item) => {
+      if (pReturnItem === null) {
+        switch (item.type) {
+          // Supported content element types
+          case 'paragraph':
+          case 'tabs':
+          case 'text':
+          case 'image':
+          case 'animation':
+          case 'button':
+          case 'link':
+          case 'form':
+          case 'input':
+          case 'fallback':
+            pReturnItem = item;
+            return;
+          // Video supported only when provide is YouTube
+          case 'video':
+            const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
+            if (
+              tVideo.attributes.provider &&
+              tVideo.attributes.provider === 'youtube'
+            ) {
+              pReturnItem = item;
+              return;
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
+    return pReturnItem;
+  }
 }
