@@ -208,22 +208,43 @@ export class PageService {
           case 'text':
           case 'image':
           case 'animation':
-          case 'button':
           case 'link':
           case 'form':
           case 'input':
           case 'fallback':
-            pReturnItem = item;
-            return;
-          // Video supported only when provide is YouTube
-          case 'video':
-            const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
-            if (
-              tVideo.attributes.provider &&
-              tVideo.attributes.provider === 'youtube'
-            ) {
+            const tItems = this.checkContentElements([item]);
+            if (tItems.length === 1) {
               pReturnItem = item;
               return;
+            }
+            break;
+          // Button supported only when type is event or url
+          case 'button':
+            const tbItems = this.checkContentElements([item]);
+            if (tbItems.length === 1) {
+              const tButton: KgwContentComplexTypeButton = item.element as KgwContentComplexTypeButton;
+              if (
+                tButton.attributes.type &&
+                (tButton.attributes.type === 'url' ||
+                  tButton.attributes.type === 'event')
+              ) {
+                pReturnItem = item;
+                return;
+              }
+            }
+            break;
+          // Video supported only when provider is YouTube
+          case 'video':
+            const tvItems = this.checkContentElements([item]);
+            if (tvItems.length === 1) {
+              const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
+              if (
+                tVideo.attributes.provider &&
+                tVideo.attributes.provider === 'youtube'
+              ) {
+                pReturnItem = item;
+                return;
+              }
             }
             break;
           default:
