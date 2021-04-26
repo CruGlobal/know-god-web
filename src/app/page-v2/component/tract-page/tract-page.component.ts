@@ -229,6 +229,8 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
       }, 0);
+    } else {
+      this.pageService.contentEvent(functionName);
     }
   }
 

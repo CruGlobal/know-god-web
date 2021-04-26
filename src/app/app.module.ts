@@ -34,6 +34,7 @@ import { ModalComponent } from './page-v2/component/modal/modal.component';
 import { ContentSpacerComponent } from './page-v2/component/content-spacer/content-spacer.component';
 import { TrainingTipComponent } from './page-v2/component/training-tip/training-tip.component';
 import { ContentFallbackComponent } from './page-v2/component/content-fallback/content-fallback.component';
+import { LottieAnimationViewModule } from 'ng-lottie';
 
 const appRoutes: Routes = [
   { path: 'page/v/1/:langid/:bookid/:page', component: PageV1Component },
@@ -95,7 +96,8 @@ const appRoutes: Routes = [
       scrollPositionRestoration: 'enabled' // Scrolls to top when fragment is removed
     }),
     BrowserAnimationsModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    LottieAnimationViewModule.forRoot()
   ],
   providers: [CommonModule, LoaderService],
   bootstrap: [AppComponent]

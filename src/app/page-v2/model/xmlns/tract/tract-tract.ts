@@ -1,4 +1,9 @@
+import { KgwContentComplexTypeAccordionSection } from '../content/content-ct-accordion-section';
+import { KgwContentComplexTypeAnimation } from '../content/content-ct-animation';
+import { KgwContentComplexTypeFallback } from '../content/content-ct-fallback';
+import { KgwContentComplexTypeForm } from '../content/content-ct-form';
 import { KgwContentComplexTypeImage } from '../content/content-ct-image';
+import { KgwContentComplexTypeParagraph } from '../content/content-ct-paragraph';
 import { KgwContentComplexTypeTabs } from '../content/content-ct-tabs';
 import { KgwContentElementItem } from '../content/content-element';
 import { KgwTractCallToAction } from './tract-call-to-action';
@@ -111,12 +116,12 @@ export class KgwTract {
     }
   }
 
-  public getImageResources(): string[] {
+  public getResources(): string[] {
     if (!this.page) {
       return [];
     }
 
-    const images = [] as string[];
+    const allElements: KgwContentElementItem[] = [];
 
     if (
       this.page.hero &&
@@ -126,18 +131,7 @@ export class KgwTract {
       this.page.hero.content.forEach((element) => {
         if (element && element.children && element.children.length) {
           element.children.forEach((child) => {
-            const tItem: KgwContentElementItem = child as KgwContentElementItem;
-            if (
-              tItem &&
-              tItem.type &&
-              tItem.type === 'image' &&
-              tItem.element
-            ) {
-              const tImage = tItem.element as KgwContentComplexTypeImage;
-              if (tImage && tImage.attributes && tImage.attributes.resource) {
-                images.push(tImage.attributes.resource);
-              }
-            }
+            allElements.push(child);
           });
         }
       });
@@ -145,57 +139,11 @@ export class KgwTract {
 
     if (this.page.cards && this.page.cards.length > 0) {
       this.page.cards.forEach((card) => {
-        if (card && card.content && card.content.length > 0) {
+        if (card.content && card.content.length) {
           card.content.forEach((element) => {
             if (element && element.children && element.children.length) {
               element.children.forEach((child) => {
-                const tItem: KgwContentElementItem = child as KgwContentElementItem;
-                if (
-                  tItem &&
-                  tItem.type &&
-                  tItem.type === 'image' &&
-                  tItem.element
-                ) {
-                  const tImage = tItem.element as KgwContentComplexTypeImage;
-                  if (
-                    tImage &&
-                    tImage.attributes &&
-                    tImage.attributes.resource
-                  ) {
-                    images.push(tImage.attributes.resource);
-                  }
-                } else if (
-                  tItem &&
-                  tItem.type &&
-                  tItem.type === 'tabs' &&
-                  tItem.element
-                ) {
-                  const tTab = tItem.element as KgwContentComplexTypeTabs;
-                  if (tTab && tTab.tabs && tTab.tabs.length) {
-                    tTab.tabs.forEach((tab) => {
-                      if (tab && tab.children && tab.children.length) {
-                        tab.children.forEach((tabChild) => {
-                          const tbItem: KgwContentElementItem = tabChild as KgwContentElementItem;
-                          if (
-                            tbItem &&
-                            tbItem.type &&
-                            tbItem.type === 'image' &&
-                            tbItem.element
-                          ) {
-                            const tImage = tbItem.element as KgwContentComplexTypeImage;
-                            if (
-                              tImage &&
-                              tImage.attributes &&
-                              tImage.attributes.resource
-                            ) {
-                              images.push(tImage.attributes.resource);
-                            }
-                          }
-                        });
-                      }
-                    });
-                  }
-                }
+                allElements.push(child);
               });
             }
           });
@@ -204,27 +152,12 @@ export class KgwTract {
     }
 
     if (this.page.modals && this.page.modals.length > 0) {
-      this.page.modals.forEach((modal) => {
-        if (modal && modal.content && modal.content.length > 0) {
-          modal.content.forEach((element) => {
+      this.page.modals.forEach((card) => {
+        if (card.content && card.content.length) {
+          card.content.forEach((element) => {
             if (element && element.children && element.children.length) {
               element.children.forEach((child) => {
-                const tItem: KgwContentElementItem = child as KgwContentElementItem;
-                if (
-                  tItem &&
-                  tItem.type &&
-                  tItem.type === 'image' &&
-                  tItem.element
-                ) {
-                  const tImage = tItem.element as KgwContentComplexTypeImage;
-                  if (
-                    tImage &&
-                    tImage.attributes &&
-                    tImage.attributes.resource
-                  ) {
-                    images.push(tImage.attributes.resource);
-                  }
-                }
+                allElements.push(child);
               });
             }
           });
@@ -232,6 +165,152 @@ export class KgwTract {
       });
     }
 
-    return images;
+    const files = [];
+    files['images'] = [];
+    files['animations'] = [];
+
+    if (allElements.length) {
+      allElements.forEach((element) => {
+        const tImageResources = this.getResourcesOfContentElement(
+          'image',
+          element
+        );
+        if (tImageResources && tImageResources.length) {
+          tImageResources.forEach((tResource) => {
+            files['images'].push(tResource);
+          });
+        }
+        const tAnimationResources = this.getResourcesOfContentElement(
+          'animation',
+          element
+        );
+        if (tAnimationResources && tAnimationResources.length) {
+          tAnimationResources.forEach((tResource) => {
+            files['animations'].push(tResource);
+          });
+        }
+      });
+    }
+
+    return files;
+  }
+
+  private getResourcesOfContentElement(
+    type: string,
+    element: KgwContentElementItem
+  ): string[] {
+    if (type !== 'image' && type !== 'animation') {
+      return [];
+    }
+
+    const files = [];
+
+    switch (element.type) {
+      case 'image':
+        if (type === 'image') {
+          const tImage = element.element as KgwContentComplexTypeImage;
+          if (tImage && tImage.attributes && tImage.attributes.resource) {
+            files.push(tImage.attributes.resource);
+          }
+        }
+        break;
+      case 'animation':
+        if (type === 'animation') {
+          const tAnimation = element.element as KgwContentComplexTypeAnimation;
+          if (
+            tAnimation &&
+            tAnimation.attributes &&
+            tAnimation.attributes.resource
+          ) {
+            files.push(tAnimation.attributes.resource);
+          }
+        }
+        break;
+      case 'paragraph':
+        const tParagraph = element.element as KgwContentComplexTypeParagraph;
+        if (tParagraph.children && tParagraph.children.length) {
+          tParagraph.children.forEach((paragraphChild) => {
+            const tParagraphChildResources = this.getResourcesOfContentElement(
+              type,
+              paragraphChild
+            );
+            if (tParagraphChildResources && tParagraphChildResources.length) {
+              tParagraphChildResources.forEach((t) => {
+                files.push(t);
+              });
+            }
+          });
+        }
+        break;
+      case 'form':
+        const tForm = element.element as KgwContentComplexTypeForm;
+        if (tForm.children && tForm.children.length) {
+          tForm.children.forEach((formChild) => {
+            const tFormChildResources = this.getResourcesOfContentElement(
+              type,
+              formChild
+            );
+            if (tFormChildResources && tFormChildResources.length) {
+              tFormChildResources.forEach((t) => {
+                files.push(t);
+              });
+            }
+          });
+        }
+        break;
+      case 'fallback':
+        const tFallback = element.element as KgwContentComplexTypeFallback;
+        if (tFallback.children && tFallback.children.length) {
+          tFallback.children.forEach((fallbackChild) => {
+            const tFallbackChildResources = this.getResourcesOfContentElement(
+              type,
+              fallbackChild
+            );
+            if (tFallbackChildResources && tFallbackChildResources.length) {
+              tFallbackChildResources.forEach((t) => {
+                files.push(t);
+              });
+            }
+          });
+        }
+        break;
+      case 'tabs':
+        const tTabs = element.element as KgwContentComplexTypeTabs;
+        if (tTabs.tabs && tTabs.tabs.length) {
+          tTabs.tabs.forEach((tab) => {
+            if (tab.children && tab.children.length) {
+              tab.children.forEach((tabChild) => {
+                const tTabChildResources = this.getResourcesOfContentElement(
+                  type,
+                  tabChild
+                );
+                if (tTabChildResources && tTabChildResources.length) {
+                  tTabChildResources.forEach((t) => {
+                    files.push(t);
+                  });
+                }
+              });
+            }
+          });
+        }
+        break;
+      case 'accordion':
+        const tAccordion = element.element as KgwContentComplexTypeAccordionSection;
+        if (tAccordion.children && tAccordion.children.length) {
+          tAccordion.children.forEach((accordionChild) => {
+            const tAccordionChildResources = this.getResourcesOfContentElement(
+              type,
+              accordionChild
+            );
+            if (tAccordionChildResources && tAccordionChildResources.length) {
+              tAccordionChildResources.forEach((t) => {
+                files.push(t);
+              });
+            }
+          });
+        }
+        break;
+    }
+    return files;
   }
 }
