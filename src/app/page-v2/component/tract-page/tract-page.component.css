@@ -270,3 +270,7 @@ div.cardContent:not(.hasHading) {
 app-page-hero > app-content-paragraph:first-child > app-content-image:first-child {
   margin-top: -48px;
 }
+
+div#toolContent > app-page-hero:first-child {
+  padding-top: 0px !important;
+}
