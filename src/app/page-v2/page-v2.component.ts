@@ -95,7 +95,8 @@ export class PageV2Component implements OnInit, OnDestroy {
   }
 
   selectLanguage(lang): void {
-    this.router.navigate([lang.attributes.code, this._pageParams.bookid, '0']);
+    let tPageOrder = !!this._pageParams.pageid ? this._pageParams.pageid : 0;
+    this.router.navigate([lang.attributes.code, this._pageParams.bookid, tPageOrder]);
     return;
   }
 
@@ -287,6 +288,7 @@ export class PageV2Component implements OnInit, OnDestroy {
             this.totalPages = this._pageBookSubPagesManifest.length;
             this._pageBookMainfestLoaded = true;
           } else {
+            this.pageService.setDir('ltr');
             this.bookNotAvailableInLanguage = true;
           }
 
@@ -343,6 +345,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     if (this.checkIfPreSelectedLanguageExists()) {
       this.loadBookManifestXML();
     } else {
+      this.pageService.setDir('ltr');
       this.bookNotAvailableInLanguage = true;
       this.loaderService.display(false);
     }
@@ -368,6 +371,7 @@ export class PageV2Component implements OnInit, OnDestroy {
           jsonResource.data.attributes['resource-type'] === 'tract'
         ) {
           if (!jsonResource.data.attributes['manifest']) {
+            this.pageService.setDir('ltr');
             this.bookNotAvailable = true;
             this.loaderService.display(false);
             return;
@@ -413,6 +417,7 @@ export class PageV2Component implements OnInit, OnDestroy {
 
           this.getAvailableLanguagesForSelectedBook();
         } else {
+          this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
           this.loaderService.display(false);
         }
@@ -429,6 +434,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     });
 
     if (!this._pageBook.id) {
+      this.pageService.setDir('ltr');
       this.bookNotAvailable = true;
       this.loaderService.display(false);
     } else {
@@ -447,6 +453,7 @@ export class PageV2Component implements OnInit, OnDestroy {
           this._booksLoaded = true;
           this.loadPageBook();
         } else {
+          this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
           this.loaderService.display(false);
         }
@@ -467,6 +474,7 @@ export class PageV2Component implements OnInit, OnDestroy {
           }
           this.getAllBooks();
         } else {
+          this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
           this.loaderService.display(false);
         }

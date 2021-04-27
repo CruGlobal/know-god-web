@@ -41,7 +41,6 @@ export class PageService {
   clear(): void {
     this._isFirstPage.next(false);
     this._isLastPage.next(false);
-    this._dir.next('ltr');
     this._isForm.next(false);
     this._isModal.next(false);
     this.clearImagesDict();
