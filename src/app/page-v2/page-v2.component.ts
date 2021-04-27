@@ -95,8 +95,12 @@ export class PageV2Component implements OnInit, OnDestroy {
   }
 
   selectLanguage(lang): void {
-    let tPageOrder = !!this._pageParams.pageid ? this._pageParams.pageid : 0;
-    this.router.navigate([lang.attributes.code, this._pageParams.bookid, tPageOrder]);
+    const tPageOrder = !!this._pageParams.pageid ? this._pageParams.pageid : 0;
+    this.router.navigate([
+      lang.attributes.code,
+      this._pageParams.bookid,
+      tPageOrder
+    ]);
     return;
   }
 
