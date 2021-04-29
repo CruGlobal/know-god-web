@@ -23,6 +23,7 @@ export class ContentVideoComponent implements OnInit, OnChanges {
   ready: boolean;
   provider: string;
   videoId: string;
+  videoUrl: SafeResourceUrl;
   dir$: Observable<string>;
 
   constructor(
@@ -55,23 +56,18 @@ export class ContentVideoComponent implements OnInit, OnChanges {
     }
   }
 
-  getCleanVideoUrl(): SafeResourceUrl {
-    if (this.provider === 'youtube' && this.videoId) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(
-        `https://www.youtube.com/embed/${this.videoId}`
-      );
-    }
-
-    return '';
-  }
-
   private init(): void {
     if (this.video.attributes.provider) {
       this.provider = this.video.attributes.provider;
     }
 
     if (this.video.attributes.videoId) {
-      this.videoId = this.video.attributes.videoId;
+      setTimeout(() => {
+        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+          `https://www.youtube.com/embed/${this.video.attributes.videoId}`
+        );
+        this.videoId = this.video.attributes.videoId;
+      }, 0);
     }
 
     this.ready = true;
