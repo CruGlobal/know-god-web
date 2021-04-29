@@ -1,0 +1,23 @@
+<ng-container *ngIf="ready && (isFirstPage$ | async)">
+  <h2 class="mw568 tc firstHeading">
+    {{ headerText }}
+  </h2>
+</ng-container>
+<ng-container *ngIf="ready && !(isFirstPage$ | async)">
+  <div
+    class="stepHeading"
+    [ngClass]="{
+      tenSteps: header.number && header.number > 9,
+      noCounter: !header.number
+    }"
+  >
+    <h1 class="ng-binding mw568" dir="{{ dir$ | async }}">
+      <span
+        class="ng-binding"
+        *ngIf="header.number && header.number > 0 && !(isForm$ | async)"
+        >{{ header.number }}</span
+      >
+      {{ headerText }}
+    </h1>
+  </div>
+</ng-container>

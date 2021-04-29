@@ -1,0 +1,12 @@
+:host {
+    width: 100%;
+    display: block;    
+}
+
+div.buttonContent {
+    margin-top: 24px;
+}
+
+:host:not(:first-child) > div.buttonContent {
+    margin-top: 12px;
+}
