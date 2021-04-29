@@ -10,9 +10,8 @@
     *ngIf="!(card.attributes.listeners && card.attributes.dismissListeners)"
     class="mw568 cardHeading ng-binding"
     dir="{{ dir$ | async }}"
-  >
-    {{ labelText }}
-  </h4>
+    [innerHTML]="labelText"
+  ></h4>
 
   <ng-container *ngIf="content && !(isModal$ | async)">
     <ng-container *ngFor="let cotentItem of content; trackBy: trackByFn">
