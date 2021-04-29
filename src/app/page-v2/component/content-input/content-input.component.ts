@@ -78,7 +78,11 @@ export class ContentInputComponent implements OnInit, OnChanges {
         this.placeholder.text &&
         this.placeholder.text.value
       ) {
-        this.placeholderText = this.placeholder.text.value.trim();
+        if (this.placeholder.text && this.placeholder.text.value) {
+          this.placeholderText = this.placeholder.text.value
+            .trim()
+            .replace(/<br\s*[\/]?>/gi, ' ');
+        }
       }
     }
 
