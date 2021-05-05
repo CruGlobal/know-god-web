@@ -128,6 +128,34 @@ export class PageV2Component implements OnInit, OnDestroy {
     }
   }
 
+  private getAnimation(resource): void {
+    if (resource === undefined || resource === '' || resource === null) {
+      return;
+    }
+
+    if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
+      const attachments = this._pageBookIndex.included.filter((row) => {
+        if (
+          row.type.toLowerCase() === 'attachment' &&
+          row.attributes['file-file-name'].toLowerCase() ===
+            resource.toLowerCase()
+        ) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      if (attachments.length === 0) {
+        return;
+      }
+
+      const filename = attachments[0].attributes.file;
+      this.pageService.addToAnimationsDict(resource, filename);
+      return filename;
+    }
+  }
+
   private getImage(resource): string {
     if (resource === undefined || resource === '' || resource === null) {
       return '';
@@ -186,10 +214,18 @@ export class PageV2Component implements OnInit, OnDestroy {
         _tTract.pageorder = pageorder;
         _tTract.parseXml();
         if (_tTract && _tTract.page) {
-          const _tTractImages = _tTract.getImageResources();
+          const _tTractResources = _tTract.getResources();
+          const _tTractImages = _tTractResources['images'];
+          const _tTractAnimations = _tTractResources['animations'];
           if (_tTractImages && _tTractImages.length) {
             _tTractImages.forEach((image) => {
               this.getImage(image);
+            });
+          }
+
+          if (_tTractAnimations && _tTractAnimations.length) {
+            _tTractAnimations.forEach((animation) => {
+              this.getAnimation(animation);
             });
           }
 

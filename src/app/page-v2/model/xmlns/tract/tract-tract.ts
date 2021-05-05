@@ -117,8 +117,12 @@ export class KgwTract {
   }
 
   public getResources(): string[] {
+    const files = [];
+    files['images'] = [];
+    files['animations'] = [];
+
     if (!this.page) {
-      return [];
+      return files;
     }
 
     const allElements: KgwContentElementItem[] = [];
@@ -165,9 +169,6 @@ export class KgwTract {
       });
     }
 
-    const files = [];
-    files['images'] = [];
-    files['animations'] = [];
 
     if (allElements.length) {
       allElements.forEach((element) => {
