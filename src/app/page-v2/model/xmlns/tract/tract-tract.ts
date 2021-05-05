@@ -169,7 +169,6 @@ export class KgwTract {
       });
     }
 
-
     if (allElements.length) {
       allElements.forEach((element) => {
         const tImageResources = this.getResourcesOfContentElement(
