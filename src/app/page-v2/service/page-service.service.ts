@@ -189,4 +189,70 @@ export class PageService {
 
     return items;
   }
+
+  getFirstSupportedContentElement(
+    pItems: KgwContentElementItem[]
+  ): KgwContentElementItem {
+    if (!pItems || !pItems.length) {
+      return null;
+    }
+
+    let pReturnItem = null;
+
+    pItems.forEach((item) => {
+      if (pReturnItem === null) {
+        switch (item.type) {
+          // Supported content element types
+          case 'paragraph':
+          case 'tabs':
+          case 'text':
+          case 'image':
+          case 'animation':
+          case 'link':
+          case 'form':
+          case 'input':
+          case 'fallback':
+            const tItems = this.checkContentElements([item]);
+            if (tItems.length === 1) {
+              pReturnItem = item;
+              return;
+            }
+            break;
+          // Button supported only when type is event or url
+          case 'button':
+            const tbItems = this.checkContentElements([item]);
+            if (tbItems.length === 1) {
+              const tButton: KgwContentComplexTypeButton = item.element as KgwContentComplexTypeButton;
+              if (
+                tButton.attributes.type &&
+                (tButton.attributes.type === 'url' ||
+                  tButton.attributes.type === 'event')
+              ) {
+                pReturnItem = item;
+                return;
+              }
+            }
+            break;
+          // Video supported only when provider is YouTube
+          case 'video':
+            const tvItems = this.checkContentElements([item]);
+            if (tvItems.length === 1) {
+              const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
+              if (
+                tVideo.attributes.provider &&
+                tVideo.attributes.provider === 'youtube'
+              ) {
+                pReturnItem = item;
+                return;
+              }
+            }
+            break;
+          default:
+            break;
+        }
+      }
+    });
+
+    return pReturnItem;
+  }
 }
