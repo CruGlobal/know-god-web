@@ -13,10 +13,12 @@ export class KgwContentAnimation {
     if (this._xmlNode.getAttribute('resource')) {
       item.attributes.resource = this._xmlNode.getAttribute('resource');
     }
+    item.attributes.autoplay = true;
     if (this._xmlNode.getAttribute('autoplay')) {
       item.attributes.autoplay =
         this._xmlNode.getAttribute('autoplay') === 'true';
     }
+    item.attributes.loop = true;
     if (this._xmlNode.getAttribute('loop')) {
       item.attributes.loop = this._xmlNode.getAttribute('loop') === 'true';
     }

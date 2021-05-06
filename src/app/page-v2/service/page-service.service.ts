@@ -14,6 +14,7 @@ export class PageService {
   private _nextPage = new Subject<any>();
   private _previousPage = new Subject<any>();
   private _formAction = new Subject<string>();
+  private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
   private _getEmailSignupFormData = new Subject<any>();
   private _emailSignupFormData = new Subject<any>();
@@ -24,8 +25,10 @@ export class PageService {
   private _isForm = new BehaviorSubject<boolean>(false);
   private _isModal = new BehaviorSubject<boolean>(false);
   private _imageUrlsDict = new BehaviorSubject<string[]>([]);
+  private _animationUrlsDict = new BehaviorSubject<string[]>([]);
 
   formAction$: Observable<string> = this._formAction.asObservable();
+  contentEvent$: Observable<string> = this._formAction.asObservable();
   changeHeader$: Observable<string> = this._changeHeader.asObservable();
   getEmailSignupFormData$: Observable<any> = this._getEmailSignupFormData.asObservable();
   emailSignupFormData$: Observable<any> = this._emailSignupFormData.asObservable();
@@ -44,6 +47,7 @@ export class PageService {
     this._isForm.next(false);
     this._isModal.next(false);
     this.clearImagesDict();
+    this.clearAnimationsDict();
   }
 
   nextPage(): void {
@@ -56,6 +60,10 @@ export class PageService {
 
   formAction(action: string): void {
     this._formAction.next(action);
+  }
+
+  contentEvent(event: string): void {
+    this._contentEvent.next(event);
   }
 
   changeHeader(newHeader: string): void {
@@ -119,6 +127,24 @@ export class PageService {
       return tImages[pImageName.toLocaleLowerCase()];
     }
     return pImageName;
+  }
+
+  clearAnimationsDict(): void {
+    this._animationUrlsDict.next([]);
+  }
+
+  addToAnimationsDict(pFileName: string, pFileUrl: string): void {
+    const tFiles = this._animationUrlsDict.getValue();
+    tFiles[pFileName.toLocaleLowerCase()] = pFileUrl;
+    this._animationUrlsDict.next(tFiles);
+  }
+
+  getAnimationUrl(pFileName: string): string {
+    const tFiles = this._animationUrlsDict.getValue();
+    if (tFiles && tFiles[pFileName.toLocaleLowerCase()]) {
+      return tFiles[pFileName.toLocaleLowerCase()];
+    }
+    return pFileName;
   }
 
   isRestricted(deviceTypes: string[]): boolean {
