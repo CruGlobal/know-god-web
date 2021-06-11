@@ -746,6 +746,7 @@ export class PageV2Component implements OnInit, OnDestroy {
             if (!data || data.type !== 'navigation-event') {
               return;
             }
+
             const Url = this.router
               .createUrlTree(
                 [
@@ -762,16 +763,14 @@ export class PageV2Component implements OnInit, OnDestroy {
                 }
               )
               .toString();
-            this.router.navigateByUrl(Url.toString());
             if (data.attributes.card) {
-              if (this.route.snapshot.fragment) {
-                setTimeout(() => {
-                  this.viewportScroller.scrollToAnchor(
-                    this.route.snapshot.fragment
-                  );
-                }, 0);
-              }
+              setTimeout(() => {
+                this.viewportScroller.scrollToAnchor(
+                  `card-${data.attributes.card}`
+                );
+              }, 100);
             }
+            this.router.navigateByUrl(Url.toString());
           }
         }
       );
