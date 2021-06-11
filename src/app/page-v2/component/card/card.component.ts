@@ -20,6 +20,7 @@ import { PageService } from '../../service/page-service.service';
 })
 export class CardComponent implements OnInit, OnChanges {
   @Input() card: KgwTractComplexTypeCard;
+  @Input() cardIndex: number;
 
   ready: boolean;
   label: KgwContentComplexTypeTextchild;
