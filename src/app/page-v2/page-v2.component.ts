@@ -11,7 +11,7 @@ import { delay, filter, takeUntil } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
-import { APIURL } from '../api/url';
+import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
 import { KgwManifest } from './model/xmlns/manifest/manifest-manifest';
 import { KgwTract } from './model/xmlns/tract/tract-tract';
 import { KgwManifestComplexTypePage } from './model/xmlns/manifest/manifest-ct-page';
@@ -19,6 +19,20 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
+import * as ActionCable from '@rails/actioncable';
+
+interface LiveShareSubscriptionPayload {
+  data?: {
+    type: 'navigation-event';
+    id: string;
+    attributes: {
+      card?: number;
+      locale: string;
+      page: number;
+      tool: string;
+    };
+  };
+}
 
 @Component({
   selector: 'app-page-v2',
@@ -46,6 +60,7 @@ export class PageV2Component implements OnInit, OnDestroy {
   private _pageBookSubPages: Array<KgwTract>;
   private _pageBookTips: Array<KgwTraining>;
   private _selectedLanguage: any;
+  private liveShareSubscription: ActionCable.Channel;
 
   pagesLoaded: boolean;
   selectedLang: string;
@@ -86,12 +101,16 @@ export class PageV2Component implements OnInit, OnDestroy {
     this.awaitPageChanged();
     this.awaitPageParameters();
     this.awaitEmailFormSignupDataSubmitted();
+    this.awaitLiveShareStream();
   }
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
     this._pageChanged.complete();
+    if (this.liveShareSubscription) {
+      this.liveShareSubscription.unsubscribe();
+    }
   }
 
   selectLanguage(lang): void {
@@ -708,5 +727,44 @@ export class PageV2Component implements OnInit, OnDestroy {
       this.pagesLoaded = true;
       this.loaderService.display(false);
     }, 0);
+  }
+
+  private awaitLiveShareStream(): void {
+    const liveShareStreamId = this.route.snapshot.queryParams.liveShareStream;
+    if (liveShareStreamId) {
+      this.liveShareSubscription = ActionCable.createConsumer(
+        MOBILE_CONTENT_API_WS_URL
+      ).subscriptions.create(
+        {
+          channel: 'SubscribeChannel',
+          channelId: liveShareStreamId
+        },
+        {
+          received: async ({ data }: LiveShareSubscriptionPayload) => {
+            if (!data || data.type !== 'navigation-event') {
+              return;
+            }
+
+            const Url = this.router
+              .createUrlTree(
+                [
+                  data.attributes.locale,
+                  data.attributes.tool,
+                  data.attributes.page
+                ],
+                {
+                  queryParams: this.route.snapshot.queryParams,
+
+                  ...(data.attributes.card !== undefined
+                    ? { fragment: `card-${data.attributes.card}` }
+                    : {})
+                }
+              )
+              .toString();
+            this.router.navigateByUrl(Url.toString());
+          }
+        }
+      );
+    }    
   }
 }
