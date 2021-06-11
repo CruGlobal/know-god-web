@@ -19,6 +19,7 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
+import { ViewportScroller } from '@angular/common';
 import * as ActionCable from '@rails/actioncable';
 
 interface LiveShareSubscriptionPayload {
@@ -78,7 +79,8 @@ export class PageV2Component implements OnInit, OnDestroy {
     public commonService: CommonService,
     private pageService: PageService,
     private route: ActivatedRoute,
-    public router: Router
+    public router: Router,
+    private viewportScroller: ViewportScroller
   ) {
     this._pageParams = {
       langid: '',
@@ -643,7 +645,6 @@ export class PageV2Component implements OnInit, OnDestroy {
             this.setSelectedLanguage();
           }
         }
-
         this._pageChanged.next();
       });
   }
@@ -723,6 +724,7 @@ export class PageV2Component implements OnInit, OnDestroy {
     this.activePageOrder = page.pageorder;
     this.activePage = page.page;
     this.awaitPageNavigation();
+    this.viewportScroller.scrollToPosition([0, 0]);
     setTimeout(() => {
       this.pagesLoaded = true;
       this.loaderService.display(false);
@@ -744,7 +746,6 @@ export class PageV2Component implements OnInit, OnDestroy {
             if (!data || data.type !== 'navigation-event') {
               return;
             }
-
             const Url = this.router
               .createUrlTree(
                 [
@@ -762,6 +763,15 @@ export class PageV2Component implements OnInit, OnDestroy {
               )
               .toString();
             this.router.navigateByUrl(Url.toString());
+            if (data.attributes.card) {
+              if (this.route.snapshot.fragment) {
+                setTimeout(() => {
+                  this.viewportScroller.scrollToAnchor(
+                    this.route.snapshot.fragment
+                  );
+                }, 0);
+              }
+            }
           }
         }
       );
