@@ -765,6 +765,6 @@ export class PageV2Component implements OnInit, OnDestroy {
           }
         }
       );
-    }    
+    }
   }
 }
