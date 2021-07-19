@@ -38,12 +38,6 @@ export class AnalyticsService {
         window.dataLayer.push({
           event: 'virtual-page-view'
         });
-
-        // Adobe Analytics
-        if (CustomEvent !== undefined) {
-          const evt = new CustomEvent('content: all pages');
-          document.querySelector('body').dispatchEvent(evt);
-        }
       }
     });
   }

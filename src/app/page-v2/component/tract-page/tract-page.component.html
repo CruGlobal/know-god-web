@@ -3,8 +3,8 @@
     id="toolContent"
     [ngClass]="{
       tc: (isFirstPage$ | async) || (isLastPage$ | async),
-      firstPage: (isFirstPage$ | async),
-      lastPage: (isLastPage$ | async),
+      firstPage: isFirstPage$ | async,
+      lastPage: isLastPage$ | async,
       hasPageHeader: hasPageHeader
     }"
   >
