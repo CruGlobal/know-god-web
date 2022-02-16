@@ -15,15 +15,63 @@
   ></h4>
 
   <ng-container *ngIf="content && !(isModal$ | async)">
-    <ng-container *ngFor="let cotentItem of content; trackBy: trackByFn">
-      <app-content-paragraph
-        *ngIf="cotentItem.type === 'paragraph'"
-        [item]="cotentItem"
-      ></app-content-paragraph>
+    <ng-container *ngFor="let contentItem of content; trackBy: trackByFn">
+      <app-content-accordion
+        *ngIf="contentItem.type === 'accordion'"
+        [item]="contentItem"
+      ></app-content-accordion>
+      <app-content-animation
+        *ngIf="contentItem.type === 'animation'"
+        [item]="contentItem"
+      ></app-content-animation>
+      <app-content-button
+        *ngIf="contentItem.type === 'button'"
+        [item]="contentItem"
+      ></app-content-button>
       <app-content-form
-        *ngIf="cotentItem.type === 'form'"
-        [item]="cotentItem"
+        *ngIf="contentItem.type === 'form'"
+        [item]="contentItem"
       ></app-content-form>
+      <app-content-image
+        *ngIf="contentItem.type === 'image'"
+        [item]="contentItem"
+      ></app-content-image>
+      <app-content-input
+        *ngIf="contentItem.type === 'input'"
+        [item]="contentItem"
+      ></app-content-input>
+      <app-content-link
+        *ngIf="contentItem.type === 'link'"
+        [item]="contentItem"
+      ></app-content-link>
+      <app-content-paragraph
+        *ngIf="contentItem.type === 'paragraph'"
+        [item]="contentItem"
+      ></app-content-paragraph>
+      <app-content-tabs
+        *ngIf="contentItem.type === 'tabs'"
+        [item]="contentItem"
+      ></app-content-tabs>
+      <app-content-text
+        *ngIf="contentItem.type === 'text'"
+        [item]="contentItem"
+      ></app-content-text>
+      <app-content-video
+        *ngIf="contentItem.type === 'video'"
+        [item]="contentItem"
+      ></app-content-video>
+      <app-content-spacer
+        *ngIf="contentItem.type === 'spacer'"
+        [item]="contentItem"
+      ></app-content-spacer>
+      <app-training-tip
+        *ngIf="contentItem.type === 'tip'"
+        [item]="contentItem"
+      ></app-training-tip>
+      <app-content-fallback
+        *ngIf="contentItem.type === 'fallback'"
+        [item]="contentItem"
+      ></app-content-fallback>
     </ng-container>
   </ng-container>
 </div>
