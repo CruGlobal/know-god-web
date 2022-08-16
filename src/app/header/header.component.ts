@@ -170,6 +170,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           );
 
           this._booksData.data.forEach((resource) => {
+            if (resource.attributes['attr-hidden']) {
+              return;
+            }
             if (resource.attributes['resource-type'] !== 'tract') {
               return;
             }
