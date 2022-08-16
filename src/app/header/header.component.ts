@@ -140,7 +140,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   private fetchBooks(): void {
     const url =
-      APIURL.GET_ALL_BOOKS + '?include=latest-translations,attachments';
+      APIURL.GET_ALL_BOOKS +
+      '?include=attachments,latest-translations,metatool';
 
     this.commonService
       .getBooks(url)
@@ -179,6 +180,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
             const resourceId = resource.id;
             const bannerId = resource.attributes['attr-banner'];
+
+            if (
+              resource.relationships.metatool &&
+              resource.relationships.metatool.data
+            ) {
+              const metatoolId = resource.relationships.metatool.data.id;
+              const metatool =
+                this._booksData.data.find((t) => t.id === metatoolId) ||
+                this._booksData.included.find(
+                  (t) => t.type === 'resource' && t.id === metatoolId
+                );
+
+              const defaultVariant =
+                metatool != null
+                  ? metatool.relationships['default-variant']
+                  : null;
+              if (
+                defaultVariant != null &&
+                defaultVariant.data.id !== resourceId
+              ) {
+                return;
+              }
+            }
 
             const _tTranslation = _translations.find(
               (x) => x.relationships.resource.data.id === resourceId
