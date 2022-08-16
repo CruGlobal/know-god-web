@@ -170,62 +170,68 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 this.dispLanguage
           );
 
-          this._booksData.data.forEach((resource) => {
-            if (resource.attributes['attr-hidden']) {
-              return;
-            }
-            if (resource.attributes['resource-type'] !== 'tract') {
-              return;
-            }
-
-            const resourceId = resource.id;
-            const bannerId = resource.attributes['attr-banner'];
-
-            if (
-              resource.relationships.metatool &&
-              resource.relationships.metatool.data
-            ) {
-              const metatoolId = resource.relationships.metatool.data.id;
-              const metatool =
-                this._booksData.data.find((t) => t.id === metatoolId) ||
-                this._booksData.included.find(
-                  (t) => t.type === 'resource' && t.id === metatoolId
-                );
-
-              const defaultVariant =
-                metatool != null
-                  ? metatool.relationships['default-variant']
-                  : null;
-              if (
-                defaultVariant != null &&
-                defaultVariant.data.id !== resourceId
-              ) {
+          this._booksData.data
+            .sort(
+              (o1, o2) =>
+                (o1.attributes['attr-default-order'] || 0) -
+                (o2.attributes['attr-default-order'] || 0)
+            )
+            .forEach((resource) => {
+              if (resource.attributes['attr-hidden']) {
                 return;
               }
-            }
+              if (resource.attributes['resource-type'] !== 'tract') {
+                return;
+              }
 
-            const _tTranslation = _translations.find(
-              (x) => x.relationships.resource.data.id === resourceId
-            );
+              const resourceId = resource.id;
+              const bannerId = resource.attributes['attr-banner'];
 
-            if (_tTranslation && _tTranslation.attributes) {
-              const _tTranslatedName =
-                _tTranslation.attributes['translated-name'];
-              const _tTranslatedTagLine =
-                _tTranslation.attributes['translated-tagline'];
+              if (
+                resource.relationships.metatool &&
+                resource.relationships.metatool.data
+              ) {
+                const metatoolId = resource.relationships.metatool.data.id;
+                const metatool =
+                  this._booksData.data.find((t) => t.id === metatoolId) ||
+                  this._booksData.included.find(
+                    (t) => t.type === 'resource' && t.id === metatoolId
+                  );
 
-              this.Images.push({
-                ImgUrl: attachments.find((x) => x.id === bannerId).attributes
-                  .file,
-                resource: _tTranslatedName,
-                id: resourceId,
-                abbreviation: resource.attributes.abbreviation,
-                tagline: _tTranslatedTagLine
-              });
-            } else {
-              console.log('MISSING TRANSLATION', resource, _tTranslation);
-            }
-          });
+                const defaultVariant =
+                  metatool != null
+                    ? metatool.relationships['default-variant']
+                    : null;
+                if (
+                  defaultVariant != null &&
+                  defaultVariant.data.id !== resourceId
+                ) {
+                  return;
+                }
+              }
+
+              const _tTranslation = _translations.find(
+                (x) => x.relationships.resource.data.id === resourceId
+              );
+
+              if (_tTranslation && _tTranslation.attributes) {
+                const _tTranslatedName =
+                  _tTranslation.attributes['translated-name'];
+                const _tTranslatedTagLine =
+                  _tTranslation.attributes['translated-tagline'];
+
+                this.Images.push({
+                  ImgUrl: attachments.find((x) => x.id === bannerId).attributes
+                    .file,
+                  resource: _tTranslatedName,
+                  id: resourceId,
+                  abbreviation: resource.attributes.abbreviation,
+                  tagline: _tTranslatedTagLine
+                });
+              } else {
+                console.log('MISSING TRANSLATION', resource, _tTranslation);
+              }
+            });
 
           this.sectionReady = true;
         }
