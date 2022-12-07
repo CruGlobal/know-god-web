@@ -11,7 +11,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  script:
     runs-on: ubuntu-latest
 
     strategy:
@@ -21,11 +21,15 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - run: yarn ci
+      # - name: Use Node.js ${{ matrix.node-version }}
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     node-version: ${{ matrix.node-version }}
+      #     cache: 'npm'
+      # - run: yarn install
       # - run: yarn run build --if-present # no yarn equivalent
-      - run: yarn test
+      # - run: yarn test
+      - name: Prettier
+        run: yarn prettier:check
+      - name: Lint
+        run: yarn lint
