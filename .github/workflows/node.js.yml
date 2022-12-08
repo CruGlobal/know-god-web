@@ -35,11 +35,7 @@ jobs:
         with:
           node-version: 'lts/*'
       # - pip install --user awscli # waiting for AWS help
-      - name: Copy embed.js
-        uses: canastro/copy-file-action@master
-        with:
-          source: 'embed/embed.js'
-          target: 'dist/embed.js'
+      - run: ls
       # - run: cp ../../embed/embed.js ../../dist/embed.js
       # - run: cp ../../embed/example.html ../../dist/example.html
       # - run: cp -r ../../mobile/ ../../dist/mobile/
