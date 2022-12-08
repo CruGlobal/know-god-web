@@ -34,8 +34,11 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 'lts/*'
+      - name: 📦 Install Dependencies
+        run: yarn install
+      - name: 🏗️ Build App
+        run: yarn ng build --prod
       # - pip install --user awscli # waiting for AWS help
-      - run: ls
-      # - run: cp ../../embed/embed.js ../../dist/embed.js
-      # - run: cp ../../embed/example.html ../../dist/example.html
-      # - run: cp -r ../../mobile/ ../../dist/mobile/
+      - run: cp embed/embed.js dist/embed.js
+      - run: cp embed/example.html dist/example.html
+      - run: cp -r mobile/ dist/mobile/
