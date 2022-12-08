@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '16.17.0'
       - name: 📦 Install Dependencies
         run: yarn install
       - name: 💅 Prettier
@@ -23,7 +23,7 @@ jobs:
       - name: 💨 Lint
         run: yarn lint
       - name: 🏗️ Build App
-        run: yarn build --prod
+        run: yarn ng build --prod
 
   before_deploy:
     runs-on: ubuntu-latest
@@ -33,11 +33,11 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 'lts/*'
+          node-version: '16.17.0'
       - name: 📦 Install Dependencies
         run: yarn install
       - name: 🏗️ Build App
-        run: yarn build --prod
+        run: yarn ng build --prod
       # - pip install --user awscli # waiting for AWS help
       - run: cp embed/embed.js dist/embed.js
       - run: cp embed/example.html dist/example.html
