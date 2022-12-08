@@ -35,6 +35,6 @@ jobs:
         with:
           node-version: 'lts/*'
       # - pip install --user awscli # waiting for AWS help
-      - run: cp /embed/embed.js /dist/embed.js
-      - run: cp /embed/example.html /dist/example.html
-      - run: cp -r /mobile/ /dist/mobile/
+      - run: cp ../../embed/embed.js ../../dist/embed.js
+      - run: cp ../../embed/example.html ../../dist/example.html
+      - run: cp -r ../../mobile/ ../../dist/mobile/
