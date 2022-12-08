@@ -23,7 +23,7 @@ jobs:
       - name: 💨 Lint
         run: yarn lint
       - name: 🏗️ Build App
-        run: yarn ng build --prod
+        run: yarn build --prod
 
   before_deploy:
     runs-on: ubuntu-latest
@@ -37,7 +37,7 @@ jobs:
       - name: 📦 Install Dependencies
         run: yarn install
       - name: 🏗️ Build App
-        run: yarn ng build --prod
+        run: yarn build --prod
       # - pip install --user awscli # waiting for AWS help
       - run: cp embed/embed.js dist/embed.js
       - run: cp embed/example.html dist/example.html
