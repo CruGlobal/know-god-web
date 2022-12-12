@@ -38,7 +38,7 @@ jobs:
         run: yarn install
       - name: 🏗️ Build App
         run: yarn ng build --prod
-      # - pip install --user awscli # waiting for AWS help
+      - run: pip install --user awscli
       - run: cp embed/embed.js dist/embed.js
       - run: cp embed/example.html dist/example.html
       - run: cp -r mobile/ dist/mobile/
