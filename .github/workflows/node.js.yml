@@ -43,6 +43,14 @@ jobs:
       - run: cp embed/example.html dist/example.html
       - run: cp -r mobile/ dist/mobile/
 
+  deploy_jp-gha-conversion:
+    if: github.ref == 'refs/heads/jp-gha-conversion'
+    runs-on: ubuntu-latest
+    needs: before_deploy
+
+    steps:
+      - run: echo "🎉 This successfully ran on jp-gha-conversion."
+
   deploy_staging:
     if: github.ref == 'refs/heads/staging'
     runs-on: ubuntu-latest
