@@ -71,3 +71,54 @@ jobs:
       - name: Deploy master
         if: github.ref == 'refs/heads/master'
         run: echo "🎉 This successfully ran on master."
+
+  uberjob:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 💅 Prettier check
+        run: yarn prettier:check
+
+      - name: 💨 Lint check
+        run: yarn lint
+
+      - name: 🏗️ Build app
+        run: yarn ng build --prod
+
+      - name: Install AWSCLI
+        run: pip install --user awscli
+
+      - name: Copy embed.js
+        run: cp embed/embed.js dist/embed.js
+
+      - name: Copy example.html
+        run: cp embed/example.html dist/example.html
+
+      - name: Copy mobile directory
+        run: cp -r mobile/ dist/mobile/
+
+      # For testing only - to be deleted before merge
+      - name: Deploy jp-gha-conversion
+        if: github.ref == 'refs/heads/jp-gha-conversion'
+        run: echo "🎉 This successfully ran on jp-gha-conversion."
+
+      - name: Deploy staging
+        if: github.ref == 'refs/heads/staging'
+        run: echo "🎉 This successfully ran on staging."
+        # run: scripts/deploy.staging.sh
+        # shell: bash
+
+      - name: Deploy master
+        if: github.ref == 'refs/heads/master'
+        run: echo "🎉 This successfully ran on master."
