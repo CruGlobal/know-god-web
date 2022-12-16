@@ -42,7 +42,7 @@ jobs:
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion'
     runs-on: ubuntu-latest
     environment:
-      name: ${{ (github.ref == 'refs/heads/master') && 'prod') || ((github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion') && 'stage') }}
+      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || ((github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion') && 'stage') }}
     needs: PreDeployTesting
     permissions:
       id-token: write
