@@ -108,6 +108,9 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
+      - name: Check root directory
+        run: ls
+
       - name: Check dist directory
         run: ls dist
 
