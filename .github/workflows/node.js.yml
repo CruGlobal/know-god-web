@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Test and Deploy:
+  Test_and_Deploy:
     runs-on: ubuntu-latest
 
     steps:
