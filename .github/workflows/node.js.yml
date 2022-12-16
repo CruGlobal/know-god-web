@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - jp-gha-conversion
-      # - staging
+      - staging
       # - master
   pull_request:
     branches:
       - jp-gha-conversion
-      # - staging
+      - staging
       # - master
   workflow_dispatch:
 
