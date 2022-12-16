@@ -2,9 +2,13 @@ name: Node.js CI
 
 on:
   push:
-    branches: ['jp-gha-conversion']
+    branches:
+      - jp-gha-conversion
+      - staging
   pull_request:
-    branches: ['jp-gha-conversion']
+    branches:
+      - jp-gha-conversion
+      - staging
   workflow_dispatch:
 
 jobs:
