@@ -39,9 +39,7 @@ jobs:
         run: yarn ng build --prod
 
   DeployStage:
-    if:
-      - github.repository == 'refs/heads/jp-gha-conversion'
-      - github.repository == 'refs/heads/staging'
+    if: github.ref == 'refs/heads/jp-gha-conversion'
     runs-on: ubuntu-latest
     environment: stage
     needs: PreDeployTesting
@@ -93,6 +91,12 @@ jobs:
         # run: scripts/deploy.staging.sh
         # shell: bash
 
+  DeployProduction:
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    environment: prod
+    needs: PreDeployTesting
+
+    steps:
       - name: Deploy master
-        if: github.ref == 'refs/heads/master'
         run: echo "🎉 This successfully ran on master."
