@@ -39,6 +39,9 @@ jobs:
         run: yarn ng build --prod
 
   DeployStage:
+    if:
+      - github.repository == 'refs/heads/jp-gha-conversion'
+      - github.repository == 'refs/heads/staging'
     runs-on: ubuntu-latest
     environment: stage
     needs: PreDeployTesting
