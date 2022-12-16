@@ -108,15 +108,6 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - name: Check root directory
-        run: ls -a
-
-      - name: Check dist directory
-        run: ls -a dist
-
-      - name: Check dist/mobile directory
-        run: ls -a -R dist/mobile
-
       # For testing only - to be deleted before merge
       - name: Deploy jp-gha-conversion
         if: github.ref == 'refs/heads/jp-gha-conversion'
