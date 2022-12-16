@@ -38,11 +38,11 @@ jobs:
       - name: 🏗️ Build app
         run: yarn ng build --prod
 
-  DeployStage:
-    if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion'
+  Deploy:
+    if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion'
     runs-on: ubuntu-latest
     environment:
-      name: ${{ (github.ref == 'refs/heads/staging' && 'stage') || (github.ref == 'refs/heads/jp-gha-conversion' && 'stage') }}
+      name: ${{ (github.ref == 'refs/heads/master') && 'prod') || ((github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion') && 'stage') }}
     needs: PreDeployTesting
     permissions:
       id-token: write
@@ -81,17 +81,16 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - name: Deploy
-        run: echo "🎉 This successfully ran on ${{ github.ref }}."
+      - run: echo "🎉 This successfully deployed from ${{ github.ref }}."
         # run: scripts/deploy.staging.sh
         # shell: bash
 
-  DeployProduction:
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    environment: prod
-    needs: PreDeployTesting
+  # DeployProduction:
+  #   if: github.ref == 'refs/heads/master'
+  #   runs-on: ubuntu-latest
+  #   environment: prod
+  #   needs: PreDeployTesting
 
-    steps:
-      - name: Deploy master
-        run: echo "🎉 This successfully ran on master."
+  #   steps:
+  #     - name: Deploy master
+  #       run: echo "🎉 This successfully ran on master."
