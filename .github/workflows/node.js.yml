@@ -16,6 +16,9 @@ on:
 jobs:
   Test_and_Deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Repository checkout
