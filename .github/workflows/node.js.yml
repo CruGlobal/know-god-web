@@ -84,13 +84,3 @@ jobs:
       - run: echo "🎉 This successfully deployed from ${{ github.ref }}."
         # run: scripts/deploy.staging.sh
         # shell: bash
-
-  # DeployProduction:
-  #   if: github.ref == 'refs/heads/master'
-  #   runs-on: ubuntu-latest
-  #   environment: prod
-  #   needs: PreDeployTesting
-
-  #   steps:
-  #     - name: Deploy master
-  #       run: echo "🎉 This successfully ran on master."
