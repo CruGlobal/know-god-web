@@ -14,11 +14,8 @@ on:
   workflow_dispatch:
 
 jobs:
-  Test_and_Deploy:
+  Test:
     runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-      contents: read
 
     steps:
       - name: Repository checkout
@@ -41,6 +38,26 @@ jobs:
       - name: 🏗️ Build app
         run: yarn ng build --prod
 
+  Deploy_Stage:
+    runs-on: ubuntu-latest
+    environment: stage
+    needs: Test
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
       - name: Install AWSCLI
         run: pip install --user awscli
 
@@ -60,9 +77,9 @@ jobs:
         run: cp -r mobile/ dist/mobile/
 
       # For testing only - to be deleted before merge
-      - name: Deploy jp-gha-conversion
-        if: github.ref == 'refs/heads/jp-gha-conversion'
-        run: echo "🎉 This successfully ran on jp-gha-conversion."
+      # - name: Deploy jp-gha-conversion
+      #   if: github.ref == 'refs/heads/jp-gha-conversion'
+      #   run: echo "🎉 This successfully ran on jp-gha-conversion."
       # End test
       - name: Deploy staging
         if: github.ref == 'refs/heads/staging'
@@ -70,6 +87,6 @@ jobs:
         # run: scripts/deploy.staging.sh
         # shell: bash
 
-      - name: Deploy master
-        if: github.ref == 'refs/heads/master'
-        run: echo "🎉 This successfully ran on master."
+      # - name: Deploy master
+      #   if: github.ref == 'refs/heads/master'
+      #   run: echo "🎉 This successfully ran on master."
