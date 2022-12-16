@@ -44,9 +44,9 @@ jobs:
     environment:
       name: ${{ (github.ref == 'refs/heads/staging' && 'stage') || (github.ref == 'refs/heads/jp-gha-conversion' && 'stage') }}
     needs: PreDeployTesting
-    # permissions:
-    #   id-token: write
-    #   contents: read
+    permissions:
+      id-token: write
+      contents: read
 
     steps:
       - name: Repository checkout
