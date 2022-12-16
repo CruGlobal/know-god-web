@@ -39,13 +39,14 @@ jobs:
         run: yarn ng build --prod
 
   DeployStage:
-    if: github.ref == 'refs/heads/jp-gha-conversion'
+    if: github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion'
     runs-on: ubuntu-latest
-    environment: stage
+    environment:
+      name: ${{ (github.ref == 'refs/heads/staging' && 'stage') || (github.ref == 'refs/heads/jp-gha-conversion' && 'stage') }}
     needs: PreDeployTesting
-    permissions:
-      id-token: write
-      contents: read
+    # permissions:
+    #   id-token: write
+    #   contents: read
 
     steps:
       - name: Repository checkout
@@ -80,14 +81,8 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      # For testing only - to be deleted before merge
-      - name: Deploy jp-gha-conversion
-        if: github.ref == 'refs/heads/jp-gha-conversion'
-        run: echo "🎉 This successfully ran on jp-gha-conversion."
-      # End test
-      - name: Deploy staging
-        if: github.ref == 'refs/heads/staging'
-        run: echo "🎉 This successfully ran on staging."
+      - name: Deploy
+        run: echo "🎉 This successfully ran on ${{ github.ref }}."
         # run: scripts/deploy.staging.sh
         # shell: bash
 
