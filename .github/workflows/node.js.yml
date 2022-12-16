@@ -39,6 +39,12 @@ jobs:
       - name: Install AWSCLI
         run: pip install --user awscli
 
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@036a4a1ddf2c0e7a782dca6e083c6c53e5d90321
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
 
