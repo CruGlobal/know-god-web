@@ -80,9 +80,9 @@ jobs:
         run: cp -r mobile/ dist/mobile/
 
       # For testing only - to be deleted before merge
-      # - name: Deploy jp-gha-conversion
-      #   if: github.ref == 'refs/heads/jp-gha-conversion'
-      #   run: echo "🎉 This successfully ran on jp-gha-conversion."
+      - name: Deploy jp-gha-conversion
+        if: github.ref == 'refs/heads/jp-gha-conversion'
+        run: echo "🎉 This successfully ran on jp-gha-conversion."
       # End test
       - name: Deploy staging
         if: github.ref == 'refs/heads/staging'
@@ -90,6 +90,6 @@ jobs:
         # run: scripts/deploy.staging.sh
         # shell: bash
 
-      # - name: Deploy master
-      #   if: github.ref == 'refs/heads/master'
-      #   run: echo "🎉 This successfully ran on master."
+      - name: Deploy master
+        if: github.ref == 'refs/heads/master'
+        run: echo "🎉 This successfully ran on master."
