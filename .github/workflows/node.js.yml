@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Test:
+  PreDeployTesting:
     runs-on: ubuntu-latest
 
     steps:
@@ -38,7 +38,7 @@ jobs:
       - name: 🏗️ Build app
         run: yarn ng build --prod
 
-  Deploy_Stage:
+  DeployStage:
     runs-on: ubuntu-latest
     environment: stage
     needs: Test
@@ -66,6 +66,9 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+
+      - name: 🏗️ Build app
+        run: yarn ng build --prod
 
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
