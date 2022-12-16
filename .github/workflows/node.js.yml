@@ -52,14 +52,6 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v3
 
-      - name: Node.js setup
-        uses: actions/setup-node@v3
-        with:
-          node-version: '16.x'
-
-      - name: 📦 Install dependencies
-        run: yarn install
-
       - name: Install AWSCLI
         run: pip install --user awscli
 
@@ -68,6 +60,14 @@ jobs:
         with:
           aws-region: us-east-1
           role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: 📦 Install dependencies
+        run: yarn install
 
       - name: 🏗️ Build app
         run: yarn ng build --prod
