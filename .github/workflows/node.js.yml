@@ -41,7 +41,7 @@ jobs:
   DeployStage:
     runs-on: ubuntu-latest
     environment: stage
-    needs: Test
+    needs: PreDeployTesting
     permissions:
       id-token: write
       contents: read
