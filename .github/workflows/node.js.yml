@@ -109,10 +109,10 @@ jobs:
         run: cp -r mobile/ dist/mobile/
 
       - name: Check root directory
-        run: ls
+        run: ls -a
 
       - name: Check dist directory
-        run: ls dist
+        run: ls -a dist
 
       # For testing only - to be deleted before merge
       - name: Deploy jp-gha-conversion
