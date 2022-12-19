@@ -82,7 +82,7 @@ jobs:
         run: cp -r mobile/ dist/mobile/
 
       - name: Deploy stage
-        if: github.ref != 'refs/heads/master'
+        if: github.ref == 'refs/heads/staging'
         run: echo "Deploy code goes here."
         # run: scripts/deploy.staging.sh
         # shell: bash
@@ -92,4 +92,4 @@ jobs:
         run: echo "Deploy code goes here."
 
       - name: Deploy summary
-        run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment from the ${{ github.ref_name }} branch."
+        run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') || 'stage' }} environment from the ${{ github.ref_name }} branch."
