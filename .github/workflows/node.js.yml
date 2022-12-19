@@ -39,6 +39,7 @@ jobs:
         run: yarn ng build --prod
 
   Deploy:
+    if: ${{ github.event_name == 'push'}}
     runs-on: ubuntu-latest
     environment:
       name: ${{ (github.ref == 'refs/heads/master' && 'prod') || 'stage' }}
@@ -80,7 +81,15 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - name: Deploy staging
+      - name: 'Push test'
+        if: ${{ github.event_name == 'push'}}
+        run: 'This should only run on a push.'
+
+      - name: 'Pull request test'
+        if: ${{ github.event_name == 'pull_request'}}
+        run: 'This should only run on a pull request.'
+
+      - name: Deploy stage
         if: github.ref != 'refs/heads/master'
         run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment from the ${{ github.ref_name }} branch."
         # run: scripts/deploy.staging.sh
