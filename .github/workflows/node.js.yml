@@ -41,7 +41,7 @@ jobs:
   Deploy:
     runs-on: ubuntu-latest
     environment:
-      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || ((github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion') && 'stage') }}
+      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || 'stage' }}
     needs: PreDeployTesting
     permissions:
       id-token: write
@@ -80,6 +80,6 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - run: echo "🎉 This successfully deployed from ${{ github.ref_name }} on the ${{ (github.ref == 'refs/heads/master' && 'prod') || ((github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/jp-gha-conversion') && 'stage') }} environment."
+      - run: echo "🎉 This successfully deployed from ${{ github.ref_name }} on the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment."
         # run: scripts/deploy.staging.sh
         # shell: bash
