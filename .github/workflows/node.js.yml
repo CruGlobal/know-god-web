@@ -80,6 +80,12 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - run: echo "🎉 This successfully deployed from ${{ github.ref_name }} on the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment."
+      - name: Deploy staging
+        if: github.ref != 'refs/heads/master'
+        run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment from the ${{ github.ref_name }} branch."
         # run: scripts/deploy.staging.sh
         # shell: bash
+
+      - name: Deploy prod
+        if: github.ref == 'refs/heads/master'
+        run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment from the ${{ github.ref_name }} branch."
