@@ -81,10 +81,26 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - name: Deploy stage
+      # - name: Deploy stage
+      # if: github.ref == 'refs/heads/staging'
+      #   run: scripts/deploy.staging.sh
+      #   shell: bash
+      - name: Update Embed Host
         if: github.ref == 'refs/heads/staging'
-        run: scripts/deploy.staging.sh
-        shell: bash
+        runs: sed -i "s%$appDomainPlaceholder%$appDomain%g" dist/embed.js
+        env:
+          appDomainPlaceholder: '{appDomain}'
+          appDomain: 'https://stage.knowgod.com'
+
+      - name: Deploy to s3
+        if: github.ref == 'refs/heads/staging'
+        runs: |
+          aws s3 sync dist/knowgod $S3_BUCKET --acl public-read --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
+          aws s3 sync dist/knowgod $S3_BUCKET --acl public-read --include '*.html' --cache-control 'public, max-age=120' --delete
+          aws s3 cp dist/embed.js $S3_BUCKET --acl public-read --cache-control 'public, max-age=600'
+          aws s3 sync dist/mobile $S3_BUCKET --acl public-read --cache-control 'public, max-age=3600' --content-type 'application/json'
+        env:
+          S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
 
       - name: Deploy prod
         if: github.ref == 'refs/heads/master'
