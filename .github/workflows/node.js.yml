@@ -83,10 +83,13 @@ jobs:
 
       - name: Deploy stage
         if: github.ref != 'refs/heads/master'
-        run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment from the ${{ github.ref_name }} branch."
+        run: echo "Deploy code goes here."
         # run: scripts/deploy.staging.sh
         # shell: bash
 
       - name: Deploy prod
         if: github.ref == 'refs/heads/master'
+        run: echo "Deploy code goes here."
+
+      - name: Deploy summary
         run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') ||'stage' }} environment from the ${{ github.ref_name }} branch."
