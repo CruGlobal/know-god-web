@@ -83,9 +83,8 @@ jobs:
 
       - name: Deploy stage
         if: github.ref == 'refs/heads/staging'
-        run: echo "Deploy code goes here."
-        # run: scripts/deploy.staging.sh
-        # shell: bash
+        run: scripts/deploy.staging.sh
+        shell: bash
 
       - name: Deploy prod
         if: github.ref == 'refs/heads/master'
