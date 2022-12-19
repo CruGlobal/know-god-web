@@ -81,6 +81,6 @@ jobs:
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - run: echo "🎉 This successfully deployed from ${{ github.ref }}."
+      - run: echo "🎉 This successfully deployed from ${{ github.ref_name }} on ${{environment.name}}."
         # run: scripts/deploy.staging.sh
         # shell: bash
