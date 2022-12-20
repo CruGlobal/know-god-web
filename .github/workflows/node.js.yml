@@ -8,14 +8,13 @@ on:
       # - master
   pull_request:
     branches:
-      - jp-gha-conversion
       - staging
       # - master
   workflow_dispatch:
 
 jobs:
   build:
-    name: Testing the app build + Prettier/Lint checks
+    name: Checks & Build Test
     runs-on: ubuntu-latest
 
     steps:
@@ -77,33 +76,20 @@ jobs:
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
 
-      - name: Copy example.html
-        run: cp embed/example.html dist/example.html
-
       - name: Copy mobile directory
         run: cp -r mobile/ dist/mobile/
 
-      - name: Update embed host (staging)
-        if: github.ref == 'refs/heads/staging'
+      - name: Update embed host
         run: sed -i "s%$appDomainPlaceholder%$appDomain%g" dist/embed.js
         env:
           appDomainPlaceholder: '{appDomain}'
-          appDomain: 'https://stage.knowgod.com'
+          appDomain: https://${{ secrets.HOST_NAME }}
 
-      - name: Deploy to s3 (staging)
-        if: github.ref == 'refs/heads/staging'
+      - name: Deploy to s3
         run: |
-          aws s3 sync dist/knowgod s3://$S3_BUCKET --acl 'public-read' --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
-          aws s3 sync dist/knowgod s3://$S3_BUCKET --acl 'public-read' --include '*.html' --cache-control 'no-cache' --delete
-          aws s3 cp dist/embed.js s3://$S3_BUCKET --acl 'public-read' --cache-control 'no-cache'
-          aws s3 cp dist/example.html s3://$S3_BUCKET --acl 'public-read' --cache-control 'no-cache'
-          aws s3 sync dist/mobile s3://$S3_BUCKET --acl 'public-read' --cache-control 'no-cache' --content-type 'application/json'
+          aws s3 sync dist/knowgod $S3_BUCKET --acl 'public-read' --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
+          aws s3 sync dist/knowgod $S3_BUCKET --acl 'public-read' --include '*.html' --cache-control 'public, max-age=120' --delete
+          aws s3 cp dist/embed.js $S3_BUCKET --acl 'public-read' --cache-control 'public, max-age=600'
+          aws s3 sync dist/mobile $S3_BUCKET --acl 'public-read' --cache-control 'public, max-age=3600' --content-type 'application/json'
         env:
-          S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
-
-      - name: Deploy prod
-        if: github.ref == 'refs/heads/master'
-        run: echo "Deploy code goes here."
-
-      - name: Deploy summary
-        run: echo "Deployed to the ${{ (github.ref == 'refs/heads/master' && 'prod') || 'stage' }} environment from the ${{ github.ref_name }} branch."
+          S3_BUCKET: s3://${{ secrets.AWS_S3_BUCKET }}
