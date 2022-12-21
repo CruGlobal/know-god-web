@@ -1,0 +1,98 @@
+name: Build & Deploy
+
+on:
+  push:
+    branches:
+      - staging
+      - master
+  pull_request:
+    branches:
+      - staging
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Checks & Build Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 💅 Prettier check
+        run: yarn prettier:check
+
+      - name: 💨 Lint check
+        run: yarn lint
+
+      - name: 🏗️ Build app
+        run: yarn build --prod
+
+  deploy:
+    name: Deploy
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/staging')
+    runs-on: ubuntu-latest
+    environment:
+      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || 'stage' }}
+    needs: build
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v3
+
+      - name: Install AWSCLI
+        run: pip install --user awscli
+
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+
+      - name: 📦 Install dependencies
+        run: yarn install
+
+      - name: 🏗️ Build app
+        run: yarn build --prod
+
+      - name: Copy embed.js
+        run: cp embed/embed.js dist/embed.js
+
+      - name: Copy mobile directory
+        run: cp -r mobile/ dist/mobile/
+
+      - name: Update embed host
+        run: sed -i "s%$appDomainPlaceholder%$appDomain%g" dist/embed.js
+        env:
+          appDomainPlaceholder: '{appDomain}'
+          appDomain: https://${{ secrets.HOST_NAME }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-region: us-east-1
+          role-to-assume: ${{ secrets.AWS_IAM_ROLE_ARN }}
+
+      - name: Deploy to s3
+        run: |
+          aws s3 sync dist/knowgod $S3_BUCKET --acl 'public-read' --exclude '*.html' --cache-control 'public, max-age=31536000' --delete
+          aws s3 sync dist/knowgod $S3_BUCKET --acl 'public-read' --include '*.html' --cache-control 'public, max-age=120' --delete
+          aws s3 cp dist/embed.js $S3_BUCKET --acl 'public-read' --cache-control 'public, max-age=600'
+          aws s3 sync dist/mobile $S3_BUCKET --acl 'public-read' --cache-control 'public, max-age=3600' --content-type 'application/json'
+        env:
+          S3_BUCKET: s3://${{ secrets.AWS_S3_BUCKET }}
