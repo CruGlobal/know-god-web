@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { LoaderService } from './services/loader-service/loader.service';
-import { Router, NavigationEnd } from '@angular/router';
 import { AnalyticsService } from './services/analytics.service';
 
 @Component({
