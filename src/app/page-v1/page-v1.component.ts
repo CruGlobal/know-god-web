@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, HostListener } from '@angular/core';
 import { CommonService } from '../services/common.service';
 import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
 import { TextDecoder } from 'text-encoding';
-import { NgxXml2jsonService } from 'ngx-xml2json';
+import { parseString } from 'xml2js';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Location, ViewportScroller } from '@angular/common';
@@ -38,7 +38,6 @@ interface LiveShareSubscriptionPayload {
 export class PageV1Component implements OnInit, OnDestroy {
   constructor(
     public commonService: CommonService,
-    private ngxXml2jsonService: NgxXml2jsonService,
     public sanitizer: DomSanitizer,
     private route: ActivatedRoute,
     public router: Router,
@@ -420,7 +419,10 @@ export class PageV1Component implements OnInit, OnDestroy {
             /*convertion of xml to json*/
             const parser = new DOMParser();
             const xml = parser.parseFromString(result, 'text/xml');
-            const jsondata = this.ngxXml2jsonService.xmlToJson(xml);
+            // const jsondata = this.ngxXml2jsonService.xmlToJson(xml);
+            const jsondata = parseString(xml, (_, result) => {
+              return result
+            })
 
             /* All Pages in xml file */
             if (jsondata['manifest']['pages']['page'] === undefined) {
@@ -512,7 +514,10 @@ export class PageV1Component implements OnInit, OnDestroy {
         // convertion of xml to json
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'application/xml');
-        const jsondata = this.ngxXml2jsonService.xmlToJson(xml);
+        // const jsondata = this.ngxXml2jsonService.xmlToJson(xml);
+        const jsondata = parseString(xml, (_, result) => {
+          return result
+        })
 
         this.objectMapper(jsondata, page.filename);
         this.AllPagesContent.push(jsondata);
