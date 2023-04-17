@@ -5626,13 +5626,6 @@ ng-lottie@^0.3.2:
   dependencies:
     lottie-web "^5.1.3"
 
-ngx-loading@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/ngx-loading/-/ngx-loading-7.0.0.tgz#09cf9904834944ed3c701f4932da004eefcd2833"
-  integrity sha512-zzWBWbCEaeuhDoV50hO4lJnPUrzleDCh+U+F3HYM04IdvJsiSiWEE36gB1dRK58qBYejtMtOlYvKWaqvSih44g==
-  dependencies:
-    tslib "^1.9.0"
-
 ngx-toastr@^10.2.0:
   version "10.2.0"
   resolved "https://registry.yarnpkg.com/ngx-toastr/-/ngx-toastr-10.2.0.tgz#8a79008de0b1c013f90120a53e0355af5762e969"
@@ -7959,7 +7952,7 @@ tslib@1.10.0:
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.10.0.tgz#c3c19f95973fb0a62973fb09d90d961ee43e5c8a"
   integrity sha512-qOebF53frne81cf0S9B41ByenJ3/IuH8yJKngAX35CmiZySA0khhkovshKK+jGCaMnVomla7gVlIcc3EvKPbTQ==
 
-tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
+tslib@1.14.1, tslib@^1.8.0, tslib@^1.8.1, tslib@^1.9.0:
   version "1.14.1"
   resolved "https://registry.yarnpkg.com/tslib/-/tslib-1.14.1.tgz#cf2d38bdc34a134bcaf1091c41f6619e2f672d00"
   integrity sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==
