@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { PageV1Component } from './page-v1/page-v1.component';
 import { RouterModule, Routes } from '@angular/router';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
-import { HttpModule } from '@angular/http';
+// import { HttpClient } from '@angular/common/http';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { ToastrModule } from 'ngx-toastr';
@@ -90,7 +90,6 @@ const appRoutes: Routes = [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    HttpModule,
     RouterModule.forRoot(appRoutes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled' // Scrolls to top when fragment is removed
