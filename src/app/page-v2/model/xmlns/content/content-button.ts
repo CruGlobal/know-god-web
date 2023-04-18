@@ -31,9 +31,8 @@ export class KgwContentButton {
       item.attributes.color = this._xmlNode.getAttribute('color');
     }
     if (this._xmlNode.getAttribute('background-color')) {
-      item.attributes.backgroundColor = this._xmlNode.getAttribute(
-        'background-color'
-      );
+      item.attributes.backgroundColor =
+        this._xmlNode.getAttribute('background-color');
     }
     if (this._xmlNode.getAttribute('restrictTo')) {
       const tValue = this._xmlNode.getAttribute('restrictTo') as string;

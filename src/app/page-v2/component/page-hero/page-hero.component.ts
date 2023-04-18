@@ -81,7 +81,8 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
     if (this.hero.content && this.hero.content.length) {
       this.hero.content.forEach((contentChild) => {
         if (contentChild.contentType === 'paragraph') {
-          const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+          const tParagraph: KgwContentComplexTypeParagraph =
+            contentChild as KgwContentComplexTypeParagraph;
           if (
             !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
           ) {
@@ -92,7 +93,8 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
             this.content.push(tItemToAdd);
           }
         } else if (contentChild.contentType === 'form') {
-          const tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+          const tForm: KgwContentComplexTypeForm =
+            contentChild as KgwContentComplexTypeForm;
           const tItemToAdd: KgwContentElementItem = {
             type: 'form',
             element: tForm

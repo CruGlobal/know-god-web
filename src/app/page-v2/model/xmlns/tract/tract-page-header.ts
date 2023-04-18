@@ -16,9 +16,8 @@ export class KgwTractPageHeader {
     }
 
     if (this._xmlNode.getAttribute('background-color')) {
-      item.attributes.backgroundColor = this._xmlNode.getAttribute(
-        'background-color'
-      );
+      item.attributes.backgroundColor =
+        this._xmlNode.getAttribute('background-color');
     }
 
     if (this._xmlNode.childNodes && this._xmlNode.childNodes.length) {

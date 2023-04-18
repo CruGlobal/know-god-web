@@ -69,7 +69,8 @@ export class ModalComponent implements OnInit, OnChanges {
     if (this.modal.content && this.modal.content.length) {
       this.modal.content.forEach((contentChild) => {
         if (contentChild.contentType === 'paragraph') {
-          const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+          const tParagraph: KgwContentComplexTypeParagraph =
+            contentChild as KgwContentComplexTypeParagraph;
           if (
             !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
           ) {

@@ -39,7 +39,7 @@ jobs:
         run: yarn lint
 
       - name: 🏗️ Build app
-        run: yarn build --prod
+        run: yarn build --configuration production
 
   deploy:
     name: Deploy
@@ -68,7 +68,7 @@ jobs:
         run: yarn install
 
       - name: 🏗️ Build app
-        run: yarn build --prod
+        run: yarn build --configuration production
 
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js

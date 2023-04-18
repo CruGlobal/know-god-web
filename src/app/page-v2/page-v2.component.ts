@@ -604,9 +604,8 @@ export class PageV2Component implements OnInit, OnDestroy {
               this._pageBookSubPagesManifest &&
               this._pageBookSubPagesManifest.length > this._pageParams.pageid
             ) {
-              const tSubPageManifest = this._pageBookMainfest[
-                this._pageParams.pageid
-              ];
+              const tSubPageManifest =
+                this._pageBookMainfest[this._pageParams.pageid];
               if (tSubPageManifest) {
                 this.pagesLoaded = false;
                 this.loaderService.display(true);

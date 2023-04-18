@@ -33,22 +33,19 @@ export class KgwTract {
       this.page.attributes.primaryColor = tNode.getAttribute('primary-color');
     }
     if (tNode.getAttribute('primary-text-color')) {
-      this.page.attributes.primaryTextColor = tNode.getAttribute(
-        'primary-text-color'
-      );
+      this.page.attributes.primaryTextColor =
+        tNode.getAttribute('primary-text-color');
     }
     if (tNode.getAttribute('text-color')) {
       this.page.attributes.textColor = tNode.getAttribute('text-color');
     }
     if (tNode.getAttribute('background-color')) {
-      this.page.attributes.backgroundColor = tNode.getAttribute(
-        'background-color'
-      );
+      this.page.attributes.backgroundColor =
+        tNode.getAttribute('background-color');
     }
     if (tNode.getAttribute('background-image')) {
-      this.page.attributes.backgroundImage = tNode.getAttribute(
-        'background-image'
-      );
+      this.page.attributes.backgroundImage =
+        tNode.getAttribute('background-image');
     }
     if (tNode.getAttribute('background-image-align')) {
       this.page.attributes.backgroundImageAlign = tNode.getAttribute(
@@ -66,9 +63,8 @@ export class KgwTract {
       );
     }
     if (tNode.getAttribute('card-text-color')) {
-      this.page.attributes.cardTextColor = tNode.getAttribute(
-        'card-text-color'
-      );
+      this.page.attributes.cardTextColor =
+        tNode.getAttribute('card-text-color');
     }
     if (tNode.getAttribute('card-background-color')) {
       this.page.attributes.cardBackgroundColor = tNode.getAttribute(
@@ -295,7 +291,8 @@ export class KgwTract {
         }
         break;
       case 'accordion':
-        const tAccordion = element.element as KgwContentComplexTypeAccordionSection;
+        const tAccordion =
+          element.element as KgwContentComplexTypeAccordionSection;
         if (tAccordion.children && tAccordion.children.length) {
           tAccordion.children.forEach((accordionChild) => {
             const tAccordionChildResources = this.getResourcesOfContentElement(
