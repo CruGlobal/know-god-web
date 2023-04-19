@@ -21,7 +21,6 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
-
 interface LiveShareSubscriptionPayload {
   data?: {
     type: 'navigation-event';
@@ -80,7 +79,8 @@ export class PageComponent implements OnInit, OnDestroy {
     private pageService: PageService,
     private route: ActivatedRoute,
     public router: Router,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
+    private pullParserFactory: any
   ) {
     this._pageParams = {
       langid: '',
@@ -211,17 +211,23 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private loadBookPage(
+  private async loadBookPage(
     page: KgwManifestComplexTypePage,
     pageorder: number
-  ): void {
+  ): Promise<void> {
+
+    const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST +
+    this._pageBookTranslationId +
+    '/' +
+    page.src
+
+    const file = await this.pullParserFactory.readFile(fileName)
+    console.log('file', file)
+
+
+
     this.commonService
-      .downloadFile(
-        APIURL.GET_XML_FILES_FOR_MANIFEST +
-          this._pageBookTranslationId +
-          '/' +
-          page.src
-      )
+      .downloadFile(fileName)
       .subscribe((data: any) => {
         const enc = new TextDecoder('utf-8');
         const arr = new Uint8Array(data);
