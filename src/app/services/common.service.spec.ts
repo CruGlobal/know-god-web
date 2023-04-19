@@ -1,5 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { CommonService } from './common.service';
 
 describe('CommonService', () => {

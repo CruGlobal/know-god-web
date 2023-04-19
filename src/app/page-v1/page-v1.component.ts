@@ -267,8 +267,8 @@ export class PageV1Component implements OnInit, OnDestroy {
     this.allLanguagesTranslations = this.allLanguages;
     for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
       let language;
-      const currentIterationTranslations = this.allLanguagesTranslations[i]
-        .relationships.translations.data;
+      const currentIterationTranslations =
+        this.allLanguagesTranslations[i].relationships.translations.data;
       for (let j = 0; j < currentIterationTranslations.length; j++) {
         for (let k = 0; k < this.currentBookTranslations.length; k++) {
           if (
@@ -419,10 +419,11 @@ export class PageV1Component implements OnInit, OnDestroy {
             /*convertion of xml to json*/
             const parser = new DOMParser();
             const xml = parser.parseFromString(result, 'text/xml');
+            let jsondata: object;
             // const jsondata = this.ngxXml2jsonService.xmlToJson(xml);
-            const jsondata = parseString(xml, (_, result) => {
-              return result
-            })
+            parseString(xml, (_, jsonresult) => {
+              jsondata = jsonresult;
+            });
 
             /* All Pages in xml file */
             if (jsondata['manifest']['pages']['page'] === undefined) {
@@ -514,10 +515,11 @@ export class PageV1Component implements OnInit, OnDestroy {
         // convertion of xml to json
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'application/xml');
+        let jsondata: object;
         // const jsondata = this.ngxXml2jsonService.xmlToJson(xml);
-        const jsondata = parseString(xml, (_, result) => {
-          return result
-        })
+        parseString(xml, (_, jsonresult) => {
+          jsondata = jsonresult;
+        });
 
         this.objectMapper(jsondata, page.filename);
         this.AllPagesContent.push(jsondata);
@@ -1405,9 +1407,8 @@ export class PageV1Component implements OnInit, OnDestroy {
 
     this.currentPageContent = selected_page[0];
     if (this.currentPageContent && this.currentPageContent.header) {
-      this.currentPageContent.heading = this.currentPageContent.header.title[
-        'content:text'
-      ];
+      this.currentPageContent.heading =
+        this.currentPageContent.header.title['content:text'];
     }
 
     if (this.currentPageContent === undefined) {
@@ -1416,9 +1417,8 @@ export class PageV1Component implements OnInit, OnDestroy {
     }
 
     if (this.currentPageContent.paragraph['content:paragraph'] !== undefined) {
-      this.summary_line = this.currentPageContent.paragraph[
-        'content:paragraph'
-      ]['content:text'];
+      this.summary_line =
+        this.currentPageContent.paragraph['content:paragraph']['content:text'];
       if (typeof this.summary_line !== 'string') {
         this.multiple_summary_line = this.summary_line;
         this.summary_line = '';
@@ -1448,9 +1448,8 @@ export class PageV1Component implements OnInit, OnDestroy {
       this.currentPageContent.header != null &&
       this.currentPageContent.header.number != null
     ) {
-      this.headerCounter = this.currentPageContent.header.number[
-        'content:text'
-      ];
+      this.headerCounter =
+        this.currentPageContent.header.number['content:text'];
     } else {
       this.headerCounter = null;
     }

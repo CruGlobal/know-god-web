@@ -90,10 +90,10 @@ const appRoutes: Routes = [
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot(appRoutes, {
-    anchorScrolling: 'enabled',
-    scrollPositionRestoration: 'enabled', // Scrolls to top when fragment is removed
-    relativeLinkResolution: 'legacy'
-}),
+      anchorScrolling: 'enabled',
+      scrollPositionRestoration: 'enabled', // Scrolls to top when fragment is removed
+      relativeLinkResolution: 'legacy'
+    }),
     BrowserAnimationsModule,
     ToastrModule.forRoot(),
     LottieAnimationViewModule.forRoot()

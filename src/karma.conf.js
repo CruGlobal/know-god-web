@@ -29,6 +29,6 @@ module.exports = function (config) {
     singleRun: false,
     proxies: {
       '/assets/': '/base/src/assets/'
-    },
+    }
   });
 };

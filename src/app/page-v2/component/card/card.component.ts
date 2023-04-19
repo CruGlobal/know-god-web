@@ -76,7 +76,8 @@ export class CardComponent implements OnInit, OnChanges {
     if (this.card.content && this.card.content.length) {
       this.card.content.forEach((contentChild) => {
         if (contentChild.contentType === 'paragraph') {
-          const tParagraph: KgwContentComplexTypeParagraph = contentChild as KgwContentComplexTypeParagraph;
+          const tParagraph: KgwContentComplexTypeParagraph =
+            contentChild as KgwContentComplexTypeParagraph;
           if (
             !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
           ) {
@@ -87,7 +88,8 @@ export class CardComponent implements OnInit, OnChanges {
             this.content.push(tItemToAdd);
           }
         } else if (contentChild.contentType === 'form') {
-          const tForm: KgwContentComplexTypeForm = contentChild as KgwContentComplexTypeForm;
+          const tForm: KgwContentComplexTypeForm =
+            contentChild as KgwContentComplexTypeForm;
           const tItemToAdd: KgwContentElementItem = {
             type: 'form',
             element: tForm

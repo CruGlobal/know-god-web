@@ -1,9 +1,9 @@
 import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
-import {HttpClientModule} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { PageV1Component } from './page-v1.component';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { RouterTestingModule } from "@angular/router/testing";
+import { RouterTestingModule } from '@angular/router/testing';
 import { SharingModalComponent } from '../shared/sharing-modal/sharing-modal.component';
 import { ToastrModule } from 'ngx-toastr';
 
