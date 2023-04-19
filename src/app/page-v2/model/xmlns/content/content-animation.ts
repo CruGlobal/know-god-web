@@ -26,14 +26,12 @@ export class KgwContentAnimation {
       item.attributes.events = this._xmlNode.getAttribute('events');
     }
     if (this._xmlNode.getAttribute('play-listeners')) {
-      item.attributes.playListeners = this._xmlNode.getAttribute(
-        'play-listeners'
-      );
+      item.attributes.playListeners =
+        this._xmlNode.getAttribute('play-listeners');
     }
     if (this._xmlNode.getAttribute('stop-listeners')) {
-      item.attributes.stopListeners = this._xmlNode.getAttribute(
-        'stop-listeners'
-      );
+      item.attributes.stopListeners =
+        this._xmlNode.getAttribute('stop-listeners');
     }
 
     return item;

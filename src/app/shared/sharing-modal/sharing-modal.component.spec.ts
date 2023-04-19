@@ -1,14 +1,15 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ToastrModule } from 'ngx-toastr';
 import { SharingModalComponent } from './sharing-modal.component';
 
 describe('SharingModalComponent', () => {
   let component: SharingModalComponent;
   let fixture: ComponentFixture<SharingModalComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [SharingModalComponent]
+      declarations: [SharingModalComponent],
+      imports: [ToastrModule.forRoot()]
     }).compileComponents();
   }));
 
