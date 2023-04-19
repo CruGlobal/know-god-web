@@ -10,6 +10,7 @@ import { LoaderService } from '../services/loader-service/loader.service';
 import { AnalyticsService } from '../services/analytics.service';
 import { isArray } from 'util';
 import * as ActionCable from '@rails/actioncable';
+import { resolve } from 'dns';
 
 interface PageParams {
   bookid: string;
@@ -47,8 +48,8 @@ export class PageV1Component implements OnInit, OnDestroy {
     private viewportScroller: ViewportScroller
   ) {
     this.showLoader = true;
-    this.AllBooks();
     this.AllLanguages();
+    this.AllBooks();
   }
 
   showLoader: boolean;
@@ -243,15 +244,17 @@ export class PageV1Component implements OnInit, OnDestroy {
 
   /*To get all languages*/
   AllLanguages() {
+    console.log('AllLanguages');
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
       .subscribe((data: any) => {
+        console.log('datadata', data)
         this.allLanguages = data.data;
       });
   }
 
   /*Language translations for selected book*/
-  LanguagesForSelectedBook() {
+  async LanguagesForSelectedBook() {
     this.showNoRecordFound = false;
     this.errorpresent = false;
     this.errorMsg = '';
@@ -263,6 +266,9 @@ export class PageV1Component implements OnInit, OnDestroy {
     this.cardsContent = [];
     this.currentPageContent = {};
     this.multiple_summary_line = [];
+    console.log('this.allLanguages', this.allLanguages);
+    if (!this.allLanguages) await this.AllLanguages();
+    
 
     this.allLanguagesTranslations = this.allLanguages;
     for (let i = 0; i < this.allLanguagesTranslations.length; i++) {
