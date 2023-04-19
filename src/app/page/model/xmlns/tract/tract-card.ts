@@ -20,15 +20,13 @@ export class KgwTractCard {
     };
 
     if (this._xmlNode.getAttribute('background-color')) {
-      item.attributes.backgroundColor = this._xmlNode.getAttribute(
-        'background-color'
-      );
+      item.attributes.backgroundColor =
+        this._xmlNode.getAttribute('background-color');
     }
 
     if (this._xmlNode.getAttribute('background-image')) {
-      item.attributes.backgroundImage = this._xmlNode.getAttribute(
-        'background-image'
-      );
+      item.attributes.backgroundImage =
+        this._xmlNode.getAttribute('background-image');
     }
 
     if (this._xmlNode.getAttribute('background-image-align')) {
@@ -48,9 +46,8 @@ export class KgwTractCard {
     }
 
     if (this._xmlNode.getAttribute('dismiss-listeners')) {
-      item.attributes.dismissListeners = this._xmlNode.getAttribute(
-        'dismiss-listeners'
-      );
+      item.attributes.dismissListeners =
+        this._xmlNode.getAttribute('dismiss-listeners');
     }
 
     if (this._xmlNode.getAttribute('listeners')) {

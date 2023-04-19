@@ -15,9 +15,8 @@ export class KgwTractCallToAction {
       item.attributes.events = this._xmlNode.getAttribute('events');
     }
     if (this._xmlNode.getAttribute('control-color')) {
-      item.attributes.controlColor = this._xmlNode.getAttribute(
-        'control-color'
-      );
+      item.attributes.controlColor =
+        this._xmlNode.getAttribute('control-color');
     }
     if (this._xmlNode.getAttribute('training:tip')) {
       item.attributes.tip = this._xmlNode.getAttribute('training:tip');

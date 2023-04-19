@@ -30,8 +30,10 @@ export class PageService {
   formAction$: Observable<string> = this._formAction.asObservable();
   contentEvent$: Observable<string> = this._formAction.asObservable();
   changeHeader$: Observable<string> = this._changeHeader.asObservable();
-  getEmailSignupFormData$: Observable<any> = this._getEmailSignupFormData.asObservable();
-  emailSignupFormData$: Observable<any> = this._emailSignupFormData.asObservable();
+  getEmailSignupFormData$: Observable<any> =
+    this._getEmailSignupFormData.asObservable();
+  emailSignupFormData$: Observable<any> =
+    this._emailSignupFormData.asObservable();
   nextPage$: Observable<any> = this._nextPage.asObservable();
   previousPage$: Observable<any> = this._previousPage.asObservable();
   pageDir$: Observable<string> = this._dir.asObservable();
@@ -168,7 +170,8 @@ export class PageService {
     pItems.forEach((item) => {
       switch (item.type) {
         case 'paragraph':
-          const tParagraph: KgwContentComplexTypeParagraph = item.element as KgwContentComplexTypeParagraph;
+          const tParagraph: KgwContentComplexTypeParagraph =
+            item.element as KgwContentComplexTypeParagraph;
           if (tParagraph) {
             if (!this.isRestricted(tParagraph.attributes.restrictTo)) {
               items.push(item);
@@ -176,7 +179,8 @@ export class PageService {
           }
           break;
         case 'text':
-          const tText: KgwContentComplexTypeText = item.element as KgwContentComplexTypeText;
+          const tText: KgwContentComplexTypeText =
+            item.element as KgwContentComplexTypeText;
           if (tText) {
             if (!this.isRestricted(tText.attributes.restrictTo)) {
               items.push(item);
@@ -184,7 +188,8 @@ export class PageService {
           }
           break;
         case 'image':
-          const tImage: KgwContentComplexTypeImage = item.element as KgwContentComplexTypeImage;
+          const tImage: KgwContentComplexTypeImage =
+            item.element as KgwContentComplexTypeImage;
           if (tImage) {
             if (!this.isRestricted(tImage.attributes.restrictTo)) {
               items.push(item);
@@ -192,7 +197,8 @@ export class PageService {
           }
           break;
         case 'video':
-          const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
+          const tVideo: KgwContentComplexTypeVideo =
+            item.element as KgwContentComplexTypeVideo;
           if (tVideo) {
             if (!this.isRestricted(tVideo.attributes.restrictTo)) {
               items.push(item);
@@ -200,7 +206,8 @@ export class PageService {
           }
           break;
         case 'button':
-          const tButton: KgwContentComplexTypeButton = item.element as KgwContentComplexTypeButton;
+          const tButton: KgwContentComplexTypeButton =
+            item.element as KgwContentComplexTypeButton;
           if (tButton) {
             if (!this.isRestricted(tButton.attributes.restrictTo)) {
               items.push(item);
@@ -248,7 +255,8 @@ export class PageService {
           case 'button':
             const tbItems = this.checkContentElements([item]);
             if (tbItems.length === 1) {
-              const tButton: KgwContentComplexTypeButton = item.element as KgwContentComplexTypeButton;
+              const tButton: KgwContentComplexTypeButton =
+                item.element as KgwContentComplexTypeButton;
               if (
                 tButton.attributes.type &&
                 (tButton.attributes.type === 'url' ||
@@ -263,7 +271,8 @@ export class PageService {
           case 'video':
             const tvItems = this.checkContentElements([item]);
             if (tvItems.length === 1) {
-              const tVideo: KgwContentComplexTypeVideo = item.element as KgwContentComplexTypeVideo;
+              const tVideo: KgwContentComplexTypeVideo =
+                item.element as KgwContentComplexTypeVideo;
               if (
                 tVideo.attributes.provider &&
                 tVideo.attributes.provider === 'youtube'

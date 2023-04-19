@@ -29,27 +29,23 @@ export class KgwManifest {
       this.manifest.attributes['type'] = tNode.getAttribute('type');
     }
     if (tNode.getAttribute('primary-color')) {
-      this.manifest.attributes['primaryColor'] = tNode.getAttribute(
-        'primary-color'
-      );
+      this.manifest.attributes['primaryColor'] =
+        tNode.getAttribute('primary-color');
     }
     if (tNode.getAttribute('primary-text-color')) {
-      this.manifest.attributes['primaryTextColor'] = tNode.getAttribute(
-        'primary-text-color'
-      );
+      this.manifest.attributes['primaryTextColor'] =
+        tNode.getAttribute('primary-text-color');
     }
     if (tNode.getAttribute('text-color')) {
       this.manifest.attributes['textColor'] = tNode.getAttribute('text-color');
     }
     if (tNode.getAttribute('background-color')) {
-      this.manifest.attributes['backgroundColor'] = tNode.getAttribute(
-        'background-color'
-      );
+      this.manifest.attributes['backgroundColor'] =
+        tNode.getAttribute('background-color');
     }
     if (tNode.getAttribute('background-image')) {
-      this.manifest.attributes['backgroundImage'] = tNode.getAttribute(
-        'background-image'
-      );
+      this.manifest.attributes['backgroundImage'] =
+        tNode.getAttribute('background-image');
     }
     if (tNode.getAttribute('background-image-align')) {
       this.manifest.attributes['backgroundImageAlign'] = tNode.getAttribute(
@@ -62,9 +58,8 @@ export class KgwManifest {
       );
     }
     if (tNode.getAttribute('navbar-color')) {
-      this.manifest.attributes['navbarColor'] = tNode.getAttribute(
-        'navbar-color'
-      );
+      this.manifest.attributes['navbarColor'] =
+        tNode.getAttribute('navbar-color');
     }
     if (tNode.getAttribute('navbar-control-color')) {
       this.manifest.attributes['navbarControlColor'] = tNode.getAttribute(
@@ -82,14 +77,12 @@ export class KgwManifest {
       );
     }
     if (tNode.getAttribute('dismiss-listeners')) {
-      this.manifest.attributes['dismissListeners'] = tNode.getAttribute(
-        'dismiss-listeners'
-      );
+      this.manifest.attributes['dismissListeners'] =
+        tNode.getAttribute('dismiss-listeners');
     }
     if (tNode.getAttribute('control-color')) {
-      this.manifest.attributes['controlColor'] = tNode.getAttribute(
-        'control-color'
-      );
+      this.manifest.attributes['controlColor'] =
+        tNode.getAttribute('control-color');
     }
     if (tNode.getAttribute('card-background-color')) {
       this.manifest.attributes['cardBackgroundColor'] = tNode.getAttribute(

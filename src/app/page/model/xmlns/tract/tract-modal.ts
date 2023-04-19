@@ -14,9 +14,8 @@ export class KgwTractModal {
     const item: KgwTractComplexTypeModal = { attributes: {}, content: [] };
 
     if (this._xmlNode.getAttribute('dismiss-listeners')) {
-      item.attributes.dismissListeners = this._xmlNode.getAttribute(
-        'dismiss-listeners'
-      );
+      item.attributes.dismissListeners =
+        this._xmlNode.getAttribute('dismiss-listeners');
     }
 
     if (this._xmlNode.getAttribute('listeners')) {
