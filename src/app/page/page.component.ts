@@ -36,12 +36,12 @@ interface LiveShareSubscriptionPayload {
 }
 
 @Component({
-  selector: 'app-page-v2',
-  templateUrl: './page-v2.component.html',
-  styleUrls: ['./page-v2.component.css'],
+  selector: 'app-page',
+  templateUrl: './page.component.html',
+  styleUrls: ['./page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class PageV2Component implements OnInit, OnDestroy {
+export class PageComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
   private _pageChanged = new Subject<any>();
   private _pageParams: IPageParameters;
