@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })
-export class ContentTabsComponent implements OnInit, OnChanges {
+export class ContentTabsComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: KgwContentElementItem;
 
@@ -30,8 +30,6 @@ export class ContentTabsComponent implements OnInit, OnChanges {
     this.dir$ = this.pageService.pageDir$;
     this.isModal$ = this.pageService.isModal$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

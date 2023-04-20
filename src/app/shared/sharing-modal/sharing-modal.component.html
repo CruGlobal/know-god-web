@@ -2,12 +2,12 @@
   <a class="db share">
     <img
       src="assets/img/share.png"
-      *ngIf="ShareState == 'min'"
+      *ngIf="ShareState === 'min'"
       (click)="ShareState = 'max'"
     />
   </a>
   <div>
-    <div class="sharemax" *ngIf="ShareState == 'max'">
+    <div class="sharemax" *ngIf="ShareState === 'max'">
       <a title="Close" class="btn shareclose" (click)="ShareState = 'min'">
         <div class="fas fa-times"></div>
       </a>

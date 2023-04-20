@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-video.component.html',
   styleUrls: ['./content-video.component.css']
 })
-export class ContentVideoComponent implements OnInit, OnChanges {
+export class ContentVideoComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   video: KgwContentComplexTypeVideo;
@@ -32,8 +32,6 @@ export class ContentVideoComponent implements OnInit, OnChanges {
   ) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
