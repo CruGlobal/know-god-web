@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-input.component.html',
   styleUrls: ['./content-input.component.css']
 })
-export class ContentInputComponent implements OnInit, OnChanges {
+export class ContentInputComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   input: KgwContentComplexTypeInput;
@@ -34,8 +34,6 @@ export class ContentInputComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

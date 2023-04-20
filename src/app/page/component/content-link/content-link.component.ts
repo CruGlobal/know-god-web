@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-link.component.html',
   styleUrls: ['./content-link.component.css']
 })
-export class ContentLinkComponent implements OnInit, OnChanges {
+export class ContentLinkComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   link: KgwContentComplexTypeLink;
@@ -29,8 +29,6 @@ export class ContentLinkComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

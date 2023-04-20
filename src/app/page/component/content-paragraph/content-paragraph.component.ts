@@ -14,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-paragraph.component.html',
   styleUrls: ['./content-paragraph.component.css']
 })
-export class ContentParagraphComponent implements OnInit, OnChanges {
+export class ContentParagraphComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   paragraph: KgwContentComplexTypeParagraph;
@@ -22,8 +22,6 @@ export class ContentParagraphComponent implements OnInit, OnChanges {
   items: Array<KgwContentElementItem>;
 
   constructor(private pageService: PageService) {}
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

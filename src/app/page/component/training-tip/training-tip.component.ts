@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './training-tip.component.html',
   styleUrls: ['./training-tip.component.css']
 })
-export class TrainingTipComponent implements OnInit, OnChanges {
+export class TrainingTipComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   tip: KgwTrainingComplexTypeTip;
@@ -30,9 +30,6 @@ export class TrainingTipComponent implements OnInit, OnChanges {
       map((id) => id && this.tip && this.tip.id && this.tip.id === id)
     );
   }
-
-  ngOnInit() {}
-
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
