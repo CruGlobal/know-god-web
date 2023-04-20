@@ -18,7 +18,7 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-animation.component.css']
 })
 export class ContentAnimationComponent implements OnInit, OnChanges, OnDestroy {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: KgwContentElementItem;
 
   private _unsubscribeAll = new Subject<any>();

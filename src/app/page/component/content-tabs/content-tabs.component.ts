@@ -17,7 +17,7 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-tabs.component.css']
 })
 export class ContentTabsComponent implements OnInit, OnChanges {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: KgwContentElementItem;
 
   tabs: KgwContentComplexTypeTabs;

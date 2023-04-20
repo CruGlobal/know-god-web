@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-fallback.component.css']
 })
 export class ContentFallbackComponent implements OnInit, OnChanges {
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: KgwContentElementItem;
 
   fallback: KgwContentComplexTypeFallback;
