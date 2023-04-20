@@ -17,7 +17,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
-export class ModalComponent implements OnInit, OnChanges {
+export class ModalComponent implements OnChanges {
   @Input() modal: KgwTractComplexTypeModal;
 
   ready: boolean;
@@ -29,8 +29,6 @@ export class ModalComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

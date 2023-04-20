@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })
-export class ContentAccordionComponent implements OnInit, OnChanges {
+export class ContentAccordionComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   accordion: KgwContentComplexTypeAccordion;
@@ -27,8 +27,6 @@ export class ContentAccordionComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
