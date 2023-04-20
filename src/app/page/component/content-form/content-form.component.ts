@@ -1,5 +1,6 @@
-import { OnChanges, QueryList } from '@angular/core';
 import {
+  OnChanges,
+  QueryList,
   Component,
   Input,
   OnDestroy,

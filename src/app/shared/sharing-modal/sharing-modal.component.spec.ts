@@ -1,4 +1,4 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ToastrModule } from 'ngx-toastr';
 import { SharingModalComponent } from './sharing-modal.component';
 

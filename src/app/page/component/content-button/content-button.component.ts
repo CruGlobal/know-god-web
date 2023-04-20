@@ -16,8 +16,8 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })
-export class ContentButtonComponent implements OnInit, OnChanges {
-  // tslint:disable-next-line:no-input-rename
+export class ContentButtonComponent implements OnChanges {
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: KgwContentElementItem;
 
   button: KgwContentComplexTypeButton;
@@ -32,8 +32,6 @@ export class ContentButtonComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

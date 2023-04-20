@@ -15,8 +15,8 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-spacer.component.html',
   styleUrls: ['./content-spacer.component.css']
 })
-export class ContentSpacerComponent implements OnInit, OnChanges {
-  // tslint:disable-next-line:no-input-rename
+export class ContentSpacerComponent implements OnChanges {
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: KgwContentElementItem;
 
   spacer: KgwContentComplexTypeSpacer;
@@ -28,8 +28,6 @@ export class ContentSpacerComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

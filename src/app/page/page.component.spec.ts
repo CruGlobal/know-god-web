@@ -1,10 +1,10 @@
-import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { RouterTestingModule } from '@angular/router/testing';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { PageComponent } from './page.component';
 import { CommonService } from '../services/common.service';
 import { PageService } from './service/page-service.service';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('PageComponent', () => {
   let component: PageComponent;

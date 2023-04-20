@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { NavigationEnd, Router } from '@angular/router';
 import { LoaderService } from './loader-service/loader.service';
-import { Router, NavigationEnd } from '@angular/router';
 
 declare global {
   interface Window {

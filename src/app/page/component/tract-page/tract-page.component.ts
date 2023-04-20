@@ -23,7 +23,7 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./tract-page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
+export class TractPageComponent implements OnChanges, OnDestroy {
   @Input() page: KgwTractComplexTypePage;
   @Input() order: number;
   @Input() totalPages: number;
@@ -57,8 +57,6 @@ export class TractPageComponent implements OnInit, OnChanges, OnDestroy {
     this.isLastPage$ = this.pageService.isLastPage$;
     this.formAction$ = this.pageService.formAction$;
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this._unsubscribeAll.next();

@@ -1,9 +1,9 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonService } from '../services/common.service';
-import { APIURL } from '../api/url';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
+import { APIURL } from '../api/url';
+import { CommonService } from '../services/common.service';
 
 @Component({
   selector: 'app-header',

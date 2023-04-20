@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-text.component.html',
   styleUrls: ['./content-text.component.css']
 })
-export class ContentTextComponent implements OnInit, OnChanges {
+export class ContentTextComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   text: KgwContentComplexTypeText;
@@ -28,8 +28,6 @@ export class ContentTextComponent implements OnInit, OnChanges {
     this.isFirstPage$ = pageService.isFirstPage$;
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
