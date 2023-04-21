@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-image.component.html',
   styleUrls: ['./content-image.component.css']
 })
-export class ContentImageComponent implements OnInit, OnChanges {
+export class ContentImageComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
 
   image: KgwContentComplexTypeImage;
@@ -26,8 +26,6 @@ export class ContentImageComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

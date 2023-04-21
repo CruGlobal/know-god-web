@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './page-header.component.html',
   styleUrls: ['./page-header.component.css']
 })
-export class PageHeaderComponent implements OnInit, OnChanges {
+export class PageHeaderComponent implements OnChanges {
   @Input() header: KgwTractComplexTypePageHeader;
 
   private _unsubscribeAll: Subject<any>;
@@ -34,8 +34,6 @@ export class PageHeaderComponent implements OnInit, OnChanges {
     this.isFirstPage$ = this.pageService.isFirstPage$;
     this.changeHeader$ = this.pageService.changeHeader$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
