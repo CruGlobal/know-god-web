@@ -1,0 +1,11 @@
+<ng-container *ngIf="ready && content && (isModal$ | async) === false">
+  <ng-container *ngFor="let tab of content; trackBy: trackByFn">
+    <ng-container *ngIf="tab && tab.children">
+      <div class="tabContent">
+        <app-content-new-repeater
+            [items]="tab.children"
+        ></app-content-new-repeater>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>

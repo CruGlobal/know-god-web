@@ -50,6 +50,8 @@ export class ContentTextComponent implements OnChanges {
   }
 
   private init(): void {
+    console.log('this.text.value ', this.text.value );
+    
     this.textValue = this.text && this.text.value ? this.text.value.trim() : '';
     this.ready = true;
   }
