@@ -10,7 +10,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-import { Image, Text, Hero, ContentItems, ContentParser, ContentItemsType, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Text, Hero, parseTextAddBrTags, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-page-new-hero',
   templateUrl: './page-hero.component.html',
@@ -71,24 +71,9 @@ export class PageHeroNewComponent implements OnDestroy, OnChanges {
 
     if (this.hero.heading) {
       this.heading = this.hero.heading;
-      this.headingText = this.heading.text ? this.heading.text.trim() : '';
+      this.headingText = parseTextAddBrTags(this.heading.text) || '';
     }
     this.content = this.hero.content
-
-    // PIZZA
-    // if (this.hero.content && this.hero.content.length) {
-    //   this.hero.content.forEach((contentChild) => {
-    //     if (contentChild.contentType === 'form') {
-    //       const tForm: KgwContentComplexTypeForm =
-    //         contentChild as KgwContentComplexTypeForm;
-    //       const tItemToAdd: KgwContentElementItem = {
-    //         type: 'form',
-    //         element: tForm
-    //       };
-    //       this.content.push(tItemToAdd);
-    //     }
-    //   });
-    // }
 
     this.changeHeader$
       .pipe(takeUntil(this._unsubscribeAll))

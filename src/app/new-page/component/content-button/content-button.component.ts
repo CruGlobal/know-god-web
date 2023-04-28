@@ -10,6 +10,7 @@ import { KgwContentComplexTypeButton } from '../../model/xmlns/content/content-c
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
+import { Button, EventId } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-button',
@@ -18,14 +19,14 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentButtonNewComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input() item: any;
+  @Input() item: Button;
 
-  button: any;
+  button: Button;
   text: any;
   ready: boolean;
   buttonText: string;
   type: string;
-  events: string;
+  events: EventId[];
   url: string;
   dir$: Observable<string>;
 
@@ -45,7 +46,7 @@ export class ContentButtonNewComponent implements OnChanges {
               this.ready = false;
               this.buttonText = '';
               this.type = '';
-              this.events = '';
+              this.events = [] as EventId[];
               this.url = '';
               this.text = null;
               this.button = this.item;
@@ -59,23 +60,34 @@ export class ContentButtonNewComponent implements OnChanges {
 
   formAction(): void {
     if (this.events && this.type === 'event') {
-      this.pageService.formAction(this.events);
+      let action = ''
+      this.events.forEach((event, idx) => {
+        const value = event?.namespace ? `${event.namespace}:${event.name}` : event.name
+        action += idx ? ` ${value}` : value
+      })
+      this.pageService.formAction(action);
     }
   }
 
   private init(): void {
-    console.log('BUTTON', this.button)
+    console.log('this.button', this.button)
     if (this.button.text) {
       this.text = this.button.text;
-      if (this.text && this.text.value) {
-        this.buttonText = this.text.value.trim();
-      }
+      this.buttonText = this.text?.text || ''
     }
-    this.type = this.button.attributes.type;
-    if (this.type === 'url') {
-      this.url = this.toAbsoluteUrl(this.button.attributes.url);
-    } else if (this.type === 'event') {
-      this.events = this.button.attributes.events;
+    const isUrlType = !!this.button.url;
+    const isEventType = !!this.button.events?.length;
+    
+    
+    console.log('isUrlType', isUrlType)
+    console.log('isEventType', isEventType)
+    if (isUrlType) {
+      this.type = 'url'
+      this.url = this.toAbsoluteUrl(this.button.url);
+    }
+    if (isEventType) {
+      this.type = 'event';
+      this.events = this.button.events;
     }
     this.ready = true;
   }

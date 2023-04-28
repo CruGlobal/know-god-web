@@ -8,7 +8,7 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageService } from '../../service/page-service.service';
-import { Header } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Header, parseTextAddBrTags } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-page-new-header',
@@ -58,12 +58,14 @@ export class PageHeaderNewComponent implements OnChanges {
 
   private init(): void {
     const {title, number} = this.header
-    this.headerText = title?.text || '';
+    this.headerText = parseTextAddBrTags(title?.text) || '';
+    console.log('this.headerText', this.headerText)
     this.headerNumber = number?.text ? Number(number.text) : null;
 
     this.changeHeader$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((newHeader) => {
+        console.log('newHeader', newHeader)
         this.headerText = newHeader;
       });
 

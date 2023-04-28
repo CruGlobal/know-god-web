@@ -238,7 +238,6 @@ export class PageComponent implements OnInit, OnDestroy {
           const _tTractResources = _tTract.getResources();
           const _tTractImages = _tTractResources['images'];
           const _tTractAnimations = _tTractResources['animations'];
-          console.log('_tTractImages', _tTractImages)
           if (_tTractImages && _tTractImages.length) {
             _tTractImages.forEach((image) => {
               this.getImage(image);

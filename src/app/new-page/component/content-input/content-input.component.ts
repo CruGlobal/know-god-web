@@ -6,10 +6,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeInput } from '../../model/xmlns/content/content-ct-input';
-import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
+import { Input as xmlInput, Text, parseTextRemoveBrTags } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-input',
@@ -17,11 +15,11 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-input.component.css']
 })
 export class ContentInputNewComponent implements OnChanges {
-  @Input() item: KgwContentElementItem;
+  @Input() item: xmlInput;
 
-  input: KgwContentComplexTypeInput;
-  label: KgwContentComplexTypeTextchild;
-  placeholder: KgwContentComplexTypeTextchild;
+  input: xmlInput;
+  label: Text;
+  placeholder: Text;
   ready: boolean;
   labelText: string;
   placeholderText: string;
@@ -47,7 +45,7 @@ export class ContentInputNewComponent implements OnChanges {
               this.ready = false;
               this.labelText = '';
               this.placeholderText = '';
-              this.input = this.item.element as KgwContentComplexTypeInput;
+              this.input = this.item;
               this.label = null;
               this.placeholder = null;
               this.required = false;
@@ -62,32 +60,15 @@ export class ContentInputNewComponent implements OnChanges {
     }
   }
 
-  private init(): void {
-    if (this.input.label) {
-      this.label = this.input.label;
-      if (this.label && this.label.text && this.label.text.value) {
-        this.labelText = this.label.text.value.trim();
-      }
-    }
-    if (this.input.placeholder) {
-      this.placeholder = this.input.placeholder;
-      if (
-        this.placeholder &&
-        this.placeholder.text &&
-        this.placeholder.text.value
-      ) {
-        if (this.placeholder.text && this.placeholder.text.value) {
-          this.placeholderText = this.placeholder.text.value
-            .trim()
-            .replace(/<br\s*[\/]?>/gi, ' ');
-        }
-      }
-    }
-
-    this.required = this.input.attributes.required;
-    this.value = this.input.attributes.value;
-    this.name = this.input.attributes.name;
-    this.type = this.input.attributes.type;
+  private init(): void {  
+    this.label = this.input?.label || null
+    this.labelText = this.input.label?.text || ''
+    this.placeholder = this.input?.placeholder || null
+    this.placeholderText = parseTextRemoveBrTags(this.input?.placeholder?.text) || ''
+    this.required = this.input.isRequired;
+    this.value = this.input.value;
+    this.name = this.input.name;
+    this.type = this.input.type.name;
     this.ready = true;
   }
 }
