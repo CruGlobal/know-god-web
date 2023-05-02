@@ -118,7 +118,7 @@ export class PageComponent implements OnInit, OnDestroy {
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageid ? this._pageParams.pageid : 0;
     this.router.navigate([
-      "old", // REMOVE WHEN DONE
+      'old', // REMOVE WHEN DONE
       lang.attributes.code,
       this._pageParams.bookid,
       tPageOrder
@@ -133,7 +133,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private onPreviousPage(): void {
     if (this._pageParams.pageid > 0) {
       this.router.navigate([
-        "old", // REMOVE WHEN DONE
+        'old', // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid - 1

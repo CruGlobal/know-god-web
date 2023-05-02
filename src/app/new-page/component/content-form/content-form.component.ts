@@ -96,7 +96,7 @@ export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
             default:
               break;
           }
-        })
+        });
 
         if (emailFormInputs.length === 3) {
           setTimeout(() => {

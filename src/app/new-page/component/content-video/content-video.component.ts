@@ -54,8 +54,8 @@ export class ContentVideoNewComponent implements OnChanges {
   }
 
   private init(): void {
-    this.provider = this.video.provider.name || ''
-    const videoId = this.video.videoId
+    this.provider = this.video.provider.name || '';
+    const videoId = this.video.videoId;
     if (videoId) {
       setTimeout(() => {
         this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(

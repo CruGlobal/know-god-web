@@ -15,8 +15,14 @@ import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
 import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
 import { PageService } from './service/page-service.service';
-import { PullParserFactory, Page, Manifest, TractPage, XmlParser, XmlParserData } from '../services/xml-parser-service/xmp-parser.service';
-
+import {
+  PullParserFactory,
+  Page,
+  Manifest,
+  TractPage,
+  XmlParser,
+  XmlParserData
+} from '../services/xml-parser-service/xmp-parser.service';
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -146,7 +152,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getAnimation(resource): void { // NEED Animation Object
+  private getAnimation(resource): void {
+    // NEED Animation Object
     if (resource === undefined || resource === '' || resource === null) {
       return;
     }
@@ -208,11 +215,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async loadBookPage(
-    page: TractPage,
-  ): Promise<void> {
-    const pageId = this._pageParams.pageid
-    const showpage: boolean = pageId ? page.position === pageId : page.position === 0
+  private async loadBookPage(page: TractPage): Promise<void> {
+    const pageId = this._pageParams.pageid;
+    const showpage: boolean = pageId
+      ? page.position === pageId
+      : page.position === 0;
     if (showpage) this.showPage(page);
   }
 
@@ -276,38 +283,43 @@ export class PageNewComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
-      const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+      const fileName =
+        APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName;
       // https://cru-mobilecontentapi-staging.s3.us-east-1.amazonaws.com/translations/files/7e92da93d9b1eec01d9f7dfd015a484b97fdd486deb2c18ef20e8116cbd02f7a.xml
       // const fileName = `http://localhost:4200/assets/img/${manifestName}`
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
-        .withSupportedFeatures(
-          [
-            XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
-            XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD,
-            XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT
-          ])
+        .withSupportedFeatures([
+          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
+          XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD,
+          XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT
+        ])
         .withParseTips(false);
-      const newParser = new XmlParser.ManifestParser(this.pullParserFactory, config);
+      const newParser = new XmlParser.ManifestParser(
+        this.pullParserFactory,
+        config
+      );
       const controller = new AbortController();
       const signal = controller.signal;
       try {
         newParser.parseManifest(fileName, signal).then((data) => {
-          const { manifest } = data as XmlParserData
-          this._pageBookMainfest = manifest
+          const { manifest } = data as XmlParserData;
+          this._pageBookMainfest = manifest;
 
           // Loop through and get all resources.
           this._pageBookIndex.included.forEach((resource) => {
-            const { attributes, type } = resource
-            if (type === "attachment") {
-              this.pageService.addImage(attributes['file-file-name'], attributes.file);
+            const { attributes, type } = resource;
+            if (type === 'attachment') {
+              this.pageService.addImage(
+                attributes['file-file-name'],
+                attributes.file
+              );
               if (!attributes['is-zipped'] === true) {
                 this.getImage(attributes['file-file-name']);
               }
             }
-          })
-
+          });
 
           if (manifest?.pages?.length) {
             this._pageBookSubPagesManifest = manifest.pages;
@@ -315,8 +327,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
             this.totalPages = manifest.pages.length;
             this._pageBookMainfestLoaded = true;
             manifest.pages.forEach((page) => {
-              this.loadBookPage(page as TractPage)
-            })
+              this.loadBookPage(page as TractPage);
+            });
           } else {
             this.pageService.setDir('ltr');
             this.bookNotAvailableInLanguage = true;
@@ -330,9 +342,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
             //   this._pageBookTipsManifest.push(tTip);
             // });
           }
-        })
-      } catch(e) {
-        console.error('Manifest Parse error', e)
+        });
+      } catch (e) {
+        console.error('Manifest Parse error', e);
       }
     }
   }
@@ -453,10 +465,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
   }
 
   private loadPageBook(): void {
-    this._pageBook = this._books.find(
-      (book) => 
-        book.attributes.abbreviation === this._pageParams.bookid ? 
-          book : false
+    this._pageBook =
+      this._books.find((book) =>
+        book.attributes.abbreviation === this._pageParams.bookid ? book : false
       ) || {};
 
     if (!this._pageBook.id) {
@@ -569,8 +580,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
               this._pageBookSubPagesManifest &&
               this._pageBookSubPagesManifest.length > this._pageParams.pageid
             ) {
-              const tSubPageManifest =
-                this._pageBookMainfest.pages[this._pageParams.pageid] as TractPage;
+              const tSubPageManifest = this._pageBookMainfest.pages[
+                this._pageParams.pageid
+              ] as TractPage;
               if (tSubPageManifest) {
                 this.pagesLoaded = false;
                 this.loaderService.display(true);
@@ -591,8 +603,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params) => {
-        const {langid, bookid} = this._pageParams
-        const bookChanged = (langid !== params['langid'] && bookid !== params['bookid']);
+        const { langid, bookid } = this._pageParams;
+        const bookChanged =
+          langid !== params['langid'] && bookid !== params['bookid'];
 
         if (!bookChanged) {
           this._pageParams.pageid = Number(params['page']);

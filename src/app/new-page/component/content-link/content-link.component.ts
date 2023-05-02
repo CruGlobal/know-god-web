@@ -7,8 +7,11 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Link, Text, EventId } from 'src/app/services/xml-parser-service/xmp-parser.service';
-
+import {
+  Link,
+  Text,
+  EventId
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-link',
@@ -53,17 +56,19 @@ export class ContentLinkNewComponent implements OnChanges {
 
   formAction(): void {
     if (this.events) {
-      let action = ''
+      let action = '';
       this.events.forEach((event, idx) => {
-        const value = event?.namespace ? `${event.namespace}:${event.name}` : event.name
-        action += idx ? ` ${value}` : value
-      })
+        const value = event?.namespace
+          ? `${event.namespace}:${event.name}`
+          : event.name;
+        action += idx ? ` ${value}` : value;
+      });
       this.pageService.formAction(action);
     }
   }
 
   private init(): void {
-    this.text = this.link.text || null
+    this.text = this.link.text || null;
     this.linkText = this.link.text?.text || '';
     this.events = this.link.events;
     this.ready = true;

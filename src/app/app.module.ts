@@ -137,7 +137,7 @@ const appRoutes: Routes = [
     }),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      positionClass :'toast-bottom-right'
+      positionClass: 'toast-bottom-right'
     }),
     LottieAnimationViewModule.forRoot()
   ],

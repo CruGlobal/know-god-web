@@ -7,11 +7,15 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Tabs, Tab, ContentParser, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Tabs,
+  Tab,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 interface TabWithContent {
-  tab: Tab,
-  contents: Content[]
+  tab: Tab;
+  contents: Content[];
 }
 
 @Component({
@@ -56,16 +60,19 @@ export class ContentTabsNewComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) { 
+  trackByFn(index, item) {
     return index;
   }
 
   private init(): void {
-    this.tabs.tabs.forEach(tab => {
+    this.tabs.tabs.forEach((tab) => {
       const contents: Content[] = [];
-      if (tab.content) tab.content.forEach((content) => content ? contents.push(content) : null);
-      this.content.push({ tab, contents })
-    })
+      if (tab.content)
+        tab.content.forEach((content) =>
+          content ? contents.push(content) : null
+        );
+      this.content.push({ tab, contents });
+    });
     this.ready = true;
   }
 }

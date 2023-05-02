@@ -7,7 +7,12 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Modal, Text, parseTextAddBrTags, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Modal,
+  Text,
+  parseTextAddBrTags,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-page-new-modal',
@@ -55,7 +60,7 @@ export class ModalNewComponent implements OnChanges {
   private init(): void {
     this.title = this.modal?.title || null;
     this.titleText = parseTextAddBrTags(this.title?.text) || '';
-    this.content = this.modal.content
+    this.content = this.modal.content;
     this.ready = true;
   }
 }

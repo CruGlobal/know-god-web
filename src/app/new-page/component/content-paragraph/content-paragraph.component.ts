@@ -6,7 +6,10 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { PageService } from '../../service/page-service.service';
-import { Paragraph, ContentItems, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Paragraph,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-paragraph',
   templateUrl: './content-paragraph.component.html',
@@ -42,7 +45,7 @@ export class ContentParagraphNewComponent implements OnChanges {
   }
 
   private init(): void {
-    this.items = this.paragraph.content
+    this.items = this.paragraph.content;
     this.ready = true;
   }
 }
