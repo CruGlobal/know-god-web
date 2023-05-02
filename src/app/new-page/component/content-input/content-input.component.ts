@@ -7,7 +7,11 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Input as xmlInput, Text, parseTextRemoveBrTags } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Input as xmlInput,
+  Text,
+  parseTextRemoveBrTags
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-input',
@@ -61,10 +65,11 @@ export class ContentInputNewComponent implements OnChanges {
   }
 
   private init(): void {
-    this.label = this.input?.label || null
-    this.labelText = this.input.label?.text || ''
-    this.placeholder = this.input?.placeholder || null
-    this.placeholderText = parseTextRemoveBrTags(this.input?.placeholder?.text) || ''
+    this.label = this.input?.label || null;
+    this.labelText = this.input.label?.text || '';
+    this.placeholder = this.input?.placeholder || null;
+    this.placeholderText =
+      parseTextRemoveBrTags(this.input?.placeholder?.text) || '';
     this.required = this.input.isRequired;
     this.value = this.input.value;
     this.name = this.input.name;

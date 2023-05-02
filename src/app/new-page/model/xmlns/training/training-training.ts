@@ -1,4 +1,3 @@
-
 export class KgwTraining {
   private _xmlString: string;
   pages: Array<any>;

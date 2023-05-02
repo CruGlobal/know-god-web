@@ -2,9 +2,9 @@
   <ng-container *ngFor="let tab of content; trackBy: trackByFn">
     <ng-container *ngIf="tab.tab && tab.contents">
       <div class="tabContent">
-        <p>{{tab.tab.label.text}}</p>
+        <p>{{ tab.tab.label.text }}</p>
         <app-content-new-repeater
-            [items]="tab.contents"
+          [items]="tab.contents"
         ></app-content-new-repeater>
       </div>
     </ng-container>

@@ -59,7 +59,6 @@ export class ContentButtonComponent implements OnChanges {
 
   formAction(): void {
     if (this.events && this.type === 'event') {
-      console.log('event', this.events)
       this.pageService.formAction(this.events);
     }
   }

@@ -9,7 +9,12 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageService } from '../../service/page-service.service';
-import { Text, Hero, parseTextAddBrTags, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Text,
+  Hero,
+  parseTextAddBrTags,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-page-new-hero',
   templateUrl: './page-hero.component.html',
@@ -68,7 +73,7 @@ export class PageHeroNewComponent implements OnDestroy, OnChanges {
       this.heading = this.hero.heading;
       this.headingText = parseTextAddBrTags(this.heading.text) || '';
     }
-    this.content = this.hero.content
+    this.content = this.hero.content;
 
     this.changeHeader$
       .pipe(takeUntil(this._unsubscribeAll))

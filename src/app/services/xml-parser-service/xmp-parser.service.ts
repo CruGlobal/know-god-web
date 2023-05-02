@@ -1,112 +1,152 @@
-import { org, ManifestParser as manifestParser } from '@cruglobal/godtools-shared';
+import {
+  org,
+  ManifestParser as manifestParser
+} from '@cruglobal/godtools-shared';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-export type Text = org.cru.godtools.shared.tool.parser.model.Text
-export type Content = org.cru.godtools.shared.tool.parser.model.Content
-export type Image = org.cru.godtools.shared.tool.parser.model.Image
-export type Page = org.cru.godtools.shared.tool.parser.model.page.Page
-export type CallToAction = org.cru.godtools.shared.tool.parser.model.tract.CallToAction
-export type Header = org.cru.godtools.shared.tool.parser.model.tract.Header
-export type Hero = org.cru.godtools.shared.tool.parser.model.tract.Hero
-export type Modal = org.cru.godtools.shared.tool.parser.model.tract.Modal
-export type TractPage = org.cru.godtools.shared.tool.parser.model.tract.TractPage
-export type Card = org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card
-export type Parent = org.cru.godtools.shared.tool.parser.model.Parent
-export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph
-export type Resource = org.cru.godtools.shared.tool.parser.model.Resource
-export type Manifest = org.cru.godtools.shared.tool.parser.model.Manifest
-export type XmlParserData = org.cru.godtools.shared.tool.parser.ParserResult.Data
-export type Video = org.cru.godtools.shared.tool.parser.model.Video
-export type Button = org.cru.godtools.shared.tool.parser.model.Button
-export type EventId = org.cru.godtools.shared.tool.parser.model.EventId
-export type Form = org.cru.godtools.shared.tool.parser.model.Form
-export type Input = org.cru.godtools.shared.tool.parser.model.Input
-export type Link = org.cru.godtools.shared.tool.parser.model.Link
+export type Text = org.cru.godtools.shared.tool.parser.model.Text;
+export type Content = org.cru.godtools.shared.tool.parser.model.Content;
+export type Image = org.cru.godtools.shared.tool.parser.model.Image;
+export type Page = org.cru.godtools.shared.tool.parser.model.page.Page;
+export type CallToAction =
+  org.cru.godtools.shared.tool.parser.model.tract.CallToAction;
+export type Header = org.cru.godtools.shared.tool.parser.model.tract.Header;
+export type Hero = org.cru.godtools.shared.tool.parser.model.tract.Hero;
+export type Modal = org.cru.godtools.shared.tool.parser.model.tract.Modal;
+export type TractPage =
+  org.cru.godtools.shared.tool.parser.model.tract.TractPage;
+export type Card =
+  org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card;
+export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
+export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph;
+export type Resource = org.cru.godtools.shared.tool.parser.model.Resource;
+export type Manifest = org.cru.godtools.shared.tool.parser.model.Manifest;
+export type XmlParserData =
+  org.cru.godtools.shared.tool.parser.ParserResult.Data;
+export type Video = org.cru.godtools.shared.tool.parser.model.Video;
+export type Button = org.cru.godtools.shared.tool.parser.model.Button;
+export type EventId = org.cru.godtools.shared.tool.parser.model.EventId;
+export type Form = org.cru.godtools.shared.tool.parser.model.Form;
+export type Input = org.cru.godtools.shared.tool.parser.model.Input;
+export type Link = org.cru.godtools.shared.tool.parser.model.Link;
 
-export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer
-export type Tabs = org.cru.godtools.shared.tool.parser.model.Tabs
-export type Tab = org.cru.godtools.shared.tool.parser.model.Tabs.Tab
-export type Accordion = org.cru.godtools.shared.tool.parser.model.Accordion
-export type ModalCard = org.cru.godtools.shared.tool.parser.model.Card
-export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect
-
+export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer;
+export type Tabs = org.cru.godtools.shared.tool.parser.model.Tabs;
+export type Tab = org.cru.godtools.shared.tool.parser.model.Tabs.Tab;
+export type Accordion = org.cru.godtools.shared.tool.parser.model.Accordion;
+export type ModalCard = org.cru.godtools.shared.tool.parser.model.Card;
+export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect;
 
 export namespace XmlParser {
-  export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig
-  export const ManifestParser = manifestParser
+  export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
+  export const ManifestParser = manifestParser;
 }
-
 
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
-    console.log('CONTENT: Image')
-    return 'image'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Text) {
-    console.log('CONTENT: Text')
-    return 'text'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Paragraph) {
-    console.log('CONTENT: Paragraph')
-    return 'paragraph'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Video) {
-    console.log('CONTENT: Video')
-    return 'video'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Button) {
-    console.log('CONTENT: Button')
-    return 'button'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Form) {
-    console.log('CONTENT: Form')
-    return 'form'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Input) {
-    console.log('CONTENT: Input')
-    return 'input'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Spacer) {
-    console.log('CONTENT: Spacer')
-    return 'spacer'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Link) {
-    console.log('CONTENT: Link')
-    return 'link'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Tabs) {
-    console.log('CONTENT: Tabs')
-    return 'tabs'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Tabs.Tab) {
-    console.log('CONTENT: Tab')
-    return 'tab'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Accordion) {
-    console.log('CONTENT: Accordion')
-    return 'accordion'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Card) {
-    console.log('CONTENT: Card')
-    return 'card'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Multiselect) {
-    console.log('CONTENT: Multiselect')
-    return 'multiselect'
+    console.log('CONTENT: Image');
+    return 'image';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Text
+  ) {
+    console.log('CONTENT: Text');
+    return 'text';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Paragraph
+  ) {
+    console.log('CONTENT: Paragraph');
+    return 'paragraph';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Video
+  ) {
+    console.log('CONTENT: Video');
+    return 'video';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Button
+  ) {
+    console.log('CONTENT: Button');
+    return 'button';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Form
+  ) {
+    console.log('CONTENT: Form');
+    return 'form';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Input
+  ) {
+    console.log('CONTENT: Input');
+    return 'input';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Spacer
+  ) {
+    console.log('CONTENT: Spacer');
+    return 'spacer';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Link
+  ) {
+    console.log('CONTENT: Link');
+    return 'link';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Tabs
+  ) {
+    console.log('CONTENT: Tabs');
+    return 'tabs';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Tabs.Tab
+  ) {
+    console.log('CONTENT: Tab');
+    return 'tab';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Accordion
+  ) {
+    console.log('CONTENT: Accordion');
+    return 'accordion';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Card
+  ) {
+    console.log('CONTENT: Card');
+    return 'card';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Multiselect
+  ) {
+    console.log('CONTENT: Multiselect');
+    return 'multiselect';
   } else {
-    console.log('CONTENT: Unknown')
-    return ''
+    console.log('CONTENT: Unknown');
+    return '';
   }
-}
+};
 
-export type ContentItems = Image | Text | Paragraph | Resource | Video | Button | Form | Input
+export type ContentItems =
+  | Image
+  | Text
+  | Paragraph
+  | Resource
+  | Video
+  | Button
+  | Form
+  | Input;
 
 export type ContentItemsType = {
-  type: string,
-  content: ContentItems
-}
+  type: string;
+  content: ContentItems;
+};
 
 export const parseTextAddBrTags = (text: string): string => {
   if (!text) return '';
-  return text.trim().replace(/[\n\r]/g, '<br/>')
-}
+  return text.trim().replace(/[\n\r]/g, '<br/>');
+};
 export const parseTextRemoveBrTags = (text: string): string => {
   if (!text) return '';
-  return text.trim().replace(/<br\s*[\/]?>/gi, ' ')
-}
+  return text.trim().replace(/<br\s*[\/]?>/gi, ' ');
+};
 
 @Injectable({
   providedIn: 'root'
 })
-export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml.JsXmlPullParserFactory {
+export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
+  .JsXmlPullParserFactory {
   _fileOrigin: string;
   clearOrigin() {
     this._fileOrigin = '';
@@ -115,19 +155,25 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml.J
     this._fileOrigin = file.match(/^.*[\\\/]/)[0] || '';
   }
   getOrigin() {
-    return this._fileOrigin
+    return this._fileOrigin;
   }
 
-  constructor(public http: HttpClient) {super()}
+  constructor(public http: HttpClient) {
+    super();
+  }
   async readFile(fileName: string): Promise<string> {
-    fileName = fileName?.includes('http')? fileName : `${this.getOrigin() + fileName}`;
-    return new Promise(resolve=>{
-      this.http.get(fileName, { responseType: 'arraybuffer' }).subscribe((data: any) => {
-        const enc = new TextDecoder('utf-8');
-        const arr = new Uint8Array(data);
-        const result = enc.decode(arr);
-        resolve(result);
-      })
-    }) 
+    fileName = fileName?.includes('http')
+      ? fileName
+      : `${this.getOrigin() + fileName}`;
+    return new Promise((resolve) => {
+      this.http
+        .get(fileName, { responseType: 'arraybuffer' })
+        .subscribe((data: any) => {
+          const enc = new TextDecoder('utf-8');
+          const arr = new Uint8Array(data);
+          const result = enc.decode(arr);
+          resolve(result);
+        });
+    });
   }
 }

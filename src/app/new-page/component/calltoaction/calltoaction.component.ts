@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { CallToAction, Text } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  CallToAction,
+  Text
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-page-new-calltoaction',
@@ -49,7 +52,9 @@ export class CalltoactionNewComponent implements OnChanges {
     if (this.item.label) {
       this.text = this.item.label;
       if (this.text && this.item.label.text) {
-        this.actionText = this.item.label.text.trim().replace(/<br\s*[\/]?>/gi, ' ');
+        this.actionText = this.item.label.text
+          .trim()
+          .replace(/<br\s*[\/]?>/gi, ' ');
       }
     }
     this.ready = true;

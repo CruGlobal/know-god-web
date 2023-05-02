@@ -24,7 +24,11 @@
       ></app-page-new-card>
     </ng-container>
     <app-page-new-calltoaction
-      *ngIf="callToAction && (isForm$ | async) === false && (isModal$ | async) === false"
+      *ngIf="
+        callToAction &&
+        (isForm$ | async) === false &&
+        (isModal$ | async) === false
+      "
       [item]="callToAction"
     ></app-page-new-calltoaction>
 
@@ -68,7 +72,9 @@
       </ng-container>
     </div>
 
-    <ng-container *ngIf="(isModal$ | async) === false && (isModal$ | async) === false">
+    <ng-container
+      *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"
+    >
       <footer id="toolFooter">
         <span
           ><a href="http://godtoolsapp.com" target="_blank"

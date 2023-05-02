@@ -8,7 +8,11 @@ import {
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import { org } from '@cruglobal/godtools-shared';
-import { Card, Text, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Card,
+  Text,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-page-new-card',
   templateUrl: './card.component.html',
@@ -65,7 +69,7 @@ export class CardNewComponent implements OnChanges {
       this.labelText = this.card.label.text?.trim() || '';
     }
 
-    this.content = this.card.content
+    this.content = this.card.content;
 
     this.ready = true;
   }

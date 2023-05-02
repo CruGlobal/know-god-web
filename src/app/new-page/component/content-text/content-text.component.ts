@@ -48,7 +48,7 @@ export class ContentTextNewComponent implements OnChanges {
   }
 
   private init(): void {
-    const text = this.text.text?.trim().replace(/[\n\r]/g, '<br/>')
+    const text = this.text.text?.trim().replace(/[\n\r]/g, '<br/>');
     this.textValue = text || '';
     this.ready = true;
   }

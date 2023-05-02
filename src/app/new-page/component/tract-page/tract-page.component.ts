@@ -10,7 +10,15 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageService } from '../../service/page-service.service';
-import { TractPage, Modal, Card, Hero, Header, CallToAction, EventId } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  TractPage,
+  Modal,
+  Card,
+  Hero,
+  Header,
+  CallToAction,
+  EventId
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-tract-new-page',
@@ -122,45 +130,61 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
       return;
     } else {
       if (functionName.includes('-no-thanks')) {
-        let isFirstPage = false
-        let isLastPage = true
-        this.isFirstPage$.subscribe((value) => { isFirstPage = value });
-        this.isLastPage$.subscribe((value) => { isLastPage = value });
+        let isFirstPage = false;
+        let isLastPage = true;
+        this.isFirstPage$.subscribe((value) => {
+          isFirstPage = value;
+        });
+        this.isLastPage$.subscribe((value) => {
+          isLastPage = value;
+        });
 
         if (!isLastPage) {
           this.pageService.nextPage();
-        } else if (!isFirstPage) { 
+        } else if (!isFirstPage) {
           this.pageService.previousPage();
         }
-        return
+        return;
       }
 
       if (this.cards.length) {
-        const cardListener = this.cards.find((card) => card.listeners ? card.listeners.find((listener) => listener.name === functionName) : null)
+        const cardListener = this.cards.find((card) =>
+          card.listeners
+            ? card.listeners.find((listener) => listener.name === functionName)
+            : null
+        );
         if (cardListener) {
           this._cardShownOnFormAction = cardListener.position;
           isShowCard = true;
         }
 
-        const cardDismissListener = this.cards.find((card) => card.dismissListeners ? card.dismissListeners.find((dismissListener) => dismissListener.name === functionName) : null)
+        const cardDismissListener = this.cards.find((card) =>
+          card.dismissListeners
+            ? card.dismissListeners.find(
+                (dismissListener) => dismissListener.name === functionName
+              )
+            : null
+        );
         if (cardDismissListener) isHideCard = true;
       }
       if (!isShowCard && !isHideCard && this.modal) {
         const listeners = this.modal.listeners as EventId[];
         const dismissListeners = this.modal.dismissListeners as EventId[];
-        isShowModal = !!(listeners.filter((listener) => listener.name === functionName)?.length);
-        isHideModal = !!(dismissListeners.filter((dismissListener) => dismissListener.name === functionName)?.length);
-        listeners.forEach((l) => {
-          })
-        dismissListeners.forEach((l) => {
-        })
+        isShowModal = !!listeners.filter(
+          (listener) => listener.name === functionName
+        )?.length;
+        isHideModal = !!dismissListeners.filter(
+          (dismissListener) => dismissListener.name === functionName
+        )?.length;
+        listeners.forEach((l) => {});
+        dismissListeners.forEach((l) => {});
       }
     }
 
     if (isShowCard) {
       // Set type as Any so we can edit isHidden property.
       const card_to_show = this.cards[this._cardShownOnFormAction];
-      (card_to_show as any).isHidden = false
+      (card_to_show as any).isHidden = false;
       this.pageService.formVisible();
       this.pageService.modalHidden();
 
@@ -174,16 +198,20 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
             if (!card.isHidden && listener.name !== functionName) {
               this._cardsHiddenOnFormAction.push(card.position);
             }
-          })
+          });
         } else {
           this._cardsHiddenOnFormAction.push(card.position);
         }
-      })
+      });
 
       if (this._cardsHiddenOnFormAction.length) {
-        this.cards.filter((card) => this._cardsHiddenOnFormAction.includes(card.position)).map((card) => {
-          (card as any).isHidden = true
-        })
+        this.cards
+          .filter((card) =>
+            this._cardsHiddenOnFormAction.includes(card.position)
+          )
+          .map((card) => {
+            (card as any).isHidden = true;
+          });
       }
     } else if (isHideCard) {
       this.next();
@@ -206,7 +234,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
       setTimeout(() => {
         if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
         if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
-        
+
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
       }, 0);
@@ -216,26 +244,35 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
   }
 
   private setHiddenCardToShow(): void {
-    this.cards.filter((card) => this._cardsHiddenOnFormAction.includes(card.position)).map((card) => {
-      (card as any).isHidden = false
-    });
+    this.cards
+      .filter((card) => this._cardsHiddenOnFormAction.includes(card.position))
+      .map((card) => {
+        (card as any).isHidden = false;
+      });
   }
 
-  private setShownCardToHidden(): void  {
-    (this.cards.find((card) => card.position === this._cardShownOnFormAction) as any).isHidden = true
+  private setShownCardToHidden(): void {
+    (
+      this.cards.find(
+        (card) => card.position === this._cardShownOnFormAction
+      ) as any
+    ).isHidden = true;
   }
 
   private init(): void {
-  
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
-    this.header = this._page.header || null
-    this.hasPageHeader = !!this._page.header?.title?.text
-    this.hero = this._page.hero || null
-    this.cards = this._page.cards || []
-    this.modal = this._page.modals ? this._page.modals[0] : null
-    this.callToAction = !!(this.page.callToAction?.label?.text || this.page.callToAction?.tip) ? this.page.callToAction : null
+    this.header = this._page.header || null;
+    this.hasPageHeader = !!this._page.header?.title?.text;
+    this.hero = this._page.hero || null;
+    this.cards = this._page.cards || [];
+    this.modal = this._page.modals ? this._page.modals[0] : null;
+    this.callToAction = !!(
+      this.page.callToAction?.label?.text || this.page.callToAction?.tip
+    )
+      ? this.page.callToAction
+      : null;
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))

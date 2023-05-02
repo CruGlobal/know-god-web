@@ -15,8 +15,6 @@
   ></h4>
 
   <ng-container *ngIf="content && (isModal$ | async) === false">
-    <app-content-new-repeater
-    [items]="content"
-    ></app-content-new-repeater>
+    <app-content-new-repeater [items]="content"></app-content-new-repeater>
   </ng-container>
 </div>
