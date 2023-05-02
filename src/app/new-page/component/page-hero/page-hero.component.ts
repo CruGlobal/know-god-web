@@ -8,7 +8,6 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 import { Text, Hero, parseTextAddBrTags, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
@@ -65,10 +64,6 @@ export class PageHeroNewComponent implements OnDestroy, OnChanges {
   }
 
   private init(): void {
-    console.log('HERO', this.hero)
-    console.log('HERO.heading', this.hero.heading)
-    console.log('HERO.content', this.hero.content)
-
     if (this.hero.heading) {
       this.heading = this.hero.heading;
       this.headingText = parseTextAddBrTags(this.heading.text) || '';

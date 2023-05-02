@@ -57,9 +57,9 @@ import { ContentFallbackNewComponent } from './new-page/component/content-fallba
 import { ContentRepeaterNewComponent } from './new-page/component/content-repeater/content-repeater.component';
 
 const appRoutes: Routes = [
-  { path: ':langid/embed/:bookid', component: PageComponent },
+  { path: 'old/:langid/embed/:bookid', component: PageComponent },
   {
-    path: ':langid/:bookid/:page',
+    path: 'old/:langid/:bookid/:page',
     component: PageComponent
   },
   {
@@ -69,9 +69,9 @@ const appRoutes: Routes = [
   },
   { path: ':langid', component: HeaderComponent },
   { path: '', component: HeaderComponent },
-  { path: 'new/:langid/embed/:bookid', component: PageNewComponent },
+  { path: ':langid/embed/:bookid', component: PageNewComponent },
   {
-    path: 'new/:langid/:bookid/:page',
+    path: ':langid/:bookid/:page',
     component: PageNewComponent
   }
 ];

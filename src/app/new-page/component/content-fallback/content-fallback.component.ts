@@ -6,8 +6,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeFallback } from '../../model/xmlns/content/content-ct-fallback';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
@@ -20,8 +18,7 @@ export class ContentFallbackNewComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: ContentItems;
 
-  fallback: KgwContentComplexTypeFallback;
-  content: KgwContentElementItem;
+  content: ContentItems;
   ready: boolean;
   dir$: Observable<string>;
 
@@ -39,9 +36,7 @@ export class ContentFallbackNewComponent implements OnChanges {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.content = null;
-              // PIZZA
-              // this.fallback = this.item as KgwContentComplexTypeFallback;
+              this.content = this.item;
               this.init();
             }
           }

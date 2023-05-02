@@ -160,12 +160,15 @@ export class TractPageComponent implements OnChanges, OnDestroy {
         isHideModal =
           this.modal.attributes.dismissListeners &&
           this.modal.attributes.dismissListeners === functionName;
+          console.log('isShowModal', isShowModal)
+          console.log('isHideModal', isHideModal)
       }
     }
 
-    console.log('isShowCard', isShowCard)
-    console.log('isHideCard', isHideCard)
+    
     console.log('this.cards',this.cards)
+    console.log('isShowCard',isShowCard)
+    console.log('isHideCard',isHideCard)
 
     if (isShowCard) {
       const card_to_show = this.cards[this._cardShownOnFormAction];

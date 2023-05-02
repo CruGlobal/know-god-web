@@ -8,8 +8,6 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwContentComplexTypeAnimation } from '../../model/xmlns/content/content-ct-animation';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -19,10 +17,10 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input() item: KgwContentElementItem;
+  @Input() item: any;
 
   private _unsubscribeAll = new Subject<any>();
-  animation: KgwContentComplexTypeAnimation;
+  animation: any;
   ready: boolean;
   anmResource: string;
   anmOptions: any;
@@ -49,8 +47,7 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.animation = this.item
-                .element as KgwContentComplexTypeAnimation;
+              this.animation = this.item;
               this.init();
             }
           }

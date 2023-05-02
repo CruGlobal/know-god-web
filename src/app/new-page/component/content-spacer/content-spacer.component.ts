@@ -6,9 +6,8 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeSpacer } from '../../model/xmlns/content/content-ct-spacer';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
+import { Spacer } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-spacer',
@@ -17,9 +16,9 @@ import { PageService } from '../../service/page-service.service';
 })
 export class ContentSpacerNewComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input() item: KgwContentElementItem;
+  @Input() item: Spacer;
 
-  spacer: KgwContentComplexTypeSpacer;
+  spacer: Spacer;
   ready: boolean;
   mode: string;
   height: number;
@@ -40,7 +39,7 @@ export class ContentSpacerNewComponent implements OnChanges {
             ) {
               this.mode = '';
               this.height = 0;
-              this.spacer = this.item.element as KgwContentComplexTypeSpacer;
+              this.spacer = this.item;
               this.ready = false;
               this.init();
             }
@@ -51,8 +50,8 @@ export class ContentSpacerNewComponent implements OnChanges {
   }
 
   private init(): void {
-    this.mode = this.spacer.attributes.mode;
-    this.height = this.spacer.attributes.height;
+    this.mode = this.spacer.mode.name;
+    this.height = this.spacer.height;
     this.ready = true;
   }
 }

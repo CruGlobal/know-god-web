@@ -7,8 +7,6 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
-import { KgwTrainingComplexTypeTip } from '../../model/xmlns/training/training-ct-tip';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -17,9 +15,9 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./training-tip.component.css']
 })
 export class TrainingTipNewComponent implements OnChanges {
-  @Input() item: KgwContentElementItem;
+  @Input() item: any;
 
-  tip: KgwTrainingComplexTypeTip;
+  tip: any;
   ready: boolean;
   visible$: Observable<boolean>;
   dir$: Observable<string>;
@@ -40,7 +38,7 @@ export class TrainingTipNewComponent implements OnChanges {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.tip = this.item.element as KgwTrainingComplexTypeTip;
+              this.tip = this.item;
               this.init();
             }
           }

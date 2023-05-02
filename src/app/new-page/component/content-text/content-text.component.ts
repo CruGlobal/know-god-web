@@ -6,8 +6,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 import { Text } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({

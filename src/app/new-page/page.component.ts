@@ -15,8 +15,6 @@ import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
 import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
 import { PageService } from './service/page-service.service';
-import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
-import { KgwTraining } from './model/xmlns/training/training-training';
 import { PullParserFactory, Page, Manifest, TractPage, XmlParser, XmlParserData } from '../services/xml-parser-service/xmp-parser.service';
 
 
@@ -55,9 +53,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private _pageBookTranslations: any[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
-  private _pageBookTipsManifest: KgwManifestComplexTypeTip[]; // NEED TIP CLASS
+  private _pageBookTipsManifest: any[]; // NEED TIP CLASS
   private _pageBookSubPages: Page[];
-  private _pageBookTips: KgwTraining[]; // NEED TIP CLASS
+  private _pageBookTips: any[]; // NEED TIP CLASS
   private _selectedLanguage: any;
   private liveShareSubscription: ActionCable.Channel;
 
@@ -117,7 +115,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageid || 0;
     this.router.navigate([
-      "new", // REMOVE WHEN DONE
       lang.attributes.code,
       this._pageParams.bookid,
       tPageOrder
@@ -132,7 +129,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private onPreviousPage(): void {
     if (this._pageParams.pageid > 0) {
       this.router.navigate([
-        'new', // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid - 1
@@ -141,10 +137,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
   }
 
   private onNextPage(): void {
-    console.log('onNextPage');
     if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
-        'new', // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid + 1
@@ -222,7 +216,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
     if (showpage) this.showPage(page);
   }
 
-  private loadTip(tip: KgwManifestComplexTypeTip): void { // NEED TIP Object
+  private loadTip(tip: any): void {
+    // PIZZA
     this.commonService
       .downloadFile(
         APIURL.GET_XML_FILES_FOR_MANIFEST +
@@ -238,7 +233,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
 
         const parser = new DOMParser();
         const xml = parser.parseFromString(result, 'application/xml');
-        const _tTraining: KgwTraining = new KgwTraining(result);
+        // const _tTraining: any = new KgwTraining(result);
+        const _tTraining: any = result;
         _tTraining.id = tip.id;
         _tTraining.parseXml();
         if (_tTraining && _tTraining.pages && _tTraining.pages.length) {
@@ -281,6 +277,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
       const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+      // https://cru-mobilecontentapi-staging.s3.us-east-1.amazonaws.com/translations/files/7e92da93d9b1eec01d9f7dfd015a484b97fdd486deb2c18ef20e8116cbd02f7a.xml
+      // const fileName = `http://localhost:4200/assets/img/${manifestName}`
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
@@ -325,15 +323,16 @@ export class PageNewComponent implements OnInit, OnDestroy {
           }
 
           if (manifest.hasTips) {
-            this._pageBookTipsManifest = [];
-            this._pageBookTips = [];
-            // this._pageBookMainfest.manifest.tips.forEach((tTip) => { // PIZZA
+            // PIZZA
+            // this._pageBookTipsManifest = [];
+            // this._pageBookTips = [];
+            // this._pageBookMainfest.manifest.tips.forEach((tTip) => {
             //   this._pageBookTipsManifest.push(tTip);
             // });
           }
         })
       } catch(e) {
-        console.log('2.parseManifest.ERROR', e) // PIZZA
+        console.error('Manifest Parse error', e)
       }
     }
   }

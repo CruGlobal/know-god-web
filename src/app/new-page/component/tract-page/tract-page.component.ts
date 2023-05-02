@@ -101,7 +101,6 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
   }
 
   private onFormAction(inputFunctionName: string): void {
-    console.log('inputFunctionName', inputFunctionName)
     let functionName = inputFunctionName;
 
     if (functionName.indexOf(' ') > -1) {
@@ -122,7 +121,20 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     } else {
-      console.log('this.cards', this.cards)
+      if (functionName.includes('-no-thanks')) {
+        let isFirstPage = false
+        let isLastPage = true
+        this.isFirstPage$.subscribe((value) => { isFirstPage = value });
+        this.isLastPage$.subscribe((value) => { isLastPage = value });
+
+        if (!isLastPage) {
+          this.pageService.nextPage();
+        } else if (!isFirstPage) { 
+          this.pageService.previousPage();
+        }
+        return
+      }
+
       if (this.cards.length) {
         const cardListener = this.cards.find((card) => card.listeners ? card.listeners.find((listener) => listener.name === functionName) : null)
         if (cardListener) {
@@ -132,34 +144,19 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
 
         const cardDismissListener = this.cards.find((card) => card.dismissListeners ? card.dismissListeners.find((dismissListener) => dismissListener.name === functionName) : null)
         if (cardDismissListener) isHideCard = true;
-        console.log('cardDismissListener', cardDismissListener)
       }
-      console.log('this.modal', this.modal)
       if (!isShowCard && !isHideCard && this.modal) {
         const listeners = this.modal.listeners as EventId[];
         const dismissListeners = this.modal.dismissListeners as EventId[];
         isShowModal = !!(listeners.filter((listener) => listener.name === functionName)?.length);
         isHideModal = !!(dismissListeners.filter((dismissListener) => dismissListener.name === functionName)?.length);
-        console.log('MODAL.isShowModal', isShowModal)
-        console.log('MODAL.isHideModal', isHideModal)
         listeners.forEach((l) => {
-          console.log('Listener', l.name)
+          })
+        dismissListeners.forEach((l) => {
         })
-dismissListeners.forEach((l) => {
-  console.log('dismissListener', l.name)
-})
-
-        // // PIZZA - below
-        // isShowModal =
-        //   this.modal.listeners &&
-        //   this.modal.listeners === functionName;
-        // isHideModal =
-        //   this.modal.dismissListeners &&
-        //   this.modal.dismissListeners === functionName;
       }
     }
 
-    console.log('isShowCard', isShowCard)
     if (isShowCard) {
       // Set type as Any so we can edit isHidden property.
       const card_to_show = this.cards[this._cardShownOnFormAction];
@@ -170,7 +167,6 @@ dismissListeners.forEach((l) => {
       if (card_to_show.label?.text) {
         this.pageService.changeHeader(card_to_show.label.text);
       }
-      console.log('this.cards', [...this.cards])
 
       this.cards.forEach((card) => {
         if (card.listeners?.length) {
@@ -184,7 +180,6 @@ dismissListeners.forEach((l) => {
         }
       })
 
-      console.log('this._cardsHiddenOnFormAction', this._cardsHiddenOnFormAction)
       if (this._cardsHiddenOnFormAction.length) {
         this.cards.filter((card) => this._cardsHiddenOnFormAction.includes(card.position)).map((card) => {
           (card as any).isHidden = true
@@ -231,7 +226,7 @@ dismissListeners.forEach((l) => {
   }
 
   private init(): void {
-    console.log('PAGE', this._page)
+  
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
@@ -240,13 +235,11 @@ dismissListeners.forEach((l) => {
     this.hero = this._page.hero || null
     this.cards = this._page.cards || []
     this.modal = this._page.modals ? this._page.modals[0] : null
-    if (this._page.modals) console.log('this._page.modals[0]', this._page.modals[0])
     this.callToAction = !!(this.page.callToAction?.label?.text || this.page.callToAction?.tip) ? this.page.callToAction : null
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((action) => {
-        console.log('this.onFormAction(action);', action)
         this.onFormAction(action);
       });
 

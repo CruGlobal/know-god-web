@@ -59,13 +59,11 @@ export class PageHeaderNewComponent implements OnChanges {
   private init(): void {
     const {title, number} = this.header
     this.headerText = parseTextAddBrTags(title?.text) || '';
-    console.log('this.headerText', this.headerText)
     this.headerNumber = number?.text ? Number(number.text) : null;
 
     this.changeHeader$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((newHeader) => {
-        console.log('newHeader', newHeader)
         this.headerText = newHeader;
       });
 

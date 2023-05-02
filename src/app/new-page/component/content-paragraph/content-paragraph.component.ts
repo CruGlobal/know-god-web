@@ -42,9 +42,6 @@ export class ContentParagraphNewComponent implements OnChanges {
   }
 
   private init(): void {
-    console.log('this.item', this.paragraph)
-    console.log('this.item.content', this.paragraph.content)
-
     this.items = this.paragraph.content
     this.ready = true;
   }

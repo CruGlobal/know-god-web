@@ -60,7 +60,7 @@ export class ContentInputNewComponent implements OnChanges {
     }
   }
 
-  private init(): void {  
+  private init(): void {
     this.label = this.input?.label || null
     this.labelText = this.input.label?.text || ''
     this.placeholder = this.input?.placeholder || null

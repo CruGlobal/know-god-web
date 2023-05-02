@@ -1273,10 +1273,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@cruglobal/godtools-shared@0.9.0-SNAPSHOT.1263":
-  version "0.9.0-SNAPSHOT.1263"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1263.tgz#babfc35656cab1a4a167db51273427edae79a2fb"
-  integrity sha512-ebDhPXU8je/Eb33f7ERHovzFzrftBGZ2WkVQ8zh57xnpbBAxiiWwpC40azKwmjuYsswcTUD0xLRZPF+jsaladA==
+"@cruglobal/godtools-shared@0.9.0-SNAPSHOT.1267":
+  version "0.9.0-SNAPSHOT.1267"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1267.tgz#1a313999b85137a717c3ba32cae68f6fdfbcceaf"
+  integrity sha512-PoLCHkwCSU1uCzlux/ndy2MdFUm/YoANNUWOlAGfDftfKTUrTpEf75l4ICGfxANfdnyWY3Sd7TFOzGf+gfUNYQ==
   dependencies:
     sax "1.2.4"
 

@@ -6,11 +6,7 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeImage } from '../../model/xmlns/content/content-ct-image';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-import { org } from '@cruglobal/godtools-shared';
-
 import { Image } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-image',
@@ -32,7 +28,6 @@ export class ContentImageNewComponent implements OnChanges {
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
       if (changes.hasOwnProperty(propName)) {
-        // console.log('this.item', this.item.resource.localName)
         switch (propName) {
           case 'item': {
             if (
@@ -51,7 +46,6 @@ export class ContentImageNewComponent implements OnChanges {
   }
 
   private init(): void {
-    console.log('this.image.resource', this.image.resource)
     this.imgResource = this.pageService.getImageUrl(this.image.resource.name || '');
     // Try to find image in all attachments
     if (this.imgResource === this.image.resource.name && !this.imgResource.includes('http')) {

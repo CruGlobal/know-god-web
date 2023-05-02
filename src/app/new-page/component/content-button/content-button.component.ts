@@ -6,9 +6,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeButton } from '../../model/xmlns/content/content-ct-button';
-import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 import { Button, EventId } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
@@ -70,17 +67,13 @@ export class ContentButtonNewComponent implements OnChanges {
   }
 
   private init(): void {
-    console.log('this.button', this.button)
     if (this.button.text) {
       this.text = this.button.text;
       this.buttonText = this.text?.text || ''
     }
     const isUrlType = !!this.button.url;
     const isEventType = !!this.button.events?.length;
-    
-    
-    console.log('isUrlType', isUrlType)
-    console.log('isEventType', isEventType)
+
     if (isUrlType) {
       this.type = 'url'
       this.url = this.toAbsoluteUrl(this.button.url);

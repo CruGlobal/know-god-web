@@ -164,7 +164,6 @@ export class PageService {
         return true;
       }
     }
-
     return false;
   }
 }

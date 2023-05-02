@@ -22,10 +22,11 @@ export type Button = org.cru.godtools.shared.tool.parser.model.Button
 export type EventId = org.cru.godtools.shared.tool.parser.model.EventId
 export type Form = org.cru.godtools.shared.tool.parser.model.Form
 export type Input = org.cru.godtools.shared.tool.parser.model.Input
+export type Link = org.cru.godtools.shared.tool.parser.model.Link
 
 export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer
-export type Link = org.cru.godtools.shared.tool.parser.model.Link
 export type Tabs = org.cru.godtools.shared.tool.parser.model.Tabs
+export type Tab = org.cru.godtools.shared.tool.parser.model.Tabs.Tab
 export type Accordion = org.cru.godtools.shared.tool.parser.model.Accordion
 export type ModalCard = org.cru.godtools.shared.tool.parser.model.Card
 export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect
@@ -68,6 +69,9 @@ export const ContentParser = (content: any): string => {
   } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Tabs) {
     console.log('CONTENT: Tabs')
     return 'tabs'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Tabs.Tab) {
+    console.log('CONTENT: Tab')
+    return 'tab'
   } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Accordion) {
     console.log('CONTENT: Accordion')
     return 'accordion'
@@ -80,7 +84,6 @@ export const ContentParser = (content: any): string => {
   } else {
     console.log('CONTENT: Unknown')
     return ''
-    // throw new Error('Unknown element')
   }
 }
 
