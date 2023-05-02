@@ -8,8 +8,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
-import { ViewportScroller } from '@angular/common';
-import * as ActionCable from '@rails/actioncable';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
@@ -21,6 +19,8 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
+import { ViewportScroller } from '@angular/common';
+import * as ActionCable from '@rails/actioncable';
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -118,6 +118,7 @@ export class PageComponent implements OnInit, OnDestroy {
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageid ? this._pageParams.pageid : 0;
     this.router.navigate([
+      "old", // REMOVE WHEN DONE
       lang.attributes.code,
       this._pageParams.bookid,
       tPageOrder
@@ -132,6 +133,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private onPreviousPage(): void {
     if (this._pageParams.pageid > 0) {
       this.router.navigate([
+        "old", // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid - 1
@@ -142,6 +144,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private onNextPage(): void {
     if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
+        'old', // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid + 1

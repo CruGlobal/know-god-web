@@ -14,7 +14,7 @@
     [innerHTML]="labelText"
   ></h4>
 
-  <ng-container *ngIf="content && !(isModal$ | async)">
+  <ng-container *ngIf="content && (isModal$ | async) === false">
     <ng-container *ngFor="let contentItem of content; trackBy: trackByFn">
       <app-content-accordion
         *ngIf="contentItem.type === 'accordion'"

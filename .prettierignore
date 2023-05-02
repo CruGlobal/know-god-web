@@ -1,0 +1,17 @@
+# dependencies
+.yarn
+.yarnrc.yml
+
+
+# Node Modules
+/node_modules
+
+# Angular
+/dist
+/e2e
+/mobile
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

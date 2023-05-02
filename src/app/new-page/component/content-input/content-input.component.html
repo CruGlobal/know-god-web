@@ -1,0 +1,13 @@
+<ng-container *ngIf="ready">
+  <label [for]="name" [innerHTML]="labelText"></label>
+  <input
+    [type]="type"
+    class="form-control"
+    dir="{{ dir$ | async }}"
+    [value]="value"
+    [name]="name"
+    [placeholder]="placeholderText"
+    [required]="required"
+    [(ngModel)]="value"
+  />
+</ng-container>
