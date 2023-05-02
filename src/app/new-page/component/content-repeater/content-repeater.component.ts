@@ -13,7 +13,7 @@ import {
   ContentItems,
   Content,
   ContentParser,
-  ContentItemsType,
+  ContentItemsType
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-repeater',
