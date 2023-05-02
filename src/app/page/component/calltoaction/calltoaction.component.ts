@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './calltoaction.component.html',
   styleUrls: ['./calltoaction.component.css']
 })
-export class CalltoactionComponent implements OnInit, OnChanges {
+export class CalltoactionComponent implements OnChanges {
   @Input() item: KgwTractComplexTypeCallToAction;
 
   text: KgwContentComplexTypeText;
@@ -26,8 +26,6 @@ export class CalltoactionComponent implements OnInit, OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

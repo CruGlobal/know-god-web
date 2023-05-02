@@ -1,16 +1,17 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
+import { ToastrModule } from 'ngx-toastr';
+import { LottieAnimationViewModule } from 'ng-lottie';
+import { AppComponent } from './app.component';
+import { HeaderComponent } from './header/header.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
-import { ToastrModule } from 'ngx-toastr';
 import { PageComponent } from './page/page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { TractPageComponent } from './page/component/tract-page/tract-page.component';
@@ -32,7 +33,6 @@ import { ModalComponent } from './page/component/modal/modal.component';
 import { ContentSpacerComponent } from './page/component/content-spacer/content-spacer.component';
 import { TrainingTipComponent } from './page/component/training-tip/training-tip.component';
 import { ContentFallbackComponent } from './page/component/content-fallback/content-fallback.component';
-import { LottieAnimationViewModule } from 'ng-lottie';
 
 const appRoutes: Routes = [
   { path: ':langid/embed/:bookid', component: PageComponent },

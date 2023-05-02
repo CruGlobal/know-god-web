@@ -18,7 +18,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
-export class CardComponent implements OnInit, OnChanges {
+export class CardComponent implements OnChanges {
   @Input() card: KgwTractComplexTypeCard;
   @Input() cardIndex: number;
 
@@ -37,8 +37,6 @@ export class CardComponent implements OnInit, OnChanges {
     this.isModal$ = this.pageService.isModal$;
     this.isFirstPage$ = this.pageService.isFirstPage$;
   }
-
-  ngOnInit() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

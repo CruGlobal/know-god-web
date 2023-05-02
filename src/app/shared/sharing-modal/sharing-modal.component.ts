@@ -1,7 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { SHAREDURL } from '../../api/url';
+import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Clipboard } from 'ts-clipboard';
+import { SHAREDURL } from '../../api/url';
 
 @Component({
   selector: 'app-sharing-modal',

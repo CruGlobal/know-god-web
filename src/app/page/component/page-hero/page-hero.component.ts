@@ -20,7 +20,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './page-hero.component.html',
   styleUrls: ['./page-hero.component.css']
 })
-export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
+export class PageHeroComponent implements OnDestroy, OnChanges {
   @Input() hero: KgwTractComplexTypePageHero;
 
   private _unsubscribeAll: Subject<any>;
@@ -41,8 +41,6 @@ export class PageHeroComponent implements OnInit, OnDestroy, OnChanges {
     this.isFirstPage$ = this.pageService.isFirstPage$;
     this.changeHeader$ = this.pageService.changeHeader$;
   }
-
-  ngOnInit() {}
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
