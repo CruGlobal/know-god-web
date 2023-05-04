@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics">
+    <hero>
+
+        <analytics:events>
+            <analytics:event action="emojitool2-1" system="appsflyer"/>
+        </analytics:events>
+        
+        <content:text i18n-id="02_phrase01" text-align="center" text-color="rgba(59,164,219,1)" required-features="multiselect flow" version="2" restrictTo="mobile">Tap to choose up to three emojis.</content:text>
+        
+        <content:paragraph>
+            <!--Images are ordered by row, beginning at the top -->
+            <content:multiselect state="emoji1" selection-limit="3" option-style="flat" columns="4">
+                <!--Row 1 -->
+                <content:option value="gamedie">
+                    <analytics:events>
+                        <analytics:event action="emoji1_gamedie" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="game-die 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="crown">
+                    <analytics:events>
+                        <analytics:event action="emoji1_crown" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="crown 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="christmastree">
+                    <analytics:events>
+                        <analytics:event action="emoji1_christmastree" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="christmas-tree 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="partyface">
+                    <analytics:events>
+                        <analytics:event action="emoji1_partyface" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="partying-face 1@2x.png" width="60"/>
+                </content:option>
+                <!--Row 2 -->
+                <content:option value="spiraleyes">
+                    <analytics:events>
+                        <analytics:event action="emoji1_spiraleyes" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="face-with-spiral-eyes 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="puzzle">
+                    <analytics:events>
+                        <analytics:event action="emoji1_puzzle" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="puzzle-piece 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="envelope">
+                    <analytics:events>
+                        <analytics:event action="emoji1_envelope" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="red-envelope 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="tv">
+                    <analytics:events>
+                        <analytics:event action="emoji1_tv" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="television 1@2x.png" width="60"/>
+                </content:option>
+                <!--Row 3 -->
+                <content:option value="church">
+                    <analytics:events>
+                        <analytics:event action="emoji1_church" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="church 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="plate">
+                    <analytics:events>
+                        <analytics:event action="emoji1_plate" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="fork-and-knife-with-plate 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="hearteyes">
+                    <analytics:events>
+                        <analytics:event action="emoji1_hearteyes" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="smiling-face-with-heart-eyes 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="family">
+                    <analytics:events>
+                        <analytics:event action="emoji1_family" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="family-man-woman-girl-boy 1@2x.png" width="60"/>
+                </content:option>
+                <!--Row 4 -->
+                <content:option value="gift">
+                    <analytics:events>
+                        <analytics:event action="emoji1_gift" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="wrapped-gift 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="sweatface">
+                    <analytics:events>
+                        <analytics:event action="emoji1_sweatface" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="smiling-face-with-open-mouth-and-cold-sweat 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="menorah">
+                    <analytics:events>
+                        <analytics:event action="emoji1_menorah" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="menorah 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="money">
+                    <analytics:events>
+                        <analytics:event action="emoji1_money" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="money-with-wings 1@2x.png" width="60"/>
+                </content:option>
+                <!--Row 5 -->
+                <content:option value="clinkingglasses">
+                    <analytics:events>
+                        <analytics:event action="emoji1_clinkingglasses" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="clinking-glasses 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="checklist">
+                    <analytics:events>
+                        <analytics:event action="emoji1_checklist" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="checklist 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="snowman">
+                    <analytics:events>
+                        <analytics:event action="emoji1_snowman" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="snowman-without-snow 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="star">
+                    <analytics:events>
+                        <analytics:event action="emoji1_star" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="glowing-star 1@2x.png" width="60"/>
+                </content:option>
+                <!--Row 6 -->
+                <content:option value="music">
+                    <analytics:events>
+                        <analytics:event action="emoji1_music" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="music 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="santa">
+                    <analytics:events>
+                        <analytics:event action="emoji1_santa" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="santa-claus 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="sleep">
+                    <analytics:events>
+                        <analytics:event action="emoji1_sleep" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="sleeping-face 1@2x.png" width="60"/>
+                </content:option>
+                <content:option value="pie">
+                    <analytics:events>
+                        <analytics:event action="emoji1_pie" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="pie 1@2x.png" width="60"/>
+                </content:option>
+            </content:multiselect>
+        </content:paragraph>
+        <!--
+        <content:paragraph>
+            <content:image resource="Emoji Tool vChristmas.jpg" restrictTo="web" />
+        </content:paragraph>
+        -->
+    </hero>
+    <call-to-action control-color="rgba(59,164,219,1)">
+        <content:text/>
+    </call-to-action>
+</page>

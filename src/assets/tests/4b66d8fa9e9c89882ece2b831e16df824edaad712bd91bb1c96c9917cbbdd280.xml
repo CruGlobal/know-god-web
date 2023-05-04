@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics">
+    <hero>
+        <analytics:events>
+            <analytics:event action="emojitool2-4" system="appsflyer"/>
+        </analytics:events>
+        <!-- When iOS is ready, we'll want to restrict this to mobile so it doesn't show up on web -->
+        <content:text i18n-id="05_phrase1" text-align="center" text-color="rgba(59,164,219,1)" required-features="multiselect flow" version="2" restrictTo="mobile">Tap to choose up to three emojis.</content:text>
+        <!--Images are ordered by row, beginning at the top -->
+        <content:paragraph restrictTo="mobile">
+            <content:multiselect state="emoji2" selection-limit="3" option-style="flat" columns="4">
+                <!--Row 1 -->
+                <content:option value="sunglasses">
+                    <analytics:events>
+                        <analytics:event action="emoji2_sunglasses" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="smiling-face-with-sunglasses.png" width="60"/>
+                </content:option>
+                <content:option value="shrug">
+                    <analytics:events>
+                        <analytics:event action="emoji2_shrug" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="man-shrugging-medium-dark-skin-tone.png" width="60"/>
+                </content:option>
+                <content:option value="climbing">
+                    <analytics:events>
+                        <analytics:event action="emoji2_climbing" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="woman-climbing-medium-dark-skin-tone.png" width="60"/>
+                </content:option>
+                <content:option value="scale">
+                    <analytics:events>
+                        <analytics:event action="emoji2_scale" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="balance-scale.png" width="60"/>
+                </content:option>
+                <!--Row 2 -->
+                <content:option value="cloud">
+                    <analytics:events>
+                        <analytics:event action="emoji2_cloud" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="sun-behind-rain-cloud.png" width="60"/>
+                </content:option>
+                <content:option value="prohibited">
+                    <analytics:events>
+                        <analytics:event action="emoji2_prohibited" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="prohibited.png" width="60"/>
+                </content:option>
+                <content:option value="hugging-face">
+                    <analytics:events>
+                        <analytics:event action="emoji2_huggingface" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="hugging-face.png" width="60"/>
+                </content:option>
+                <content:option value="railroad">
+                    <analytics:events>
+                        <analytics:event action="emoji2_railroad" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="railway-track.png" width="60"/>
+                </content:option>
+                <!--Row 3 -->
+                <content:option value="facepalm">
+                    <analytics:events>
+                        <analytics:event action="emoji2_facepalm" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="person-facepalming.png" width="60"/>
+                </content:option>
+                <content:option value="dove">
+                    <analytics:events>
+                        <analytics:event action="emoji2_dove" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="dove.png" width="60"/>
+                </content:option>
+                <content:option value="magnifying-glass">
+                    <analytics:events>
+                        <analytics:event action="emoji2_magnifyingglass" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="left-pointing-magnifying-glass.png" width="60"/>
+                </content:option>
+                <content:option value="desert">
+                    <analytics:events>
+                        <analytics:event action="emoji2_desert" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="desert.png" width="60"/>
+                </content:option>
+                <!--Row 4 -->
+                <content:option value="prayer-hands">
+                    <analytics:events>
+                        <analytics:event action="emoji2_prayerhands" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="folded-hands-dark-skin-tone.png" width="60"/>
+                </content:option>
+                <content:option value="cat">
+                    <analytics:events>
+                        <analytics:event action="emoji2_cat" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="crying-cat-face.png" width="60"/>
+                </content:option>
+                <content:option value="seedling">
+                    <analytics:events>
+                        <analytics:event action="emoji2_seedling" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="seedling.png" width="60"/>
+                </content:option>
+                <content:option value="snowflake">
+                    <analytics:events>
+                        <analytics:event action="emoji2_snowflake" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="snowflake.png" width="60"/>
+                </content:option>
+                <!--Row 5 -->
+                <content:option value="moai">
+                    <analytics:events>
+                        <analytics:event action="emoji2_moai" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="moai.png" width="60"/>
+                </content:option>
+                <content:option value="bar-chart">
+                    <analytics:events>
+                        <analytics:event action="emoji2_barchart" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="bar-chart.png" width="60"/>
+                </content:option>
+                <content:option value="revolving-hearts">
+                    <analytics:events>
+                        <analytics:event action="emoji2_revolvinghearts" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="revolving-hearts.png" width="60"/>
+                </content:option>
+                <content:option value="fearful-face">
+                    <analytics:events>
+                        <analytics:event action="emoji2_fearfulface" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="fearful-face.png" width="60"/>
+                </content:option>
+                <!--Row 6 -->
+                <content:option value="angry-face">
+                    <analytics:events>
+                        <analytics:event action="emoji2_angryface" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="pouting-face.png" width="60"/>
+                </content:option>
+                <content:option value="party-popper">
+                    <analytics:events>
+                        <analytics:event action="emoji2_partypopper" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="party-popper.png" width="60"/>
+                </content:option>
+                <content:option value="masks">
+                    <analytics:events>
+                        <analytics:event action="emoji2_masks" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="performing-arts.png" width="60"/>
+                </content:option>
+                <content:option value="building-construction">
+                    <analytics:events>
+                        <analytics:event action="emoji2_buildingconstruction" system="firebase"/>
+                    </analytics:events>
+                    <content:image resource="building-construction.png" width="60"/>
+                </content:option>
+            </content:multiselect>
+        </content:paragraph>
+        <!--
+        <content:paragraph>
+            <content:image resource="Emoji_Tool_v2.0.jpg" restrictTo="web" />
+        </content:paragraph>
+        -->
+    </hero>
+    <call-to-action control-color="rgba(59,164,219,1)">
+        <content:text/>
+    </call-to-action>
+</page>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" background-color="rgba(59,164,219,1)">
+    <hero>
+        <heading>
+            <content:text i18n-id="07_phrase1" text-scale="1.4" text-color="rgba(255,255,255,1)">Is there a holiday that is spiritually significant to you?</content:text>
+        </heading>
+        
+        <analytics:events>
+            <analytics:event action="emojitool2-6" system="appsflyer"/>
+        </analytics:events>
+        
+    </hero>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

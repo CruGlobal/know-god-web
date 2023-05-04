@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" background-color="rgba(59,164,219,1)" content:card-background-color="rgba(255,255,255,1)">
+    <hero>
+        <heading>
+            <content:text i18n-id="09_phrase1" text-scale="1.3" text-color="rgba(255,255,255,1)">Tell me more about what you chose and why.</content:text>
+        </heading>
+        <analytics:events>
+            <analytics:event action="emojitool2-8" system="appsflyer"/>
+        </analytics:events>
+        
+
+        <content:paragraph restrictTo="mobile">
+            <!-- Images are ordered by row, going down 1 column at a time -->
+            <content:flow item-width="25%" row-gravity="center">
+                
+                <!-- Row 1 -->
+                <content:item gone-if="emoji3 != 'gamedie'">
+                    <content:card>
+                        <content:image resource="game-die 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'crown'">
+                    <content:card>
+                        <content:image resource="crown 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'christmastree'">
+                    <content:card>
+                        <content:image resource="christmas-tree 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'partyface'">
+                    <content:card>
+                        <content:image resource="partying-face 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                
+                <!-- Row 2 -->
+                <content:item gone-if="emoji3 != 'spiraleyes'">
+                    <content:card>
+                        <content:image resource="face-with-spiral-eyes 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'puzzle'">
+                    <content:card>
+                        <content:image resource="puzzle-piece 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'envelope'">
+                    <content:card>
+                        <content:image resource="red-envelope 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'tv'">
+                    <content:card>
+                        <content:image resource="television 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                
+                <!-- Row 3 -->
+                <content:item gone-if="emoji3 != 'church'">
+                    <content:card>
+                        <content:image resource="church 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'plate'">
+                    <content:card>
+                        <content:image resource="fork-and-knife-with-plate 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'hearteyes'">
+                    <content:card>
+                        <content:image resource="smiling-face-with-heart-eyes 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'family'">
+                    <content:card>
+                        <content:image resource="family-man-woman-girl-boy 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                
+                <!-- Row 4 -->
+                <content:item gone-if="emoji3 != 'gift'">
+                    <content:card>
+                        <content:image resource="wrapped-gift 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'sweatface'">
+                    <content:card>
+                        <content:image resource="smiling-face-with-open-mouth-and-cold-sweat 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'menorah'">
+                    <content:card>
+                        <content:image resource="menorah 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'money'">
+                    <content:card>
+                        <content:image resource="money-with-wings 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                
+                <!-- Row 5 -->
+                <content:item gone-if="emoji3 != 'clinkingglasses'">
+                    <content:card>
+                        <content:image resource="clinking-glasses 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'checklist'">
+                    <content:card>
+                        <content:image resource="checklist 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'snowman'">
+                    <content:card>
+                        <content:image resource="snowman-without-snow 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'star'">
+                    <content:card>
+                        <content:image resource="glowing-star 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                
+                <!-- Row 6 -->
+                <content:item gone-if="emoji3 != 'music'">
+                    <content:card>
+                        <content:image resource="music 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'santa'">
+                    <content:card>
+                        <content:image resource="santa-claus 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'sleep'">
+                    <content:card>
+                        <content:image resource="sleeping-face 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji3 != 'pie'">
+                    <content:card>
+                        <content:image resource="pie 1@2x.png" width="60"/>
+                    </content:card>
+                </content:item>
+            </content:flow>
+        </content:paragraph>
+        
+    </hero>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

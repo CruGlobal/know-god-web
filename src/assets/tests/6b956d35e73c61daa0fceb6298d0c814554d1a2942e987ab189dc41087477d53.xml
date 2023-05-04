@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" background-color="rgba(59,164,219,1)" listeners="firstquestion">
+    <hero>
+        <heading>
+            <content:text i18n-id="01_phrase1" text-scale="1.4" text-color="rgba(255,255,255,1)">On the next screen, which two or three emojis best represent this holiday for you?</content:text>
+        </heading>
+
+       <content:paragraph> <content:link events="say-lesson">
+            <content:text>startingwithgod.co</content:text>
+        </content:link></content:paragraph>
+
+
+        <content:paragraph>
+            <content:text i18n-id="00_phrase1" text-scale="1.4" text-color="rgba(255,255,255,1)">Holidays are a great opportunity to start fun and meaningful conversations. The questions in this survey can apply to any holiday. </content:text>
+            <content:link>
+                <content:text>startingwithgod.co</content:text>
+            </content:link>
+        </content:paragraph>
+
+        <content:spacer />
+
+        <content:paragraph>
+            <content:text i18n-id="00_phrase1" text-scale="1.4" text-color="rgba(255,255,255,1)">As always, ask clarifying questions to help take the conversation deeper. Once you finish the survey, continue the conversation by using one of the tools linked at the end.</content:text>
+        </content:paragraph>
+
+        <content:tabs>
+            <content:tab listeners="hero-tab-1">
+                <content:label><content:text>1</content:text></content:label>
+                <content:paragraph>
+                    <content:text i18n-id="00_phrase1" text-scale="1.4" text-color="rgba(255,255,255,1)">As always, ask clarifying questions to help take the conversation deeper. Once you finish the survey, continue the conversation by using one of the tools linked at the end.</content:text>
+                </content:paragraph>
+                <content:paragraph>
+                    <content:image resource="toggle-left.png" events="hero-tab-2" />
+                    <content:button type="event" events="hero-tab-2">
+                        <content:text>Switch to tab 2</content:text>
+                    </content:button>
+                </content:paragraph>
+            </content:tab>
+            <content:tab listeners="hero-tab-2">
+                <content:label><content:text>2</content:text></content:label>
+                <content:paragraph>
+                    <content:image resource="toggle-right.png" events="hero-tab-1" />
+                    <content:button type="event" events="hero-tab-1">
+                        <content:text>Switch to tab 1</content:text>
+                    </content:button>
+                </content:paragraph>
+            </content:tab>
+        </content:tabs>
+<!-- 
+        <content:paragraph>
+            <content:animation resource="7148-the-nyan-cat.json" events="toggleAnimation" play-listeners="toggleAnimation playAnimation" stop-listeners="toggleAnimation stopAnimation" />
+            <content:button events="playAnimation" type="event">
+            <content:text>Play</content:text>
+            </content:button>
+            <content:button events="stopAnimation" type="event">
+            <content:text>Stop</content:text>
+            </content:button>
+        </content:paragraph> -->
+
+        <!-- <content:accordion>
+		    <content:section>
+		        <content:header>
+		            <content:text i18n-id="05_phrase03"  text-style="bold" text-scale="1.1" text-color="rgba(90,90,90,1)" ></content:text>
+                </content:header>
+		            <content:text i18n-id="05_phrase04"  ></content:text>
+		            <content:paragraph>
+		                 <content:text i18n-id="05_phrase05"  ></content:text>
+		            </content:paragraph>
+		    </content:section>
+		    
+		    <content:section>
+		        <content:header>
+		            <content:text i18n-id="05_phrase06"  text-style="bold"  text-scale="1.1" text-color="rgba(90,90,90,1)"></content:text>
+                </content:header>
+		            <content:text i18n-id="05_phrase07"></content:text>
+		    </content:section>
+		    
+		    	</content:accordion> -->
+
+        <analytics:events>
+            <analytics:event action="emojitool2-0" system="appsflyer"/>
+        </analytics:events>
+        
+    </hero>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<page xmlns="https://mobile-content-api.cru.org/xmlns/tract" xmlns:content="https://mobile-content-api.cru.org/xmlns/content" xmlns:analytics="https://mobile-content-api.cru.org/xmlns/analytics" background-color="rgba(59,164,219,1)" content:card-background-color="rgba(255,255,255,1)">
+    <hero>
+        <heading>
+            <content:text i18n-id="06_phrase1" text-scale="1.3" text-color="rgba(255,255,255,1)">Tell me more about what you chose and why.</content:text>
+        </heading>
+        <analytics:events>
+            <analytics:event action="emojitool2-5" system="appsflyer"/>
+        </analytics:events>
+
+        <content:paragraph restrictTo="mobile">
+            <!-- Images are ordered by row, going down 1 column at a time -->
+            <content:flow item-width="25%" row-gravity="center">
+                <!-- Row 1 -->
+                <content:item gone-if="emoji2 != 'sunglasses'">
+                    <content:card>
+                        <content:image resource="smiling-face-with-sunglasses.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'shrug'">
+                    <content:card>
+                        <content:image resource="man-shrugging-medium-dark-skin-tone.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'climbing'">
+                    <content:card>
+                        <content:image resource="woman-climbing-medium-dark-skin-tone.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'scale'">
+                    <content:card>
+                        <content:image resource="balance-scale.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <!-- Row 2 -->
+                <content:item gone-if="emoji2 != 'cloud'">
+                    <content:card>
+                        <content:image resource="sun-behind-rain-cloud.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'prohibited'">
+                    <content:card>
+                        <content:image resource="prohibited.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'hugging-face'">
+                    <content:card>
+                        <content:image resource="hugging-face.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'railroad'">
+                    <content:card>
+                        <content:image resource="railway-track.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <!-- Row 3 -->
+                <content:item gone-if="emoji2 != 'facepalm'">
+                    <content:card>
+                        <content:image resource="person-facepalming.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'dove'">
+                    <content:card>
+                        <content:image resource="dove.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'magnifying-glass'">
+                    <content:card>
+                        <content:image resource="left-pointing-magnifying-glass.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'desert'">
+                    <content:card>
+                        <content:image resource="desert.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <!-- Row 4 -->
+                <content:item gone-if="emoji2 != 'prayer-hands'">
+                    <content:card>
+                        <content:image resource="folded-hands-dark-skin-tone.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'cat'">
+                    <content:card>
+                        <content:image resource="crying-cat-face.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'seedling'">
+                    <content:card>
+                        <content:image resource="seedling.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'snowflake'">
+                    <content:card>
+                        <content:image resource="snowflake.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <!-- Row 5 -->
+                <content:item gone-if="emoji2 != 'moai'">
+                    <content:card>
+                        <content:image resource="moai.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'bar-chart'">
+                    <content:card>
+                        <content:image resource="bar-chart.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'revolving-hearts'">
+                    <content:card>
+                        <content:image resource="revolving-hearts.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'fearful-face'">
+                    <content:card>
+                        <content:image resource="fearful-face.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <!-- Row 6 -->
+                <content:item gone-if="emoji2 != 'angry-face'">
+                    <content:card>
+                        <content:image resource="pouting-face.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'party-popper'">
+                    <content:card>
+                        <content:image resource="party-popper.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'masks'">
+                    <content:card>
+                        <content:image resource="performing-arts.png" width="60"/>
+                    </content:card>
+                </content:item>
+                <content:item gone-if="emoji2 != 'building-construction'">
+                    <content:card>
+                        <content:image resource="building-construction.png" width="60"/>
+                    </content:card>
+                </content:item>
+            </content:flow>
+        </content:paragraph>
+    </hero>
+    <call-to-action control-color="rgba(255,255,255,1)">
+        <content:text/>
+    </call-to-action>
+</page>

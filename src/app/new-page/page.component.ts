@@ -352,20 +352,14 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private getAvailableLanguagesForSelectedBook(): void {
     this.availableLanguages = [];
     if (this._allLanguages && this._allLanguages.length > 0) {
-      this._allLanguages.forEach((languageItem) => {
-        if (
-          languageItem.relationships &&
-          languageItem.relationships.translations &&
-          languageItem.relationships.translations.data
-        ) {
-          const languageTranslations =
-            languageItem.relationships.translations.data;
+      this._allLanguages.forEach((lang) => {
+        const translations = lang.relationships?.translations?.data || null;
 
+        if (translations) {
           let isLanguageForSelectedBook = false;
-
-          languageTranslations.forEach((languageTranslation) => {
+          translations.forEach((translation) => {
             this._pageBookTranslations.forEach((pageBookTranslation) => {
-              if (languageTranslation.id === pageBookTranslation.id) {
+              if (translation.id === pageBookTranslation.id) {
                 isLanguageForSelectedBook = true;
                 return;
               }
@@ -376,7 +370,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
           });
 
           if (isLanguageForSelectedBook) {
-            this.availableLanguages.push(languageItem);
+            this.availableLanguages.push(lang);
           }
         }
       });
@@ -520,15 +514,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
 
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
-      if (
-        lang &&
-        lang.attributes &&
-        lang.attributes['code'] &&
-        lang.attributes['code'] === this._pageParams.langid
-      ) {
+      const attributes = lang.attributes;
+      if (attributes.code && attributes.code === this._pageParams.langid) {
         this._selectedLanguage = lang;
-        this.selectedLang = lang.attributes.name;
-        this.pageService.setDir(lang.attributes.direction);
+        this.selectedLang = attributes.name;
+        this.pageService.setDir(attributes.direction);
       }
     });
   }
@@ -537,9 +527,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
         return (
-          x.relationships &&
-          x.relationships.language &&
-          x.relationships.language.data &&
           x.relationships.language.data.id &&
           x.relationships.language.data.id === this._selectedLanguage.id
         );

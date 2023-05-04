@@ -1,11 +1,4 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
-import { PageService } from '../../service/page-service.service';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   Paragraph,
   Content
@@ -22,7 +15,7 @@ export class ContentParagraphNewComponent implements OnChanges {
   ready: boolean;
   items: Array<Content>;
 
-  constructor(private pageService: PageService) {}
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
