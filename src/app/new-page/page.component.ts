@@ -285,8 +285,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
       const translationid = item.id;
       const fileName =
         APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName;
-      // https://cru-mobilecontentapi-staging.s3.us-east-1.amazonaws.com/translations/files/7e92da93d9b1eec01d9f7dfd015a484b97fdd486deb2c18ef20e8116cbd02f7a.xml
-      // const fileName = `http://localhost:4200/assets/img/${manifestName}`
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
