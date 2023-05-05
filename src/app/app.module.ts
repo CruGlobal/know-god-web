@@ -52,7 +52,6 @@ import { ContentAnimationNewComponent } from './new-page/component/content-anima
 import { CalltoactionNewComponent } from './new-page/component/calltoaction/calltoaction.component';
 import { ModalNewComponent } from './new-page/component/modal/modal.component';
 import { ContentSpacerNewComponent } from './new-page/component/content-spacer/content-spacer.component';
-import { TrainingTipNewComponent } from './new-page/component/training-tip/training-tip.component';
 import { ContentRepeaterNewComponent } from './new-page/component/content-repeater/content-repeater.component';
 
 const appRoutes: Routes = [
@@ -127,7 +126,6 @@ export function playerFactory() {
     CalltoactionNewComponent,
     ModalNewComponent,
     ContentSpacerNewComponent,
-    TrainingTipNewComponent,
     ContentRepeaterNewComponent
   ],
   imports: [

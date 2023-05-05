@@ -71,7 +71,6 @@ export class PageHeroNewComponent implements OnDestroy, OnChanges {
   private init(): void {
     this.heading = this.hero?.heading;
     this.headingText = parseTextAddBrTags(this.heading?.text);
-
     this.content = this.hero.content;
 
     this.changeHeader$

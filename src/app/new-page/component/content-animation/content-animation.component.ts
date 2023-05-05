@@ -3,13 +3,14 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageService } from '../../service/page-service.service';
 import { Animation } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { AnimationOptions } from 'ngx-lottie';
+import { AnimationItem } from 'lottie-web';
 
 @Component({
   selector: 'app-content-new-animation',
@@ -24,10 +25,10 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
   animation: Animation;
   ready: boolean;
   anmResource: string;
-  anmViewItem: any;
+  anmViewItem: AnimationItem;
   hasEvents: boolean;
   dir$: Observable<string>;
-  lottieOptions: any;
+  lottieOptions: AnimationOptions;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
@@ -71,7 +72,7 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
   }
 
   onAnimationCreated(anim: any) {
-    this.anmViewItem = anim;
+    this.anmViewItem = anim as AnimationItem;
   }
 
   private init(): void {
@@ -125,7 +126,7 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
           } else if (playListeners) {
             this.anmViewItem.play();
           } else if (stopListeners) {
-            this.anmViewItem.stop();
+            this.anmViewItem.pause();
           }
         }
       });
