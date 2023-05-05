@@ -42,7 +42,7 @@ describe('ContentAnimationComponent', () => {
     expect(component.lottieOptions).toEqual({
       path: filePath,
       loop: true,
-      autoplay: true,
+      autoplay: true
     });
     expect(component.hasEvents).toBeTrue();
   });
