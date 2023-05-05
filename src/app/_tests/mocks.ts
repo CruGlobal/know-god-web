@@ -11,7 +11,8 @@ import {
   Content,
   Video,
   Card,
-  Modal
+  Modal,
+  Animation
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { org } from '@cruglobal/godtools-shared';
 
@@ -136,6 +137,30 @@ export const mockImage = (name: string, url: string): Image => {
     width: null,
     isClickable: null,
     events: null,
+    ...standardTypeValues()
+  };
+};
+
+// TODO
+// Once we get resource returning correctly, remove e31_1.
+export const mockAnimation = (
+  name: string,
+  url: string,
+  event: string
+): Animation | any => {
+  return {
+    url,
+    e31_1: name,
+    resource: createResource(name, url),
+    loop: true,
+    autoPlay: true,
+    playListeners: [createEventId(`${event}-play-listener`)],
+    stopListeners: [createEventId(`${event}-stop-listener`)],
+    isClickable: true,
+    events: [createEventId(event)],
+    _events: null,
+    _playListeners: null,
+    _stopListeners: null,
     ...standardTypeValues()
   };
 };

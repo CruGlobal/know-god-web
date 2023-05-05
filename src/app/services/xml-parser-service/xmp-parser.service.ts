@@ -30,6 +30,7 @@ export type EventId = org.cru.godtools.shared.tool.parser.model.EventId;
 export type Form = org.cru.godtools.shared.tool.parser.model.Form;
 export type Input = org.cru.godtools.shared.tool.parser.model.Input;
 export type Link = org.cru.godtools.shared.tool.parser.model.Link;
+export type Animation = org.cru.godtools.shared.tool.parser.model.Animation;
 
 export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer;
 export type Tabs = org.cru.godtools.shared.tool.parser.model.Tabs;
@@ -41,72 +42,78 @@ export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect;
 export namespace XmlParser {
   export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
   export const ManifestParser = manifestParser;
+  export const State = org.cru.godtools.shared.tool.state.State;
 }
 
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
-    console.log('CONTENT: Image');
+    // console.log('CONTENT: Image');
     return 'image';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Text
   ) {
-    console.log('CONTENT: Text');
+    // console.log('CONTENT: Text');
     return 'text';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Paragraph
   ) {
-    console.log('CONTENT: Paragraph');
+    // console.log('CONTENT: Paragraph');
     return 'paragraph';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Video
   ) {
-    console.log('CONTENT: Video');
+    // console.log('CONTENT: Video');
     return 'video';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Button
   ) {
-    console.log('CONTENT: Button');
+    // console.log('CONTENT: Button');
     return 'button';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Form
   ) {
-    console.log('CONTENT: Form');
+    // console.log('CONTENT: Form');
     return 'form';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Input
   ) {
-    console.log('CONTENT: Input');
+    // console.log('CONTENT: Input');
     return 'input';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Spacer
   ) {
-    console.log('CONTENT: Spacer');
+    // console.log('CONTENT: Spacer');
     return 'spacer';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Link
   ) {
-    console.log('CONTENT: Link');
+    // console.log('CONTENT: Link');
     return 'link';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Tabs
   ) {
-    console.log('CONTENT: Tabs');
+    // console.log('CONTENT: Tabs');
     return 'tabs';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Tabs.Tab
   ) {
-    console.log('CONTENT: Tab');
+    // console.log('CONTENT: Tab');
     return 'tab';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Accordion
   ) {
-    console.log('CONTENT: Accordion');
+    // console.log('CONTENT: Accordion');
     return 'accordion';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Card
   ) {
-    console.log('CONTENT: Card');
+    // console.log('CONTENT: Card');
     return 'card';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Animation
+  ) {
+    // console.log('CONTENT: Animation');
+    return 'animation';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Multiselect
   ) {

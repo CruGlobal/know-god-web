@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
-import { LottieAnimationViewModule } from 'ng-lottie';
+import { LottieModule } from 'ngx-lottie';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
@@ -75,6 +75,12 @@ const appRoutes: Routes = [
   }
 ];
 
+// Lottie Web
+// Need a separate function as it's required by the AOT compiler.
+export function playerFactory() {
+  return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -137,7 +143,7 @@ const appRoutes: Routes = [
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
-    LottieAnimationViewModule.forRoot()
+    LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [CommonModule, LoaderService],
   bootstrap: [AppComponent]

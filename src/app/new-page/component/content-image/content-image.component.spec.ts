@@ -25,7 +25,7 @@ describe('ContentImageComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
     pageService.addToImagesDict(fileName, filePath);
-    spyOn(pageService, 'findImage');
+    spyOn(pageService, 'findAttachment');
   }));
 
   it('Fetch image from pageService', async () => {
@@ -33,7 +33,7 @@ describe('ContentImageComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, image, true)
     });
-    expect(pageService.findImage).not.toHaveBeenCalledWith(fileName);
+    expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
     expect(component.imgResource).toBe(filePath);
   });
 
@@ -42,6 +42,6 @@ describe('ContentImageComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, imageNoNameNotAdded, true)
     });
-    expect(pageService.findImage).toHaveBeenCalledWith(fileNameNotAdded);
+    expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
   });
 });
