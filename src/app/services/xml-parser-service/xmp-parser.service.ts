@@ -37,10 +37,12 @@ export type Tab = org.cru.godtools.shared.tool.parser.model.Tabs.Tab;
 // TODO - Need to implement the below 6 types into components
 export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer;
 export type Accordion = org.cru.godtools.shared.tool.parser.model.Accordion;
-export type AccordionSection = org.cru.godtools.shared.tool.parser.model.Accordion.Section
+export type AccordionSection =
+  org.cru.godtools.shared.tool.parser.model.Accordion.Section;
 export type Card = org.cru.godtools.shared.tool.parser.model.Card;
 export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect;
-export type MultiselectOption = org.cru.godtools.shared.tool.parser.model.Multiselect.Option
+export type MultiselectOption =
+  org.cru.godtools.shared.tool.parser.model.Multiselect.Option;
 
 export namespace XmlParser {
   export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
