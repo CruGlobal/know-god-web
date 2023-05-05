@@ -16,7 +16,7 @@ export type Hero = org.cru.godtools.shared.tool.parser.model.tract.Hero;
 export type Modal = org.cru.godtools.shared.tool.parser.model.tract.Modal;
 export type TractPage =
   org.cru.godtools.shared.tool.parser.model.tract.TractPage;
-export type Card =
+export type TractPageCard =
   org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card;
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
 export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph;
@@ -31,13 +31,16 @@ export type Form = org.cru.godtools.shared.tool.parser.model.Form;
 export type Input = org.cru.godtools.shared.tool.parser.model.Input;
 export type Link = org.cru.godtools.shared.tool.parser.model.Link;
 export type Animation = org.cru.godtools.shared.tool.parser.model.Animation;
-
-export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer;
 export type Tabs = org.cru.godtools.shared.tool.parser.model.Tabs;
 export type Tab = org.cru.godtools.shared.tool.parser.model.Tabs.Tab;
+
+// TODO - Need to implement the below 6 types into components
+export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer;
 export type Accordion = org.cru.godtools.shared.tool.parser.model.Accordion;
-export type ModalCard = org.cru.godtools.shared.tool.parser.model.Card;
+export type AccordionSection = org.cru.godtools.shared.tool.parser.model.Accordion.Section
+export type Card = org.cru.godtools.shared.tool.parser.model.Card;
 export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect;
+export type MultiselectOption = org.cru.godtools.shared.tool.parser.model.Multiselect.Option
 
 export namespace XmlParser {
   export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
@@ -94,11 +97,6 @@ export const ContentParser = (content: any): string => {
   ) {
     // console.log('CONTENT: Tabs');
     return 'tabs';
-  } else if (
-    content instanceof org.cru.godtools.shared.tool.parser.model.Tabs.Tab
-  ) {
-    // console.log('CONTENT: Tab');
-    return 'tab';
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Accordion
   ) {

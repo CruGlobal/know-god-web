@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
 import {
   TractPage,
   Modal,
-  Card,
+  TractPageCard,
   Hero,
   Header,
   CallToAction,
@@ -38,7 +38,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
 
   header: Header;
   hero: Hero;
-  cards: Card[];
+  cards: TractPageCard[];
   modal: Modal;
   callToAction: CallToAction;
   ready: boolean;

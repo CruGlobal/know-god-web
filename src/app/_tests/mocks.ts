@@ -10,7 +10,7 @@ import {
   Paragraph,
   Content,
   Video,
-  Card,
+  TractPageCard,
   Modal,
   Animation
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
@@ -249,7 +249,7 @@ export const mockCard = (
   position: number,
   listeners,
   isHidden: boolean
-): Card => {
+): TractPageCard => {
   return {
     page: null,
     id: null,

@@ -40,7 +40,9 @@ describe('ContentAnimationComponent', () => {
     expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
     expect(component.anmResource).toEqual(filePath);
     expect(component.lottieOptions).toEqual({
-      path: filePath
+      path: filePath,
+      loop: true,
+      autoplay: true,
     });
     expect(component.hasEvents).toBeTrue();
   });
