@@ -55,7 +55,7 @@ export class ContentImageNewComponent implements OnChanges {
       !this.imgResource.includes('http')
     ) {
       this.imgResource =
-        this.pageService.findImage(this.image.resource.name) || '';
+        this.pageService.findAttachment(this.image.resource.name) || '';
     }
     this.ready = true;
   }

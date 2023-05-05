@@ -47,12 +47,12 @@ export class PageService {
     this.clearAnimationsDict();
   }
 
-  addImage(pImageName: string, pImageUrl: string): void {
+  addAttachment(pImageName: string, pImageUrl: string): void {
     const tImages = this._allAttachmentResources.get(pImageName);
     if (!tImages) this._allAttachmentResources.set(pImageName, pImageUrl);
   }
 
-  findImage(pImageName: string): string {
+  findAttachment(pImageName: string): string {
     const tImages = this._allAttachmentResources.get(pImageName);
     return tImages || '';
   }
@@ -66,7 +66,6 @@ export class PageService {
   }
 
   formAction(action: string): void {
-    console.log('formAction.action', action);
     this._formAction.next(action);
   }
 

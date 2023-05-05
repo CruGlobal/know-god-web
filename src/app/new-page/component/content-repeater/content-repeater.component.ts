@@ -2,12 +2,10 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   QueryList,
   SimpleChanges,
   ViewChildren
 } from '@angular/core';
-import { PageService } from '../../service/page-service.service';
 import { ContentInputNewComponent } from '../content-input/content-input.component';
 import {
   ContentItems,
@@ -28,7 +26,7 @@ export class ContentRepeaterNewComponent implements OnChanges {
   ready: boolean;
   content: ContentItemsType[];
 
-  constructor(private pageService: PageService) {}
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {

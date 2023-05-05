@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
-import { LottieAnimationViewModule } from 'ng-lottie';
+import { LottieModule } from 'ngx-lottie';
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
@@ -53,7 +53,6 @@ import { CalltoactionNewComponent } from './new-page/component/calltoaction/call
 import { ModalNewComponent } from './new-page/component/modal/modal.component';
 import { ContentSpacerNewComponent } from './new-page/component/content-spacer/content-spacer.component';
 import { TrainingTipNewComponent } from './new-page/component/training-tip/training-tip.component';
-import { ContentFallbackNewComponent } from './new-page/component/content-fallback/content-fallback.component';
 import { ContentRepeaterNewComponent } from './new-page/component/content-repeater/content-repeater.component';
 
 const appRoutes: Routes = [
@@ -75,6 +74,12 @@ const appRoutes: Routes = [
     component: PageNewComponent
   }
 ];
+
+// Lottie Web
+// Need a separate function as it's required by the AOT compiler.
+export function playerFactory() {
+  return import(/* webpackChunkName: 'lottie-web' */ 'lottie-web');
+}
 
 @NgModule({
   declarations: [
@@ -123,7 +128,6 @@ const appRoutes: Routes = [
     ModalNewComponent,
     ContentSpacerNewComponent,
     TrainingTipNewComponent,
-    ContentFallbackNewComponent,
     ContentRepeaterNewComponent
   ],
   imports: [
@@ -139,7 +143,7 @@ const appRoutes: Routes = [
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
-    LottieAnimationViewModule.forRoot()
+    LottieModule.forRoot({ player: playerFactory })
   ],
   providers: [CommonModule, LoaderService],
   bootstrap: [AppComponent]

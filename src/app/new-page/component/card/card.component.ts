@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import { org } from '@cruglobal/godtools-shared';
 import {
-  Card,
+  TractPageCard,
   Text,
   Content
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
@@ -19,8 +19,7 @@ import {
   styleUrls: ['./card.component.css']
 })
 export class CardNewComponent implements OnChanges {
-  @Input() card: Card;
-  @Input() cardIndex: number;
+  @Input() card: TractPageCard;
 
   ready: boolean;
   label: Text;

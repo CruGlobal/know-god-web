@@ -21,7 +21,8 @@ import {
   Manifest,
   TractPage,
   XmlParser,
-  XmlParserData
+  XmlParserData,
+  Animation
 } from '../services/xml-parser-service/xmp-parser.service';
 
 interface LiveShareSubscriptionPayload {
@@ -59,9 +60,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private _pageBookTranslations: any[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
-  private _pageBookTipsManifest: any[]; // NEED TIP CLASS
+  private _pageBookTipsManifest: any[]; // TODO - get Tips when ready
   private _pageBookSubPages: Page[];
-  private _pageBookTips: any[]; // NEED TIP CLASS
+  private _pageBookTips: any[]; // TODO - get Tips when ready
   private _selectedLanguage: any;
   private liveShareSubscription: ActionCable.Channel;
 
@@ -153,7 +154,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
   }
 
   private getAnimation(resource): void {
-    // NEED Animation Object
     if (resource === undefined || resource === '' || resource === null) {
       return;
     }
@@ -224,7 +224,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
   }
 
   private loadTip(tip: any): void {
-    // PIZZA
+    // TODO
+    // Load in Tips when ready
     this.commonService
       .downloadFile(
         APIURL.GET_XML_FILES_FOR_MANIFEST +
@@ -285,8 +286,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
       const translationid = item.id;
       const fileName =
         APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName;
-      // https://cru-mobilecontentapi-staging.s3.us-east-1.amazonaws.com/translations/files/7e92da93d9b1eec01d9f7dfd015a484b97fdd486deb2c18ef20e8116cbd02f7a.xml
-      // const fileName = `http://localhost:4200/assets/img/${manifestName}`
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
@@ -311,12 +310,20 @@ export class PageNewComponent implements OnInit, OnDestroy {
           this._pageBookIndex.included.forEach((resource) => {
             const { attributes, type } = resource;
             if (type === 'attachment') {
-              this.pageService.addImage(
+              this.pageService.addAttachment(
                 attributes['file-file-name'],
                 attributes.file
               );
               if (!attributes['is-zipped'] === true) {
-                this.getImage(attributes['file-file-name']);
+                if (
+                  /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
+                    attributes['file-file-name']
+                  )
+                ) {
+                  this.getImage(attributes['file-file-name']);
+                } else {
+                  this.getAnimation(attributes['file-file-name']);
+                }
               }
             }
           });
@@ -335,7 +342,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
           }
 
           if (manifest.hasTips) {
-            // PIZZA
+            // TODO
+            // Add Tips when ready
             // this._pageBookTipsManifest = [];
             // this._pageBookTips = [];
             // this._pageBookMainfest.manifest.tips.forEach((tTip) => {
@@ -352,20 +360,14 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private getAvailableLanguagesForSelectedBook(): void {
     this.availableLanguages = [];
     if (this._allLanguages && this._allLanguages.length > 0) {
-      this._allLanguages.forEach((languageItem) => {
-        if (
-          languageItem.relationships &&
-          languageItem.relationships.translations &&
-          languageItem.relationships.translations.data
-        ) {
-          const languageTranslations =
-            languageItem.relationships.translations.data;
+      this._allLanguages.forEach((lang) => {
+        const translations = lang.relationships?.translations?.data || null;
 
+        if (translations) {
           let isLanguageForSelectedBook = false;
-
-          languageTranslations.forEach((languageTranslation) => {
+          translations.forEach((translation) => {
             this._pageBookTranslations.forEach((pageBookTranslation) => {
-              if (languageTranslation.id === pageBookTranslation.id) {
+              if (translation.id === pageBookTranslation.id) {
                 isLanguageForSelectedBook = true;
                 return;
               }
@@ -376,7 +378,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
           });
 
           if (isLanguageForSelectedBook) {
-            this.availableLanguages.push(languageItem);
+            this.availableLanguages.push(lang);
           }
         }
       });
@@ -520,15 +522,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
 
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
-      if (
-        lang &&
-        lang.attributes &&
-        lang.attributes['code'] &&
-        lang.attributes['code'] === this._pageParams.langid
-      ) {
+      const attributes = lang.attributes;
+      if (attributes.code && attributes.code === this._pageParams.langid) {
         this._selectedLanguage = lang;
-        this.selectedLang = lang.attributes.name;
-        this.pageService.setDir(lang.attributes.direction);
+        this.selectedLang = attributes.name;
+        this.pageService.setDir(attributes.direction);
       }
     });
   }
@@ -537,9 +535,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
         return (
-          x.relationships &&
-          x.relationships.language &&
-          x.relationships.language.data &&
           x.relationships.language.data.id &&
           x.relationships.language.data.id === this._selectedLanguage.id
         );
