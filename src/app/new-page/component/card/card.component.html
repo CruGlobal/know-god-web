@@ -9,7 +9,6 @@
     dir="{{ dir$ | async }}"
     [innerHTML]="labelText"
   ></h4>
-  <h2>labelText{{labelText}}</h2>
   <ng-container *ngIf="content && (isModal$ | async) === false">
     <app-content-new-repeater [items]="content"></app-content-new-repeater>
   </ng-container>
