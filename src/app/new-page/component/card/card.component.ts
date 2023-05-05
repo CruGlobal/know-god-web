@@ -63,6 +63,7 @@ export class CardNewComponent implements OnChanges {
   }
 
   private init(): void {
+    console.log('this.card', this.card);
     if (this.card.label) {
       this.label = this.card.label;
       this.labelText = this.card.label.text?.trim() || '';

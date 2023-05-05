@@ -81,22 +81,12 @@ export class ContentButtonNewComponent implements OnChanges {
 
     if (isUrlType) {
       this.type = 'url';
-      this.url = this.toAbsoluteUrl(this.button.url);
+      this.url = this.button.url;
     }
     if (isEventType) {
       this.type = 'event';
       this.events = this.button.events;
     }
     this.ready = true;
-  }
-
-  private toAbsoluteUrl(url: string): string {
-    if (!url || url.trim().length === 0) {
-      return '';
-    }
-    if (!url.startsWith('http://') && !url.startsWith('https://')) {
-      url = `http://${url}`;
-    }
-    return url;
   }
 }

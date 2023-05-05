@@ -290,9 +290,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
         .withSupportedFeatures([
-          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
-          XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD,
-          XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT
+          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION
         ])
         .withParseTips(false);
       const newParser = new XmlParser.ManifestParser(

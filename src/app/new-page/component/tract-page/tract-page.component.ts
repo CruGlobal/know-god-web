@@ -260,6 +260,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
+    
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();

@@ -55,15 +55,12 @@ export class ContentVideoNewComponent implements OnChanges {
 
   private init(): void {
     this.provider = this.video.provider.name || '';
-    const videoId = this.video.videoId;
-    if (videoId) {
-      setTimeout(() => {
-        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://www.youtube.com/embed/${videoId}`
-        );
-        this.videoId = videoId;
-      }, 0);
-    }
+    this.videoId = this.video.videoId || '';
+    setTimeout(() => {
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.youtube.com/embed/${this.videoId}`
+      );
+    }, 0);
     this.ready = true;
   }
 }
