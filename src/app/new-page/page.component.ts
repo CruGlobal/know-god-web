@@ -60,9 +60,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private _pageBookTranslations: any[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
-  private _pageBookTipsManifest: any[]; // TODO - get Tips when ready
   private _pageBookSubPages: Page[];
-  private _pageBookTips: any[]; // TODO - get Tips when ready
   private _selectedLanguage: any;
   private liveShareSubscription: ActionCable.Channel;
 
@@ -223,40 +221,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
     if (showpage) this.showPage(page);
   }
 
-  private loadTip(tip: any): void {
-    // TODO
-    // Load in Tips when ready
-    this.commonService
-      .downloadFile(
-        APIURL.GET_XML_FILES_FOR_MANIFEST +
-          this._pageBookTranslationId +
-          '/' +
-          tip.src
-      )
-      .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
-      .subscribe((data) => {
-        const enc = new TextDecoder('utf-8');
-        const arr = new Uint8Array(data);
-        const result = enc.decode(arr);
-
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(result, 'application/xml');
-        // const _tTraining: any = new KgwTraining(result);
-        const _tTraining: any = result;
-        _tTraining.id = tip.id;
-        _tTraining.parseXml();
-        if (_tTraining && _tTraining.pages && _tTraining.pages.length) {
-          const _tTrainingImages = _tTraining.getImageResources();
-          if (_tTrainingImages && _tTrainingImages.length) {
-            _tTrainingImages.forEach((image) => {
-              this.getImage(image);
-            });
-          }
-        }
-        this._pageBookTips.push(_tTraining);
-      });
-  }
-
   private loadBookManifestXML(): void {
     this.pageService.clear();
     let item: any = {};
@@ -312,16 +276,14 @@ export class PageNewComponent implements OnInit, OnDestroy {
                 attributes['file-file-name'],
                 attributes.file
               );
-              if (!attributes['is-zipped'] === true) {
-                if (
-                  /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                    attributes['file-file-name']
-                  )
-                ) {
-                  this.getImage(attributes['file-file-name']);
-                } else {
-                  this.getAnimation(attributes['file-file-name']);
-                }
+              if (
+                /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
+                  attributes['file-file-name']
+                )
+              ) {
+                this.getImage(attributes['file-file-name']);
+              } else {
+                this.getAnimation(attributes['file-file-name']);
               }
             }
           });
@@ -337,16 +299,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
           } else {
             this.pageService.setDir('ltr');
             this.bookNotAvailableInLanguage = true;
-          }
-
-          if (manifest.hasTips) {
-            // TODO
-            // Add Tips when ready
-            // this._pageBookTipsManifest = [];
-            // this._pageBookTips = [];
-            // this._pageBookMainfest.manifest.tips.forEach((tTip) => {
-            //   this._pageBookTipsManifest.push(tTip);
-            // });
           }
         });
       } catch (e) {
