@@ -50,20 +50,15 @@ export class ContentRepeaterNewComponent implements OnChanges {
   private init(): void {
     if (this.items?.length) {
       this.items.forEach((content) => {
-        if (content['content']) {
-          const hasInputChildren = content['content'].filter(
-            (c) => ContentParser(c) === 'input'
-          );
-          if (hasInputChildren?.length) {
-            this.content.push({ type: 'form', content: content['content'] });
-          } else {
-            content['content'].forEach((c) => {
-              const type = ContentParser(c);
-              this.content.push({ type, content: c as ContentItems });
-            });
-          }
+        const type = ContentParser(content);
+        if (type === 'form') {
+          this.content.push({ type, content: content['content'] });
+        } else if (content['content']) {
+          content['content'].forEach((c) => {
+            const contentType = ContentParser(c);
+            this.content.push({ type: contentType, content: c as ContentItems });
+          });
         } else {
-          const type = ContentParser(content);
           if (type)
             this.content.push({ type, content: content as ContentItems });
         }

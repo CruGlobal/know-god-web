@@ -246,17 +246,16 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
   private setHiddenCardToShow(): void {
     this.cards
       .filter((card) => this._cardsHiddenOnFormAction.includes(card.position))
-      .map((card) => {
+      .forEach((card) => {
         (card as any).isHidden = false;
       });
   }
 
   private setShownCardToHidden(): void {
-    (
-      this.cards.find(
-        (card) => card.position === this._cardShownOnFormAction
-      ) as any
-    ).isHidden = true;
+    const card = this.cards.find(
+      (card) => card.position === this._cardShownOnFormAction
+    );
+    if (card) (card as any).isHidden = true;
   }
 
   private init(): void {
@@ -268,11 +267,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
     this.hero = this._page.hero || null;
     this.cards = this._page.cards || [];
     this.modal = this._page.modals ? this._page.modals[0] : null;
-    this.callToAction = !!(
-      this.page.callToAction?.label?.text || this.page.callToAction?.tip
-    )
-      ? this.page.callToAction
-      : null;
+    this.callToAction = this._page.callToAction?.label?.text ? this._page.callToAction : null;
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))

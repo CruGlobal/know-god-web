@@ -117,8 +117,8 @@ export const ContentParser = (content: any): string => {
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Multiselect
   ) {
-    console.log('CONTENT: Multiselect');
-    return 'multiselect';
+    // console.log('CONTENT: Multiselect');
+    return '';
   } else {
     console.log('CONTENT: Unknown');
     return '';
