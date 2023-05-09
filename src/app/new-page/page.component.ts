@@ -13,7 +13,8 @@ import * as ActionCable from '@rails/actioncable';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
-import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
+import { APIURL } from '../api/url';
+import { environment } from './../../environments/environment';
 import { PageService } from './service/page-service.service';
 import {
   PullParserFactory,
@@ -248,8 +249,13 @@ export class PageNewComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
-      const fileName =
-        APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName;
+      environment.production
+      const fileName = (environment.production) 
+      ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+      : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName
+      // const fileName = 'http://localhost:4200/assets/img/tests/7e92da93d9b1eec01d9f7dfd015a484b97fdd486deb2c18ef20e8116cbd02f7a.xml'
+        
+
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
@@ -653,7 +659,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
     const liveShareStreamId = this.route.snapshot.queryParams.liveShareStream;
     if (liveShareStreamId) {
       this.liveShareSubscription = ActionCable.createConsumer(
-        MOBILE_CONTENT_API_WS_URL
+        environment.mobileContentApiWsUrl
       ).subscriptions.create(
         {
           channel: 'SubscribeChannel',
