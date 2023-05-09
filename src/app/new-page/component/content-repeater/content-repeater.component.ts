@@ -56,7 +56,10 @@ export class ContentRepeaterNewComponent implements OnChanges {
         } else if (content['content']) {
           content['content'].forEach((c) => {
             const contentType = ContentParser(c);
-            this.content.push({ type: contentType, content: c as ContentItems });
+            this.content.push({
+              type: contentType,
+              content: c as ContentItems
+            });
           });
         } else {
           if (type)

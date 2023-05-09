@@ -267,7 +267,9 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
     this.hero = this._page.hero || null;
     this.cards = this._page.cards || [];
     this.modal = this._page.modals ? this._page.modals[0] : null;
-    this.callToAction = this._page.callToAction?.label?.text ? this._page.callToAction : null;
+    this.callToAction = this._page.callToAction?.label?.text
+      ? this._page.callToAction
+      : null;
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))

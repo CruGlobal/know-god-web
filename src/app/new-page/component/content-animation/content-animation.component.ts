@@ -116,7 +116,7 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
         const stopListeners = this.animation.stopListeners.filter(
           (listener) => listener.name === event
         ).length;
-        
+
         if (playListeners) {
           this.anmViewItem.play();
         } else if (stopListeners) {
