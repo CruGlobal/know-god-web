@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -21,7 +21,7 @@ import { PageService } from '../../service/page-service.service';
   selector: 'app-tract-page',
   templateUrl: './tract-page.component.html',
   styleUrls: ['./tract-page.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TractPageComponent implements OnChanges, OnDestroy {
   @Input() page: KgwTractComplexTypePage;

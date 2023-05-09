@@ -8,7 +8,7 @@ import { KgwContentComplexTypeButton } from '../model/xmlns/content/content-ct-b
 import { KgwContentElementItem } from '../model/xmlns/content/content-element';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PageService {
   private _nextPage = new Subject<any>();
@@ -160,7 +160,7 @@ export class PageService {
   }
 
   checkContentElements(
-    pItems: KgwContentElementItem[]
+    pItems: KgwContentElementItem[],
   ): KgwContentElementItem[] {
     if (!pItems || !pItems.length) {
       return [];
@@ -224,7 +224,7 @@ export class PageService {
   }
 
   getFirstSupportedContentElement(
-    pItems: KgwContentElementItem[]
+    pItems: KgwContentElementItem[],
   ): KgwContentElementItem {
     if (!pItems || !pItems.length) {
       return null;

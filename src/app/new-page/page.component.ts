@@ -3,7 +3,7 @@ import {
   HostListener,
   OnDestroy,
   OnInit,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -23,7 +23,7 @@ import {
   TractPage,
   XmlParser,
   XmlParserData,
-  Animation
+  Animation,
 } from '../services/xml-parser-service/xmp-parser.service';
 
 interface LiveShareSubscriptionPayload {
@@ -43,7 +43,7 @@ interface LiveShareSubscriptionPayload {
   selector: 'app-page-new',
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class PageNewComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
@@ -83,11 +83,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public router: Router,
     private viewportScroller: ViewportScroller,
-    private pullParserFactory: PullParserFactory
+    private pullParserFactory: PullParserFactory,
   ) {
     this._pageParams = {
       langid: '',
-      bookid: ''
+      bookid: '',
     };
     this._books = [];
     this.activePageOrder = 0;
@@ -123,7 +123,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
     this.router.navigate([
       lang.attributes.code,
       this._pageParams.bookid,
-      tPageOrder
+      tPageOrder,
     ]);
     return;
   }
@@ -137,7 +137,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       this.router.navigate([
         this._pageParams.langid,
         this._pageParams.bookid,
-        this._pageParams.pageid - 1
+        this._pageParams.pageid - 1,
       ]);
     }
   }
@@ -147,7 +147,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       this.router.navigate([
         this._pageParams.langid,
         this._pageParams.bookid,
-        this._pageParams.pageid + 1
+        this._pageParams.pageid + 1,
       ]);
     }
   }
@@ -249,23 +249,22 @@ export class PageNewComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
-      environment.production
-      const fileName = (environment.production) 
-      ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
-      : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName
+      environment.production;
+      const fileName = environment.production
+        ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+        : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName;
       // const fileName = 'http://localhost:4200/assets/img/tests/7e92da93d9b1eec01d9f7dfd015a484b97fdd486deb2c18ef20e8116cbd02f7a.xml'
-        
 
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
         .withSupportedFeatures([
-          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION
+          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
         ])
         .withParseTips(false);
       const newParser = new XmlParser.ManifestParser(
         this.pullParserFactory,
-        config
+        config,
       );
       const controller = new AbortController();
       const signal = controller.signal;
@@ -280,11 +279,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
             if (type === 'attachment') {
               this.pageService.addAttachment(
                 attributes['file-file-name'],
-                attributes.file
+                attributes.file,
               );
               if (
                 /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                  attributes['file-file-name']
+                  attributes['file-file-name'],
                 )
               ) {
                 this.getImage(attributes['file-file-name']);
@@ -406,7 +405,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
                       this._pageBookTranslations.push(item);
                     });
                   }
-                }
+                },
               );
             }
           }
@@ -425,7 +424,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private loadPageBook(): void {
     this._pageBook =
       this._books.find((book) =>
-        book.attributes.abbreviation === this._pageParams.bookid ? book : false
+        book.attributes.abbreviation === this._pageParams.bookid ? book : false,
       ) || {};
 
     if (!this._pageBook.id) {
@@ -518,7 +517,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
           if (this._pageBookMainfestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
               const index = this._pageBookSubPages.findIndex(
-                (sPage) => sPage.position === this._pageParams.pageid
+                (sPage) => sPage.position === this._pageParams.pageid,
               );
               if (index >= 0) {
                 const tTract = this._pageBookSubPages[index] as TractPage;
@@ -578,7 +577,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._unsubscribeAll),
         takeUntil(this._pageChanged),
-        delay(0)
+        delay(0),
       )
       .subscribe(() => {
         this.onNextPage();
@@ -588,7 +587,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._unsubscribeAll),
         takeUntil(this._pageChanged),
-        delay(0)
+        delay(0),
       )
       .subscribe(() => {
         this.onPreviousPage();
@@ -599,7 +598,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
     this.pageService.emailSignupFormData$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        filter((tData) => tData)
+        filter((tData) => tData),
       )
       .subscribe((data) => {
         if (data.name && data.email && data.destination_id) {
@@ -610,9 +609,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
                 name: data.name,
                 email: data.email,
                 language_id: Number(this._selectedLanguage.id),
-                destination_id: Number(data.destination_id)
-              }
-            }
+                destination_id: Number(data.destination_id),
+              },
+            },
           };
           this.commonService
             .createSubscriber(subscriberData)
@@ -659,11 +658,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
     const liveShareStreamId = this.route.snapshot.queryParams.liveShareStream;
     if (liveShareStreamId) {
       this.liveShareSubscription = ActionCable.createConsumer(
-        environment.mobileContentApiWsUrl
+        environment.mobileContentApiWsUrl,
       ).subscriptions.create(
         {
           channel: 'SubscribeChannel',
-          channelId: liveShareStreamId
+          channelId: liveShareStreamId,
         },
         {
           received: async ({ data }: LiveShareSubscriptionPayload) => {
@@ -676,27 +675,27 @@ export class PageNewComponent implements OnInit, OnDestroy {
                 [
                   data.attributes.locale,
                   data.attributes.tool,
-                  data.attributes.page
+                  data.attributes.page,
                 ],
                 {
                   queryParams: this.route.snapshot.queryParams,
 
                   ...(data.attributes.card !== undefined
                     ? { fragment: `card-${data.attributes.card}` }
-                    : {})
-                }
+                    : {}),
+                },
               )
               .toString();
             if (data.attributes.card) {
               setTimeout(() => {
                 this.viewportScroller.scrollToAnchor(
-                  `card-${data.attributes.card}`
+                  `card-${data.attributes.card}`,
                 );
               }, 100);
             }
             this.router.navigateByUrl(Url.toString());
-          }
-        }
+          },
+        },
       );
     }
   }

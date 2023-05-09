@@ -19,7 +19,7 @@ describe('ContentImageComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentImageNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentImageNewComponent);
     component = fixture.componentInstance;
@@ -31,7 +31,7 @@ describe('ContentImageComponent', () => {
   it('Fetch image from pageService', async () => {
     component.item = image;
     component.ngOnChanges({
-      item: new SimpleChange(null, image, true)
+      item: new SimpleChange(null, image, true),
     });
     expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
     expect(component.imgResource).toBe(filePath);
@@ -40,7 +40,7 @@ describe('ContentImageComponent', () => {
   it('Find image from pageService if not in pageService', () => {
     component.item = imageNoNameNotAdded;
     component.ngOnChanges({
-      item: new SimpleChange(null, imageNoNameNotAdded, true)
+      item: new SimpleChange(null, imageNoNameNotAdded, true),
     });
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
   });

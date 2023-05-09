@@ -10,14 +10,14 @@ describe('ModalComponent', () => {
   let pageService: PageService;
   const modal = mockModal(
     'Modal top title \n Model bottom title',
-    'modal-listener'
+    'modal-listener',
   );
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ModalNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ModalNewComponent);
     component = fixture.componentInstance;
@@ -27,12 +27,12 @@ describe('ModalComponent', () => {
   it('Values are assigned correctly', async () => {
     component.modal = modal;
     component.ngOnChanges({
-      modal: new SimpleChange(null, modal, true)
+      modal: new SimpleChange(null, modal, true),
     });
 
     expect(component.title).toBe(modal.title);
     expect(component.titleText).toBe(
-      'Modal top title <br/> Model bottom title'
+      'Modal top title <br/> Model bottom title',
     );
     expect(component.content).toBe(modal.content);
     expect(component.ready).toBeTrue();

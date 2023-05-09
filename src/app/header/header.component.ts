@@ -8,7 +8,7 @@ import { CommonService } from '../services/common.service';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.css'],
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
@@ -37,7 +37,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   constructor(
     public route: Router,
     public activatedRoute: ActivatedRoute,
-    public commonService: CommonService
+    public commonService: CommonService,
   ) {}
 
   ngOnInit(): void {
@@ -71,12 +71,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._unsubscribeAll),
         takeUntil(this._languageChanged),
-        delay(0)
+        delay(0),
       )
       .subscribe(() => {
         this.availableLangs = this._languagesData.map((lang) => ({
           code: lang.attributes.code,
-          name: lang.attributes.name
+          name: lang.attributes.name,
         }));
       });
 
@@ -160,21 +160,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
           this.fetchBooks();
         } else {
           const attachments = this._booksData.included.filter(
-            (included) => included.type === 'attachment'
+            (included) => included.type === 'attachment',
           );
 
           const _translations = this._booksData.included.filter(
             (included) =>
               included.type === 'translation' &&
               Number(included.relationships.language.data.id) ===
-                this.dispLanguage
+                this.dispLanguage,
           );
 
           this._booksData.data
             .sort(
               (o1, o2) =>
                 (o1.attributes['attr-default-order'] || 0) -
-                (o2.attributes['attr-default-order'] || 0)
+                (o2.attributes['attr-default-order'] || 0),
             )
             .forEach((resource) => {
               if (resource.attributes['attr-hidden']) {
@@ -195,7 +195,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 const metatool =
                   this._booksData.data.find((t) => t.id === metatoolId) ||
                   this._booksData.included.find(
-                    (t) => t.type === 'resource' && t.id === metatoolId
+                    (t) => t.type === 'resource' && t.id === metatoolId,
                   );
 
                 const defaultVariant =
@@ -211,7 +211,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
               }
 
               const _tTranslation = _translations.find(
-                (x) => x.relationships.resource.data.id === resourceId
+                (x) => x.relationships.resource.data.id === resourceId,
               );
 
               if (_tTranslation && _tTranslation.attributes) {
@@ -226,7 +226,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                   resource: _tTranslatedName,
                   id: resourceId,
                   abbreviation: resource.attributes.abbreviation,
-                  tagline: _tTranslatedTagLine
+                  tagline: _tTranslatedTagLine,
                 });
               } else {
                 console.log('MISSING TRANSLATION', resource, _tTranslation);

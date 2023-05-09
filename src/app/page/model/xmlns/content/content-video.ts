@@ -19,7 +19,7 @@ export class KgwContentVideo {
     if (this._xmlNode.getAttribute('version')) {
       item.attributes.version = parseInt(
         this._xmlNode.getAttribute('version'),
-        10
+        10,
       );
     }
     if (this._xmlNode.getAttribute('provider')) {

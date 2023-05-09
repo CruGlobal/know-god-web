@@ -16,7 +16,7 @@ export class KgwTractCard {
     const item: KgwTractComplexTypeCard = {
       attributes: {},
       content: [],
-      events: []
+      events: [],
     };
 
     if (this._xmlNode.getAttribute('background-color')) {
@@ -31,13 +31,13 @@ export class KgwTractCard {
 
     if (this._xmlNode.getAttribute('background-image-align')) {
       item.attributes.backgroundImageAlign = this._xmlNode.getAttribute(
-        'background-image-align'
+        'background-image-align',
       );
     }
 
     if (this._xmlNode.getAttribute('background-image-scale-type')) {
       item.attributes.backgroundImageScaleType = this._xmlNode.getAttribute(
-        'background-image-scale-type'
+        'background-image-scale-type',
       );
     }
 
@@ -72,7 +72,7 @@ export class KgwTractCard {
           const nodeParsed = node.parse();
           if (nodeParsed.type && nodeParsed.type === 'paragraph') {
             item.content.push(
-              node.parse().element as KgwContentComplexTypeParagraph
+              node.parse().element as KgwContentComplexTypeParagraph,
             );
           }
         } else if (cNode.nodeName === 'content:form') {
@@ -80,7 +80,7 @@ export class KgwTractCard {
           const nodeParsed = node.parse();
           if (nodeParsed.type && nodeParsed.type === 'form') {
             item.content.push(
-              node.parse().element as KgwContentComplexTypeForm
+              node.parse().element as KgwContentComplexTypeForm,
             );
           }
         }

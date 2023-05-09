@@ -14,7 +14,7 @@ describe('ContentInputComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentInputNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentInputNewComponent);
     component = fixture.componentInstance;
@@ -24,7 +24,7 @@ describe('ContentInputComponent', () => {
   it('Ensure input values are correctly set', async () => {
     component.item = input;
     component.ngOnChanges({
-      item: new SimpleChange(null, input, true)
+      item: new SimpleChange(null, input, true),
     });
     expect(component.label).not.toBe(null);
     expect(component.labelText).toBe('label');

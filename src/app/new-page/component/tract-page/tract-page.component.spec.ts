@@ -16,7 +16,7 @@ describe('TractPageComponent', () => {
     'callToActionText',
     'cardLabel',
     'modalTitle',
-    1
+    1,
   );
   const Lastpage = mockTractPage(
     true,
@@ -26,7 +26,7 @@ describe('TractPageComponent', () => {
     'callToActionText',
     'cardLabel',
     'modalTitle',
-    1
+    1,
   );
 
   const Modalpage = mockTractPage(
@@ -37,14 +37,14 @@ describe('TractPageComponent', () => {
     'callToActionText',
     null,
     'modalTitle',
-    1
+    1,
   );
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [TractPageNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(TractPageNewComponent);
     component = fixture.componentInstance;
@@ -53,7 +53,7 @@ describe('TractPageComponent', () => {
     component.order = 2;
     component.totalPages = 4;
     component.ngOnChanges({
-      page: new SimpleChange(null, page, true)
+      page: new SimpleChange(null, page, true),
     });
   }));
 
@@ -78,7 +78,7 @@ describe('TractPageComponent', () => {
     component.page = Lastpage;
     component.order = 3;
     component.ngOnChanges({
-      page: new SimpleChange(null, Lastpage, true)
+      page: new SimpleChange(null, Lastpage, true),
     });
 
     component.isForm$.subscribe((value) => {
@@ -142,7 +142,7 @@ describe('TractPageComponent', () => {
       component.page = Lastpage;
       component.order = 3;
       component.ngOnChanges({
-        page: new SimpleChange(null, Lastpage, true)
+        page: new SimpleChange(null, Lastpage, true),
       });
 
       pageService.formAction('test-no-thanks');
@@ -160,7 +160,7 @@ describe('TractPageComponent', () => {
       expect(pageService.formVisible).toHaveBeenCalled();
       expect(pageService.modalHidden).toHaveBeenCalled();
       expect(pageService.changeHeader).toHaveBeenCalledWith(
-        page.cards[2].label.text
+        page.cards[2].label.text,
       );
       expect((component as any)._cardsHiddenOnFormAction).toEqual([0]);
     });
@@ -185,7 +185,7 @@ describe('TractPageComponent', () => {
     it('Modal Listeners', async () => {
       component.page = Modalpage;
       component.ngOnChanges({
-        page: new SimpleChange(null, Modalpage, true)
+        page: new SimpleChange(null, Modalpage, true),
       });
 
       pageService.formAction('modalTitle-0');
@@ -197,7 +197,7 @@ describe('TractPageComponent', () => {
     it('Modal Dismiss Listeners', async () => {
       component.page = Modalpage;
       component.ngOnChanges({
-        page: new SimpleChange(null, Modalpage, true)
+        page: new SimpleChange(null, Modalpage, true),
       });
 
       pageService.formAction('modalTitle-0-dismess');

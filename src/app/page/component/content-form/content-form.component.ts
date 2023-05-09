@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { ContentInputComponent } from '../content-input/content-input.component'
 @Component({
   selector: 'app-content-form',
   templateUrl: './content-form.component.html',
-  styleUrls: ['./content-form.component.css']
+  styleUrls: ['./content-form.component.css'],
 })
 export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() item: KgwContentElementItem;

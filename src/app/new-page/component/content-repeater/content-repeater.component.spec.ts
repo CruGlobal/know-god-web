@@ -10,7 +10,7 @@ describe('ContentInputComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ContentRepeaterNewComponent]
+      declarations: [ContentRepeaterNewComponent],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentRepeaterNewComponent);
     component = fixture.componentInstance;
@@ -20,7 +20,7 @@ describe('ContentInputComponent', () => {
   it('Values are assigned correctly', async () => {
     component.items = content;
     component.ngOnChanges({
-      items: new SimpleChange(null, content, true)
+      items: new SimpleChange(null, content, true),
     });
     expect(component.content.length).toEqual(3);
     expect(component.content[0].type).toBe('text');

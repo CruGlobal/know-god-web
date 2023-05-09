@@ -29,7 +29,7 @@ export class KgwTractPageHero {
           const nodeParsed = node.parse();
           if (nodeParsed.type && nodeParsed.type === 'paragraph') {
             item.content.push(
-              node.parse().element as KgwContentComplexTypeParagraph
+              node.parse().element as KgwContentComplexTypeParagraph,
             );
           }
         } else if (cNode.nodeName === 'content:form') {
@@ -37,7 +37,7 @@ export class KgwTractPageHero {
           const nodeParsed = node.parse();
           if (nodeParsed.type && nodeParsed.type === 'form') {
             item.content.push(
-              node.parse().element as KgwContentComplexTypeForm
+              node.parse().element as KgwContentComplexTypeForm,
             );
           }
         }

@@ -14,7 +14,7 @@ describe('PageComponent', () => {
     TestBed.configureTestingModule({
       declarations: [PageComponent],
       imports: [HttpClientModule, RouterTestingModule],
-      providers: [LoaderService, CommonService, PageService]
+      providers: [LoaderService, CommonService, PageService],
     }).compileComponents();
   }));
 

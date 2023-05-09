@@ -10,7 +10,7 @@ export class KgwContentSpacer {
   parse(): KgwContentComplexTypeSpacer {
     const item: KgwContentComplexTypeSpacer = {
       type: 'spacer',
-      attributes: {}
+      attributes: {},
     };
 
     if (this._xmlNode.getAttribute('mode')) {
@@ -20,7 +20,7 @@ export class KgwContentSpacer {
     if (this._xmlNode.getAttribute('height')) {
       item.attributes.height = parseInt(
         this._xmlNode.getAttribute('height'),
-        10
+        10,
       );
     }
 

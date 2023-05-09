@@ -49,17 +49,17 @@ export class KgwTract {
     }
     if (tNode.getAttribute('background-image-align')) {
       this.page.attributes.backgroundImageAlign = tNode.getAttribute(
-        'background-image-align'
+        'background-image-align',
       );
     }
     if (tNode.getAttribute('background-image-scale-type')) {
       this.page.attributes.backgroundImageScaleType = tNode.getAttribute(
-        'background-image-scale-type'
+        'background-image-scale-type',
       );
     }
     if (tNode.getAttribute('text-scale')) {
       this.page.attributes.textScale = parseFloat(
-        tNode.getAttribute('text-scale')
+        tNode.getAttribute('text-scale'),
       );
     }
     if (tNode.getAttribute('card-text-color')) {
@@ -68,7 +68,7 @@ export class KgwTract {
     }
     if (tNode.getAttribute('card-background-color')) {
       this.page.attributes.cardBackgroundColor = tNode.getAttribute(
-        'card-background-color'
+        'card-background-color',
       );
     }
     if (tNode.getAttribute('listeners')) {
@@ -169,7 +169,7 @@ export class KgwTract {
       allElements.forEach((element) => {
         const tImageResources = this.getResourcesOfContentElement(
           'image',
-          element
+          element,
         );
         if (tImageResources && tImageResources.length) {
           tImageResources.forEach((tResource) => {
@@ -178,7 +178,7 @@ export class KgwTract {
         }
         const tAnimationResources = this.getResourcesOfContentElement(
           'animation',
-          element
+          element,
         );
         if (tAnimationResources && tAnimationResources.length) {
           tAnimationResources.forEach((tResource) => {
@@ -193,7 +193,7 @@ export class KgwTract {
 
   private getResourcesOfContentElement(
     type: string,
-    element: KgwContentElementItem
+    element: KgwContentElementItem,
   ): string[] {
     if (type !== 'image' && type !== 'animation') {
       return [];
@@ -228,7 +228,7 @@ export class KgwTract {
           tParagraph.children.forEach((paragraphChild) => {
             const tParagraphChildResources = this.getResourcesOfContentElement(
               type,
-              paragraphChild
+              paragraphChild,
             );
             if (tParagraphChildResources && tParagraphChildResources.length) {
               tParagraphChildResources.forEach((t) => {
@@ -244,7 +244,7 @@ export class KgwTract {
           tForm.children.forEach((formChild) => {
             const tFormChildResources = this.getResourcesOfContentElement(
               type,
-              formChild
+              formChild,
             );
             if (tFormChildResources && tFormChildResources.length) {
               tFormChildResources.forEach((t) => {
@@ -260,7 +260,7 @@ export class KgwTract {
           tFallback.children.forEach((fallbackChild) => {
             const tFallbackChildResources = this.getResourcesOfContentElement(
               type,
-              fallbackChild
+              fallbackChild,
             );
             if (tFallbackChildResources && tFallbackChildResources.length) {
               tFallbackChildResources.forEach((t) => {
@@ -278,7 +278,7 @@ export class KgwTract {
               tab.children.forEach((tabChild) => {
                 const tTabChildResources = this.getResourcesOfContentElement(
                   type,
-                  tabChild
+                  tabChild,
                 );
                 if (tTabChildResources && tTabChildResources.length) {
                   tTabChildResources.forEach((t) => {
@@ -297,7 +297,7 @@ export class KgwTract {
           tAccordion.children.forEach((accordionChild) => {
             const tAccordionChildResources = this.getResourcesOfContentElement(
               type,
-              accordionChild
+              accordionChild,
             );
             if (tAccordionChildResources && tAccordionChildResources.length) {
               tAccordionChildResources.forEach((t) => {

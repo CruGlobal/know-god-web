@@ -21,7 +21,7 @@ export class KgwManifestCategory {
     const item: KgwManifestComplexTypeCategory = {
       id: '',
       banner: '',
-      label: {}
+      label: {},
     };
 
     if (this._xmlNode.getAttribute('id')) {

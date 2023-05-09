@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
 import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
@@ -12,7 +12,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-paragraph',
   templateUrl: './content-paragraph.component.html',
-  styleUrls: ['./content-paragraph.component.css']
+  styleUrls: ['./content-paragraph.component.css'],
 })
 export class ContentParagraphComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
@@ -48,14 +48,14 @@ export class ContentParagraphComponent implements OnChanges {
     const isFallback = this.paragraph.attributes.fallback;
     if (isFallback) {
       const tSupportedItem = this.pageService.getFirstSupportedContentElement(
-        this.paragraph.children
+        this.paragraph.children,
       );
       if (tSupportedItem) {
         this.items.push(tSupportedItem);
       }
     } else {
       this.items = this.pageService.checkContentElements(
-        this.paragraph.children
+        this.paragraph.children,
       );
     }
 

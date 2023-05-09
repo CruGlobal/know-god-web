@@ -4,7 +4,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-animation',
   templateUrl: './content-animation.component.html',
-  styleUrls: ['./content-animation.component.css']
+  styleUrls: ['./content-animation.component.css'],
 })
 export class ContentAnimationComponent implements OnChanges, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -73,13 +73,13 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
     this.anmResource = this.pageService.getAnimationUrl(
       this.animation.attributes.resource
         ? this.animation.attributes.resource.trim()
-        : ''
+        : '',
     );
     if (this.anmResource) {
       this.anmOptions = {
         path: this.anmResource,
         loop: !!this.animation.attributes.loop,
-        autoplay: !!this.animation.attributes.autoplay
+        autoplay: !!this.animation.attributes.autoplay,
       };
     }
 

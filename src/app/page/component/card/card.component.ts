@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
@@ -16,7 +16,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
 })
 export class CardComponent implements OnChanges {
   @Input() card: KgwTractComplexTypeCard;
@@ -81,7 +81,7 @@ export class CardComponent implements OnChanges {
           ) {
             const tItemToAdd: KgwContentElementItem = {
               type: 'paragraph',
-              element: tParagraph
+              element: tParagraph,
             };
             this.content.push(tItemToAdd);
           }
@@ -90,7 +90,7 @@ export class CardComponent implements OnChanges {
             contentChild as KgwContentComplexTypeForm;
           const tItemToAdd: KgwContentElementItem = {
             type: 'form',
-            element: tForm
+            element: tForm,
           };
           this.content.push(tItemToAdd);
         }

@@ -31,7 +31,7 @@ export class KgwContentText {
     if (this._xmlNode.getAttribute('start-image-size')) {
       item.attributes.startImageSize = parseInt(
         this._xmlNode.getAttribute('start-image-size'),
-        10
+        10,
       );
     }
     if (this._xmlNode.getAttribute('end-image')) {
@@ -40,7 +40,7 @@ export class KgwContentText {
     if (this._xmlNode.getAttribute('end-image-size')) {
       item.attributes.startImageSize = parseInt(
         this._xmlNode.getAttribute('end-image-size'),
-        10
+        10,
       );
     }
     if (this._xmlNode.getAttribute('restrictTo')) {
@@ -52,7 +52,7 @@ export class KgwContentText {
     if (this._xmlNode.getAttribute('version')) {
       item.attributes.version = parseInt(
         this._xmlNode.getAttribute('version'),
-        10
+        10,
       );
     }
 

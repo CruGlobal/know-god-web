@@ -4,19 +4,19 @@ import {
   OnChanges,
   QueryList,
   SimpleChanges,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { ContentInputNewComponent } from '../content-input/content-input.component';
 import {
   ContentItems,
   Content,
   ContentParser,
-  ContentItemsType
+  ContentItemsType,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-repeater',
   templateUrl: './content-repeater.component.html',
-  styleUrls: ['./content-repeater.component.css']
+  styleUrls: ['./content-repeater.component.css'],
 })
 export class ContentRepeaterNewComponent implements OnChanges {
   @Input() items: Content[];
@@ -58,7 +58,7 @@ export class ContentRepeaterNewComponent implements OnChanges {
             const contentType = ContentParser(c);
             this.content.push({
               type: contentType,
-              content: c as ContentItems
+              content: c as ContentItems,
             });
           });
         } else {

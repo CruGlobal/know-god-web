@@ -6,7 +6,7 @@ describe('AnalyticsService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [AnalyticsService],
-      imports: [RouterTestingModule]
+      imports: [RouterTestingModule],
     });
   });
 
@@ -14,6 +14,6 @@ describe('AnalyticsService', () => {
     [AnalyticsService],
     (service: AnalyticsService) => {
       expect(service).toBeTruthy();
-    }
+    },
   ));
 });

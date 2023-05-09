@@ -16,7 +16,7 @@ describe('ContentVideoComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentVideoNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentVideoNewComponent);
     component = fixture.componentInstance;
@@ -27,12 +27,12 @@ describe('ContentVideoComponent', () => {
   it('Values are assigned correctly', async () => {
     component.item = video;
     component.ngOnChanges({
-      item: new SimpleChange(null, video, true)
+      item: new SimpleChange(null, video, true),
     });
     expect(component.provider).toBe('YOUTUBE');
     setTimeout(() => {
       expect(ɵunwrapSafeValue(component.videoUrl)).toBe(
-        `https://www.youtube.com/embed/${videoId}`
+        `https://www.youtube.com/embed/${videoId}`,
       );
       expect(component.videoId).toBe(videoId);
     }, 0);

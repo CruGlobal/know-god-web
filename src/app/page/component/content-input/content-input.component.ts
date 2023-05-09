@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeInput } from '../../model/xmlns/content/content-ct-input';
@@ -14,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-input',
   templateUrl: './content-input.component.html',
-  styleUrls: ['./content-input.component.css']
+  styleUrls: ['./content-input.component.css'],
 })
 export class ContentInputComponent implements OnChanges {
   @Input() item: KgwContentElementItem;

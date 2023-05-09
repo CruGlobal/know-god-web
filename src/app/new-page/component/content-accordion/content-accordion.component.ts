@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
@@ -12,7 +12,7 @@ import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.ser
 @Component({
   selector: 'app-content-new-accordion',
   templateUrl: './content-accordion.component.html',
-  styleUrls: ['./content-accordion.component.css']
+  styleUrls: ['./content-accordion.component.css'],
 })
 export class ContentAccordionNewComponent implements OnChanges {
   @Input() item: ContentItems;

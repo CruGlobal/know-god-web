@@ -11,7 +11,7 @@ export class KgwContentForm {
   parse(): KgwContentComplexTypeForm {
     const item: KgwContentComplexTypeForm = {
       contentType: 'form',
-      children: []
+      children: [],
     };
 
     if (this._xmlNode.childNodes && this._xmlNode.childNodes.length) {

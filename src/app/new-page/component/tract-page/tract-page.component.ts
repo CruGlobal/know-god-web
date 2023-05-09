@@ -5,7 +5,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,14 +17,14 @@ import {
   Hero,
   Header,
   CallToAction,
-  EventId
+  EventId,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-tract-new-page',
   templateUrl: './tract-page.component.html',
   styleUrls: ['./tract-page.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class TractPageNewComponent implements OnChanges, OnDestroy {
   @Input() page: TractPage;
@@ -151,7 +151,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
         const cardListener = this.cards.find((card) =>
           card.listeners
             ? card.listeners.find((listener) => listener.name === functionName)
-            : null
+            : null,
         );
         if (cardListener) {
           this._cardShownOnFormAction = cardListener.position;
@@ -161,9 +161,9 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
         const cardDismissListener = this.cards.find((card) =>
           card.dismissListeners
             ? card.dismissListeners.find(
-                (dismissListener) => dismissListener.name === functionName
+                (dismissListener) => dismissListener.name === functionName,
               )
-            : null
+            : null,
         );
         if (cardDismissListener) isHideCard = true;
       }
@@ -171,10 +171,10 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
         const listeners = this.modal.listeners as EventId[];
         const dismissListeners = this.modal.dismissListeners as EventId[];
         isShowModal = !!listeners.filter(
-          (listener) => listener.name === functionName
+          (listener) => listener.name === functionName,
         )?.length;
         isHideModal = !!dismissListeners.filter(
-          (dismissListener) => dismissListener.name === functionName
+          (dismissListener) => dismissListener.name === functionName,
         )?.length;
         listeners.forEach((l) => {});
         dismissListeners.forEach((l) => {});
@@ -207,7 +207,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
       if (this._cardsHiddenOnFormAction.length) {
         this.cards
           .filter((card) =>
-            this._cardsHiddenOnFormAction.includes(card.position)
+            this._cardsHiddenOnFormAction.includes(card.position),
           )
           .map((card) => {
             (card as any).isHidden = true;
@@ -253,7 +253,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
 
   private setShownCardToHidden(): void {
     const card = this.cards.find(
-      (card) => card.position === this._cardShownOnFormAction
+      (card) => card.position === this._cardShownOnFormAction,
     );
     if (card) (card as any).isHidden = true;
   }

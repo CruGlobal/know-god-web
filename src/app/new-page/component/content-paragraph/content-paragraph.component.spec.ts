@@ -10,7 +10,7 @@ describe('ContentInputComponent', () => {
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ContentParagraphNewComponent]
+      declarations: [ContentParagraphNewComponent],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentParagraphNewComponent);
     component = fixture.componentInstance;
@@ -20,7 +20,7 @@ describe('ContentInputComponent', () => {
   it('Values are assigned correctly', async () => {
     component.item = paragraph;
     component.ngOnChanges({
-      item: new SimpleChange(null, paragraph, true)
+      item: new SimpleChange(null, paragraph, true),
     });
 
     expect(component.items).toEqual(paragraph.content);

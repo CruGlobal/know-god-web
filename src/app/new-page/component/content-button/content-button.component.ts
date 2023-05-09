@@ -3,19 +3,19 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import {
   Button,
-  EventId
+  EventId,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-button',
   templateUrl: './content-button.component.html',
-  styleUrls: ['./content-button.component.css']
+  styleUrls: ['./content-button.component.css'],
 })
 export class ContentButtonNewComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename

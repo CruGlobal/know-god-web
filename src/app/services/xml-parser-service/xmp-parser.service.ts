@@ -1,6 +1,6 @@
 import {
   org,
-  ManifestParser as manifestParser
+  ManifestParser as manifestParser,
 } from '@cruglobal/godtools-shared';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
@@ -150,7 +150,7 @@ export const parseTextRemoveBrTags = (text: string): string => {
 };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
   .JsXmlPullParserFactory {

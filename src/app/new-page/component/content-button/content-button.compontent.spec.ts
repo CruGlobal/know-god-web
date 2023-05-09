@@ -16,7 +16,7 @@ describe('ContentButtonComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ContentButtonNewComponent],
-      providers: [PageService]
+      providers: [PageService],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentButtonNewComponent);
     component = fixture.componentInstance;
@@ -26,7 +26,7 @@ describe('ContentButtonComponent', () => {
   it('should create and load in CTA', () => {
     component.item = mockEventButton;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockEventButton, true)
+      item: new SimpleChange(null, mockEventButton, true),
     });
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
@@ -37,7 +37,7 @@ describe('ContentButtonComponent', () => {
   it('URL Button, Added http set URL', () => {
     component.item = mockUrlButton;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockUrlButton, true)
+      item: new SimpleChange(null, mockUrlButton, true),
     });
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
@@ -48,7 +48,7 @@ describe('ContentButtonComponent', () => {
   it('Test events', () => {
     component.item = mockEventButton;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockEventButton, true)
+      item: new SimpleChange(null, mockEventButton, true),
     });
 
     const pageService = TestBed.get(PageService);

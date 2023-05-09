@@ -10,7 +10,7 @@ describe('AppComponent', () => {
     TestBed.configureTestingModule({
       declarations: [AppComponent],
       providers: [LoaderService, AnalyticsService],
-      imports: [HttpClientModule, RouterTestingModule]
+      imports: [HttpClientModule, RouterTestingModule],
     }).compileComponents();
   }));
   it('should create the app', waitForAsync(() => {

@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.css'],
 })
 export class ModalComponent implements OnChanges {
   @Input() modal: KgwTractComplexTypeModal;
@@ -74,7 +74,7 @@ export class ModalComponent implements OnChanges {
           ) {
             const tItemToAdd: KgwContentElementItem = {
               type: 'paragraph',
-              element: tParagraph
+              element: tParagraph,
             };
             this.content.push(tItemToAdd);
           }

@@ -4,7 +4,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,12 +13,12 @@ import {
   Text,
   Hero,
   parseTextAddBrTags,
-  Content
+  Content,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-page-new-hero',
   templateUrl: './page-hero.component.html',
-  styleUrls: ['./page-hero.component.css']
+  styleUrls: ['./page-hero.component.css'],
 })
 export class PageHeroNewComponent implements OnDestroy, OnChanges {
   @Input() hero: Hero;

@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
@@ -11,7 +11,7 @@ import { Image } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-image',
   templateUrl: './content-image.component.html',
-  styleUrls: ['./content-image.component.css']
+  styleUrls: ['./content-image.component.css'],
 })
 export class ContentImageNewComponent implements OnChanges {
   @Input() item: Image;
@@ -47,7 +47,7 @@ export class ContentImageNewComponent implements OnChanges {
 
   private init(): void {
     this.imgResource = this.pageService.getImageUrl(
-      this.image.resource.name || ''
+      this.image.resource.name || '',
     );
     // Try to find image in all attachments
     if (

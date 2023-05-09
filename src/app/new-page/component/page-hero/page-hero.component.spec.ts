@@ -14,7 +14,7 @@ describe('pageHeaderComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [PageHeroNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(PageHeroNewComponent);
     component = fixture.componentInstance;
@@ -24,7 +24,7 @@ describe('pageHeaderComponent', () => {
   it('Values are assigned correctly', async () => {
     component.hero = hero;
     component.ngOnChanges({
-      hero: new SimpleChange(null, hero, true)
+      hero: new SimpleChange(null, hero, true),
     });
 
     expect(component.heading).toBe(hero.heading);
@@ -36,7 +36,7 @@ describe('pageHeaderComponent', () => {
   it('Header should chnage if pageService.changeHeader is run', async () => {
     component.hero = hero;
     component.ngOnChanges({
-      hero: new SimpleChange(null, hero, true)
+      hero: new SimpleChange(null, hero, true),
     });
 
     pageService.changeHeader('New header about jesus saving lifes.');

@@ -9,7 +9,7 @@ describe('SharingModalComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [SharingModalComponent],
-      imports: [ToastrModule.forRoot()]
+      imports: [ToastrModule.forRoot()],
     }).compileComponents();
   }));
 

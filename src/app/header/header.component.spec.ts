@@ -12,7 +12,7 @@ describe('HeaderComponent', () => {
     TestBed.configureTestingModule({
       declarations: [HeaderComponent],
       providers: [CommonService],
-      imports: [HttpClientModule, RouterTestingModule]
+      imports: [HttpClientModule, RouterTestingModule],
     }).compileComponents();
   }));
 

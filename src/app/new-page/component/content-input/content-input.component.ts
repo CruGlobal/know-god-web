@@ -3,20 +3,20 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import {
   Input as xmlInput,
   Text,
-  parseTextRemoveBrTags
+  parseTextRemoveBrTags,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-input',
   templateUrl: './content-input.component.html',
-  styleUrls: ['./content-input.component.css']
+  styleUrls: ['./content-input.component.css'],
 })
 export class ContentInputNewComponent implements OnChanges {
   @Input() item: xmlInput;

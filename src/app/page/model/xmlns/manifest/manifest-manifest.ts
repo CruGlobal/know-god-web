@@ -49,12 +49,12 @@ export class KgwManifest {
     }
     if (tNode.getAttribute('background-image-align')) {
       this.manifest.attributes['backgroundImageAlign'] = tNode.getAttribute(
-        'background-image-align'
+        'background-image-align',
       );
     }
     if (tNode.getAttribute('background-image-scale-type')) {
       this.manifest.attributes['backgroundImageScaleType'] = tNode.getAttribute(
-        'background-image-scale-type'
+        'background-image-scale-type',
       );
     }
     if (tNode.getAttribute('navbar-color')) {
@@ -63,17 +63,17 @@ export class KgwManifest {
     }
     if (tNode.getAttribute('navbar-control-color')) {
       this.manifest.attributes['navbarControlColor'] = tNode.getAttribute(
-        'navbar-control-color'
+        'navbar-control-color',
       );
     }
     if (tNode.getAttribute('category-label-color')) {
       this.manifest.attributes['categoryLabelColor'] = tNode.getAttribute(
-        'category-label-color'
+        'category-label-color',
       );
     }
     if (tNode.getAttribute('text-scale')) {
       this.manifest.attributes['textScale'] = parseFloat(
-        tNode.getAttribute('text-scale')
+        tNode.getAttribute('text-scale'),
       );
     }
     if (tNode.getAttribute('dismiss-listeners')) {
@@ -86,7 +86,7 @@ export class KgwManifest {
     }
     if (tNode.getAttribute('card-background-color')) {
       this.manifest.attributes['cardBackgroundColor'] = tNode.getAttribute(
-        'card-background-color'
+        'card-background-color',
       );
     }
 
@@ -100,7 +100,7 @@ export class KgwManifest {
         if (cNode.childNodes && cNode.childNodes.length > 0) {
           cNode.childNodes.forEach((node) => {
             const _category: KgwManifestCategory = new KgwManifestCategory(
-              node
+              node,
             );
             this.manifest.categories.push(_category.parse());
           });
@@ -118,7 +118,7 @@ export class KgwManifest {
         if (cNode.childNodes && cNode.childNodes.length > 0) {
           cNode.childNodes.forEach((node) => {
             const _resource: KgwManifestResource = new KgwManifestResource(
-              node
+              node,
             );
             this.manifest.resources.push(_resource.parse());
           });

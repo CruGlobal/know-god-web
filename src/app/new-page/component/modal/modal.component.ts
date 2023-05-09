@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
@@ -11,13 +11,13 @@ import {
   Modal,
   Text,
   parseTextAddBrTags,
-  Content
+  Content,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-page-new-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.css'],
 })
 export class ModalNewComponent implements OnChanges {
   @Input() modal: Modal;

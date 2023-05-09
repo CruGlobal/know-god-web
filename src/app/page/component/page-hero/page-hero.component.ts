@@ -4,7 +4,7 @@ import {
   OnChanges,
   OnDestroy,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,7 +18,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-hero',
   templateUrl: './page-hero.component.html',
-  styleUrls: ['./page-hero.component.css']
+  styleUrls: ['./page-hero.component.css'],
 })
 export class PageHeroComponent implements OnDestroy, OnChanges {
   @Input() hero: KgwTractComplexTypePageHero;
@@ -86,7 +86,7 @@ export class PageHeroComponent implements OnDestroy, OnChanges {
           ) {
             const tItemToAdd: KgwContentElementItem = {
               type: 'paragraph',
-              element: tParagraph
+              element: tParagraph,
             };
             this.content.push(tItemToAdd);
           }
@@ -95,7 +95,7 @@ export class PageHeroComponent implements OnDestroy, OnChanges {
             contentChild as KgwContentComplexTypeForm;
           const tItemToAdd: KgwContentElementItem = {
             type: 'form',
-            element: tForm
+            element: tForm,
           };
           this.content.push(tItemToAdd);
         }

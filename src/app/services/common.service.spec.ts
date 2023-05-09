@@ -6,7 +6,7 @@ describe('CommonService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [CommonService],
-      imports: [HttpClientModule]
+      imports: [HttpClientModule],
     });
   });
 

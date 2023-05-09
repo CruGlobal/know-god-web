@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeFallback } from '../../model/xmlns/content/content-ct-fallback';
@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-fallback',
   templateUrl: './content-fallback.component.html',
-  styleUrls: ['./content-fallback.component.css']
+  styleUrls: ['./content-fallback.component.css'],
 })
 export class ContentFallbackComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -52,7 +52,7 @@ export class ContentFallbackComponent implements OnChanges {
   private init(): void {
     if (this.fallback.children && this.fallback.children.length > 0) {
       this.content = this.pageService.getFirstSupportedContentElement(
-        this.fallback.children
+        this.fallback.children,
       );
     }
     this.ready = true;

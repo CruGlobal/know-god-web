@@ -13,7 +13,7 @@ describe('ContentFormComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentFormNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentFormNewComponent);
     component = fixture.componentInstance;
@@ -24,7 +24,7 @@ describe('ContentFormComponent', () => {
   it('Values are assigned correctly', async () => {
     component.item = content;
     component.ngOnChanges({
-      item: new SimpleChange(null, content, true)
+      item: new SimpleChange(null, content, true),
     });
     expect(component.items).toEqual(content);
   });

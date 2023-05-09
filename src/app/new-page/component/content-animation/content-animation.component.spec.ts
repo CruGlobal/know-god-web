@@ -15,7 +15,7 @@ describe('ContentAnimationComponent', () => {
   const animationNoNameNotAdded = mockAnimation(
     fileNameNotAdded,
     filePathNotAdded,
-    'event'
+    'event',
   );
   let pageService: PageService;
 
@@ -23,7 +23,7 @@ describe('ContentAnimationComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentAnimationNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentAnimationNewComponent);
     component = fixture.componentInstance;
@@ -35,14 +35,14 @@ describe('ContentAnimationComponent', () => {
   it('Fetch animation from pageService', async () => {
     component.item = animation;
     component.ngOnChanges({
-      item: new SimpleChange(null, animation, true)
+      item: new SimpleChange(null, animation, true),
     });
     expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
     expect(component.anmResource).toEqual(filePath);
     expect(component.lottieOptions).toEqual({
       path: filePath,
       loop: true,
-      autoplay: true
+      autoplay: true,
     });
     expect(component.hasEvents).toBeTrue();
   });
@@ -50,7 +50,7 @@ describe('ContentAnimationComponent', () => {
   it('Find animation from pageService if not in pageService', () => {
     component.item = animationNoNameNotAdded;
     component.ngOnChanges({
-      item: new SimpleChange(null, animationNoNameNotAdded, true)
+      item: new SimpleChange(null, animationNoNameNotAdded, true),
     });
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
   });

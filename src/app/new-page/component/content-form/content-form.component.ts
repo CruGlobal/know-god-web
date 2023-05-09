@@ -6,7 +6,7 @@ import {
   OnDestroy,
   OnInit,
   SimpleChanges,
-  ViewChildren
+  ViewChildren,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { Content } from 'src/app/services/xml-parser-service/xmp-parser.service'
 @Component({
   selector: 'app-content-new-form',
   templateUrl: './content-form.component.html',
-  styleUrls: ['./content-form.component.css']
+  styleUrls: ['./content-form.component.css'],
 })
 export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
   @Input() item: Content[];

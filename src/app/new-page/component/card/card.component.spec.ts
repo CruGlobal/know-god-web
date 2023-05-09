@@ -14,7 +14,7 @@ describe('ContentCardComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [CardNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(CardNewComponent);
     component = fixture.componentInstance;
@@ -25,7 +25,7 @@ describe('ContentCardComponent', () => {
   it('Values are assigned correctly', async () => {
     component.card = card;
     component.ngOnChanges({
-      card: new SimpleChange(null, card, true)
+      card: new SimpleChange(null, card, true),
     });
 
     expect(component.label).toEqual(card.label);

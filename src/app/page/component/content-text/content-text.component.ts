@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-text',
   templateUrl: './content-text.component.html',
-  styleUrls: ['./content-text.component.css']
+  styleUrls: ['./content-text.component.css'],
 })
 export class ContentTextComponent implements OnChanges {
   @Input() item: KgwContentElementItem;

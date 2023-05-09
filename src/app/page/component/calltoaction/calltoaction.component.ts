@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-calltoaction',
   templateUrl: './calltoaction.component.html',
-  styleUrls: ['./calltoaction.component.css']
+  styleUrls: ['./calltoaction.component.css'],
 })
 export class CalltoactionComponent implements OnChanges {
   @Input() item: KgwTractComplexTypeCallToAction;

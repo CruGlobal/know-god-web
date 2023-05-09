@@ -9,7 +9,7 @@ export class KgwContentTextchild {
 
   parse(): KgwContentComplexTypeTextchild {
     const item: KgwContentComplexTypeTextchild = {
-      text: { attributes: {}, value: '' }
+      text: { attributes: {}, value: '' },
     };
 
     if (

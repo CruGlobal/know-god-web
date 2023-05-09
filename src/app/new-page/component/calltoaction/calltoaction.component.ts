@@ -3,19 +3,19 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import {
   CallToAction,
-  Text
+  Text,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-page-new-calltoaction',
   templateUrl: './calltoaction.component.html',
-  styleUrls: ['./calltoaction.component.css']
+  styleUrls: ['./calltoaction.component.css'],
 })
 export class CalltoactionNewComponent implements OnChanges {
   @Input() item: CallToAction;

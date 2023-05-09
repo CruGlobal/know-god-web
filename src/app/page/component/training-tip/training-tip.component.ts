@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-training-tip',
   templateUrl: './training-tip.component.html',
-  styleUrls: ['./training-tip.component.css']
+  styleUrls: ['./training-tip.component.css'],
 })
 export class TrainingTipComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
@@ -27,7 +27,7 @@ export class TrainingTipComponent implements OnChanges {
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
     this.visible$ = this.pageService.visibleTipId$.pipe(
-      map((id) => id && this.tip && this.tip.id && this.tip.id === id)
+      map((id) => id && this.tip && this.tip.id && this.tip.id === id),
     );
   }
   ngOnChanges(changes: SimpleChanges) {

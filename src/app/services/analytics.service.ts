@@ -20,7 +20,7 @@ declare global {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AnalyticsService {
   constructor(private router: Router) {
@@ -36,7 +36,7 @@ export class AnalyticsService {
 
         // Google Analytics
         window.dataLayer.push({
-          event: 'virtual-page-view'
+          event: 'virtual-page-view',
         });
       }
     });
@@ -47,11 +47,11 @@ export class AnalyticsService {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
         language: language || 'en',
-        embedded: window.isEmbedded === true ? 'embed' : ''
+        embedded: window.isEmbedded === true ? 'embed' : '',
       },
       category: {
-        primaryCategory: appName
-      }
+        primaryCategory: appName,
+      },
     };
   }
 }

@@ -8,14 +8,14 @@ describe('CallToActionComponent', () => {
   let component: CalltoactionNewComponent;
   let fixture: ComponentFixture<CalltoactionNewComponent>;
   const mockCallToActionWithText = mockCallToAction(
-    'The following explains how you can receive Christ ...'
+    'The following explains how you can receive Christ ...',
   );
   const mockCallToActionWithoutText = mockCallToAction('');
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [CalltoactionNewComponent],
-      providers: [PageService]
+      providers: [PageService],
     }).compileComponents();
     fixture = TestBed.createComponent(CalltoactionNewComponent);
     component = fixture.componentInstance;
@@ -25,18 +25,18 @@ describe('CallToActionComponent', () => {
   it('should create and load in CTA', () => {
     component.item = mockCallToActionWithText;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockCallToActionWithText, true)
+      item: new SimpleChange(null, mockCallToActionWithText, true),
     });
     expect(component).toBeTruthy();
     expect(component.actionText).toBe(
-      'The following explains how you can receive Christ ...'
+      'The following explains how you can receive Christ ...',
     );
   });
 
   it('should create but not load in CTA', () => {
     component.item = mockCallToActionWithoutText;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockCallToActionWithoutText, true)
+      item: new SimpleChange(null, mockCallToActionWithoutText, true),
     });
     expect(component).toBeTruthy();
     expect(component.actionText).toBeFalsy();

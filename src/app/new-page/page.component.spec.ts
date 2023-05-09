@@ -24,7 +24,7 @@ describe('PageComponent', () => {
     'callToActionText',
     'cardLabel',
     'modalTitle',
-    1
+    1,
   );
   const tractPageOne = mockTractPage(
     false,
@@ -34,7 +34,7 @@ describe('PageComponent', () => {
     'callToActionText',
     'cardLabel',
     'modalTitle',
-    0
+    0,
   );
 
   beforeEach(waitForAsync(() => {
@@ -45,8 +45,8 @@ describe('PageComponent', () => {
       providers: [
         CommonService,
         LoaderService,
-        { provide: PageService, useValue: pageService }
-      ]
+        { provide: PageService, useValue: pageService },
+      ],
     }).compileComponents();
   }));
 
@@ -60,14 +60,14 @@ describe('PageComponent', () => {
     component._pageParams = {
       langid,
       bookid,
-      pageid
+      pageid,
     };
     component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
     component._pageBookIndex = mockPageComponent.pageBookIndex;
     component._pageBookTranslations = mockPageComponent.pageBookTranslations;
     component._allLanguages = [
       mockPageComponent.languageEnglish,
-      mockPageComponent.languageGerman
+      mockPageComponent.languageGerman,
     ];
     component._books = mockPageComponent.books;
   });
@@ -101,7 +101,7 @@ describe('PageComponent', () => {
     component._pageParams = {
       langid,
       bookid,
-      pageid: 5
+      pageid: 5,
     };
     component.onPreviousPage();
     expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 4]);
@@ -115,7 +115,7 @@ describe('PageComponent', () => {
     component._pageParams = {
       langid,
       bookid,
-      pageid: 6
+      pageid: 6,
     };
     component.onNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
@@ -124,7 +124,7 @@ describe('PageComponent', () => {
   it('getImage()', async () => {
     await component.getImage('file-name-2.png');
     expect(pageService.getAllImages()['file-name-2.png']).toEqual(
-      'https://cru.org/assets/file-name-2.png'
+      'https://cru.org/assets/file-name-2.png',
     );
   });
 
@@ -178,13 +178,13 @@ describe('PageComponent', () => {
     spyOn(pageService, 'setDir');
     component.setSelectedLanguage();
     expect(component._selectedLanguage).toEqual(
-      mockPageComponent.languageEnglish
+      mockPageComponent.languageEnglish,
     );
     expect(component.selectedLang).toEqual(
-      mockPageComponent.languageEnglish.attributes.name
+      mockPageComponent.languageEnglish.attributes.name,
     );
     expect(pageService.setDir).toHaveBeenCalledWith(
-      mockPageComponent.languageEnglish.attributes.direction
+      mockPageComponent.languageEnglish.attributes.direction,
     );
   });
 

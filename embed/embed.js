@@ -40,13 +40,13 @@
         //scroll to top of iframe
         if (window.pageYOffset > iframeTop) {
           window.scrollTo({
-            top: iframeTop
+            top: iframeTop,
           });
         }
 
         previousHeight = e.data;
       },
-      false
+      false,
     );
   };
 })();

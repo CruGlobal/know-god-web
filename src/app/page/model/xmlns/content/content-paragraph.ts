@@ -12,7 +12,7 @@ export class KgwContentParagraph {
     const item: KgwContentComplexTypeParagraph = {
       contentType: 'paragraph',
       attributes: {},
-      children: []
+      children: [],
     };
 
     if (this._xmlNode.getAttribute('restrictTo')) {
@@ -25,7 +25,7 @@ export class KgwContentParagraph {
     if (this._xmlNode.getAttribute('version')) {
       item.attributes.version = parseInt(
         this._xmlNode.getAttribute('version'),
-        10
+        10,
       );
     }
 

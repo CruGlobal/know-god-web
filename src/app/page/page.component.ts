@@ -3,7 +3,7 @@ import {
   HostListener,
   OnDestroy,
   OnInit,
-  ViewEncapsulation
+  ViewEncapsulation,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -39,7 +39,7 @@ interface LiveShareSubscriptionPayload {
   selector: 'app-page',
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class PageComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<any>();
@@ -80,11 +80,11 @@ export class PageComponent implements OnInit, OnDestroy {
     private pageService: PageService,
     private route: ActivatedRoute,
     public router: Router,
-    private viewportScroller: ViewportScroller
+    private viewportScroller: ViewportScroller,
   ) {
     this._pageParams = {
       langid: '',
-      bookid: ''
+      bookid: '',
     };
     this._books = [];
     this.activePageOrder = 0;
@@ -121,7 +121,7 @@ export class PageComponent implements OnInit, OnDestroy {
       'old',
       lang.attributes.code,
       this._pageParams.bookid,
-      tPageOrder
+      tPageOrder,
     ]);
     return;
   }
@@ -136,7 +136,7 @@ export class PageComponent implements OnInit, OnDestroy {
         'old',
         this._pageParams.langid,
         this._pageParams.bookid,
-        this._pageParams.pageid - 1
+        this._pageParams.pageid - 1,
       ]);
     }
   }
@@ -147,7 +147,7 @@ export class PageComponent implements OnInit, OnDestroy {
         'old',
         this._pageParams.langid,
         this._pageParams.bookid,
-        this._pageParams.pageid + 1
+        this._pageParams.pageid + 1,
       ]);
     }
   }
@@ -216,14 +216,14 @@ export class PageComponent implements OnInit, OnDestroy {
 
   private loadBookPage(
     page: KgwManifestComplexTypePage,
-    pageorder: number
+    pageorder: number,
   ): void {
     this.commonService
       .downloadFile(
         APIURL.GET_XML_FILES_FOR_MANIFEST +
           this._pageBookTranslationId +
           '/' +
-          page.src
+          page.src,
       )
       .subscribe((data: any) => {
         const enc = new TextDecoder('utf-8');
@@ -272,7 +272,7 @@ export class PageComponent implements OnInit, OnDestroy {
         APIURL.GET_XML_FILES_FOR_MANIFEST +
           this._pageBookTranslationId +
           '/' +
-          tip.src
+          tip.src,
       )
       .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
       .subscribe((data) => {
@@ -325,7 +325,10 @@ export class PageComponent implements OnInit, OnDestroy {
       const translationid = item.id;
       this.commonService
         .downloadFile(
-          APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+          APIURL.GET_XML_FILES_FOR_MANIFEST +
+            translationid +
+            '/' +
+            manifestName,
         )
         .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
         .subscribe((data) => {
@@ -472,7 +475,7 @@ export class PageComponent implements OnInit, OnDestroy {
                       this._pageBookTranslations.push(item);
                     });
                   }
-                }
+                },
               );
             }
           }
@@ -594,7 +597,7 @@ export class PageComponent implements OnInit, OnDestroy {
           if (this._pageBookMainfestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
               const index = this._pageBookSubPages.findIndex(
-                (sPage) => sPage.pageorder === this._pageParams.pageid
+                (sPage) => sPage.pageorder === this._pageParams.pageid,
               );
               if (index >= 0) {
                 const tTract = this._pageBookSubPages[index];
@@ -656,7 +659,7 @@ export class PageComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._unsubscribeAll),
         takeUntil(this._pageChanged),
-        delay(0)
+        delay(0),
       )
       .subscribe(() => {
         this.onNextPage();
@@ -666,7 +669,7 @@ export class PageComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this._unsubscribeAll),
         takeUntil(this._pageChanged),
-        delay(0)
+        delay(0),
       )
       .subscribe(() => {
         this.onPreviousPage();
@@ -677,7 +680,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pageService.emailSignupFormData$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        filter((tData) => tData)
+        filter((tData) => tData),
       )
       .subscribe((data) => {
         if (data.name && data.email && data.destination_id) {
@@ -688,9 +691,9 @@ export class PageComponent implements OnInit, OnDestroy {
                 name: data.name,
                 email: data.email,
                 language_id: Number(this._selectedLanguage.id),
-                destination_id: Number(data.destination_id)
-              }
-            }
+                destination_id: Number(data.destination_id),
+              },
+            },
           };
           this.commonService
             .createSubscriber(subscriberData)
@@ -737,11 +740,11 @@ export class PageComponent implements OnInit, OnDestroy {
     const liveShareStreamId = this.route.snapshot.queryParams.liveShareStream;
     if (liveShareStreamId) {
       this.liveShareSubscription = ActionCable.createConsumer(
-        MOBILE_CONTENT_API_WS_URL
+        MOBILE_CONTENT_API_WS_URL,
       ).subscriptions.create(
         {
           channel: 'SubscribeChannel',
-          channelId: liveShareStreamId
+          channelId: liveShareStreamId,
         },
         {
           received: async ({ data }: LiveShareSubscriptionPayload) => {
@@ -754,27 +757,27 @@ export class PageComponent implements OnInit, OnDestroy {
                 [
                   data.attributes.locale,
                   data.attributes.tool,
-                  data.attributes.page
+                  data.attributes.page,
                 ],
                 {
                   queryParams: this.route.snapshot.queryParams,
 
                   ...(data.attributes.card !== undefined
                     ? { fragment: `card-${data.attributes.card}` }
-                    : {})
-                }
+                    : {}),
+                },
               )
               .toString();
             if (data.attributes.card) {
               setTimeout(() => {
                 this.viewportScroller.scrollToAnchor(
-                  `card-${data.attributes.card}`
+                  `card-${data.attributes.card}`,
                 );
               }, 100);
             }
             this.router.navigateByUrl(Url.toString());
-          }
-        }
+          },
+        },
       );
     }
   }

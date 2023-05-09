@@ -43,7 +43,7 @@ export class KgwContentButton {
     if (this._xmlNode.getAttribute('version')) {
       item.attributes.version = parseInt(
         this._xmlNode.getAttribute('version'),
-        10
+        10,
       );
     }
 

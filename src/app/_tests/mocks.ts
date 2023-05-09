@@ -12,7 +12,7 @@ import {
   Video,
   TractPageCard,
   Modal,
-  Animation
+  Animation,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { org } from '@cruglobal/godtools-shared';
 
@@ -21,12 +21,12 @@ export const paragraph =
 export const text =
   org.cru.godtools.shared.tool.parser.model.Text.createTestText(
     null,
-    'text text'
+    'text text',
   );
 export const image =
   org.cru.godtools.shared.tool.parser.model.Image.createTestImage(
     null,
-    'https://cru.org/image.png'
+    'https://cru.org/image.png',
   );
 export const content = [text, paragraph, text, image];
 
@@ -45,7 +45,7 @@ const standardTypeValues = () => {
     __doNotUseOrImplementIt: null,
     _events: null,
     _getAnalyticsEvents: null,
-    getAnalyticsEvents: null
+    getAnalyticsEvents: null,
   };
 };
 
@@ -62,7 +62,7 @@ const createText = (text: string): Text => {
     endImage: null,
     endImageSize: null,
     textStyles: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -73,14 +73,14 @@ const createEventId = (name: string, namespace?: string): EventId => {
     resolve: () => null,
     equals: () => null,
     hashCode: () => null,
-    toString: () => null
+    toString: () => null,
   };
 };
 
 const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
-    name
+    name,
   };
 };
 
@@ -89,42 +89,42 @@ const createButton = (text: string, url: string, event: string): Button => {
     url: url || null,
     style: {
       name: 'CONTAINED',
-      ordinal: 1
+      ordinal: 1,
     },
     gravity: {
       name: 'CENTER',
-      ordinal: 1
+      ordinal: 1,
     },
     width: '',
     buttonColor: '',
     backgroundColor: '',
     icon: {
       localName: '',
-      name: ''
+      name: '',
     },
     iconGravity: {
       name: 'CENTER',
-      ordinal: 1
+      ordinal: 1,
     },
     iconSize: 1,
     text: createText('Button Text'),
     events: event ? [createEventId(event)] : [],
     isClickable: true,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
 export const mockCallToAction = (text: string): CallToAction => {
   return {
     label: createText(text) || null,
-    tip: () => null
+    tip: () => null,
   };
 };
 
 export const mockButton = (
   text: string,
   url: string,
-  event: string
+  event: string,
 ): Button => {
   return createButton(text, url, event);
 };
@@ -137,7 +137,7 @@ export const mockImage = (name: string, url: string): Image => {
     width: null,
     isClickable: null,
     events: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -146,7 +146,7 @@ export const mockImage = (name: string, url: string): Image => {
 export const mockAnimation = (
   name: string,
   url: string,
-  event: string
+  event: string,
 ): Animation | any => {
   return {
     url,
@@ -161,7 +161,7 @@ export const mockAnimation = (
     _events: null,
     _playListeners: null,
     _stopListeners: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -169,12 +169,12 @@ export const mockInput = (
   name: string,
   value: string,
   label: string,
-  placeholder: string
+  placeholder: string,
 ): Input => {
   return {
     type: {
       name: 'TEXT',
-      ordinal: 0
+      ordinal: 0,
     },
     name: name,
     value: value,
@@ -182,14 +182,14 @@ export const mockInput = (
     label: createText(label),
     placeholder: createText(placeholder),
     validateValue: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
 export const mockLink = (
   url: string,
   text: string,
-  isClickable: boolean
+  isClickable: boolean,
 ): Link => {
   return {
     url,
@@ -197,9 +197,9 @@ export const mockLink = (
     isClickable,
     events: [
       createEventId('followup-testing-event'),
-      createEventId('send', 'followup')
+      createEventId('send', 'followup'),
     ],
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -210,19 +210,19 @@ export const mockParagraph = (): Paragraph => {
       {
         content: [createText('text')],
         _content: null,
-        ...standardTypeValues()
+        ...standardTypeValues(),
       } as Paragraph,
-      mockInput('inputName', 'inputValue', 'inputLabel', 'inputPlaceholder')
+      mockInput('inputName', 'inputValue', 'inputLabel', 'inputPlaceholder'),
     ],
     _content: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
 export const mockContent = (): Content[] => {
   return [
     mockParagraph(),
-    mockButton('buttonText', 'buttonUrl', 'buttonEvent')
+    mockButton('buttonText', 'buttonUrl', 'buttonEvent'),
   ];
 };
 
@@ -234,13 +234,13 @@ export const mockVideo = (videoId): Video => {
   return {
     provider: {
       name: 'YOUTUBE',
-      ordinal: 0
+      ordinal: 0,
     },
     videoId,
     aspectRatio: null,
     gravity: null,
     width: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -248,7 +248,7 @@ export const mockCard = (
   label: string,
   position: number,
   listeners,
-  isHidden: boolean
+  isHidden: boolean,
 ): TractPageCard => {
   return {
     page: null,
@@ -265,7 +265,7 @@ export const mockCard = (
     listeners: [createEventId(listeners)],
     content: mockContent(),
     _content: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -280,23 +280,23 @@ export const mockModal = (title: string, listeners): Modal => {
     _listeners: null,
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
 export const mockHeader = (
   number: string,
-  text: string
+  text: string,
 ): org.cru.godtools.shared.tool.parser.model.tract.Header => {
   return {
     number: createText(number),
     title: createText(text),
-    tip: null
+    tip: null,
   };
 };
 
 export const mockHero = (
-  heading: string
+  heading: string,
 ): org.cru.godtools.shared.tool.parser.model.tract.Hero => {
   return {
     heading: createText(heading),
@@ -304,7 +304,7 @@ export const mockHero = (
     getAnalyticsEvents: null,
     _content: null,
     _getAnalyticsEvents: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -316,7 +316,7 @@ export const mockTractPage = (
   callToActionText: string,
   cardLabel: string,
   modalTitle: string,
-  position: number
+  position: number,
 ): org.cru.godtools.shared.tool.parser.model.tract.TractPage => {
   return {
     isLastPage,
@@ -328,7 +328,7 @@ export const mockTractPage = (
       ? [
           mockCard(`${cardLabel}-0`, 0, `${cardLabel}-0`, false),
           mockCard(`${cardLabel}-1`, 1, `${cardLabel}-1`, true),
-          mockCard(`${cardLabel}-2`, 2, `${cardLabel}-2`, true)
+          mockCard(`${cardLabel}-2`, 2, `${cardLabel}-2`, true),
         ]
       : [],
     modals: [mockModal(modalTitle, `${modalTitle}-0`)],
@@ -346,7 +346,7 @@ export const mockTractPage = (
     _listeners: null,
     dismissListeners: null,
     listeners: null,
-    ...standardTypeValues()
+    ...standardTypeValues(),
   };
 };
 
@@ -355,41 +355,41 @@ export const mockPageComponent = {
     {
       id: '1',
       attributes: {
-        abbreviation: 'fourlaws'
-      }
+        abbreviation: 'fourlaws',
+      },
     },
     {
       attributes: {
-        abbreviation: 'connectingwithgod'
-      }
-    }
+        abbreviation: 'connectingwithgod',
+      },
+    },
   ],
   pageBookIndex: {
     data: {},
     included: [
       {
-        type: 'resource'
+        type: 'resource',
       },
       {
         type: 'attachment',
         attributes: {
           file: 'https://cru.org/assets/file-name-1.png',
-          'file-file-name': 'file-name-1.png'
+          'file-file-name': 'file-name-1.png',
         },
         relationships: {
           translations: {
-            data: []
-          }
-        }
+            data: [],
+          },
+        },
       },
       {
         type: 'attachment',
         attributes: {
           file: 'https://cru.org/assets/file-name-2.png',
-          'file-file-name': 'file-name-2.png'
-        }
-      }
-    ]
+          'file-file-name': 'file-name-2.png',
+        },
+      },
+    ],
   },
   pageBookTranslations: [
     {
@@ -397,33 +397,33 @@ export const mockPageComponent = {
       attributes: {
         code: 'de',
         direction: 'ltr',
-        name: 'German'
+        name: 'German',
       },
       relationships: {
         language: {
           data: {
-            id: '1111'
-          }
-        }
+            id: '1111',
+          },
+        },
       },
-      id: '1'
+      id: '1',
     },
     {
       type: 'language',
       attributes: {
         code: 'en',
         direction: 'ltr',
-        name: 'English'
+        name: 'English',
       },
       relationships: {
         language: {
           data: {
-            id: '2222'
-          }
-        }
+            id: '2222',
+          },
+        },
       },
-      id: '4'
-    }
+      id: '4',
+    },
   ],
   languageGerman: {
     id: '1111',
@@ -433,16 +433,16 @@ export const mockPageComponent = {
         data: [
           {
             id: '1',
-            type: 'language'
-          }
-        ]
-      }
+            type: 'language',
+          },
+        ],
+      },
     },
     attributes: {
       code: 'de',
       direction: 'ltr',
-      name: 'German'
-    }
+      name: 'German',
+    },
   },
   languageEnglish: {
     id: '2222',
@@ -452,15 +452,15 @@ export const mockPageComponent = {
         data: [
           {
             id: '2',
-            type: 'language'
-          }
-        ]
-      }
+            type: 'language',
+          },
+        ],
+      },
     },
     attributes: {
       code: 'en',
       direction: 'ltr',
-      name: 'English'
-    }
-  }
+      name: 'English',
+    },
+  },
 };

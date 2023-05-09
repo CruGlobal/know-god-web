@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
@@ -11,12 +11,12 @@ import { org } from '@cruglobal/godtools-shared';
 import {
   TractPageCard,
   Text,
-  Content
+  Content,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-page-new-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
 })
 export class CardNewComponent implements OnChanges {
   @Input() card: TractPageCard;

@@ -3,14 +3,14 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import {
   Tabs,
   Tab,
-  Content
+  Content,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 interface TabWithContent {
@@ -21,7 +21,7 @@ interface TabWithContent {
 @Component({
   selector: 'app-content-new-tabs',
   templateUrl: './content-tabs.component.html',
-  styleUrls: ['./content-tabs.component.css']
+  styleUrls: ['./content-tabs.component.css'],
 })
 export class ContentTabsNewComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -69,7 +69,7 @@ export class ContentTabsNewComponent implements OnChanges {
       const contents: Content[] = [];
       if (tab.content)
         tab.content.forEach((content) =>
-          content ? contents.push(content) : null
+          content ? contents.push(content) : null,
         );
       this.content.push({ tab, contents });
     });

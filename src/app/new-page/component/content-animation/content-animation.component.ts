@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -15,7 +15,7 @@ import { AnimationItem } from 'lottie-web';
 @Component({
   selector: 'app-content-new-animation',
   templateUrl: './content-animation.component.html',
-  styleUrls: ['./content-animation.component.css']
+  styleUrls: ['./content-animation.component.css'],
 })
 export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -79,7 +79,7 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
     // TODO
     // Need to update to e31_1 when we release a new Shared Parser.
     const resource = {
-      name: (this.animation as any).e31_1 || ''
+      name: (this.animation as any).e31_1 || '',
     };
     this.anmResource = this.pageService.getAnimationUrl(resource.name || '');
     if (
@@ -93,7 +93,7 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
       this.lottieOptions = {
         path: this.anmResource,
         loop: !!this.animation.loop,
-        autoplay: !!this.animation.autoPlay
+        autoplay: !!this.animation.autoPlay,
       };
     }
 
@@ -111,10 +111,10 @@ export class ContentAnimationNewComponent implements OnChanges, OnDestroy {
       .subscribe((event) => {
         if (!this.anmViewItem) return;
         const playListeners = this.animation.playListeners.filter(
-          (listener) => listener.name === event
+          (listener) => listener.name === event,
         ).length;
         const stopListeners = this.animation.stopListeners.filter(
-          (listener) => listener.name === event
+          (listener) => listener.name === event,
         ).length;
 
         if (playListeners) {

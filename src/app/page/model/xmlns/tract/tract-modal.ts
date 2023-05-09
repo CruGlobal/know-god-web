@@ -33,7 +33,7 @@ export class KgwTractModal {
           const nodeParsed = node.parse();
           if (nodeParsed.type && nodeParsed.type === 'paragraph') {
             item.content.push(
-              node.parse().element as KgwContentComplexTypeParagraph
+              node.parse().element as KgwContentComplexTypeParagraph,
             );
           }
         }

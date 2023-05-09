@@ -14,7 +14,7 @@ describe('ContentInputComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentTextNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentTextNewComponent);
     component = fixture.componentInstance;
@@ -25,7 +25,7 @@ describe('ContentInputComponent', () => {
   it('Values are assigned correctly', async () => {
     component.item = text;
     component.ngOnChanges({
-      item: new SimpleChange(null, text, true)
+      item: new SimpleChange(null, text, true),
     });
 
     expect(component.text).toEqual(text);

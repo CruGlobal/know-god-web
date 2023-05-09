@@ -3,18 +3,18 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import {
   Text,
-  parseTextAddBrTags
+  parseTextAddBrTags,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-text',
   templateUrl: './content-text.component.html',
-  styleUrls: ['./content-text.component.css']
+  styleUrls: ['./content-text.component.css'],
 })
 export class ContentTextNewComponent implements OnChanges {
   @Input() item: Text;

@@ -3,20 +3,20 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import {
   Link,
   Text,
-  EventId
+  EventId,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-link',
   templateUrl: './content-link.component.html',
-  styleUrls: ['./content-link.component.css']
+  styleUrls: ['./content-link.component.css'],
 })
 export class ContentLinkNewComponent implements OnChanges {
   @Input() item: Link;

@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
@@ -14,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-video',
   templateUrl: './content-video.component.html',
-  styleUrls: ['./content-video.component.css']
+  styleUrls: ['./content-video.component.css'],
 })
 export class ContentVideoComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
@@ -28,7 +28,7 @@ export class ContentVideoComponent implements OnChanges {
 
   constructor(
     private pageService: PageService,
-    public sanitizer: DomSanitizer
+    public sanitizer: DomSanitizer,
   ) {
     this.dir$ = this.pageService.pageDir$;
   }
@@ -62,7 +62,7 @@ export class ContentVideoComponent implements OnChanges {
     if (this.video.attributes.videoId) {
       setTimeout(() => {
         this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://www.youtube.com/embed/${this.video.attributes.videoId}`
+          `https://www.youtube.com/embed/${this.video.attributes.videoId}`,
         );
         this.videoId = this.video.attributes.videoId;
       }, 0);

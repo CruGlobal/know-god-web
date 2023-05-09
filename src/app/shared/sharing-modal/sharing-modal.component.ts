@@ -6,7 +6,7 @@ import { SHAREDURL } from '../../api/url';
 @Component({
   selector: 'app-sharing-modal',
   templateUrl: './sharing-modal.component.html',
-  styleUrls: ['./sharing-modal.component.css']
+  styleUrls: ['./sharing-modal.component.css'],
 })
 export class SharingModalComponent implements OnInit {
   @Input()
@@ -26,7 +26,7 @@ export class SharingModalComponent implements OnInit {
 
     const options = {
       messageClass: 'toast-message1',
-      positionClass: 'toast-top-right1'
+      positionClass: 'toast-top-right1',
     };
     this.toastr.success(url + '     ', 'Link copied to clipboard');
 

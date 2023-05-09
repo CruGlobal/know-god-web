@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-header',
   templateUrl: './page-header.component.html',
-  styleUrls: ['./page-header.component.css']
+  styleUrls: ['./page-header.component.css'],
 })
 export class PageHeaderComponent implements OnChanges {
   @Input() header: KgwTractComplexTypePageHeader;

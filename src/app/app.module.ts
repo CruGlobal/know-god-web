@@ -58,20 +58,20 @@ const appRoutes: Routes = [
   { path: 'old/:langid/embed/:bookid', component: PageComponent },
   {
     path: 'old/:langid/:bookid/:page',
-    component: PageComponent
+    component: PageComponent,
   },
   {
     path: ':langid/:bookid',
     redirectTo: ':langid/:bookid/0',
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
   { path: ':langid', component: HeaderComponent },
   { path: '', component: HeaderComponent },
   { path: ':langid/embed/:bookid', component: PageNewComponent },
   {
     path: ':langid/:bookid/:page',
-    component: PageNewComponent
-  }
+    component: PageNewComponent,
+  },
 ];
 
 // Lottie Web
@@ -126,7 +126,7 @@ export function playerFactory() {
     CalltoactionNewComponent,
     ModalNewComponent,
     ContentSpacerNewComponent,
-    ContentRepeaterNewComponent
+    ContentRepeaterNewComponent,
   ],
   imports: [
     BrowserModule,
@@ -135,15 +135,15 @@ export function playerFactory() {
     RouterModule.forRoot(appRoutes, {
       anchorScrolling: 'enabled',
       scrollPositionRestoration: 'enabled', // Scrolls to top when fragment is removed
-      relativeLinkResolution: 'legacy'
+      relativeLinkResolution: 'legacy',
     }),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
-      positionClass: 'toast-bottom-right'
+      positionClass: 'toast-bottom-right',
     }),
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
   ],
   providers: [CommonModule, LoaderService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

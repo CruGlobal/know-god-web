@@ -14,7 +14,7 @@ describe('ContentInputComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentLinkNewComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
     }).compileComponents();
     fixture = TestBed.createComponent(ContentLinkNewComponent);
     component = fixture.componentInstance;
@@ -25,7 +25,7 @@ describe('ContentInputComponent', () => {
   it('Values are assigned correctly', async () => {
     component.item = link;
     component.ngOnChanges({
-      item: new SimpleChange(null, link, true)
+      item: new SimpleChange(null, link, true),
     });
 
     expect(component.text).toEqual(link.text);
@@ -36,12 +36,12 @@ describe('ContentInputComponent', () => {
   it('Form Action function sends the correct info to pageService', async () => {
     component.item = link;
     component.ngOnChanges({
-      item: new SimpleChange(null, link, true)
+      item: new SimpleChange(null, link, true),
     });
 
     component.formAction();
     expect(pageService.formAction).toHaveBeenCalledWith(
-      'followup-testing-event followup:send'
+      'followup-testing-event followup:send',
     );
   });
 });

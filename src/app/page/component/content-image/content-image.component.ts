@@ -3,7 +3,7 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  SimpleChanges,
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { KgwContentComplexTypeImage } from '../../model/xmlns/content/content-ct-image';
@@ -13,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-image',
   templateUrl: './content-image.component.html',
-  styleUrls: ['./content-image.component.css']
+  styleUrls: ['./content-image.component.css'],
 })
 export class ContentImageComponent implements OnChanges {
   @Input() item: KgwContentElementItem;
@@ -51,7 +51,7 @@ export class ContentImageComponent implements OnChanges {
     this.imgResource = this.pageService.getImageUrl(
       this.image.attributes.resource
         ? this.image.attributes.resource.trim()
-        : ''
+        : '',
     );
     this.ready = true;
   }

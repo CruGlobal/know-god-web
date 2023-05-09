@@ -1,12 +1,12 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   Paragraph,
-  Content
+  Content,
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-paragraph',
   templateUrl: './content-paragraph.component.html',
-  styleUrls: ['./content-paragraph.component.css']
+  styleUrls: ['./content-paragraph.component.css'],
 })
 export class ContentParagraphNewComponent implements OnChanges {
   @Input() item: Paragraph;
