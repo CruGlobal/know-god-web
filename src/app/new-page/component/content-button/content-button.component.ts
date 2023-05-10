@@ -25,6 +25,8 @@ export class ContentButtonNewComponent implements OnChanges {
   text: any;
   ready: boolean;
   buttonText: string;
+  buttonTextColor: string;
+  buttonBgColor: string;
   type: string;
   events: EventId[];
   url: string;
@@ -45,6 +47,8 @@ export class ContentButtonNewComponent implements OnChanges {
             ) {
               this.ready = false;
               this.buttonText = '';
+              this.buttonTextColor = '';
+              this.buttonBgColor = ''
               this.type = '';
               this.events = [] as EventId[];
               this.url = '';
@@ -72,6 +76,9 @@ export class ContentButtonNewComponent implements OnChanges {
   }
 
   private init(): void {
+    // TODO Allow Button styles when Books are ready
+    // this.buttonTextColor = this.button.buttonColor || ''
+    // this.buttonBgColor = this.button.backgroundColor || ''
     if (this.button.text) {
       this.text = this.button.text;
       this.buttonText = this.text?.text || '';
