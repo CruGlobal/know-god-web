@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Accordion, ContentParser, Content, AccordionSection } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-accordion',
@@ -15,10 +15,10 @@ import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.ser
   styleUrls: ['./content-accordion.component.css'],
 })
 export class ContentAccordionNewComponent implements OnChanges {
-  @Input() item: ContentItems;
+  @Input() item: Accordion;
 
-  accordion: any;
-  sections: Array<any>;
+  accordion: Accordion;
+  sections: any[];
   ready: boolean;
   dir$: Observable<string>;
 
@@ -46,12 +46,27 @@ export class ContentAccordionNewComponent implements OnChanges {
     }
   }
 
-  private init(): void {
-    if (this.accordion.sections && this.accordion.sections.length) {
-      this.accordion.sections.forEach((section) => {
-        this.sections.push(section);
-      });
+  onClick(event: any) {
+    const parent = event.target.parentElement;
+    const hasActiveClass = parent.classList.contains('active');
+    if (hasActiveClass) {
+      event.target.parentElement.classList.remove('active');
+    } else { 
+      event.target.parentElement.classList.add('active');
     }
+  }
+
+  private init(): void {
+    this.item.sections.forEach((section) => {
+      const contents: Content[] = []
+      if (section.content) {
+        section.content.forEach((content) =>
+        content ? contents.push(content) : null,
+        );
+      }
+      this.sections.push({section, contents})
+    });
+
     this.ready = true;
   }
 }
