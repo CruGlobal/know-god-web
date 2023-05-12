@@ -21,6 +21,7 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
+import * as Parser from '@cruglobal/godtools-shared';
 
 interface LiveShareSubscriptionPayload {
   data?: {
