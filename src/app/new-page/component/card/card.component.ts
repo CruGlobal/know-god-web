@@ -24,6 +24,7 @@ export class CardNewComponent implements OnChanges {
   ready: boolean;
   label: Text;
   labelText: string;
+  cardPosition: number;
   content: Array<Content>;
   dir$: Observable<string>;
   isForm$: Observable<boolean>;
@@ -49,6 +50,7 @@ export class CardNewComponent implements OnChanges {
               this.ready = false;
               this.label = null;
               this.labelText = '';
+              this.cardPosition = 0;
               this.content = [];
               this.init();
             }
@@ -63,6 +65,7 @@ export class CardNewComponent implements OnChanges {
   }
 
   private init(): void {
+    this.cardPosition = this.card.position || 0;
     if (this.card.label) {
       this.label = this.card.label;
       this.labelText = this.card.label.text?.trim() || '';
