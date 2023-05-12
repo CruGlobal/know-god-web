@@ -550,7 +550,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       .subscribe((params) => {
         const { langid, bookid } = this._pageParams;
         const bookChanged =
-          (langid !== params['langid'] || bookid !== params['bookid']);
+          langid !== params['langid'] || bookid !== params['bookid'];
 
         if (!bookChanged) {
           this._pageParams.pageid = Number(params['page']);
