@@ -265,16 +265,24 @@ app-content-new-repeater > app-content-new-text {
     padding-right: 44px;
   }
   
-  .modal-paragraph > app-content-text > p.textContent {
+  .modal-paragraph > app-content-new-text > p.textContent {
     padding-left: 44px;
     padding-right: 44px;    
   }
 }
 
+app-page-new-hero > app-content-new-image:first-child {
+  margin-top: -48px;
+}
+
 app-page-new-hero > app-content-new-repeater > app-content-new-image:first-child {
-  margin-top: -24px;
+  margin-top: -48px;
 }
 
 div#toolContent > app-page-new-hero:first-child {
   padding-top: 0px !important;
+}
+
+div#toolContent > app-page-new-hero:first-child > app-content-new-repeater > app-content-new-image:first-child {
+  margin-top: -24px;
 }

@@ -2,14 +2,17 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   QueryList,
   SimpleChanges,
   ViewChildren
 } from '@angular/core';
-import { PageService } from '../../service/page-service.service';
-import { ContentInputNewComponent } from '../content-input/content-input.component'
-import { ContentItems, Content, ContentParser, ContentItemsType } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { ContentInputNewComponent } from '../content-input/content-input.component';
+import {
+  ContentItems,
+  Content,
+  ContentParser,
+  ContentItemsType
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-repeater',
   templateUrl: './content-repeater.component.html',
@@ -17,13 +20,13 @@ import { ContentItems, Content, ContentParser, ContentItemsType } from 'src/app/
 })
 export class ContentRepeaterNewComponent implements OnChanges {
   @Input() items: Content[];
-  @ViewChildren(ContentInputNewComponent) components: QueryList<ContentInputNewComponent>
-  // protected components: QueryList<ContentRepeaterNewComponent>;
+  @ViewChildren(ContentInputNewComponent)
+  components: QueryList<ContentInputNewComponent>;
 
   ready: boolean;
   content: ContentItemsType[];
 
-  constructor(private pageService: PageService) {}
+  constructor() {}
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
@@ -45,27 +48,24 @@ export class ContentRepeaterNewComponent implements OnChanges {
   }
 
   private init(): void {
-    console.log('this.items', this.items)
     if (this.items?.length) {
       this.items.forEach((content) => {
-        console.log('content[content]', content['content'])
-        if (content['content']) {
-          const hasInputChildren = content['content'].filter((c) => ContentParser(c) === 'input');
-          console.log('hasInputChildren', hasInputChildren)
-          if (hasInputChildren?.length) {
-            this.content.push({type: 'form', content: content['content']})
-          } else {
-            content['content'].forEach((c) => {
-              const type = ContentParser(c)
-              console.log('type', type)
-              this.content.push({type, content: c as ContentItems})
-            })
-          }
+        const type = ContentParser(content);
+        if (type === 'form') {
+          this.content.push({ type, content: content['content'] });
+        } else if (content['content']) {
+          content['content'].forEach((c) => {
+            const contentType = ContentParser(c);
+            this.content.push({
+              type: contentType,
+              content: c as ContentItems
+            });
+          });
         } else {
-          const type = ContentParser(content)
-          if (type) this.content.push({type, content: content as ContentItems})
+          if (type)
+            this.content.push({ type, content: content as ContentItems });
         }
-      })
+      });
     }
     this.ready = true;
   }

@@ -74,7 +74,6 @@ export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private awaitEmailSignupFormDataNeeded(): void {
-    console.log('awaitEmailSignupFormDataNeeded')
     this.pageService.getEmailSignupFormData$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => {
@@ -97,7 +96,7 @@ export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
             default:
               break;
           }
-        })
+        });
 
         if (emailFormInputs.length === 3) {
           setTimeout(() => {

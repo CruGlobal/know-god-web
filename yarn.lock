@@ -1278,6 +1278,9 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 19956152 (Upgraded Angular to v13)
 "@csstools/postcss-progressive-custom-properties@^1.1.0":
@@ -1319,6 +1322,20 @@
   resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1263.tgz#babfc35656cab1a4a167db51273427edae79a2fb"
   integrity sha512-ebDhPXU8je/Eb33f7ERHovzFzrftBGZ2WkVQ8zh57xnpbBAxiiWwpC40azKwmjuYsswcTUD0xLRZPF+jsaladA==
 >>>>>>> 5af1e01d (Images, Forms, inputsm videos, buttons and more edits)
+=======
+=======
+>>>>>>> a2dc3568 (animation component. clean up)
+"@cruglobal/godtools-shared@0.9.0-SNAPSHOT.1267":
+  version "0.9.0-SNAPSHOT.1267"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1267.tgz#1a313999b85137a717c3ba32cae68f6fdfbcceaf"
+  integrity sha512-PoLCHkwCSU1uCzlux/ndy2MdFUm/YoANNUWOlAGfDftfKTUrTpEf75l4ICGfxANfdnyWY3Sd7TFOzGf+gfUNYQ==
+>>>>>>> 69cd4d87 (Finishing the last few components, cleaning up)
+=======
+"@cruglobal/godtools-shared@0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0.tgz#20db47f4130031af6d5eab325058a8fc39fbbbd4"
+  integrity sha512-2PVTZGMIgS/obMPUd2IyuKXAaWf+rXgy2V6e+P9rhIioR5mS4azoS135P+hHHgP7vX0JXyaE1DyJCOJ1V62+mA==
+>>>>>>> 44f32b43 (run yarn install)
   dependencies:
     sax "1.2.4"
 
@@ -1571,6 +1588,11 @@
   version "6.1.7"
   resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-6.1.7.tgz#8b4506925d3f7146a70941e4db7ce9dda99f99ae"
   integrity sha512-F6S74NGpxhbbDRFsQFGYqefRfZPgYvePNtz9hHKYOqLturrsqrDoG+UcrxEGHsvqDUorMYfx4Wl3K8smmk/u2g==
+
+"@scarf/scarf@^1.1.1":
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
+  integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
 
 "@schematics/angular@13.3.11":
   version "13.3.11"
@@ -5545,10 +5567,10 @@ log4js@^6.4.1:
     rfdc "^1.3.0"
     streamroller "^3.1.5"
 
-lottie-web@^5.1.3:
-  version "5.11.0"
-  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.11.0.tgz#04bb9fd6cdfbb10e586985dd666de6c727619d95"
-  integrity sha512-9vSt0AtdOH98GKDXwD5LPfFg9Pcmxt5+1BllAbudKM5iqPxpJnJUfuGaP45OyudDrESCOBgsjnntVUTygBNlzw==
+lottie-web@5.9.6:
+  version "5.9.6"
+  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.9.6.tgz#62ae68563355d3e04aa75d53dec3dd4bea0e57c9"
+  integrity sha512-JFs7KsHwflugH5qIXBpB4905yC1Sub2MZWtl/elvO/QC6qj1ApqbUZJyjzJseJUtVpgiDaXQLjBlIJGS7UUUXA==
 
 lru-cache@^5.1.1:
   version "5.1.1"
@@ -5653,9 +5675,15 @@ media-typer@0.3.0:
   integrity sha512-dq+qelQ9akHpcOl/gUVRTxVIOkAJ1wR3QAvb4RsVjS8oVoFjDGTc679wJYmUmknUF5HwMLOgb5O+a3KxfWapPQ==
 
 memfs@^3.2.2, memfs@^3.4.3:
+<<<<<<< HEAD
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/memfs/-/memfs-3.5.1.tgz#f0cd1e2bfaef58f6fe09bfb9c2288f07fea099ec"
   integrity sha512-UWbFJKvj5k+nETdteFndTpYxdeTMox/ULeqX5k/dpaQJCCFmj5EeKv3dBcyO2xmkRAx2vppRu5dVG7SOtsGOzA==
+=======
+  version "3.5.0"
+  resolved "https://registry.yarnpkg.com/memfs/-/memfs-3.5.0.tgz#9da86405fca0a539addafd37dbd452344fd1c0bd"
+  integrity sha512-yK6o8xVJlQerz57kvPROwTMgx5WtGwC2ZxDtOUsnGl49rHjYkfQoPNZPCKH73VdLE1BwBu/+Fx/NL8NYMUw2aA==
+>>>>>>> a2dc3568 (animation component. clean up)
   dependencies:
     fs-monkey "^1.0.3"
 
@@ -5925,12 +5953,13 @@ neo-async@^2.6.2:
   resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.2.tgz#b4aafb93e3aeb2d8174ca53cf163ab7d7308305f"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ng-lottie@^0.3.2:
-  version "0.3.2"
-  resolved "https://registry.yarnpkg.com/ng-lottie/-/ng-lottie-0.3.2.tgz#2319d108fff52dc030fb020657177c282cce14f0"
-  integrity sha512-mALF+5PIp9r2/2N7XQTHK1VWckWLboBZNfe/31a4hmF6sKabTAXlG/VBU+ghWZwZ/pljzVzb5S4WRWXX6guyUA==
+ngx-lottie@8.3.0:
+  version "8.3.0"
+  resolved "https://registry.yarnpkg.com/ngx-lottie/-/ngx-lottie-8.3.0.tgz#f7c81d8831a27ec7a7ae319010e6532956b1fb9f"
+  integrity sha512-pKjWFPzcDuj5+cNs80tuBvnOtG6BInDn0SoD19rLjRLUgRSRDlRkz+qc7T7/QlzRGizWiYnL4HiIcHCw49v6Uw==
   dependencies:
-    lottie-web "^5.1.3"
+    "@scarf/scarf" "^1.1.1"
+    tslib "^2.3.0"
 
 ngx-toastr@13.2.1:
   version "13.2.1"
@@ -6728,10 +6757,26 @@ postcss@8.4.5:
     picocolors "^1.0.0"
     source-map-js "^1.0.1"
 
+<<<<<<< HEAD
 postcss@^8.2.14, postcss@^8.2.15, postcss@^8.3.7:
   version "8.4.23"
   resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.23.tgz#df0aee9ac7c5e53e1075c24a3613496f9e6552ab"
   integrity sha512-bQ3qMcpF6A/YjR55xtoTr0jGOlnPOKAIMdOWiv0EIT6HVPEaJiJB4NLljSbiHoC2RX7DN5Uvjtpbg1NPdwv1oA==
+=======
+postcss@^8.2.14:
+  version "8.4.23"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.23.tgz#df0aee9ac7c5e53e1075c24a3613496f9e6552ab"
+  integrity sha512-bQ3qMcpF6A/YjR55xtoTr0jGOlnPOKAIMdOWiv0EIT6HVPEaJiJB4NLljSbiHoC2RX7DN5Uvjtpbg1NPdwv1oA==
+  dependencies:
+    nanoid "^3.3.6"
+    picocolors "^1.0.0"
+    source-map-js "^1.0.2"
+
+postcss@^8.2.15, postcss@^8.3.7:
+  version "8.4.22"
+  resolved "https://registry.yarnpkg.com/postcss/-/postcss-8.4.22.tgz#c29e6776b60ab3af602d4b513d5bd2ff9aa85dc1"
+  integrity sha512-XseknLAfRHzVWjCEtdviapiBtfLdgyzExD50Rg2ePaucEesyh8Wv4VPdW0nbyDa1ydbrAxV19jvMT4+LFmcNUA==
+>>>>>>> a2dc3568 (animation component. clean up)
   dependencies:
     nanoid "^3.3.6"
     picocolors "^1.0.0"

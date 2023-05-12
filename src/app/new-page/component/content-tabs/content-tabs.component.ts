@@ -6,11 +6,17 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeTab } from '../../model/xmlns/content/content-ct-tab';
-import { KgwContentComplexTypeTabs } from '../../model/xmlns/content/content-ct-tabs';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Tabs,
+  Tab,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
+
+interface TabWithContent {
+  tab: Tab;
+  contents: Content[];
+}
 
 @Component({
   selector: 'app-content-new-tabs',
@@ -19,10 +25,11 @@ import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.ser
 })
 export class ContentTabsNewComponent implements OnChanges {
   // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input() item: ContentItems;
+  @Input() item: Tabs;
 
-  tabs: KgwContentComplexTypeTabs;
-  content: Array<KgwContentComplexTypeTab>;
+  tabs: Tabs;
+  content: TabWithContent[];
+  contents: Content[];
   ready: boolean;
   dir$: Observable<string>;
   isModal$: Observable<boolean>;
@@ -42,8 +49,9 @@ export class ContentTabsNewComponent implements OnChanges {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.tabs = this.item as KgwContentComplexTypeTabs;
+              this.tabs = this.item;
               this.content = [];
+              this.contents = [];
               this.init();
             }
           }
@@ -57,12 +65,14 @@ export class ContentTabsNewComponent implements OnChanges {
   }
 
   private init(): void {
-    if (this.tabs.tabs && this.tabs.tabs.length) {
-      this.tabs.tabs.forEach((tab) => {
-        this.content.push(tab);
-      });
-    }
-
+    this.tabs.tabs.forEach((tab) => {
+      const contents: Content[] = [];
+      if (tab.content)
+        tab.content.forEach((content) =>
+          content ? contents.push(content) : null
+        );
+      this.content.push({ tab, contents });
+    });
     this.ready = true;
   }
 }

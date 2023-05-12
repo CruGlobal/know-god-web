@@ -18,13 +18,16 @@
     ></app-page-new-hero>
     <ng-container *ngIf="cards && cards.length && (isModal$ | async) === false">
       <app-page-new-card
-        *ngFor="let card of cards; index as cardIndex"
+        *ngFor="let card of cards"
         [card]="card"
-        [cardIndex]="cardIndex"
       ></app-page-new-card>
     </ng-container>
     <app-page-new-calltoaction
-      *ngIf="callToAction && (isForm$ | async) === false && (isModal$ | async) === false"
+      *ngIf="
+        callToAction &&
+        (isForm$ | async) === false &&
+        (isModal$ | async) === false
+      "
       [item]="callToAction"
     ></app-page-new-calltoaction>
 
@@ -68,7 +71,9 @@
       </ng-container>
     </div>
 
-    <ng-container *ngIf="(isModal$ | async) === false && (isModal$ | async) === false">
+    <ng-container
+      *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"
+    >
       <footer id="toolFooter">
         <span
           ><a href="http://godtoolsapp.com" target="_blank"

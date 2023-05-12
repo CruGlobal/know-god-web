@@ -1,6 +1,6 @@
-const MOBILE_CONTENT_API_URL = 'https://mobile-content-api-stage.cru.org';
+const MOBILE_CONTENT_API_URL = 'https://mobile-content-api.cru.org';
 export const MOBILE_CONTENT_API_WS_URL =
-  'wss://mobile-content-api-stage.cru.org/cable';
+  'wss://mobile-content-api.cru.org/cable';
 
 export const APIURL = {
   GET_ALL_BOOKS: `${MOBILE_CONTENT_API_URL}/resources/`,

@@ -8,19 +8,23 @@ import {
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
 import { org } from '@cruglobal/godtools-shared';
-import { Card, Text, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  TractPageCard,
+  Text,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-page-new-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
 export class CardNewComponent implements OnChanges {
-  @Input() card: Card;
-  @Input() cardIndex: number;
+  @Input() card: TractPageCard;
 
   ready: boolean;
   label: Text;
   labelText: string;
+  cardPosition: number;
   content: Array<Content>;
   dir$: Observable<string>;
   isForm$: Observable<boolean>;
@@ -46,6 +50,7 @@ export class CardNewComponent implements OnChanges {
               this.ready = false;
               this.label = null;
               this.labelText = '';
+              this.cardPosition = 0;
               this.content = [];
               this.init();
             }
@@ -60,12 +65,13 @@ export class CardNewComponent implements OnChanges {
   }
 
   private init(): void {
+    this.cardPosition = this.card.position || 0;
     if (this.card.label) {
       this.label = this.card.label;
       this.labelText = this.card.label.text?.trim() || '';
     }
 
-    this.content = this.card.content
+    this.content = this.card.content;
 
     this.ready = true;
   }

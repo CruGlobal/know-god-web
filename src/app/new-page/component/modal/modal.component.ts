@@ -6,9 +6,13 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-import { Modal, Text, parseTextAddBrTags } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Modal,
+  Text,
+  parseTextAddBrTags,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-page-new-modal',
@@ -20,7 +24,7 @@ export class ModalNewComponent implements OnChanges {
 
   ready: boolean;
   title: Text;
-  content: Array<KgwContentElementItem>;
+  content: Content[];
   titleText: string;
   dir$: Observable<string>;
 
@@ -54,8 +58,9 @@ export class ModalNewComponent implements OnChanges {
   }
 
   private init(): void {
-    this.title = this.modal?.title || null
-    this.titleText = parseTextAddBrTags(this.title?.text) || ''
+    this.title = this.modal?.title || null;
+    this.titleText = parseTextAddBrTags(this.title?.text) || '';
+    this.content = this.modal.content;
     this.ready = true;
   }
 }

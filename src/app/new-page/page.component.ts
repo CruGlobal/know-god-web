@@ -15,10 +15,15 @@ import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
 import { APIURL, MOBILE_CONTENT_API_WS_URL } from '../api/url';
 import { PageService } from './service/page-service.service';
-import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
-import { KgwTraining } from './model/xmlns/training/training-training';
-import { PullParserFactory, Page, Manifest, TractPage, XmlParser, XmlParserData } from '../services/xml-parser-service/xmp-parser.service';
-
+import {
+  PullParserFactory,
+  Page,
+  Manifest,
+  TractPage,
+  XmlParser,
+  XmlParserData,
+  Animation
+} from '../services/xml-parser-service/xmp-parser.service';
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -55,9 +60,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private _pageBookTranslations: any[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
-  private _pageBookTipsManifest: KgwManifestComplexTypeTip[]; // NEED TIP CLASS
   private _pageBookSubPages: Page[];
-  private _pageBookTips: KgwTraining[]; // NEED TIP CLASS
   private _selectedLanguage: any;
   private liveShareSubscription: ActionCable.Channel;
 
@@ -117,7 +120,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageid || 0;
     this.router.navigate([
-      "new", // REMOVE WHEN DONE
       lang.attributes.code,
       this._pageParams.bookid,
       tPageOrder
@@ -132,7 +134,6 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private onPreviousPage(): void {
     if (this._pageParams.pageid > 0) {
       this.router.navigate([
-        'new', // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid - 1
@@ -141,10 +142,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
   }
 
   private onNextPage(): void {
-    console.log('onNextPage');
     if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
-        'new', // REMOVE WHEN DONE
         this._pageParams.langid,
         this._pageParams.bookid,
         this._pageParams.pageid + 1
@@ -152,7 +151,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private getAnimation(resource): void { // NEED Animation Object
+  private getAnimation(resource): void {
     if (resource === undefined || resource === '' || resource === null) {
       return;
     }
@@ -214,43 +213,12 @@ export class PageNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async loadBookPage(
-    page: TractPage,
-  ): Promise<void> {
-    const pageId = this._pageParams.pageid
-    const showpage: boolean = pageId ? page.position === pageId : page.position === 0
+  private loadBookPage(page: TractPage): void {
+    const pageId = this._pageParams.pageid;
+    const showpage: boolean = pageId
+      ? page.position === pageId
+      : page.position === 0;
     if (showpage) this.showPage(page);
-  }
-
-  private loadTip(tip: KgwManifestComplexTypeTip): void { // NEED TIP Object
-    this.commonService
-      .downloadFile(
-        APIURL.GET_XML_FILES_FOR_MANIFEST +
-          this._pageBookTranslationId +
-          '/' +
-          tip.src
-      )
-      .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
-      .subscribe((data) => {
-        const enc = new TextDecoder('utf-8');
-        const arr = new Uint8Array(data);
-        const result = enc.decode(arr);
-
-        const parser = new DOMParser();
-        const xml = parser.parseFromString(result, 'application/xml');
-        const _tTraining: KgwTraining = new KgwTraining(result);
-        _tTraining.id = tip.id;
-        _tTraining.parseXml();
-        if (_tTraining && _tTraining.pages && _tTraining.pages.length) {
-          const _tTrainingImages = _tTraining.getImageResources();
-          if (_tTrainingImages && _tTrainingImages.length) {
-            _tTrainingImages.forEach((image) => {
-              this.getImage(image);
-            });
-          }
-        }
-        this._pageBookTips.push(_tTraining);
-      });
   }
 
   private loadBookManifestXML(): void {
@@ -280,36 +248,45 @@ export class PageNewComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
-      const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+      const fileName =
+        APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName;
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
-        .withSupportedFeatures(
-          [
-            XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
-            XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD,
-            XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT
-          ])
+        .withSupportedFeatures([
+          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION
+        ])
         .withParseTips(false);
-      const newParser = new XmlParser.ManifestParser(this.pullParserFactory, config);
+      const newParser = new XmlParser.ManifestParser(
+        this.pullParserFactory,
+        config
+      );
       const controller = new AbortController();
       const signal = controller.signal;
       try {
         newParser.parseManifest(fileName, signal).then((data) => {
-          const { manifest } = data as XmlParserData
-          this._pageBookMainfest = manifest
+          const { manifest } = data as XmlParserData;
+          this._pageBookMainfest = manifest;
 
           // Loop through and get all resources.
           this._pageBookIndex.included.forEach((resource) => {
-            const { attributes, type } = resource
-            if (type === "attachment") {
-              this.pageService.addImage(attributes['file-file-name'], attributes.file);
-              if (!attributes['is-zipped'] === true) {
+            const { attributes, type } = resource;
+            if (type === 'attachment') {
+              this.pageService.addAttachment(
+                attributes['file-file-name'],
+                attributes.file
+              );
+              if (
+                /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
+                  attributes['file-file-name']
+                )
+              ) {
                 this.getImage(attributes['file-file-name']);
+              } else {
+                this.getAnimation(attributes['file-file-name']);
               }
             }
-          })
-
+          });
 
           if (manifest?.pages?.length) {
             this._pageBookSubPagesManifest = manifest.pages;
@@ -317,23 +294,15 @@ export class PageNewComponent implements OnInit, OnDestroy {
             this.totalPages = manifest.pages.length;
             this._pageBookMainfestLoaded = true;
             manifest.pages.forEach((page) => {
-              this.loadBookPage(page as TractPage)
-            })
+              this.loadBookPage(page as TractPage);
+            });
           } else {
             this.pageService.setDir('ltr');
             this.bookNotAvailableInLanguage = true;
           }
-
-          if (manifest.hasTips) {
-            this._pageBookTipsManifest = [];
-            this._pageBookTips = [];
-            // this._pageBookMainfest.manifest.tips.forEach((tTip) => { // PIZZA
-            //   this._pageBookTipsManifest.push(tTip);
-            // });
-          }
-        })
-      } catch(e) {
-        console.log('2.parseManifest.ERROR', e) // PIZZA
+        });
+      } catch (e) {
+        console.error('Manifest Parse error', e);
       }
     }
   }
@@ -341,20 +310,14 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private getAvailableLanguagesForSelectedBook(): void {
     this.availableLanguages = [];
     if (this._allLanguages && this._allLanguages.length > 0) {
-      this._allLanguages.forEach((languageItem) => {
-        if (
-          languageItem.relationships &&
-          languageItem.relationships.translations &&
-          languageItem.relationships.translations.data
-        ) {
-          const languageTranslations =
-            languageItem.relationships.translations.data;
+      this._allLanguages.forEach((lang) => {
+        const translations = lang.relationships?.translations?.data || null;
 
+        if (translations) {
           let isLanguageForSelectedBook = false;
-
-          languageTranslations.forEach((languageTranslation) => {
+          translations.forEach((translation) => {
             this._pageBookTranslations.forEach((pageBookTranslation) => {
-              if (languageTranslation.id === pageBookTranslation.id) {
+              if (translation.id === pageBookTranslation.id) {
                 isLanguageForSelectedBook = true;
                 return;
               }
@@ -365,7 +328,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
           });
 
           if (isLanguageForSelectedBook) {
-            this.availableLanguages.push(languageItem);
+            this.availableLanguages.push(lang);
           }
         }
       });
@@ -454,10 +417,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
   }
 
   private loadPageBook(): void {
-    this._pageBook = this._books.find(
-      (book) => 
-        book.attributes.abbreviation === this._pageParams.bookid ? 
-          book : false
+    this._pageBook =
+      this._books.find((book) =>
+        book.attributes.abbreviation === this._pageParams.bookid ? book : false
       ) || {};
 
     if (!this._pageBook.id) {
@@ -510,15 +472,11 @@ export class PageNewComponent implements OnInit, OnDestroy {
 
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
-      if (
-        lang &&
-        lang.attributes &&
-        lang.attributes['code'] &&
-        lang.attributes['code'] === this._pageParams.langid
-      ) {
+      const attributes = lang.attributes;
+      if (attributes?.code && attributes?.code === this._pageParams.langid) {
         this._selectedLanguage = lang;
-        this.selectedLang = lang.attributes.name;
-        this.pageService.setDir(lang.attributes.direction);
+        this.selectedLang = attributes.name;
+        this.pageService.setDir(attributes.direction);
       }
     });
   }
@@ -527,11 +485,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
         return (
-          x.relationships &&
-          x.relationships.language &&
-          x.relationships.language.data &&
-          x.relationships.language.data.id &&
-          x.relationships.language.data.id === this._selectedLanguage.id
+          x?.relationships?.language?.data?.id &&
+          x?.relationships?.language?.data?.id === this._selectedLanguage.id
         );
       });
       return y && y.id;
@@ -570,8 +525,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
               this._pageBookSubPagesManifest &&
               this._pageBookSubPagesManifest.length > this._pageParams.pageid
             ) {
-              const tSubPageManifest =
-                this._pageBookMainfest.pages[this._pageParams.pageid] as TractPage;
+              const tSubPageManifest = this._pageBookMainfest.pages[
+                this._pageParams.pageid
+              ] as TractPage;
               if (tSubPageManifest) {
                 this.pagesLoaded = false;
                 this.loaderService.display(true);
@@ -592,8 +548,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params) => {
-        const {langid, bookid} = this._pageParams
-        const bookChanged = (langid !== params['langid'] && bookid !== params['bookid']);
+        const { langid, bookid } = this._pageParams;
+        const bookChanged =
+          (langid !== params['langid'] || bookid !== params['bookid']);
 
         if (!bookChanged) {
           this._pageParams.pageid = Number(params['page']);

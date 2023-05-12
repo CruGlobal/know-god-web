@@ -221,7 +221,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
                   _tTranslation.attributes['translated-tagline'];
 
                 this.Images.push({
-                  ImgUrl: attachments.find((x) => x.id === bannerId).attributes
+                  ImgUrl: attachments.find((x) => x.id === bannerId)?.attributes
                     .file,
                   resource: _tTranslatedName,
                   id: resourceId,

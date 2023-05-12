@@ -6,9 +6,6 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeAccordion } from '../../model/xmlns/content/content-ct-accordion';
-import { KgwContentComplexTypeAccordionSection } from '../../model/xmlns/content/content-ct-accordion-section';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
 import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
@@ -20,8 +17,8 @@ import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.ser
 export class ContentAccordionNewComponent implements OnChanges {
   @Input() item: ContentItems;
 
-  accordion: KgwContentComplexTypeAccordion;
-  sections: Array<KgwContentComplexTypeAccordionSection>;
+  accordion: any;
+  sections: Array<any>;
   ready: boolean;
   dir$: Observable<string>;
 
@@ -39,7 +36,7 @@ export class ContentAccordionNewComponent implements OnChanges {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.accordion = this.item as KgwContentComplexTypeAccordion;
+              this.accordion = this.item;
               this.sections = [];
               this.init();
             }

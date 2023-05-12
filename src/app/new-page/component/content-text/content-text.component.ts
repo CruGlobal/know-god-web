@@ -6,10 +6,11 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-import { Text } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Text,
+  parseTextAddBrTags
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-text',
   templateUrl: './content-text.component.html',
@@ -50,7 +51,7 @@ export class ContentTextNewComponent implements OnChanges {
   }
 
   private init(): void {
-    const text = this.text.text?.trim().replace(/[\n\r]/g, '<br/>')
+    const text = parseTextAddBrTags(this.text.text);
     this.textValue = text || '';
     this.ready = true;
   }

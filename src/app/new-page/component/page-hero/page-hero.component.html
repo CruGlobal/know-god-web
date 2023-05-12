@@ -11,7 +11,5 @@
   <h2 class="mw568 tc firstHeading" [innerHTML]="headingText"></h2>
 </ng-container>
 <ng-container *ngIf="ready && content && (isForm$ | async) === false">
-  <app-content-new-repeater
-    [items]="content"
-  ></app-content-new-repeater>
+  <app-content-new-repeater [items]="content"></app-content-new-repeater>
 </ng-container>

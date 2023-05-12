@@ -54,34 +54,13 @@ export class ContentVideoNewComponent implements OnChanges {
   }
 
   private init(): void {
-    this.provider = this.video.provider.name || ''
-    const videoId = this.video.videoId
-    console.log('this.provider', this.provider)
-    if (videoId) {
-      setTimeout(() => {
-        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://www.youtube.com/embed/${videoId}`
-        );
-        this.videoId = videoId;
-      }, 0);
-    }
-  // aspectRatio
-  // gravity
-  // width
-
-    // if (this.video.attributes.provider) {
-    //   this.provider = this.video.attributes.provider;
-    // }
-
-    // if (this.video.attributes.videoId) {
-    //   setTimeout(() => {
-    //     this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-    //       `https://www.youtube.com/embed/${this.video.attributes.videoId}`
-    //     );
-    //     this.videoId = this.video.attributes.videoId;
-    //   }, 0);
-    // }
-
+    this.provider = this.video.provider.name || '';
+    this.videoId = this.video.videoId || '';
+    setTimeout(() => {
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.youtube.com/embed/${this.videoId}`
+      );
+    }, 0);
     this.ready = true;
   }
 }
