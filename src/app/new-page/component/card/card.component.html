@@ -3,6 +3,9 @@
   class="cardContent"
   *ngIf="ready"
   [hidden]="card.isHidden"
+  [ngClass]="{
+    hasHeading: !(card.listeners.length && card.dismissListeners.length)
+  }"
 >
   <h4
     class="mw568 cardHeading ng-binding"
