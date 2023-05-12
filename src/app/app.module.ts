@@ -33,6 +33,28 @@ import { ModalComponent } from './page/component/modal/modal.component';
 import { ContentSpacerComponent } from './page/component/content-spacer/content-spacer.component';
 import { TrainingTipComponent } from './page/component/training-tip/training-tip.component';
 import { ContentFallbackComponent } from './page/component/content-fallback/content-fallback.component';
+import { PageNewComponent } from './new-page/page.component';
+import { PageHeaderNewComponent } from './new-page/component/page-header/page-header.component';
+import { TractPageNewComponent } from './new-page/component/tract-page/tract-page.component';
+import { PageHeroNewComponent } from './new-page/component/page-hero/page-hero.component';
+import { ContentImageNewComponent } from './new-page/component/content-image/content-image.component';
+import { ContentParagraphNewComponent } from './new-page/component/content-paragraph/content-paragraph.component';
+import { ContentFormNewComponent } from './new-page/component/content-form/content-form.component';
+import { CardNewComponent } from './new-page/component/card/card.component';
+import { ContentTextNewComponent } from './new-page/component/content-text/content-text.component';
+import { ContentButtonNewComponent } from './new-page/component/content-button/content-button.component';
+import { ContentLinkNewComponent } from './new-page/component/content-link/content-link.component';
+import { ContentInputNewComponent } from './new-page/component/content-input/content-input.component';
+import { ContentVideoNewComponent } from './new-page/component/content-video/content-video.component';
+import { ContentTabsNewComponent } from './new-page/component/content-tabs/content-tabs.component';
+import { ContentAccordionNewComponent } from './new-page/component/content-accordion/content-accordion.component';
+import { ContentAnimationNewComponent } from './new-page/component/content-animation/content-animation.component';
+import { CalltoactionNewComponent } from './new-page/component/calltoaction/calltoaction.component';
+import { ModalNewComponent } from './new-page/component/modal/modal.component';
+import { ContentSpacerNewComponent } from './new-page/component/content-spacer/content-spacer.component';
+import { TrainingTipNewComponent } from './new-page/component/training-tip/training-tip.component';
+import { ContentFallbackNewComponent } from './new-page/component/content-fallback/content-fallback.component';
+import { ContentRepeaterNewComponent } from './new-page/component/content-repeater/content-repeater.component';
 
 const appRoutes: Routes = [
   { path: ':langid/embed/:bookid', component: PageComponent },
@@ -46,7 +68,12 @@ const appRoutes: Routes = [
     pathMatch: 'full'
   },
   { path: ':langid', component: HeaderComponent },
-  { path: '', component: HeaderComponent }
+  { path: '', component: HeaderComponent },
+  { path: 'new/:langid/embed/:bookid', component: PageNewComponent },
+  {
+    path: 'new/:langid/:bookid/:page',
+    component: PageNewComponent
+  }
 ];
 
 @NgModule({
@@ -56,6 +83,7 @@ const appRoutes: Routes = [
     SharingModalComponent,
     LoaderComponent,
     PageComponent,
+    PageNewComponent,
     PageHeaderComponent,
     TractPageComponent,
     PageHeroComponent,
@@ -75,7 +103,28 @@ const appRoutes: Routes = [
     ModalComponent,
     ContentSpacerComponent,
     TrainingTipComponent,
-    ContentFallbackComponent
+    ContentFallbackComponent,
+    PageHeaderNewComponent,
+    TractPageNewComponent,
+    PageHeroNewComponent,
+    ContentImageNewComponent,
+    ContentParagraphNewComponent,
+    ContentFormNewComponent,
+    CardNewComponent,
+    ContentTextNewComponent,
+    ContentButtonNewComponent,
+    ContentLinkNewComponent,
+    ContentInputNewComponent,
+    ContentVideoNewComponent,
+    ContentTabsNewComponent,
+    ContentAccordionNewComponent,
+    ContentAnimationNewComponent,
+    CalltoactionNewComponent,
+    ModalNewComponent,
+    ContentSpacerNewComponent,
+    TrainingTipNewComponent,
+    ContentFallbackNewComponent,
+    ContentRepeaterNewComponent
   ],
   imports: [
     BrowserModule,
@@ -87,7 +136,9 @@ const appRoutes: Routes = [
       relativeLinkResolution: 'legacy'
     }),
     BrowserAnimationsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      positionClass :'toast-bottom-right'
+    }),
     LottieAnimationViewModule.forRoot()
   ],
   providers: [CommonModule, LoaderService],

@@ -8,8 +8,6 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
-import { ViewportScroller } from '@angular/common';
-import * as ActionCable from '@rails/actioncable';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';
@@ -21,7 +19,8 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
-import * as Parser from '@cruglobal/godtools-shared';
+import { ViewportScroller } from '@angular/common';
+import * as ActionCable from '@rails/actioncable';
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -81,8 +80,7 @@ export class PageComponent implements OnInit, OnDestroy {
     private pageService: PageService,
     private route: ActivatedRoute,
     public router: Router,
-    private viewportScroller: ViewportScroller,
-    private pullParserFactory: any
+    private viewportScroller: ViewportScroller
   ) {
     this._pageParams = {
       langid: '',
@@ -213,40 +211,17 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async loadBookPage(
+  private loadBookPage(
     page: KgwManifestComplexTypePage,
     pageorder: number
-  ): Promise<void> {
-
-    const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST +
-    this._pageBookTranslationId +
-    '/' +
-    page.src
-
-    // this.parserState.addFile = fileName
-
-    // const file = await this.pullParserFactory.readFile(fileName)
-    // console.log('file', file)
-    // console.log('ParserConfig', Parser.org.cru.godtools.shared.tool.parser.ParserConfig.createParserConfig())
-
-    // const newParser = new Parser.ManifestParser(this.pullParserFactory, Parser.org.cru.godtools.shared.tool.parser.ParserConfig.createParserConfig());
-    // console.log('defaultConfig', newParser.defaultConfig)
-    // const controller = new AbortController();
-    // const signal = controller.signal;
-    // console.log('fileName', fileName);
-
-    // try {
-    //   newParser.parseManifest(fileName, signal).then((data) => {
-    //     console.log('parseManifest', data)
-    //   })
-    // } catch(e) {
-    //   console.log('parseManifest.ERROR', e)
-    // }
-
-
-
+  ): void {
     this.commonService
-      .downloadFile(fileName)
+      .downloadFile(
+        APIURL.GET_XML_FILES_FOR_MANIFEST +
+          this._pageBookTranslationId +
+          '/' +
+          page.src
+      )
       .subscribe((data: any) => {
         const enc = new TextDecoder('utf-8');
         const arr = new Uint8Array(data);
@@ -263,6 +238,7 @@ export class PageComponent implements OnInit, OnDestroy {
           const _tTractResources = _tTract.getResources();
           const _tTractImages = _tTractResources['images'];
           const _tTractAnimations = _tTractResources['animations'];
+          console.log('_tTractImages', _tTractImages)
           if (_tTractImages && _tTractImages.length) {
             _tTractImages.forEach((image) => {
               this.getImage(image);
@@ -345,32 +321,10 @@ export class PageComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
-      const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
-      const config = Parser.org.cru.godtools.shared.tool.parser.ParserConfig.createParserConfig()
-      console.log('2.ParserConfig', config)
-      // console.log('2.state', Parser.org.cru.godtools.shared.tool.state.State.createState)
-
-      const newParser = new Parser.ManifestParser(this.pullParserFactory, config);
-      // console.log('2.defaultConfig', newParser.defaultConfig)
-      const controller = new AbortController();
-      const signal = controller.signal;
-      console.log('2.fileName', fileName);
-
-      try {
-        newParser.parseManifest(fileName, signal).then((data) => {
-          console.log('2.parseManifest', data)
-          // console.log('2.parseManifest', data.manifest)
-          // console.log('2.parseManifest', data._pages)
-
-        })
-      } catch(e) {
-        console.log('2.parseManifest.ERROR', e)
-      }
-
-
-
       this.commonService
-        .downloadFile(fileName)
+        .downloadFile(
+          APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+        )
         .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
         .subscribe((data) => {
           const enc = new TextDecoder('utf-8');

@@ -1,0 +1,11 @@
+<ng-container *ngIf="ready && anmResource">
+  <div class="animation-container">
+    <lottie-animation-view
+      (click)="onAnimationClick()"
+      (animCreated)="onAnimationCreated($event)"
+      [ngClass]="{ hasEvents: hasEvents }"
+      [options]="anmOptions"
+    >
+    </lottie-animation-view>
+  </div>
+</ng-container>
