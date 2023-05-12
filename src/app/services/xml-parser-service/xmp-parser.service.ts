@@ -17,6 +17,20 @@ export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph
 export type Resource = org.cru.godtools.shared.tool.parser.model.Resource
 export type Manifest = org.cru.godtools.shared.tool.parser.model.Manifest
 export type XmlParserData = org.cru.godtools.shared.tool.parser.ParserResult.Data
+export type Video = org.cru.godtools.shared.tool.parser.model.Video
+export type Button = org.cru.godtools.shared.tool.parser.model.Button
+export type EventId = org.cru.godtools.shared.tool.parser.model.EventId
+export type Form = org.cru.godtools.shared.tool.parser.model.Form
+export type Input = org.cru.godtools.shared.tool.parser.model.Input
+
+export type Spacer = org.cru.godtools.shared.tool.parser.model.Spacer
+export type Link = org.cru.godtools.shared.tool.parser.model.Link
+export type Tabs = org.cru.godtools.shared.tool.parser.model.Tabs
+export type Accordion = org.cru.godtools.shared.tool.parser.model.Accordion
+export type ModalCard = org.cru.godtools.shared.tool.parser.model.Card
+export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect
+
+
 export namespace XmlParser {
   export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig
   export const ManifestParser = manifestParser
@@ -33,18 +47,36 @@ export const ContentParser = (content: any): string => {
   } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Paragraph) {
     console.log('CONTENT: Paragraph')
     return 'paragraph'
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.tract.Modal) {
-    console.log('CONTENT: Modal')
-    return ''
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card) {
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Video) {
+    console.log('CONTENT: Video')
+    return 'video'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Button) {
+    console.log('CONTENT: Button')
+    return 'button'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Form) {
+    console.log('CONTENT: Form')
+    return 'form'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Input) {
+    console.log('CONTENT: Input')
+    return 'input'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Spacer) {
+    console.log('CONTENT: Spacer')
+    return 'spacer'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Link) {
+    console.log('CONTENT: Link')
+    return 'link'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Tabs) {
+    console.log('CONTENT: Tabs')
+    return 'tabs'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Accordion) {
+    console.log('CONTENT: Accordion')
+    return 'accordion'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Card) {
     console.log('CONTENT: Card')
-    return ''
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Resource) {
-    console.log('CONTENT: Resource')
-    return ''
-  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.tract.Header) {
-    console.log('CONTENT: Header')
-    return ''
+    return 'card'
+  } else if (content instanceof org.cru.godtools.shared.tool.parser.model.Multiselect) {
+    console.log('CONTENT: Multiselect')
+    return 'multiselect'
   } else {
     console.log('CONTENT: Unknown')
     return ''
@@ -52,11 +84,20 @@ export const ContentParser = (content: any): string => {
   }
 }
 
-export type ContentItems = Image | Text | Paragraph | Resource
+export type ContentItems = Image | Text | Paragraph | Resource | Video | Button | Form | Input
 
 export type ContentItemsType = {
   type: string,
   content: ContentItems
+}
+
+export const parseTextAddBrTags = (text: string): string => {
+  if (!text) return '';
+  return text.trim().replace(/[\n\r]/g, '<br/>')
+}
+export const parseTextRemoveBrTags = (text: string): string => {
+  if (!text) return '';
+  return text.trim().replace(/<br\s*[\/]?>/gi, ' ')
 }
 
 @Injectable({

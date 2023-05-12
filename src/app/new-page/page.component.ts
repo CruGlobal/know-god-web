@@ -287,7 +287,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
         .withSupportedFeatures(
           [
             XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
-            XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD
+            XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD,
+            XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT
           ])
         .withParseTips(false);
       const newParser = new XmlParser.ManifestParser(this.pullParserFactory, config);
@@ -301,10 +302,14 @@ export class PageNewComponent implements OnInit, OnDestroy {
           // Loop through and get all resources.
           this._pageBookIndex.included.forEach((resource) => {
             const { attributes, type } = resource
-            if (!attributes['is-zipped'] === true && type === 'attachment') {
-              this.getImage(attributes['file-file-name'])
+            if (type === "attachment") {
+              this.pageService.addImage(attributes['file-file-name'], attributes.file);
+              if (!attributes['is-zipped'] === true) {
+                this.getImage(attributes['file-file-name']);
+              }
             }
           })
+
 
           if (manifest?.pages?.length) {
             this._pageBookSubPagesManifest = manifest.pages;

@@ -10,11 +10,9 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-import { ContentInputNewComponent } from '../content-input/content-input.component';
-import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { ContentRepeaterNewComponent } from '../content-repeater/content-repeater.component';
+import { Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-form',
@@ -22,15 +20,15 @@ import { ContentItems } from 'src/app/services/xml-parser-service/xmp-parser.ser
   styleUrls: ['./content-form.component.css']
 })
 export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
-  @Input() item: ContentItems;
-  @ViewChildren(ContentInputNewComponent)
-  private _inputChildren: QueryList<ContentInputNewComponent>;
+  @Input() item: Content[];
+  @ViewChildren(ContentRepeaterNewComponent)
+  private _inputChildren: QueryList<ContentRepeaterNewComponent>;
 
   private _unsubscribeAll = new Subject<any>();
 
-  form: KgwContentComplexTypeForm;
+  form: Content[];
   ready: boolean;
-  items: Array<KgwContentElementItem>;
+  items: Content[];
   dir$: Observable<string>;
 
   constructor(private pageService: PageService) {
@@ -52,8 +50,7 @@ export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
             ) {
               this.ready = false;
               this.items = [];
-              // PIZZA
-              // this.form = this.item as KgwContentComplexTypeForm;
+              this.form = this.item;
               this.init();
             }
           }
@@ -72,35 +69,35 @@ export class ContentFormNewComponent implements OnInit, OnDestroy, OnChanges {
   }
 
   private init(): void {
-    // PIZZA
-    // this.items = this.pageService.checkContentElements(this.form.children);
+    this.items = this.item;
     this.ready = true;
   }
 
   private awaitEmailSignupFormDataNeeded(): void {
+    console.log('awaitEmailSignupFormDataNeeded')
     this.pageService.getEmailSignupFormData$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => {
         const emailFormInputs = [];
         const emailFormData = { name: '', email: '', destination_id: '' };
-        this._inputChildren.forEach((item, index) => {
-          switch (item.name) {
+        this._inputChildren.first.components.forEach((component) => {
+          switch (component.name) {
             case 'name':
-              emailFormData.name = item.value;
-              emailFormInputs.push(item);
+              emailFormData.name = component.value;
+              emailFormInputs.push(component);
               break;
             case 'email':
-              emailFormData.email = item.value;
-              emailFormInputs.push(item);
+              emailFormData.email = component.value;
+              emailFormInputs.push(component);
               break;
             case 'destination_id':
-              emailFormData.destination_id = item.value;
-              emailFormInputs.push(item);
+              emailFormData.destination_id = component.value;
+              emailFormInputs.push(component);
               break;
             default:
               break;
           }
-        });
+        })
 
         if (emailFormInputs.length === 3) {
           setTimeout(() => {

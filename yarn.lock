@@ -1277,6 +1277,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 19956152 (Upgraded Angular to v13)
 "@csstools/postcss-progressive-custom-properties@^1.1.0":
@@ -1312,6 +1313,12 @@
   version "0.9.0-SNAPSHOT.1241"
   resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1241.tgz#84309a92028be1b6314839c0e6f9ea299beb5134"
   integrity sha512-J/NCIGJe0e7Cb8spiOI+TM/YWyBtjv2WanzPC+ABSgoj+eAgTXrVr3ZMXnZl69rxPnS6eXtgaEif8Qch5q6cgA==
+=======
+"@cruglobal/godtools-shared@0.9.0-SNAPSHOT.1263":
+  version "0.9.0-SNAPSHOT.1263"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1263.tgz#babfc35656cab1a4a167db51273427edae79a2fb"
+  integrity sha512-ebDhPXU8je/Eb33f7ERHovzFzrftBGZ2WkVQ8zh57xnpbBAxiiWwpC40azKwmjuYsswcTUD0xLRZPF+jsaladA==
+>>>>>>> 5af1e01d (Images, Forms, inputsm videos, buttons and more edits)
   dependencies:
     sax "1.2.4"
 

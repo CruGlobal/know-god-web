@@ -10,7 +10,7 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { PageService } from '../../service/page-service.service';
-import { TractPage, Modal, Card, Hero, Header, CallToAction } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { TractPage, Modal, Card, Hero, Header, CallToAction, EventId } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-tract-new-page',
@@ -31,7 +31,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
   header: Header;
   hero: Hero;
   cards: Card[];
-  modal: any;
+  modal: Modal;
   callToAction: CallToAction;
   ready: boolean;
   hasPageHeader: boolean;
@@ -101,6 +101,7 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
   }
 
   private onFormAction(inputFunctionName: string): void {
+    console.log('inputFunctionName', inputFunctionName)
     let functionName = inputFunctionName;
 
     if (functionName.indexOf(' ') > -1) {
@@ -121,89 +122,81 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     } else {
+      console.log('this.cards', this.cards)
       if (this.cards.length) {
-        for (let index = 0; index < this.cards.length; index++) {
-          const element = this.cards[index];
-          // PIZZA
-          // if (
-          //   element.attributes.listeners &&
-          //   element.attributes.listeners === functionName
-          // ) {
-          //   this._cardShownOnFormAction = index;
-          //   isShowCard = true;
-          //   break;
-          // }
+        const cardListener = this.cards.find((card) => card.listeners ? card.listeners.find((listener) => listener.name === functionName) : null)
+        if (cardListener) {
+          this._cardShownOnFormAction = cardListener.position;
+          isShowCard = true;
         }
 
-        for (let index = 0; index < this.cards.length; index++) {
-          const element = this.cards[index];
-          // PIZZA
-          // if (
-          //   element.attributes.dismissListeners &&
-          //   element.attributes.dismissListeners === functionName
-          // ) {
-          //   isHideCard = true;
-          //   break;
-          // }
-        }
+        const cardDismissListener = this.cards.find((card) => card.dismissListeners ? card.dismissListeners.find((dismissListener) => dismissListener.name === functionName) : null)
+        if (cardDismissListener) isHideCard = true;
+        console.log('cardDismissListener', cardDismissListener)
       }
-
+      console.log('this.modal', this.modal)
       if (!isShowCard && !isHideCard && this.modal) {
-        isShowModal =
-          this.modal.attributes.listeners &&
-          this.modal.attributes.listeners === functionName;
-        isHideModal =
-          this.modal.attributes.dismissListeners &&
-          this.modal.attributes.dismissListeners === functionName;
+        const listeners = this.modal.listeners as EventId[];
+        const dismissListeners = this.modal.dismissListeners as EventId[];
+        isShowModal = !!(listeners.filter((listener) => listener.name === functionName)?.length);
+        isHideModal = !!(dismissListeners.filter((dismissListener) => dismissListener.name === functionName)?.length);
+        console.log('MODAL.isShowModal', isShowModal)
+        console.log('MODAL.isHideModal', isHideModal)
+        listeners.forEach((l) => {
+          console.log('Listener', l.name)
+        })
+dismissListeners.forEach((l) => {
+  console.log('dismissListener', l.name)
+})
+
+        // // PIZZA - below
+        // isShowModal =
+        //   this.modal.listeners &&
+        //   this.modal.listeners === functionName;
+        // isHideModal =
+        //   this.modal.dismissListeners &&
+        //   this.modal.dismissListeners === functionName;
       }
     }
 
+    console.log('isShowCard', isShowCard)
     if (isShowCard) {
+      // Set type as Any so we can edit isHidden property.
       const card_to_show = this.cards[this._cardShownOnFormAction];
-      // PIZZA
-      // card_to_show.attributes.hidden = false;
+      (card_to_show as any).isHidden = false
       this.pageService.formVisible();
       this.pageService.modalHidden();
 
-      if (card_to_show.label && card_to_show.label.text) {
-        // PIZZA
-        // this.pageService.changeHeader(card_to_show.label.text.value);
+      if (card_to_show.label?.text) {
+        this.pageService.changeHeader(card_to_show.label.text);
       }
+      console.log('this.cards', [...this.cards])
 
-      for (let index = 0; index < this.cards.length; index++) {
-        const element = this.cards[index];
-        // PIZZA
-        // if (
-        //   !element.attributes.hidden &&
-        //   (!element.attributes.listeners ||
-        //     element.attributes.listeners !== functionName)
-        // ) {
-        //   this._cardsHiddenOnFormAction.push(index);
-        // }
-      }
+      this.cards.forEach((card) => {
+        if (card.listeners?.length) {
+          card.listeners.forEach((listener) => {
+            if (!card.isHidden && listener.name !== functionName) {
+              this._cardsHiddenOnFormAction.push(card.position);
+            }
+          })
+        } else {
+          this._cardsHiddenOnFormAction.push(card.position);
+        }
+      })
 
-      if (this._cardsHiddenOnFormAction.length > 0) {
-        this._cardsHiddenOnFormAction.forEach((cardIndex) => {
-          // PIZZA
-          // this.cards[cardIndex].attributes.hidden = true;
-        });
+      console.log('this._cardsHiddenOnFormAction', this._cardsHiddenOnFormAction)
+      if (this._cardsHiddenOnFormAction.length) {
+        this.cards.filter((card) => this._cardsHiddenOnFormAction.includes(card.position)).map((card) => {
+          (card as any).isHidden = true
+        })
       }
     } else if (isHideCard) {
       this.next();
       setTimeout(() => {
         this.pageService.formHidden();
         this.pageService.modalHidden();
-        if (this._cardsHiddenOnFormAction.length > 0) {
-          this._cardsHiddenOnFormAction.forEach((cardIndex) => {
-            // PIZZA
-            // this.cards[cardIndex].attributes.hidden = false;
-          });
-        }
-
-        if (this._cardShownOnFormAction >= 0) {
-          // PIZZA
-          // this.cards[this._cardShownOnFormAction].attributes.hidden = true;
-        }
+        if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
+        if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
 
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
@@ -216,18 +209,9 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
       this.pageService.formHidden();
       this.next();
       setTimeout(() => {
-        if (this._cardsHiddenOnFormAction.length > 0) {
-          this._cardsHiddenOnFormAction.forEach((cardIndex) => {
-            // PIZZA
-            // this.cards[cardIndex].attributes.hidden = false;
-          });
-        }
-
-        if (this._cardShownOnFormAction >= 0) {
-          // PIZZA
-          // this.cards[this._cardShownOnFormAction].attributes.hidden = true;
-        }
-
+        if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
+        if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
+        
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
       }, 0);
@@ -236,37 +220,33 @@ export class TractPageNewComponent implements OnChanges, OnDestroy {
     }
   }
 
+  private setHiddenCardToShow(): void {
+    this.cards.filter((card) => this._cardsHiddenOnFormAction.includes(card.position)).map((card) => {
+      (card as any).isHidden = false
+    });
+  }
+
+  private setShownCardToHidden(): void  {
+    (this.cards.find((card) => card.position === this._cardShownOnFormAction) as any).isHidden = true
+  }
+
   private init(): void {
+    console.log('PAGE', this._page)
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
-    if (this._page.header) {
-      this.header = this._page.header;
-      this.hasPageHeader = !!this._page.header.title?.text
-    }
-
-    if (this._page.hero) {
-      this.hero = this._page.hero;
-    }
-
-    if (this.page.cards) {
-      const cards = this._page.cards
-      this.cards = cards;
-    }
-
-    const modals = this.page.modals
-    if (modals?.length) {
-      this.modal = modals[0];
-    }
-
-    const showCalltoAction = !!(this.page.callToAction?.label?.text || this.page.callToAction?.tip)
-    if (showCalltoAction) {
-      this.callToAction = this.page.callToAction;
-    }
+    this.header = this._page.header || null
+    this.hasPageHeader = !!this._page.header?.title?.text
+    this.hero = this._page.hero || null
+    this.cards = this._page.cards || []
+    this.modal = this._page.modals ? this._page.modals[0] : null
+    if (this._page.modals) console.log('this._page.modals[0]', this._page.modals[0])
+    this.callToAction = !!(this.page.callToAction?.label?.text || this.page.callToAction?.tip) ? this.page.callToAction : null
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((action) => {
+        console.log('this.onFormAction(action);', action)
         this.onFormAction(action);
       });
 

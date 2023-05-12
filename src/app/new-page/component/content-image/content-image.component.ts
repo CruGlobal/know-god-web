@@ -51,7 +51,12 @@ export class ContentImageNewComponent implements OnChanges {
   }
 
   private init(): void {
+    console.log('this.image.resource', this.image.resource)
     this.imgResource = this.pageService.getImageUrl(this.image.resource.name || '');
+    // Try to find image in all attachments
+    if (this.imgResource === this.image.resource.name && !this.imgResource.includes('http')) {
+      this.imgResource = this.pageService.findImage(this.image.resource.name) || ''
+    }
     this.ready = true;
   }
 }

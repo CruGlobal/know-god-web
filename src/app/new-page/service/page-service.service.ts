@@ -1,12 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { KgwContentComplexTypeParagraph } from '../model/xmlns/content/content-ct-paragraph';
-import { KgwContentComplexTypeText } from '../model/xmlns/content/content-ct-text';
-import { KgwContentComplexTypeImage } from '../model/xmlns/content/content-ct-image';
-import { KgwContentComplexTypeVideo } from '../model/xmlns/content/content-ct-video';
-import { KgwContentComplexTypeButton } from '../model/xmlns/content/content-ct-button';
-import { KgwContentElementItem } from '../model/xmlns/content/content-element';
-import { ContentItems, Content, Image, Paragraph, Text, ContentParser } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +20,7 @@ export class PageService {
   private _isModal = new BehaviorSubject<boolean>(false);
   private _imageUrlsDict = new BehaviorSubject<string[]>([]);
   private _animationUrlsDict = new BehaviorSubject<string[]>([]);
+  private _allAttachmentResources = new Map<string, string>();
 
   formAction$: Observable<string> = this._formAction.asObservable();
   contentEvent$: Observable<string> = this._formAction.asObservable();
@@ -53,8 +47,17 @@ export class PageService {
     this.clearAnimationsDict();
   }
 
+  addImage(pImageName: string, pImageUrl: string): void {
+    const tImages = this._allAttachmentResources.get(pImageName);
+    if (!tImages) this._allAttachmentResources.set(pImageName, pImageUrl)
+  }
+
+  findImage(pImageName: string): string {
+    const tImages = this._allAttachmentResources.get(pImageName);
+    return tImages || ''
+  }
+
   nextPage(): void {
-    console.log('pageService.nextPage');
     this._nextPage.next();
   }
 
@@ -63,6 +66,7 @@ export class PageService {
   }
 
   formAction(action: string): void {
+    console.log('formAction.action', action)
     this._formAction.next(action);
   }
 
@@ -162,143 +166,5 @@ export class PageService {
     }
 
     return false;
-  }
-
-  checkContentElements(
-    contentItems: Content[]
-  ): ContentItems[] {
-    if (!contentItems || !contentItems.length) {
-      return [];
-    }
-
-    const items: ContentItems[] = [];
-    contentItems.forEach((item) => {
-      const type = ContentParser(item)
-      switch (type) {
-        case 'paragraph':
-          const paragraph = item as Paragraph;
-          if (paragraph) {
-            items.push(paragraph);
-            // PIZZA
-            // if (!this.isRestricted(paragraph.attributes.restrictTo)) {
-            //   items.push(item);
-            // }
-          }
-          break;
-        case 'text':
-          const text = item as Text;
-          if (text) {
-            items.push(text);
-            // PIZZA
-            // if (!this.isRestricted(text.attributes.restrictTo)) {
-            //   items.push(item);
-            // }
-          }
-          break;
-        case 'image':
-          const image = item as Image;
-          if (image) {
-            items.push(image);
-            // PIZZA
-            // if (!this.isRestricted(image.attributes.restrictTo)) {
-            //   items.push(item);
-            // }
-          }
-          break;
-        // PIZZA
-        // case 'video':
-        //   const tVideo: KgwContentComplexTypeVideo =
-        //     item.element as KgwContentComplexTypeVideo;
-        //   if (tVideo) {
-        //     if (!this.isRestricted(tVideo.attributes.restrictTo)) {
-        //       items.push(item);
-        //     }
-        //   }
-        //   break;
-        // case 'button':
-        //   const tButton: KgwContentComplexTypeButton =
-        //     item.element as KgwContentComplexTypeButton;
-        //   if (tButton) {
-        //     if (!this.isRestricted(tButton.attributes.restrictTo)) {
-        //       items.push(item);
-        //     }
-        //   }
-        //   break;
-        default:
-          items.push(item as ContentItems);
-          break;
-      }
-    });
-
-    return items;
-  }
-
-  getFirstSupportedContentElement(
-    contentItems: Content[]
-  ): ContentItems {
-    if (!contentItems || !contentItems.length) {
-      return null;
-    }
-    let returnItem = null;
-    contentItems.forEach((item) => {
-      if (returnItem === null) {
-        const type = ContentParser(item)
-        switch (type) {
-          // Supported content element types
-          case 'paragraph':
-          case 'tabs':
-          case 'text':
-          case 'image':
-          case 'animation':
-          case 'link':
-          case 'form':
-          case 'input':
-          case 'fallback':
-            const tItems = this.checkContentElements([item]);
-            if (tItems.length === 1) {
-              returnItem = item;
-              return;
-            }
-            break;
-          // Button supported only when type is event or url
-          case 'button':
-            // PIZZA
-            // const tbItems = this.checkContentElements([item]);
-            // if (tbItems.length === 1) {
-            //   const tButton: KgwContentComplexTypeButton =
-            //     item.element as KgwContentComplexTypeButton;
-            //   if (
-            //     tButton.attributes.type &&
-            //     (tButton.attributes.type === 'url' ||
-            //       tButton.attributes.type === 'event')
-            //   ) {
-            //     returnItem = item;
-            //     return;
-            //   }
-            // }
-            break;
-          // Video supported only when provider is YouTube
-          case 'video':
-            // PIZZA
-            // const tvItems = this.checkContentElements([item]);
-            // if (tvItems.length === 1) {
-            //   const tVideo: KgwContentComplexTypeVideo =
-            //     item.element as KgwContentComplexTypeVideo;
-            //   if (
-            //     tVideo.attributes.provider &&
-            //     tVideo.attributes.provider === 'youtube'
-            //   ) {
-            //     returnItem = item;
-            //     return;
-            //   }
-            // }
-            break;
-          default:
-            break;
-        }
-      }
-    });
-
-    return returnItem;
   }
 }

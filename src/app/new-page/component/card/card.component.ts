@@ -66,19 +66,7 @@ export class CardNewComponent implements OnChanges {
     }
 
     this.content = this.card.content
-    
-    if (this.card.content.length) {
-        // PIZZA
-        // if (contentChild.contentType === 'form') {
-        //   const tForm: KgwContentComplexTypeForm =
-        //     contentChild as KgwContentComplexTypeForm;
-        //   const tItemToAdd: KgwContentElementItem = {
-        //     type: 'form',
-        //     element: tForm
-        //   };
-        //   this.content.push(tItemToAdd);
-        // }
-    }
+
     this.ready = true;
   }
 }

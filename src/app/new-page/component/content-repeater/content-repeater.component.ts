@@ -3,9 +3,12 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges
+  QueryList,
+  SimpleChanges,
+  ViewChildren
 } from '@angular/core';
 import { PageService } from '../../service/page-service.service';
+import { ContentInputNewComponent } from '../content-input/content-input.component'
 import { ContentItems, Content, ContentParser, ContentItemsType } from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-repeater',
@@ -14,6 +17,9 @@ import { ContentItems, Content, ContentParser, ContentItemsType } from 'src/app/
 })
 export class ContentRepeaterNewComponent implements OnChanges {
   @Input() items: Content[];
+  @ViewChildren(ContentInputNewComponent) components: QueryList<ContentInputNewComponent>
+  // protected components: QueryList<ContentRepeaterNewComponent>;
+
   ready: boolean;
   content: ContentItemsType[];
 
@@ -39,12 +45,26 @@ export class ContentRepeaterNewComponent implements OnChanges {
   }
 
   private init(): void {
+    console.log('this.items', this.items)
     if (this.items?.length) {
       this.items.forEach((content) => {
-        content['content'].forEach((c) => {
-          const type = ContentParser(c)
-          this.content.push({type, content: c as ContentItems})
-        })
+        console.log('content[content]', content['content'])
+        if (content['content']) {
+          const hasInputChildren = content['content'].filter((c) => ContentParser(c) === 'input');
+          console.log('hasInputChildren', hasInputChildren)
+          if (hasInputChildren?.length) {
+            this.content.push({type: 'form', content: content['content']})
+          } else {
+            content['content'].forEach((c) => {
+              const type = ContentParser(c)
+              console.log('type', type)
+              this.content.push({type, content: c as ContentItems})
+            })
+          }
+        } else {
+          const type = ContentParser(content)
+          if (type) this.content.push({type, content: content as ContentItems})
+        }
       })
     }
     this.ready = true;
