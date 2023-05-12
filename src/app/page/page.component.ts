@@ -21,6 +21,7 @@ import { KgwTractComplexTypePage } from './model/xmlns/tract/tract-ct-page';
 import { PageService } from './service/page-service.service';
 import { KgwManifestComplexTypeTip } from './model/xmlns/manifest/manifest-ct-tip';
 import { KgwTraining } from './model/xmlns/training/training-training';
+
 interface LiveShareSubscriptionPayload {
   data?: {
     type: 'navigation-event';
@@ -221,8 +222,25 @@ export class PageComponent implements OnInit, OnDestroy {
     '/' +
     page.src
 
-    const file = await this.pullParserFactory.readFile(fileName)
-    console.log('file', file)
+    // this.parserState.addFile = fileName
+
+    // const file = await this.pullParserFactory.readFile(fileName)
+    // console.log('file', file)
+    // console.log('ParserConfig', Parser.org.cru.godtools.shared.tool.parser.ParserConfig.createParserConfig())
+
+    // const newParser = new Parser.ManifestParser(this.pullParserFactory, Parser.org.cru.godtools.shared.tool.parser.ParserConfig.createParserConfig());
+    // console.log('defaultConfig', newParser.defaultConfig)
+    // const controller = new AbortController();
+    // const signal = controller.signal;
+    // console.log('fileName', fileName);
+
+    // try {
+    //   newParser.parseManifest(fileName, signal).then((data) => {
+    //     console.log('parseManifest', data)
+    //   })
+    // } catch(e) {
+    //   console.log('parseManifest.ERROR', e)
+    // }
 
 
 
@@ -326,10 +344,32 @@ export class PageComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
+      const fileName = APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+      const config = Parser.org.cru.godtools.shared.tool.parser.ParserConfig.createParserConfig()
+      console.log('2.ParserConfig', config)
+      // console.log('2.state', Parser.org.cru.godtools.shared.tool.state.State.createState)
+
+      const newParser = new Parser.ManifestParser(this.pullParserFactory, config);
+      // console.log('2.defaultConfig', newParser.defaultConfig)
+      const controller = new AbortController();
+      const signal = controller.signal;
+      console.log('2.fileName', fileName);
+
+      try {
+        newParser.parseManifest(fileName, signal).then((data) => {
+          console.log('2.parseManifest', data)
+          // console.log('2.parseManifest', data.manifest)
+          // console.log('2.parseManifest', data._pages)
+
+        })
+      } catch(e) {
+        console.log('2.parseManifest.ERROR', e)
+      }
+
+
+
       this.commonService
-        .downloadFile(
-          APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
-        )
+        .downloadFile(fileName)
         .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
         .subscribe((data) => {
           const enc = new TextDecoder('utf-8');

@@ -1274,6 +1274,7 @@
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 "@csstools/postcss-progressive-custom-properties@^1.1.0":
   version "1.3.0"
   resolved "https://registry.yarnpkg.com/@csstools/postcss-progressive-custom-properties/-/postcss-progressive-custom-properties-1.3.0.tgz#542292558384361776b45c85226b9a3a34f276fa"
@@ -1285,6 +1286,12 @@
   version "0.9.0-SNAPSHOT.1150"
   resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-SNAPSHOT.1150.tgz#8e5eab1f5814ccd30f8a1b077c2c9bb2a9c223d4"
   integrity sha512-BpzvngmsrdufsCdhjUEAFdkjAV6T33y01epRff7hG8HGc0oKxqX4ZIjwil4FomGGHA0AfV4gB6yMv/TwgStVIQ==
+=======
+"@cruglobal/godtools-shared@^0.9.0-PR398-SNAPSHOT.1155":
+  version "0.9.0-PR398-SNAPSHOT.1155"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0-PR398-SNAPSHOT.1155.tgz#a39b2394631f4aef8c368ef4805516c31c66236a"
+  integrity sha512-ICYpDiuv3szXM+P5GdMMHHYeJPEjp6EuYpAw9W249d2wOO1rWseCaq0zECF03ywzObylx3mZUqMh3xJMNdOKtQ==
+>>>>>>> a92d9ac1 (manifest & prettier)
   dependencies:
     sax "1.2.4"
 
@@ -7980,6 +7987,11 @@ typescript@4.6.4:
   version "4.6.4"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.6.4.tgz#caa78bbc3a59e6a5c510d35703f6a09877ce45e9"
   integrity sha512-9ia/jWHIEbo49HfjrLGfKbZSuWo9iTMwXO+Ca3pRsSpbsMbc7/IU8NKdCZVRRBafVPGnoJeFL76ZOAA84I9fEg==
+
+typescript@4.7.4:
+  version "4.7.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.7.4.tgz#1a88596d1cf47d59507a1bcdfb5b9dfe4d488235"
+  integrity sha512-C0WQT0gezHuw6AdY1M2jxUO83Rjf0HP7Sk1DtXj6j1EwkQNZrHAg2XPWlq62oqEhYvONq5pkC2Y9oPljWToLmQ==
 
 ua-parser-js@^0.7.30:
   version "0.7.35"
