@@ -249,9 +249,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
     ) {
       const manifestName = item.attributes['manifest-name'];
       const translationid = item.id;
-      const fileName = (environment.production) 
-      ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
-      : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName
+      const fileName = environment.production
+        ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
+        : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName;
       this.pullParserFactory.setOrigin(fileName);
       const config = XmlParser.ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)

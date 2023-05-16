@@ -24,4 +24,3 @@ export const SHAREDURL = new Map([
 
 export const EMBED_URL =
   '<iframe src="EMBED_URL" height="900" width="768" frameborder="0" allowfullscreen=""></iframe>';
-  

@@ -39,7 +39,9 @@ jobs:
         run: yarn lint
 
       - name: 🏗️ Build app
-        run: yarn build --configuration production
+        run: yarn build --configuration $buildEnvironment
+        env: 
+          buildEnvironment: ${{ github.ref == 'refs/heads/staging' && 'staging' || 'production' }}
 
   deploy:
     name: Deploy
@@ -68,7 +70,9 @@ jobs:
         run: yarn install
 
       - name: 🏗️ Build app
-        run: yarn build --configuration production
+        run: yarn build --configuration $buildEnvironment
+        env: 
+          buildEnvironment: ${{ github.ref == 'refs/heads/master' && 'production' || 'staging' }}
 
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
