@@ -213,7 +213,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
     }
   }
 
-  private async loadBookPage(page: TractPage): Promise<void> {
+  private loadBookPage(page: TractPage): void {
     const pageId = this._pageParams.pageid;
     const showpage: boolean = pageId
       ? page.position === pageId
@@ -473,7 +473,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
       const attributes = lang.attributes;
-      if (attributes.code && attributes.code === this._pageParams.langid) {
+      if (attributes?.code && attributes?.code === this._pageParams.langid) {
         this._selectedLanguage = lang;
         this.selectedLang = attributes.name;
         this.pageService.setDir(attributes.direction);
@@ -485,8 +485,8 @@ export class PageNewComponent implements OnInit, OnDestroy {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
         return (
-          x.relationships.language.data.id &&
-          x.relationships.language.data.id === this._selectedLanguage.id
+          x?.relationships?.language?.data?.id &&
+          x?.relationships?.language?.data?.id === this._selectedLanguage.id
         );
       });
       return y && y.id;
@@ -550,7 +550,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
       .subscribe((params) => {
         const { langid, bookid } = this._pageParams;
         const bookChanged =
-          langid !== params['langid'] && bookid !== params['bookid'];
+          langid !== params['langid'] || bookid !== params['bookid'];
 
         if (!bookChanged) {
           this._pageParams.pageid = Number(params['page']);

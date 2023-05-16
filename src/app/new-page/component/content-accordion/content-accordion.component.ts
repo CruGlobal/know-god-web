@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Accordion, ContentParser, Content, AccordionSection } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Accordion, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-accordion',
