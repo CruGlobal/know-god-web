@@ -4,8 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --configuration production",
-    "start:stag": "ng serve --configuration staging",
+    "start:staging": "ng serve --configuration staging",
     "build": "ng build --configuration production",
+    "build:staging": "ng build --configuration staging",
     "test": "ng test",
     "lint": "npx eslint 'src/**/*.{js,ts}' --quiet --fix",
     "e2e": "ng e2e",
