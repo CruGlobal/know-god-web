@@ -105,7 +105,8 @@ export const ContentParser = (content: any): string => {
     console.log('CONTENT: Accordion');
     return 'accordion';
   } else if (
-    content instanceof org.cru.godtools.shared.tool.parser.model.Accordion.Section
+    content instanceof
+    org.cru.godtools.shared.tool.parser.model.Accordion.Section
   ) {
     console.log('CONTENT: Section');
     return 'section';

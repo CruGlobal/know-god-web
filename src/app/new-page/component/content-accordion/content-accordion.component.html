@@ -2,12 +2,12 @@
   <ng-container *ngFor="let section of sections; trackBy: trackByFn">
     <div class="accordian mw568">
       <button class="accordion-header" (click)="onClick($event)">
-        {{section.section.header.text}}
+        {{ section.section.header.text }}
         <i class="far fa-chevron-right"></i>
       </button>
       <div class="accordion-content">
         <app-content-new-repeater
-            [items]="section.contents"
+          [items]="section.contents"
         ></app-content-new-repeater>
       </div>
     </div>

@@ -3,16 +3,19 @@ import {
   Input,
   OnChanges,
   OnInit,
-  SimpleChanges,
+  SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Accordion, Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  Accordion,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-accordion',
   templateUrl: './content-accordion.component.html',
-  styleUrls: ['./content-accordion.component.css'],
+  styleUrls: ['./content-accordion.component.css']
 })
 export class ContentAccordionNewComponent implements OnChanges {
   @Input() item: Accordion;
@@ -51,20 +54,20 @@ export class ContentAccordionNewComponent implements OnChanges {
     const hasActiveClass = parent.classList.contains('active');
     if (hasActiveClass) {
       event.target.parentElement.classList.remove('active');
-    } else { 
+    } else {
       event.target.parentElement.classList.add('active');
     }
   }
 
   private init(): void {
     this.item.sections.forEach((section) => {
-      const contents: Content[] = []
+      const contents: Content[] = [];
       if (section.content) {
         section.content.forEach((content) =>
-        content ? contents.push(content) : null,
+          content ? contents.push(content) : null
         );
       }
-      this.sections.push({section, contents})
+      this.sections.push({ section, contents });
     });
 
     this.ready = true;
