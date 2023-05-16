@@ -7,6 +7,14 @@
 
 # dependencies
 /node_modules
+.yarn/*
+!.yarn/cache
+!.yarn/releases
+!.yarn/patches
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+yarn-error.log
 
 # IDEs and editors
 /.idea

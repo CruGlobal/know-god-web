@@ -1,0 +1,13 @@
+<ng-container *ngIf="ready">
+  <div class="stepHeading noCounter">
+    <h1
+      class="ng-binding mw568"
+      dir="{{ dir$ | async }}"
+      [innerHTML]="titleText"
+    ></h1>
+  </div>
+
+  <ng-container *ngIf="content">
+    <app-content-new-repeater [items]="content"></app-content-new-repeater>
+  </ng-container>
+</ng-container>
