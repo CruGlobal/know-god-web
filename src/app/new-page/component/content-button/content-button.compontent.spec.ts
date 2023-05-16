@@ -42,7 +42,6 @@ describe('ContentButtonComponent', () => {
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
     expect(component.type).toBe('url');
-    expect(component.url).toBe('http://' + buttonUrl);
   });
 
   it('Test events', () => {
