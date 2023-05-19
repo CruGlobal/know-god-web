@@ -55,7 +55,7 @@
               "buildOptimizer": true,
               "aot": true
             },
-            "staging": {
+            "development": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -65,7 +65,7 @@
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.staging.ts"
+                  "with": "src/environments/environment.development.ts"
                 }
               ],
               "optimization": true,
@@ -89,8 +89,8 @@
             "production": {
               "browserTarget": "knowgod:build:production"
             },
-            "staging": {
-              "browserTarget": "knowgod:build:staging"
+            "development": {
+              "browserTarget": "knowgod:build:development"
             }
           }
         },
@@ -145,8 +145,8 @@
             "production": {
               "devServerTarget": "knowgod:serve:production"
             },
-            "staging": {
-              "devServerTarget": "knowgod:serve:staging"
+            "development": {
+              "devServerTarget": "knowgod:serve:development"
             }
           }
         }
