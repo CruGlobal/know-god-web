@@ -65,6 +65,11 @@ jobs:
         with:
           node-version: '16.x'
 
+      - name: Echo Environment
+        run: echo $name
+        env:
+          name: ${{ (github.ref == 'refs/heads/master' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
+
       - name: 📦 Install dependencies
         run: yarn install
 
