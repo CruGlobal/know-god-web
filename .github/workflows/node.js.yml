@@ -30,6 +30,11 @@ jobs:
         with:
           node-version: '16.x'
 
+      - name: Echo Test Secret
+        run: echo $TEST_SECRET
+        env:
+          TEST_SECRET: ${{ secrets.TEST_SECRET_TEST }}
+
       - name: 📦 Install dependencies
         run: yarn install
 
@@ -40,7 +45,7 @@ jobs:
         run: yarn lint
 
       - name: 🏗️ Build app
-        run: yarn build --configuration production
+        run: yarn build
 
   deploy:
     name: Deploy
@@ -65,18 +70,11 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: Echo Test Secret
-        run: echo $TEST_SECRET
-        env:
-          TEST_SECRET: s3://${{ secrets.TEST_SECRET }}
-
       - name: 📦 Install dependencies
         run: yarn install
 
       - name: 🏗️ Build app
-        run: yarn build --configuration $buildEnvironment
-        env: 
-          buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'development' || 'production' }}
+        run: yarn build --configuration production
 
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
