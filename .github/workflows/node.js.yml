@@ -71,7 +71,7 @@ jobs:
       - name: 🏗️ Build app
         run: yarn build --configuration $buildEnvironment
         env: 
-          buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'staging' || 'production' }}
+          buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'development' || 'production' }}
 
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
