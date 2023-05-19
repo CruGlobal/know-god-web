@@ -3,8 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
+    "start": "ng serve --configuration production",
+    "start:dev": "ng serve --configuration development",
+    "build": "ng build --configuration production",
+    "build:dev": "ng build --configuration development",
     "test": "ng test",
     "lint": "npx eslint 'src/**/*.{js,ts}' --quiet --fix",
     "e2e": "ng e2e",
