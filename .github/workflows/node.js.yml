@@ -65,10 +65,10 @@ jobs:
         with:
           node-version: '16.x'
 
-      - name: Echo Environment
-        run: echo $name
+      - name: Echo Test Secret
+        run: echo $TEST_SECRET
         env:
-          name: ${{ (github.ref == 'refs/heads/master' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
+          TEST_SECRET: s3://${{ secrets.TEST_SECRET }}
 
       - name: 📦 Install dependencies
         run: yarn install
