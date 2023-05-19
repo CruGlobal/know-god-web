@@ -47,7 +47,7 @@ jobs:
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/development')
     runs-on: ubuntu-latest
     environment:
-      name: ${{GITHUB_REF##*/}}
+      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
     needs: build
     permissions:
       id-token: write
@@ -71,7 +71,7 @@ jobs:
       - name: 🏗️ Build app
         run: yarn build --configuration $buildEnvironment
         env: 
-          buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'development' || 'production' }}
+          buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'staging' || 'production' }}
 
       - name: Copy embed.js
         run: cp embed/embed.js dist/embed.js
