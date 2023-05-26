@@ -265,7 +265,7 @@ app-content-new-repeater > app-content-new-text {
     padding-right: 44px;
   }
   
-  .modal-paragraph > app-content-text > p.textContent {
+  .modal-paragraph > app-content-new-text > p.textContent {
     padding-left: 44px;
     padding-right: 44px;    
   }

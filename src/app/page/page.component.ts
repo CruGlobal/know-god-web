@@ -7,9 +7,9 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
-import { delay, filter, takeUntil } from 'rxjs/operators';
 import { ViewportScroller } from '@angular/common';
 import * as ActionCable from '@rails/actioncable';
+import { delay, filter, takeUntil } from 'rxjs/operators';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { IPageParameters } from './model/page-parameters';

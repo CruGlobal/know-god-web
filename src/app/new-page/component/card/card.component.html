@@ -1,8 +1,11 @@
 <div
-  attr.id="card-{{ cardIndex }}"
+  attr.id="card-{{ cardPosition }}"
   class="cardContent"
   *ngIf="ready"
   [hidden]="card.isHidden"
+  [ngClass]="{
+    hasHeading: !(card.listeners.length && card.dismissListeners.length)
+  }"
 >
   <h4
     class="mw568 cardHeading ng-binding"
