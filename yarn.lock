@@ -1267,17 +1267,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-<<<<<<< HEAD
-"@cruglobal/godtools-shared@0.9.0":
-  version "0.9.0"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.0.tgz#20db47f4130031af6d5eab325058a8fc39fbbbd4"
-  integrity sha512-2PVTZGMIgS/obMPUd2IyuKXAaWf+rXgy2V6e+P9rhIioR5mS4azoS135P+hHHgP7vX0JXyaE1DyJCOJ1V62+mA==
-=======
 "@cruglobal/godtools-shared@0.9.1":
   version "0.9.1"
   resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.1.tgz#ff9163256815289a93d1ff3ff3729919a8fe97b9"
   integrity sha512-4QRlGN1ODnTmzsGOc+HgD3BR+adkWXtfzFUWoX6ky37aKnRfwLkW7k5sQFf26go2W1CzmqKJCKh1AiV5Dg9mZQ==
->>>>>>> master
   dependencies:
     sax "1.2.4"
 
@@ -1535,11 +1528,6 @@
   resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
   integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
 
-"@scarf/scarf@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.1.1.tgz#d8b9f20037b3a37dbf8dcdc4b3b72f9285bfce35"
-  integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
-
 "@schematics/angular@13.3.11":
   version "13.3.11"
   resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-13.3.11.tgz#7e3264c0da1ab16967eed85ef79c5445735c6160"
@@ -1702,15 +1690,9 @@
   integrity sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==
 
 "@types/node@*", "@types/node@>=10.0.0":
-<<<<<<< HEAD
-  version "18.15.12"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.12.tgz#833756634e78c829e1254db006468dadbb0c696b"
-  integrity sha512-Wha1UwsB3CYdqUm2PPzh/1gujGCNtWVUYF0mB00fJFoR4gTyWTDPjSm+zBF787Ahw8vSGgBja90MkgFwvB86Dg==
-=======
   version "20.1.5"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-20.1.5.tgz#e94b604c67fc408f215fcbf3bd84d4743bf7f710"
   integrity sha512-IvGD1CD/nego63ySR7vrAKEX3AJTcmrAN2kn+/sDNLi1Ff5kBzDeEdqWDplK+0HAEoLYej137Sk0cUU8OLOlMg==
->>>>>>> master
 
 "@types/node@^12.11.1":
   version "12.20.55"
@@ -5535,17 +5517,10 @@ log4js@^6.4.1:
     rfdc "^1.3.0"
     streamroller "^3.1.5"
 
-<<<<<<< HEAD
-lottie-web@5.9.6:
-  version "5.9.6"
-  resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.9.6.tgz#62ae68563355d3e04aa75d53dec3dd4bea0e57c9"
-  integrity sha512-JFs7KsHwflugH5qIXBpB4905yC1Sub2MZWtl/elvO/QC6qj1ApqbUZJyjzJseJUtVpgiDaXQLjBlIJGS7UUUXA==
-=======
 lottie-web@5.11.0:
   version "5.11.0"
   resolved "https://registry.yarnpkg.com/lottie-web/-/lottie-web-5.11.0.tgz#04bb9fd6cdfbb10e586985dd666de6c727619d95"
   integrity sha512-9vSt0AtdOH98GKDXwD5LPfFg9Pcmxt5+1BllAbudKM5iqPxpJnJUfuGaP45OyudDrESCOBgsjnntVUTygBNlzw==
->>>>>>> master
 
 lru-cache@^5.1.1:
   version "5.1.1"
