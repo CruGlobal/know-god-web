@@ -50,7 +50,9 @@ export class ContentAccordionNewComponent implements OnChanges {
   }
 
   onClick(event: any) {
-    const parent = event.target.classList.contains('far') ? event.target.parentElement.parentElement : event.target.parentElement;
+    const parent = event.target.classList.contains('far')
+      ? event.target.parentElement.parentElement
+      : event.target.parentElement;
     const hasActiveClass = parent.classList.contains('active');
     if (hasActiveClass) {
       parent.classList.remove('active');
