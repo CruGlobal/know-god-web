@@ -28,8 +28,18 @@
   top: 50%;
 }
 
-.accordian.mw568.active .accordion-header i {
-  transform: translateY(-50%) rotate(-90deg);
+.accordion-header i.fa-plus {
+    opacity: 1;
+}
+.accordion-header i.fa-minus {
+  opacity: 0;
+}
+
+.accordian.mw568.active .accordion-header i.fa-plus  {
+  opacity: 0;
+}
+.accordian.mw568.active .accordion-header i.fa-minus  {
+  opacity: 1;
 }
 
 /* Style the accordion panel. Note: hidden by default */
