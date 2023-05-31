@@ -51,12 +51,12 @@
   transition: all 0.5s ease 0s;
   border: 1px solid var(--kg-white);
   background-color: var(--kg-white);
-  padding: 0px 10px;
+  padding: 0px 24px;
 }
 
 .accordian.active .accordion-content {
   border: 1px solid var(--kg-blue);
-  padding: 0px 10px 10px;
+  padding: 0px 24px 24px;
   max-height: 400px;
 }
 
