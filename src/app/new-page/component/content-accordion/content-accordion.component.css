@@ -28,8 +28,18 @@
   top: 50%;
 }
 
-.accordian.mw568.active .accordion-header i {
-  transform: translateY(-50%) rotate(-90deg);
+.accordion-header i.fa-plus {
+    opacity: 1;
+}
+.accordion-header i.fa-minus {
+  opacity: 0;
+}
+
+.accordian.mw568.active .accordion-header i.fa-plus  {
+  opacity: 0;
+}
+.accordian.mw568.active .accordion-header i.fa-minus  {
+  opacity: 1;
 }
 
 /* Style the accordion panel. Note: hidden by default */
@@ -41,12 +51,12 @@
   transition: all 0.5s ease 0s;
   border: 1px solid var(--kg-white);
   background-color: var(--kg-white);
-  padding: 0px 10px;
+  padding: 0px 24px;
 }
 
 .accordian.active .accordion-content {
   border: 1px solid var(--kg-blue);
-  padding: 0px 10px 10px;
+  padding: 0px 24px 24px;
   max-height: 400px;
 }
 
