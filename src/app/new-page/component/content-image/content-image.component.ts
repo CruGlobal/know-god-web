@@ -7,7 +7,10 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { Image } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  DimensionParser,
+  Image
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
   selector: 'app-content-new-image',
   templateUrl: './content-image.component.html',
@@ -20,6 +23,7 @@ export class ContentImageNewComponent implements OnChanges {
   ready: boolean;
   imgResource: string;
   isFirstPage$: Observable<boolean>;
+  width: string;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
@@ -57,6 +61,10 @@ export class ContentImageNewComponent implements OnChanges {
       this.imgResource =
         this.pageService.findAttachment(this.image.resource.name) || '';
     }
+    const dimensions = DimensionParser(this.image.width);
+    this.width = dimensions?.value
+      ? dimensions.value + dimensions.symbol
+      : null;
     this.ready = true;
   }
 }

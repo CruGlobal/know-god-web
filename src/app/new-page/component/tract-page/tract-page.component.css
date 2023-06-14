@@ -72,7 +72,6 @@ app-tract-new-page {
   padding-bottom: 25px;
   color: white;
   background-color: var(--kg-blue);
-  margin-bottom: -24px;
 }
 
 .stepHeading h1 {
@@ -271,18 +270,3 @@ app-content-new-repeater > app-content-new-text {
   }
 }
 
-app-page-new-hero > app-content-new-image:first-child {
-  margin-top: -48px;
-}
-
-app-page-new-hero > app-content-new-repeater > app-content-new-image:first-child {
-  margin-top: -48px;
-}
-
-div#toolContent > app-page-new-hero:first-child {
-  padding-top: 0px !important;
-}
-
-div#toolContent > app-page-new-hero:first-child > app-content-new-repeater > app-content-new-image:first-child {
-  margin-top: -24px;
-}

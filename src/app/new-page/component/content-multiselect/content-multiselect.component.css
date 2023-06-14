@@ -1,0 +1,28 @@
+.multiselect {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.multiselect-option app-content-new-repeater {
+  margin: 0;
+}
+
+.multiselect[data-columns="1"] app-content-new-multiselect-option {
+  flex: 0 1 100%;
+}
+
+.multiselect[data-columns="2"] app-content-new-multiselect-option {
+  flex: 0 1 calc(50% - 15px);
+}
+
+.multiselect[data-columns="3"] app-content-new-multiselect-option {
+  flex: 0 1 calc(33.3% - 10px);
+}
+
+.multiselect[data-columns="4"] app-content-new-multiselect-option {
+  flex: 0 1 calc(25% - 11.25px);
+
+}
+
+

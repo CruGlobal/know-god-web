@@ -12,7 +12,12 @@ import {
   Video,
   TractPageCard,
   Modal,
-  Animation
+  Animation,
+  Multiselect,
+  MultiselectOption,
+  Flow,
+  FlowItem,
+  Card
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { org } from '@cruglobal/godtools-shared';
 
@@ -244,7 +249,7 @@ export const mockVideo = (videoId): Video => {
   };
 };
 
-export const mockCard = (
+export const mockTractCard = (
   label: string,
   position: number,
   listeners,
@@ -280,6 +285,77 @@ export const mockModal = (title: string, listeners): Modal => {
     _listeners: null,
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
+    ...standardTypeValues()
+  };
+};
+
+export const mockMultiselectOption = (
+  initialSelectedValue
+): MultiselectOption => {
+  let selectedValue = initialSelectedValue;
+  return {
+    style: {
+      name: 'CARD',
+      ordinal: 0
+    },
+    backgroundColor: '#000000',
+    selectedColor: '#ffffff',
+    multiselect: null,
+    content: [],
+    _content: null,
+    isSelected: () => selectedValue,
+    isSelectedFlow: null,
+    watchIsSelected: (state, callback) => null,
+    toggleSelected: () => {
+      selectedValue = !selectedValue;
+      return selectedValue;
+    },
+    ...standardTypeValues()
+  };
+};
+
+export const mockMultiselect = (): Multiselect => {
+  return {
+    columns: 4,
+    options: [mockMultiselectOption(false), mockMultiselectOption(true)],
+    _options: null,
+    ...standardTypeValues()
+  };
+};
+
+export const mockFlowItem = (initialSelectedValue): FlowItem => {
+  return {
+    flow: null,
+    _content: null,
+    content: [mockImage('filename', 'url_to_path')],
+    ...standardTypeValues(),
+    isGone: () => initialSelectedValue,
+    watchIsGone: () => null
+  };
+};
+
+export const mockFlow = (): Flow => {
+  return {
+    items: [
+      mockFlowItem(false),
+      mockFlowItem(false),
+      mockFlowItem(true),
+      mockFlowItem(true),
+      mockFlowItem(false)
+    ],
+    _items: null,
+    ...standardTypeValues()
+  };
+};
+
+export const mockCard = (isClickable): Card => {
+  return {
+    backgroundColor: '#000000',
+    _content: null,
+    url: 'URL',
+    content: mockContent(),
+    isClickable,
+    events: [createEventId('event-1', 'namespace'), createEventId('event-2')],
     ...standardTypeValues()
   };
 };
@@ -326,9 +402,9 @@ export const mockTractPage = (
     cardTextColor: '#000000',
     cards: cardLabel
       ? [
-          mockCard(`${cardLabel}-0`, 0, `${cardLabel}-0`, false),
-          mockCard(`${cardLabel}-1`, 1, `${cardLabel}-1`, true),
-          mockCard(`${cardLabel}-2`, 2, `${cardLabel}-2`, true)
+          mockTractCard(`${cardLabel}-0`, 0, `${cardLabel}-0`, false),
+          mockTractCard(`${cardLabel}-1`, 1, `${cardLabel}-1`, true),
+          mockTractCard(`${cardLabel}-2`, 2, `${cardLabel}-2`, true)
         ]
       : [],
     modals: [mockModal(modalTitle, `${modalTitle}-0`)],

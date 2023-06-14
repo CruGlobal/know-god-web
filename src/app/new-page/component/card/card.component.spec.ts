@@ -1,14 +1,14 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { PageService } from '../../service/page-service.service';
-import { mockCard } from '../../../_tests/mocks';
+import { mockTractCard } from '../../../_tests/mocks';
 import { CardNewComponent } from './card.component';
 
 describe('ContentCardComponent', () => {
   let component: CardNewComponent;
   let fixture: ComponentFixture<CardNewComponent>;
   let pageService: PageService;
-  const card = mockCard('test label', 0, 'test-label-listener', false);
+  const card = mockTractCard('test label', 0, 'test-label-listener', false);
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();

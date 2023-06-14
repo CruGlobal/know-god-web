@@ -1,0 +1,17 @@
+<ng-container *ngIf="ready">
+  <div
+    *ngIf="!card.isClickable"
+    class="card"
+    [ngStyle]="{ 'background-color': background }"
+  >
+    <app-content-new-repeater [items]="contents"></app-content-new-repeater>
+  </div>
+  <a
+    *ngIf="card.isClickable"
+    class="card clickable"
+    (click)="eventClick()"
+    [ngStyle]="{ 'background-color': background }"
+  >
+    <app-content-new-repeater [items]="contents"></app-content-new-repeater>
+  </a>
+</ng-container>
