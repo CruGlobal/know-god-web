@@ -53,6 +53,11 @@ import { CalltoactionNewComponent } from './new-page/component/calltoaction/call
 import { ModalNewComponent } from './new-page/component/modal/modal.component';
 import { ContentSpacerNewComponent } from './new-page/component/content-spacer/content-spacer.component';
 import { ContentRepeaterNewComponent } from './new-page/component/content-repeater/content-repeater.component';
+import { ContentMultiselectNewComponent } from './new-page/component/content-multiselect/content-multiselect.component';
+import { ContentMultiselectOptionNewComponent } from './new-page/component/content-multiselect-option/content-multiselect-option.component';
+import { ContentFlowNewComponent } from './new-page/component/content-flow/content-flow.component';
+import { ContentFlowItemNewComponent } from './new-page/component/content-flow-item/content-flow-item.component';
+import { ContentCardNewComponent } from './new-page/component/content-card/content-card.component';
 
 const appRoutes: Routes = [
   { path: 'old/:langid/embed/:bookid', component: PageComponent },
@@ -126,7 +131,12 @@ export function playerFactory() {
     CalltoactionNewComponent,
     ModalNewComponent,
     ContentSpacerNewComponent,
-    ContentRepeaterNewComponent
+    ContentRepeaterNewComponent,
+    ContentMultiselectNewComponent,
+    ContentMultiselectOptionNewComponent,
+    ContentFlowNewComponent,
+    ContentFlowItemNewComponent,
+    ContentCardNewComponent
   ],
   imports: [
     BrowserModule,

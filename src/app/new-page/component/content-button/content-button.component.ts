@@ -11,6 +11,7 @@ import {
   Button,
   EventId
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { formatEvents } from 'src/app/shared/formatEvents';
 
 @Component({
   selector: 'app-content-new-button',
@@ -28,6 +29,8 @@ export class ContentButtonNewComponent implements OnChanges {
   type: string;
   events: EventId[];
   url: string;
+  buttonTextColor: string;
+  buttonBgColor: string;
   dir$: Observable<string>;
 
   constructor(private pageService: PageService) {
@@ -50,6 +53,8 @@ export class ContentButtonNewComponent implements OnChanges {
               this.url = '';
               this.text = null;
               this.button = this.item;
+              this.buttonTextColor = '';
+              this.buttonBgColor = '';
               this.init();
             }
           }
@@ -60,18 +65,14 @@ export class ContentButtonNewComponent implements OnChanges {
 
   formAction(): void {
     if (this.events && this.type === 'event') {
-      let action = '';
-      this.events.forEach((event, idx) => {
-        const value = event?.namespace
-          ? `${event.namespace}:${event.name}`
-          : event.name;
-        action += idx ? ` ${value}` : value;
-      });
-      this.pageService.formAction(action);
+      this.pageService.formAction(formatEvents(this.events));
     }
   }
 
   private init(): void {
+    // TODO Allow Button styles when Books are ready
+    // this.buttonTextColor = this.button.buttonColor || ''
+    // this.buttonBgColor = this.button.backgroundColor || ''
     if (this.button.text) {
       this.text = this.button.text;
       this.buttonText = this.text?.text || '';

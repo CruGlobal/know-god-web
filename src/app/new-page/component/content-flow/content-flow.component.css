@@ -1,0 +1,9 @@
+.flow {
+  margin-top: 25px;
+  text-align: center;
+}
+
+.flow app-content-new-flow-item {
+  margin: 0;
+  display: inline-block;
+}

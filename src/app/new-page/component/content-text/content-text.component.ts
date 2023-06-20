@@ -11,6 +11,7 @@ import {
   Text,
   parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+
 @Component({
   selector: 'app-content-new-text',
   templateUrl: './content-text.component.html',
@@ -24,6 +25,8 @@ export class ContentTextNewComponent implements OnChanges {
   textValue: string;
   isFirstPage$: Observable<boolean>;
   dir$: Observable<string>;
+  textColor: string;
+  styles: any;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
@@ -51,6 +54,14 @@ export class ContentTextNewComponent implements OnChanges {
   }
 
   private init(): void {
+    const styles = {};
+    this.text.textStyles.forEach((style) => {
+      if (style.name === 'BOLD') styles['font-weight'] = 'bold';
+      if (style.name === 'ITALIC') styles['font-style'] = 'italic';
+      if (style.name === 'UNDERLINE') styles['text-decoration'] = 'underline';
+    });
+    this.styles = styles;
+    this.textColor = this.text.textColor || null;
     const text = parseTextAddBrTags(this.text.text);
     this.textValue = text || '';
     this.ready = true;

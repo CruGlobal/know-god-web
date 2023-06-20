@@ -1,0 +1,19 @@
+.card {
+  box-shadow: 0 0 10px 2px #00000029;
+  border-radius: 8px;
+  display: block;
+  min-width: 120px;
+  padding: 20px;
+}
+
+.card app-content-new-repeater {
+  margin-top: 0;
+}
+
+.card.clickable {
+  cursor: pointer;
+}
+
+.card.clickable:hover {
+  box-shadow: 0 0 10px 5px #00000033;
+}
