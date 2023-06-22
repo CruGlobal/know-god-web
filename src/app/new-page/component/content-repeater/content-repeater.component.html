@@ -48,6 +48,18 @@
       *ngIf="item.type === 'spacer'"
       [item]="item.content"
     ></app-content-new-spacer>
+    <app-content-new-multiselect
+      *ngIf="item.type === 'multiselect'"
+      [item]="item.content"
+    ></app-content-new-multiselect>
+    <app-content-new-flow
+      *ngIf="item.type === 'flow'"
+      [item]="item.content"
+    ></app-content-new-flow>
+    <app-content-new-card
+      *ngIf="item.type === 'card'"
+      [item]="item.content"
+    ></app-content-new-card>
     <app-training-tip
       *ngIf="item.type === 'tip'"
       [item]="item.content"

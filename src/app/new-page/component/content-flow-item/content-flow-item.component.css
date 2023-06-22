@@ -1,0 +1,12 @@
+.flow-item {
+  width: 130px;
+  margin-left: 7.5px;
+  margin-right: 7.5px;
+  padding: 5px;
+  margin-top: 0px;
+}
+
+
+.flow-item app-content-new-repeater {
+  margin-top: 0;
+}

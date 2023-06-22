@@ -53,6 +53,8 @@ export class ContentRepeaterNewComponent implements OnChanges {
         const type = ContentParser(content);
         if (type === 'form') {
           this.content.push({ type, content: content['content'] });
+        } else if (type === 'card') {
+          this.content.push({ type, content });
         } else if (content['content']) {
           content['content'].forEach((c) => {
             const contentType = ContentParser(c);

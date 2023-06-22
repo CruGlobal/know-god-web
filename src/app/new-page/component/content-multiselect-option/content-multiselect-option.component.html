@@ -1,0 +1,11 @@
+<div
+  *ngIf="ready"
+  [ngStyle]="{
+    'background-color': selected ? option.selectedColor : option.backgroundColor
+  }"
+  class="multiselect-option"
+  [ngClass]="{ selected: selected }"
+  (click)="onClick()"
+>
+  <app-content-new-repeater [items]="contents"></app-content-new-repeater>
+</div>
