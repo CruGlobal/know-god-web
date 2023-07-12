@@ -30,7 +30,7 @@
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^4.2.1",
-    "lottie-web": "5.11.0",
+    "lottie-web": "5.12.2",
     "ngx-lottie": "8.3.0",
     "ngx-toastr": "13.2.1",
     "rxjs": "^6.6.7",
