@@ -26,7 +26,7 @@
     "@angular/router": "^13.4.0",
     "@cruglobal/godtools-shared": "0.9.1",
     "@rails/actioncable": "^7.0.0",
-    "core-js": "^2.5.4",
+    "core-js": "^3.0.0",
     "eslint-config-prettier": "^8.8.0",
     "eslint-plugin-import": "^2.27.5",
     "eslint-plugin-prettier": "^5.0.0",
