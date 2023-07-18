@@ -39,6 +39,9 @@ jobs:
       - name: 💨 Lint check
         run: yarn lint
 
+      - name: 🧪 Run Tests
+        run: yarn test --no-watch
+
       - name: 🏗️ Build app
         run: yarn build
 
