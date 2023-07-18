@@ -4,5 +4,6 @@
     "config:base"
   ],
   "labels": [ "dependencies" ],
+  "separateMultipleMajor": true,
   "dependencyDashboard": true  
 }
