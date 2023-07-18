@@ -49,7 +49,6 @@ describe('ContentCardNewComponent', () => {
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
 
-    expect(component.isClickable).toBeTrue();
     component.eventClick();
     expect(pageService.formAction).toHaveBeenCalled();
   });

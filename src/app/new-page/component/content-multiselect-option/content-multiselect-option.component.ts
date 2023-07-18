@@ -45,7 +45,7 @@ export class ContentMultiselectOptionNewComponent implements OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.selectedWatcher.close();
+    if (this.selectedWatcher) this.selectedWatcher.close();
   }
 
   onClick() {

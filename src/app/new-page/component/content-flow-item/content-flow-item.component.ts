@@ -43,7 +43,7 @@ export class ContentFlowItemNewComponent implements OnChanges {
   }
 
   ngOnDestroy(): void {
-    this.isHiddenWatcher.close();
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   private init(): void {

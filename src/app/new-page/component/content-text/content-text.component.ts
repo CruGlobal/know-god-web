@@ -55,7 +55,7 @@ export class ContentTextNewComponent implements OnChanges {
 
   private init(): void {
     const styles = {};
-    this.text.textStyles.forEach((style) => {
+    this.text?.textStyles?.forEach((style) => {
       if (style.name === 'BOLD') styles['font-weight'] = 'bold';
       if (style.name === 'ITALIC') styles['font-style'] = 'italic';
       if (style.name === 'UNDERLINE') styles['text-decoration'] = 'underline';
