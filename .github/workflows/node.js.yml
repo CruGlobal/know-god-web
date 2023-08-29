@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   build:
-    name: Checks & Build Test
+    name: Checks, Tests & Build
     runs-on: ubuntu-latest
 
     steps:
@@ -38,6 +38,9 @@ jobs:
 
       - name: 💨 Lint check
         run: yarn lint
+
+      - name: ✅ Run Tests
+        run: yarn test --no-watch
 
       - name: 🏗️ Build app
         run: yarn build

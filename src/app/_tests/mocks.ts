@@ -355,7 +355,9 @@ export const mockCard = (isClickable): Card => {
     url: 'URL',
     content: mockContent(),
     isClickable,
-    events: [createEventId('event-1', 'namespace'), createEventId('event-2')],
+    events: isClickable
+      ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
+      : [],
     ...standardTypeValues()
   };
 };
