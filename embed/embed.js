@@ -41,7 +41,10 @@
         console.log('e.data', e.data);
         console.log('newiframeTop', newiframeTop);
         console.log('window.pageYOffset', window.pageYOffset);
-        console.log('window.pageYOffset > newiframeTop', window.pageYOffset > newiframeTop);
+        console.log(
+          'window.pageYOffset > newiframeTop',
+          window.pageYOffset > newiframeTop
+        );
         if (window.pageYOffset > newiframeTop) {
           window.scrollTo({
             top: newiframeTop
