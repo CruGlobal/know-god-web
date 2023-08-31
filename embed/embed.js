@@ -37,7 +37,9 @@
         iframe.style.height = e.data + 'px';
 
         //scroll to top of iframe
-        var newiframeTop = document.getElementById('knowGodEmbed').offsetTop;
+        var newiframeTop =
+          document.getElementById('knowGodEmbed').getBoundingClientRect().top +
+          window.scrollY;
         if (window.pageYOffset > newiframeTop) {
           window.scrollTo({
             top: newiframeTop
