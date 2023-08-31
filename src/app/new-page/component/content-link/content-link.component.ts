@@ -12,6 +12,7 @@ import {
   Text,
   EventId
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { formatEvents } from 'src/app/shared/formatEvents';
 
 @Component({
   selector: 'app-content-new-link',
@@ -56,14 +57,7 @@ export class ContentLinkNewComponent implements OnChanges {
 
   formAction(): void {
     if (this.events) {
-      let action = '';
-      this.events.forEach((event, idx) => {
-        const value = event?.namespace
-          ? `${event.namespace}:${event.name}`
-          : event.name;
-        action += idx ? ` ${value}` : value;
-      });
-      this.pageService.formAction(action);
+      this.pageService.formAction(formatEvents(this.events));
     }
   }
 

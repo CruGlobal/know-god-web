@@ -23,8 +23,7 @@
     knowGodEmbed.appendChild(iframe);
 
     //listen for iframe height changes
-    var previousHeight = 0,
-      iframeTop = iframe.offsetTop;
+    var previousHeight = 0;
     var eventMethod = window.addEventListener
       ? 'addEventListener'
       : 'attachEvent';
@@ -38,9 +37,10 @@
         iframe.style.height = e.data + 'px';
 
         //scroll to top of iframe
-        if (window.pageYOffset > iframeTop) {
+        var newiframeTop = document.getElementById('knowGodEmbed').offsetTop;
+        if (window.pageYOffset > newiframeTop) {
           window.scrollTo({
-            top: iframeTop
+            top: newiframeTop
           });
         }
 

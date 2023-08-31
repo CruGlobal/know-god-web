@@ -1,0 +1,9 @@
+<ng-container *ngIf="ready">
+  <div class="flow mw568">
+    <app-content-new-flow-item
+      *ngFor="let item of items; trackBy: trackByFn"
+      [item]="item"
+    >
+    </app-content-new-flow-item>
+  </div>
+</ng-container>
