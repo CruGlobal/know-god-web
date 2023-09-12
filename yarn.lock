@@ -1870,10 +1870,10 @@
   dependencies:
     "@types/node" "*"
 
-"@types/text-encoding@0.0.35":
-  version "0.0.35"
-  resolved "https://registry.yarnpkg.com/@types/text-encoding/-/text-encoding-0.0.35.tgz#6f14474e0b232bc70c59677aadc65dcc5a99c3a9"
-  integrity sha512-jfo/A88XIiAweUa8np+1mPbm3h2w0s425YrI8t3wk5QxhH6UI7w517MboNVnGDeMSuoFwA8Rwmklno+FicvV4g==
+"@types/text-encoding@0.0.37":
+  version "0.0.37"
+  resolved "https://registry.yarnpkg.com/@types/text-encoding/-/text-encoding-0.0.37.tgz#1f5be8e0720818f8b61b44e411dff4166c700273"
+  integrity sha512-3GhM7gehB2O3rugV5Y/qJeowoqSNM02Ne+1Mxe1fN+uAScmh6OUSnYBQbB9OpLHxM3ieGh8QhnZIf9CnkRC5xA==
 
 "@types/ws@^8.2.2":
   version "8.5.4"
