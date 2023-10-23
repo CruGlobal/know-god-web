@@ -17,7 +17,8 @@ import {
   MultiselectOption,
   Flow,
   FlowItem,
-  Card
+  Card,
+  Spacer
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { org } from '@cruglobal/godtools-shared';
 
@@ -541,4 +542,15 @@ export const mockPageComponent = {
       name: 'English'
     }
   }
+};
+
+export const mockSpacer = (height = 100): Spacer => {
+  return {
+    height,
+    mode: {
+      name: 'AUTO',
+      ordinal: 0
+    },
+    ...standardTypeValues()
+  };
 };
