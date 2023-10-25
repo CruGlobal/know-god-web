@@ -548,7 +548,7 @@ export const mockSpacer = (height = 100): Spacer => {
   return {
     height,
     mode: {
-      name: 'AUTO',
+      name: 'FIXED',
       ordinal: 0
     },
     ...standardTypeValues()

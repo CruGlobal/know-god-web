@@ -22,6 +22,6 @@ describe('ContentSpacerComponent', () => {
       item: new SimpleChange(null, mockSpacer(200), true)
     });
     expect(component.height).toEqual(200);
-    expect(component.mode).toBe('AUTO');
+    expect(component.mode).toBe('FIXED');
   });
 });
