@@ -1,2 +1,6 @@
 <!-- Content Spacer Goes Here -->
-<div class="spacer" [ngStyle]="{ 'height.px': height }"></div>
+<div
+  class="spacer"
+  *ngIf="mode !== 'AUTO'"
+  [ngStyle]="{ 'height.px': height }"
+></div>
