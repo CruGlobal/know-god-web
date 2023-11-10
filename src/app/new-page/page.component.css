@@ -57,6 +57,8 @@ p {
   line-height: 36px;
   padding: 12px 24px;
   cursor: pointer;
+  position: absolute;
+  left: 0;
 }
 
 .language-selector-toggle .fas {
@@ -74,6 +76,10 @@ p {
 #toolHeader {
   position: relative;
   z-index: 1;
+}
+#toolHeader .logo img {
+  height: 24px;
+  margin: 20px 0 0 0;
 }
 
 #languageList {
@@ -102,6 +108,24 @@ p {
 @media screen and (min-width: 550px) {
   #languageList ul {
     columns: 3;
+  }
+}
+
+@media screen and (max-width: 440px) {
+  #toolHeader .logo img{
+    margin: 12px 0 0 0;
+  }
+  #toolHeader .logo{
+    display:block;
+  }
+  .language-selector-toggle {
+    position:relative;
+  }
+  .language-selector-toggle > .langicon {
+    float: none;
+  }
+  .header {
+    height: auto;
   }
 }
 
