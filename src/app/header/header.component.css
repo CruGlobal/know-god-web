@@ -28,7 +28,7 @@
   flex-direction: row;
   height: 100%;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
 }
 
 #homeHeader > .bs-container > .language-switcher > div.selector > img {
@@ -101,7 +101,7 @@
 }
 
 #languageSwitchModal > div.modal-content {
-  margin: 5%; 
+  margin: 5%;
   background: #ffffff;
   border-radius: 6px;
   height: 90%;
@@ -132,7 +132,7 @@
   width: 100%;
   overflow-y: scroll;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap: wrap;
 }
 
@@ -152,8 +152,11 @@
   cursor: pointer;
 }
 
-#languageSwitchModal > div.modal-content > div.languages-grid > div.language:hover {
-  background-color: rgba(0, 0, 0, 0.05);  
+#languageSwitchModal
+  > div.modal-content
+  > div.languages-grid
+  > div.language:hover {
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
 /***** Responsive *****/
@@ -194,7 +197,7 @@
   }
 
   #homeHeader .bs-container {
-    position: relative; 
+    position: relative;
   }
 
   #homeHeader .language-switcher {
