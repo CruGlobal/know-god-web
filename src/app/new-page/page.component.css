@@ -1,6 +1,6 @@
 /***** Elements *****/
 html {
-    background-color: white !important;
+  background-color: white !important;
 }
 
 h1,
@@ -10,17 +10,17 @@ h4,
 h5,
 h6,
 p {
-    margin-bottom: 0;
+  margin-bottom: 0;
 }
 
 h4 {
-    font-size: 24px;
-    line-height: 30px;
-    font-weight: 300;
+  font-size: 24px;
+  line-height: 30px;
+  font-weight: 300;
 }
 
 p {
-    line-height: 24px;
+  line-height: 24px;
 }
 
 /***** High level *****/
@@ -112,14 +112,14 @@ p {
 }
 
 @media screen and (max-width: 440px) {
-  #toolHeader .logo img{
+  #toolHeader .logo img {
     margin: 12px 0 0 0;
   }
-  #toolHeader .logo{
-    display:block;
+  #toolHeader .logo {
+    display: block;
   }
   .language-selector-toggle {
-    position:relative;
+    position: relative;
   }
   .language-selector-toggle > .langicon {
     float: none;
