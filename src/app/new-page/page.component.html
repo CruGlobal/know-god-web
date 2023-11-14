@@ -5,7 +5,13 @@
     <header id="toolHeader">
       <div class="header tc relative">
         <app-sharing-modal [book]="selectedBookName"></app-sharing-modal>
-        <a href="/" class="logo"><img src="assets/img/kg-logo-blue.png" /></a>
+        <a
+          [attr.href]="embedded ? 'https://knowgod.com' : '/'"
+          [attr.target]="embedded ? '_blank' : null"
+          class="logo"
+        >
+          <img src="assets/img/kg-logo-blue.png"
+        /></a>
         <span
           class="kg-gray-dark ng-binding language-selector-toggle"
           (click)="onToggleLanaguageSelect()"
