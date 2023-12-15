@@ -37,8 +37,8 @@ export class ContentSpacerNewComponent implements OnChanges {
               !changes['item'].previousValue ||
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
-              this.mode = '';
-              this.height = 0;
+              this.mode = this.item.mode.name;
+              this.height = this.item.height;
               this.spacer = this.item;
               this.ready = false;
               this.init();

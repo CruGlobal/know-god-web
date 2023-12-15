@@ -75,6 +75,7 @@ export class PageNewComponent implements OnInit, OnDestroy {
   totalPages: number;
   bookNotAvailableInLanguage: boolean;
   bookNotAvailable: boolean;
+  embedded: boolean;
 
   constructor(
     private loaderService: LoaderService,
@@ -107,6 +108,9 @@ export class PageNewComponent implements OnInit, OnDestroy {
     this.awaitPageParameters();
     this.awaitEmailFormSignupDataSubmitted();
     this.awaitLiveShareStream();
+    this.route.queryParams.subscribe((queryParam) => {
+      this.embedded = queryParam.embedded === 'true';
+    });
   }
 
   ngOnDestroy() {

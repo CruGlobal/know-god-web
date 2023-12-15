@@ -18,7 +18,8 @@
     iframe.style.minHeight = '450px';
     iframe.setAttribute('allowtransparency', 'true');
     iframe.setAttribute('scrolling', 'no');
-    iframe.src = [baseUrl, '#', dataLang, dataBook].join('/');
+    iframe.src =
+      [baseUrl, '#', dataLang, dataBook].join('/') + '?embedded=true';
 
     knowGodEmbed.appendChild(iframe);
 
@@ -37,14 +38,9 @@
         iframe.style.height = e.data + 'px';
 
         //scroll to top of iframe
-        var newiframeTop = document.getElementById('knowGodEmbed').offsetTop;
-        console.log('e.data', e.data);
-        console.log('newiframeTop', newiframeTop);
-        console.log('window.pageYOffset', window.pageYOffset);
-        console.log(
-          'window.pageYOffset > newiframeTop',
-          window.pageYOffset > newiframeTop
-        );
+        var newiframeTop =
+          document.getElementById('knowGodEmbed').getBoundingClientRect().top +
+          window.scrollY;
         if (window.pageYOffset > newiframeTop) {
           window.scrollTo({
             top: newiframeTop

@@ -1277,11 +1277,12 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@cruglobal/godtools-shared@0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.1.tgz#ff9163256815289a93d1ff3ff3729919a8fe97b9"
-  integrity sha512-4QRlGN1ODnTmzsGOc+HgD3BR+adkWXtfzFUWoX6ky37aKnRfwLkW7k5sQFf26go2W1CzmqKJCKh1AiV5Dg9mZQ==
+"@cruglobal/godtools-shared@0.9.2":
+  version "0.9.2"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.2.tgz#778a795760c69739ffff953d45a8766af9370716"
+  integrity sha512-Xla2sOaO8LGKmc43uFGcgJz2Fx4RAmslsQYH2P6vk3qvFDjyGSKEt1SW+nG9tfmFQe02RS4uDEm3mG0EGZBOAg==
   dependencies:
+    format-util "^1.0.5"
     sax "1.2.4"
 
 "@csstools/postcss-progressive-custom-properties@^1.1.0":
@@ -4447,6 +4448,11 @@ form-data@~2.3.2:
     asynckit "^0.4.0"
     combined-stream "^1.0.6"
     mime-types "^2.1.12"
+
+format-util@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/format-util/-/format-util-1.0.5.tgz#1ffb450c8a03e7bccffe40643180918cc297d271"
+  integrity sha512-varLbTj0e0yVyRpqQhuWV+8hlePAgaoFRhNFj50BNjEIrw1/DphHSObtqwskVCPWNgzwPoQrZAbfa/SBiicNeg==
 
 forwarded@0.2.0:
   version "0.2.0"

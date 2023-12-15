@@ -4,14 +4,21 @@
   <div class="outerbox">
     <header id="toolHeader">
       <div class="header tc relative">
+        <app-sharing-modal [book]="selectedBookName"></app-sharing-modal>
+        <a
+          [attr.href]="embedded ? 'https://knowgod.com' : '/'"
+          [attr.target]="embedded ? '_blank' : null"
+          class="logo"
+        >
+          <img src="assets/img/kg-logo-blue.png"
+        /></a>
         <span
-          class="l absolute kg-gray-dark ng-binding language-selector-toggle"
+          class="kg-gray-dark ng-binding language-selector-toggle"
           (click)="onToggleLanaguageSelect()"
         >
           <img src="assets/img/lang.png" class="langicon" /> {{ selectedLang }}
           <i class="fas fa-chevron-up flip"></i>
         </span>
-        <app-sharing-modal [book]="selectedBookName"></app-sharing-modal>
       </div>
       <div id="languageList" class="py25 ng-hide" *ngIf="languagesVisible">
         <div class="mw568">
