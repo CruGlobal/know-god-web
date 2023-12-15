@@ -6,22 +6,24 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeImage } from '../../model/xmlns/content/content-ct-image';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
-
+import {
+  DimensionParser,
+  Image
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
-  selector: 'app-content-image',
+  selector: 'app-content-new-image',
   templateUrl: './content-image.component.html',
   styleUrls: ['./content-image.component.css']
 })
 export class ContentImageComponent implements OnChanges {
-  @Input() item: KgwContentElementItem;
+  @Input() item: Image;
 
-  image: KgwContentComplexTypeImage;
+  image: Image;
   ready: boolean;
   imgResource: string;
   isFirstPage$: Observable<boolean>;
+  width: string;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
@@ -38,7 +40,7 @@ export class ContentImageComponent implements OnChanges {
             ) {
               this.ready = false;
               this.imgResource = '';
-              this.image = this.item.element as KgwContentComplexTypeImage;
+              this.image = this.item;
               this.init();
             }
           }
@@ -49,10 +51,20 @@ export class ContentImageComponent implements OnChanges {
 
   private init(): void {
     this.imgResource = this.pageService.getImageUrl(
-      this.image.attributes.resource
-        ? this.image.attributes.resource.trim()
-        : ''
+      this.image.resource.name || ''
     );
+    // Try to find image in all attachments
+    if (
+      this.imgResource === this.image.resource.name &&
+      !this.imgResource.includes('http')
+    ) {
+      this.imgResource =
+        this.pageService.findAttachment(this.image.resource.name) || '';
+    }
+    const dimensions = DimensionParser(this.image.width);
+    this.width = dimensions?.value
+      ? dimensions.value + dimensions.symbol
+      : null;
     this.ready = true;
   }
 }

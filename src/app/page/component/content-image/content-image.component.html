@@ -3,5 +3,6 @@
     class="imageContent ng-binding"
     [ngClass]="{ firstImage: isFirstPage$ | async }"
     [src]="imgResource"
+    [ngStyle]="{ width: width }"
   />
 </ng-container>
