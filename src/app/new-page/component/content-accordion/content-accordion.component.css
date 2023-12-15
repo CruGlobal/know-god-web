@@ -29,16 +29,16 @@
 }
 
 .accordion-header i.fa-plus {
-    opacity: 1;
+  opacity: 1;
 }
 .accordion-header i.fa-minus {
   opacity: 0;
 }
 
-.accordian.mw568.active .accordion-header i.fa-plus  {
+.accordion.mw568.active .accordion-header i.fa-plus {
   opacity: 0;
 }
-.accordian.mw568.active .accordion-header i.fa-minus  {
+.accordion.mw568.active .accordion-header i.fa-minus {
   opacity: 1;
 }
 
@@ -54,7 +54,7 @@
   padding: 0px 24px;
 }
 
-.accordian.active .accordion-content {
+.accordion.active .accordion-content {
   border: 1px solid var(--kg-blue);
   padding: 0px 24px 24px;
   max-height: 400px;
