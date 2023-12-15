@@ -1,0 +1,16 @@
+<ng-container *ngIf="ready && sections">
+  <ng-container *ngFor="let section of sections; trackBy: trackByFn">
+    <div class="accordion mw568">
+      <button class="accordion-header" (click)="onClick($event)">
+        {{ section.section.header.text }}
+        <i class="far fa-plus"></i>
+        <i class="far fa-minus"></i>
+      </button>
+      <div class="accordion-content">
+        <app-content-new-repeater
+          [items]="section.contents"
+        ></app-content-new-repeater>
+      </div>
+    </div>
+  </ng-container>
+</ng-container>

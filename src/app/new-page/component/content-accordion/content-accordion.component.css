@@ -1,0 +1,65 @@
+/* Style the buttons that are used to open and close the accordion panel */
+.accordion-header {
+  background-color: #eee;
+  color: #444;
+  cursor: pointer;
+  padding: 15px;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  border: none;
+  outline: none;
+  transition: 0.4s;
+  color: var(--kg-white);
+  background-color: var(--kg-blue);
+  transition: all 0.3s ease 0s;
+  position: relative;
+}
+
+.accordion-header:hover {
+  background-color: var(--kg-blue-light);
+}
+
+.accordion-header i {
+  position: absolute;
+  right: 20px;
+  transform: translateY(-50%);
+  transition: all 0.3s ease 0s;
+  top: 50%;
+}
+
+.accordion-header i.fa-plus {
+  opacity: 1;
+}
+.accordion-header i.fa-minus {
+  opacity: 0;
+}
+
+.accordion.mw568.active .accordion-header i.fa-plus {
+  opacity: 0;
+}
+.accordion.mw568.active .accordion-header i.fa-minus {
+  opacity: 1;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+.accordion-content {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0px;
+  overflow: hidden;
+  transition: all 0.5s ease 0s;
+  border: 1px solid var(--kg-white);
+  background-color: var(--kg-white);
+  padding: 0px 24px;
+}
+
+.accordion.active .accordion-content {
+  border: 1px solid var(--kg-blue);
+  padding: 0px 24px 24px;
+  max-height: 400px;
+}
+
+.accordion-content app-content-new-repeater {
+  margin-top: 0;
+}
