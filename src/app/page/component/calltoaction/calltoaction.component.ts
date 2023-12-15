@@ -6,19 +6,21 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
-import { KgwTractComplexTypeCallToAction } from '../../model/xmlns/tract/tract-ct-call-to-action';
 import { PageService } from '../../service/page-service.service';
+import {
+  CallToAction,
+  Text
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
-  selector: 'app-page-calltoaction',
+  selector: 'app-page-new-calltoaction',
   templateUrl: './calltoaction.component.html',
   styleUrls: ['./calltoaction.component.css']
 })
 export class CalltoactionComponent implements OnChanges {
-  @Input() item: KgwTractComplexTypeCallToAction;
+  @Input() item: CallToAction;
 
-  text: KgwContentComplexTypeText;
+  text: Text;
   ready: boolean;
   actionText: string;
   dir$: Observable<string>;
@@ -47,10 +49,12 @@ export class CalltoactionComponent implements OnChanges {
   }
 
   private init(): void {
-    if (this.item.text) {
-      this.text = this.item.text;
-      if (this.text && this.text.value) {
-        this.actionText = this.text.value.trim().replace(/<br\s*[\/]?>/gi, ' ');
+    if (this.item.label) {
+      this.text = this.item.label;
+      if (this.text && this.item.label.text) {
+        this.actionText = this.item.label.text
+          .trim()
+          .replace(/<br\s*[\/]?>/gi, ' ');
       }
     }
     this.ready = true;

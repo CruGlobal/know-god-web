@@ -8,67 +8,72 @@
       hasPageHeader: hasPageHeader
     }"
   >
-    <app-page-header
-      *ngIf="header && !(isModal$ | async)"
+    <app-page-new-header
+      *ngIf="header && (isModal$ | async) === false"
       [header]="header"
-    ></app-page-header>
-    <app-page-hero
-      *ngIf="hero && !(isModal$ | async)"
+    ></app-page-new-header>
+    <app-page-new-hero
+      *ngIf="hero && (isModal$ | async) === false"
       [hero]="hero"
-    ></app-page-hero>
-    <ng-container *ngIf="cards && cards.length && !(isModal$ | async)">
-      <app-page-card
-        *ngFor="let card of cards; index as cardIndex"
+    ></app-page-new-hero>
+    <ng-container *ngIf="cards && cards.length && (isModal$ | async) === false">
+      <app-page-new-card
+        *ngFor="let card of cards"
         [card]="card"
-        [cardIndex]="cardIndex"
-      ></app-page-card>
+      ></app-page-new-card>
     </ng-container>
-    <app-page-calltoaction
-      *ngIf="callToAction && !(isForm$ | async) && !(isModal$ | async)"
+    <app-page-new-calltoaction
+      *ngIf="
+        callToAction &&
+        (isForm$ | async) === false &&
+        (isModal$ | async) === false
+      "
       [item]="callToAction"
-    ></app-page-calltoaction>
+    ></app-page-new-calltoaction>
 
     <ng-container *ngIf="modal && (isModal$ | async)">
-      <app-page-modal [modal]="modal"></app-page-modal>
+      <app-page-new-modal [modal]="modal"></app-page-new-modal>
     </ng-container>
 
     <div
       id="tool-navigation"
       class="mw568 tc"
-      *ngIf="!(isForm$ | async) && !(isModal$ | async)"
+      *ngIf="(isForm$ | async) === false && (isModal$ | async) === false"
     >
       <ng-container *ngIf="(dir$ | async) === 'ltr'">
         <!-- If not first page -->
-        <ng-container *ngIf="!(isFirstPage$ | async)">
-          <a
+        <ng-container *ngIf="(isFirstPage$ | async) === false">
+          <button
             (click)="previous()"
             class="button button-white far fa-arrow-left"
-          ></a>
+          ></button>
         </ng-container>
 
         <!-- If not last page -->
-        <ng-container *ngIf="!(isLastPage$ | async)">
-          <a (click)="next()" class="button far fa-arrow-right"></a>
+        <ng-container *ngIf="(isLastPage$ | async) === false">
+          <button (click)="next()" class="button far fa-arrow-right"></button>
         </ng-container>
       </ng-container>
 
       <ng-container *ngIf="(dir$ | async) === 'rtl'">
         <!-- If not first page -->
-        <ng-container *ngIf="!(isLastPage$ | async)">
-          <a (click)="next()" class="button far fa-arrow-left"></a>
+        <ng-container *ngIf="(isLastPage$ | async) === false">
+          <button (click)="next()" class="button far fa-arrow-left"></button>
         </ng-container>
 
         <!-- If not last page -->
-        <ng-container *ngIf="!(isFirstPage$ | async)">
-          <a
+        <ng-container *ngIf="(isFirstPage$ | async) === false">
+          <button
             (click)="previous()"
             class="button button-white far fa-arrow-right"
-          ></a>
+          ></button>
         </ng-container>
       </ng-container>
     </div>
 
-    <ng-container *ngIf="!(isModal$ | async) && !(isModal$ | async)">
+    <ng-container
+      *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"
+    >
       <footer id="toolFooter">
         <span
           ><a href="http://godtoolsapp.com" target="_blank"

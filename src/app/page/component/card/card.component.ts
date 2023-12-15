@@ -6,26 +6,26 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
-import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
-import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
-import { KgwTractComplexTypeCard } from '../../model/xmlns/tract/tract-ct-card';
 import { PageService } from '../../service/page-service.service';
-
+import { org } from '@cruglobal/godtools-shared';
+import {
+  TractPageCard,
+  Text,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 @Component({
-  selector: 'app-page-card',
+  selector: 'app-page-new-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })
 export class CardComponent implements OnChanges {
-  @Input() card: KgwTractComplexTypeCard;
-  @Input() cardIndex: number;
+  @Input() card: TractPageCard;
 
   ready: boolean;
-  label: KgwContentComplexTypeTextchild;
+  label: Text;
   labelText: string;
-  content: Array<KgwContentElementItem>;
+  cardPosition: number;
+  content: Array<Content>;
   dir$: Observable<string>;
   isForm$: Observable<boolean>;
   isModal$: Observable<boolean>;
@@ -50,6 +50,7 @@ export class CardComponent implements OnChanges {
               this.ready = false;
               this.label = null;
               this.labelText = '';
+              this.cardPosition = 0;
               this.content = [];
               this.init();
             }
@@ -64,38 +65,14 @@ export class CardComponent implements OnChanges {
   }
 
   private init(): void {
+    this.cardPosition = this.card.position || 0;
     if (this.card.label) {
       this.label = this.card.label;
-      this.labelText =
-        this.label.text && this.label.text.value
-          ? this.label.text.value.trim()
-          : '';
+      this.labelText = this.card.label.text?.trim() || '';
     }
-    if (this.card.content && this.card.content.length) {
-      this.card.content.forEach((contentChild) => {
-        if (contentChild.contentType === 'paragraph') {
-          const tParagraph: KgwContentComplexTypeParagraph =
-            contentChild as KgwContentComplexTypeParagraph;
-          if (
-            !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
-          ) {
-            const tItemToAdd: KgwContentElementItem = {
-              type: 'paragraph',
-              element: tParagraph
-            };
-            this.content.push(tItemToAdd);
-          }
-        } else if (contentChild.contentType === 'form') {
-          const tForm: KgwContentComplexTypeForm =
-            contentChild as KgwContentComplexTypeForm;
-          const tItemToAdd: KgwContentElementItem = {
-            type: 'form',
-            element: tForm
-          };
-          this.content.push(tItemToAdd);
-        }
-      });
-    }
+
+    this.content = this.card.content;
+
     this.ready = true;
   }
 }

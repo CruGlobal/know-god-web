@@ -3,19 +3,19 @@
     {{ headerText }}
   </h2>
 </ng-container>
-<ng-container *ngIf="ready && !(isFirstPage$ | async)">
+<ng-container *ngIf="ready && (isFirstPage$ | async) === false">
   <div
     class="stepHeading"
     [ngClass]="{
-      tenSteps: header.number && header.number > 9,
-      noCounter: !header.number
+      tenSteps: headerNumber && headerNumber > 9,
+      noCounter: !headerNumber
     }"
   >
     <h1 class="ng-binding mw568" dir="{{ dir$ | async }}">
       <span
         class="ng-binding"
-        *ngIf="header.number && header.number > 0 && !(isForm$ | async)"
-        >{{ header.number }}</span
+        *ngIf="headerNumber && headerNumber > 0 && (isForm$ | async) === false"
+        >{{ headerNumber }}</span
       >
       {{ headerText }}
     </h1>

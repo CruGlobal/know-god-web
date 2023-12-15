@@ -29,13 +29,13 @@
       </div>
     </header>
 
-    <app-tract-page
+    <app-tract-new-page
       *ngIf="activePage && !bookNotAvailableInLanguage && !bookNotAvailable"
       [page]="activePage"
       [order]="activePageOrder"
       [totalPages]="totalPages"
     >
-    </app-tract-page>
+    </app-tract-new-page>
 
     <ng-container *ngIf="bookNotAvailableInLanguage">
       <div class="bs-jumbotron tc" style="margin-top: 24px">
