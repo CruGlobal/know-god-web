@@ -9,7 +9,7 @@ on:
 jobs:
   update-staging:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'On Staging')
+    if: github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'On Staging')
     steps:
       - uses: actions/checkout@v3
       - name: 🖇️ Merge current branch into staging
@@ -21,7 +21,7 @@ jobs:
   
   update-development:
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'On Development')
+    if: github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'On Staging') || contains(github.event.pull_request.labels.*.name, 'On Development')
     steps:
       - uses: actions/checkout@v3
       - name: 🖇️ Merge current branch into development
