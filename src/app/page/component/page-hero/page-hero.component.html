@@ -1,4 +1,4 @@
-<ng-container *ngIf="ready && !(isFirstPage$ | async) && heading">
+<ng-container *ngIf="ready && (isFirstPage$ | async) === false && heading">
   <div class="stepHeading noCounter">
     <h1
       class="ng-binding mw568"
@@ -10,63 +10,6 @@
 <ng-container *ngIf="ready && (isFirstPage$ | async) && heading">
   <h2 class="mw568 tc firstHeading" [innerHTML]="headingText"></h2>
 </ng-container>
-<ng-container *ngIf="ready && content && !(isForm$ | async)">
-  <ng-container *ngFor="let contentItem of content">
-    <app-content-accordion
-      *ngIf="contentItem.type === 'accordion'"
-      [item]="contentItem"
-    ></app-content-accordion>
-    <app-content-animation
-      *ngIf="contentItem.type === 'animation'"
-      [item]="contentItem"
-    ></app-content-animation>
-    <app-content-button
-      *ngIf="contentItem.type === 'button'"
-      [item]="contentItem"
-    ></app-content-button>
-    <app-content-form
-      *ngIf="contentItem.type === 'form'"
-      [item]="contentItem"
-    ></app-content-form>
-    <app-content-image
-      *ngIf="contentItem.type === 'image'"
-      [item]="contentItem"
-    ></app-content-image>
-    <app-content-input
-      *ngIf="contentItem.type === 'input'"
-      [item]="contentItem"
-    ></app-content-input>
-    <app-content-link
-      *ngIf="contentItem.type === 'link'"
-      [item]="contentItem"
-    ></app-content-link>
-    <app-content-paragraph
-      *ngIf="contentItem.type === 'paragraph'"
-      [item]="contentItem"
-    ></app-content-paragraph>
-    <app-content-tabs
-      *ngIf="contentItem.type === 'tabs'"
-      [item]="contentItem"
-    ></app-content-tabs>
-    <app-content-text
-      *ngIf="contentItem.type === 'text'"
-      [item]="contentItem"
-    ></app-content-text>
-    <app-content-video
-      *ngIf="contentItem.type === 'video'"
-      [item]="contentItem"
-    ></app-content-video>
-    <app-content-spacer
-      *ngIf="contentItem.type === 'spacer'"
-      [item]="contentItem"
-    ></app-content-spacer>
-    <app-training-tip
-      *ngIf="contentItem.type === 'tip'"
-      [item]="contentItem"
-    ></app-training-tip>
-    <app-content-fallback
-      *ngIf="contentItem.type === 'fallback'"
-      [item]="contentItem"
-    ></app-content-fallback>
-  </ng-container>
+<ng-container *ngIf="ready && content && (isForm$ | async) === false">
+  <app-content-new-repeater [items]="content"></app-content-new-repeater>
 </ng-container>

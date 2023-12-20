@@ -6,24 +6,27 @@ import {
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeLink } from '../../model/xmlns/content/content-ct-link';
-import { KgwContentComplexTypeText } from '../../model/xmlns/content/content-ct-text';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
 import { PageService } from '../../service/page-service.service';
+import {
+  Link,
+  Text,
+  EventId
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { formatEvents } from 'src/app/shared/formatEvents';
 
 @Component({
-  selector: 'app-content-link',
+  selector: 'app-content-new-link',
   templateUrl: './content-link.component.html',
   styleUrls: ['./content-link.component.css']
 })
 export class ContentLinkComponent implements OnChanges {
-  @Input() item: KgwContentElementItem;
+  @Input() item: Link;
 
-  link: KgwContentComplexTypeLink;
-  text: KgwContentComplexTypeText;
+  link: Link;
+  text: Text;
   ready: boolean;
   linkText: string;
-  events: string;
+  events: EventId[];
   dir$: Observable<string>;
 
   constructor(private pageService: PageService) {
@@ -41,8 +44,9 @@ export class ContentLinkComponent implements OnChanges {
             ) {
               this.ready = false;
               this.linkText = '';
-              this.events = '';
-              this.link = this.item.element as KgwContentComplexTypeLink;
+              this.events = null;
+              this.text = null;
+              this.link = this.item;
               this.init();
             }
           }
@@ -53,19 +57,14 @@ export class ContentLinkComponent implements OnChanges {
 
   formAction(): void {
     if (this.events) {
-      this.pageService.formAction(this.events);
+      this.pageService.formAction(formatEvents(this.events));
     }
   }
 
   private init(): void {
-    if (this.link.text) {
-      this.text = this.link.text;
-      if (this.text && this.text.value) {
-        this.linkText = this.text.value.trim();
-      }
-    }
-
-    this.events = this.link.attributes.events;
+    this.text = this.link.text || null;
+    this.linkText = this.link.text?.text || '';
+    this.events = this.link.events;
     this.ready = true;
   }
 }
