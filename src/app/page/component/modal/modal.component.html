@@ -8,12 +8,6 @@
   </div>
 
   <ng-container *ngIf="content">
-    <ng-container *ngFor="let cotentItem of content; trackBy: trackByFn">
-      <app-content-paragraph
-        *ngIf="cotentItem.type === 'paragraph'"
-        [item]="cotentItem"
-        class="modal-paragraph"
-      ></app-content-paragraph>
-    </ng-container>
+    <app-content-new-repeater [items]="content"></app-content-new-repeater>
   </ng-container>
 </ng-container>
