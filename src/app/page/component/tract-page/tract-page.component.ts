@@ -129,24 +129,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     } else {
-      if (functionName.includes('-no-thanks')) {
-        let isFirstPage = false;
-        let isLastPage = true;
-        this.isFirstPage$.subscribe((value) => {
-          isFirstPage = value;
-        });
-        this.isLastPage$.subscribe((value) => {
-          isLastPage = value;
-        });
-
-        if (!isLastPage) {
-          this.pageService.nextPage();
-        } else if (!isFirstPage) {
-          this.pageService.previousPage();
-        }
-        return;
-      }
-
       if (this.cards.length) {
         const cardListener = this.cards.find((card) =>
           card.listeners
@@ -176,8 +158,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
         isHideModal = !!dismissListeners.filter(
           (dismissListener) => dismissListener.name === functionName
         )?.length;
-        listeners.forEach((l) => {});
-        dismissListeners.forEach((l) => {});
       }
     }
 
@@ -214,7 +194,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
           });
       }
     } else if (isHideCard) {
-      this.next();
       setTimeout(() => {
         this.pageService.formHidden();
         this.pageService.modalHidden();
@@ -230,7 +209,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     } else if (isHideModal) {
       this.pageService.modalHidden();
       this.pageService.formHidden();
-      this.next();
       setTimeout(() => {
         if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
         if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
