@@ -51,7 +51,9 @@ const standardTypeValues = () => {
     __doNotUseOrImplementIt: null,
     _events: null,
     _getAnalyticsEvents: null,
-    getAnalyticsEvents: null
+    getAnalyticsEvents: null,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
@@ -86,7 +88,9 @@ const createEventId = (name: string, namespace?: string): EventId => {
 const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
-    name
+    name,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
@@ -104,10 +108,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     width: '',
     buttonColor: '',
     backgroundColor: '',
-    icon: {
-      localName: '',
-      name: ''
-    },
+    icon: createResource('', ''),
     iconGravity: {
       name: 'CENTER',
       ordinal: 1

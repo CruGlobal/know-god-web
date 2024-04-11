@@ -1277,10 +1277,10 @@
   resolved "https://registry.yarnpkg.com/@colors/colors/-/colors-1.5.0.tgz#bb504579c1cae923e6576a4f5da43d25f97bdbd9"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@cruglobal/godtools-shared@0.9.2":
-  version "0.9.2"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-0.9.2.tgz#778a795760c69739ffff953d45a8766af9370716"
-  integrity sha512-Xla2sOaO8LGKmc43uFGcgJz2Fx4RAmslsQYH2P6vk3qvFDjyGSKEt1SW+nG9tfmFQe02RS4uDEm3mG0EGZBOAg==
+"@cruglobal/godtools-shared@1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.0.1.tgz#bc8f21f080624a728bf9ee68027bf9e5db593a31"
+  integrity sha512-nfO3+ynlq8L7n35APg/EgC4hvHHSBaidqQzpSgTkP1Os9HCHtQOymPgSaU+FA/Uyic7oaIr9w7Nt5vITybDHmw==
   dependencies:
     format-util "^1.0.5"
     sax "1.2.4"
