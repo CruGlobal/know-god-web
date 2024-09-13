@@ -33,6 +33,10 @@ app-tract-new-page {
   margin-top: 48px !important;
 }
 
+#tool-navigation .button .hidden {
+  display: none;
+}
+
 #tool-navigation .button:first-child:not(:last-child) {
   border-right-width: 0;
   border-top-right-radius: 0;
