@@ -17,7 +17,8 @@ import {
   MultiselectOption,
   Flow,
   FlowItem,
-  Card
+  Card,
+  Spacer
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { org } from '@cruglobal/godtools-shared';
 
@@ -50,7 +51,9 @@ const standardTypeValues = () => {
     __doNotUseOrImplementIt: null,
     _events: null,
     _getAnalyticsEvents: null,
-    getAnalyticsEvents: null
+    getAnalyticsEvents: null,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
@@ -85,7 +88,9 @@ const createEventId = (name: string, namespace?: string): EventId => {
 const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
-    name
+    name,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
@@ -103,10 +108,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     width: '',
     buttonColor: '',
     backgroundColor: '',
-    icon: {
-      localName: '',
-      name: ''
-    },
+    icon: createResource('', ''),
     iconGravity: {
       name: 'CENTER',
       ordinal: 1
@@ -541,4 +543,15 @@ export const mockPageComponent = {
       name: 'English'
     }
   }
+};
+
+export const mockSpacer = (height = 100): Spacer => {
+  return {
+    height,
+    mode: {
+      name: 'FIXED',
+      ordinal: 0
+    },
+    ...standardTypeValues()
+  };
 };

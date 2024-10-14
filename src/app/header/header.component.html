@@ -61,14 +61,14 @@
     <div class="modal-close">
       <i class="fas fa-times" (click)="onSwitchLanguage()"></i>
     </div>
-    <div class="languages-grid">
-      <div
+    <ul class="languages-grid">
+      <li
         class="language"
         *ngFor="let lang of availableLangs"
         (click)="onSelectLanguage(lang.code)"
       >
         {{ lang.name }}
-      </div>
-    </div>
+      </li>
+    </ul>
   </div>
 </div>
