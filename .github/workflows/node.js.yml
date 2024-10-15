@@ -60,15 +60,6 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Install pipx
-        run: sudo apt-get install -y pipx
-      
-      - name: Ensure pipx is on the PATH
-        run: python3 -m pipx ensurepath
-
-      - name: Install AWSCLI with pipx
-        run: pipx install awscli
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
