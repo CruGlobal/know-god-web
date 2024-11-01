@@ -69,7 +69,6 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
               "vendorChunk": true,
               "sourceMap": true,
               "namedChunks": false,
@@ -83,21 +82,21 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "knowgod:build"
+            "buildTarget": "knowgod:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "knowgod:build:production"
+              "buildTarget": "knowgod:build:production"
             },
             "development": {
-              "browserTarget": "knowgod:build:development"
+              "buildTarget": "knowgod:build:development"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "knowgod:build"
+            "buildTarget": "knowgod:build"
           }
         },
         "test": {
