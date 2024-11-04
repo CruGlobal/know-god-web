@@ -97,7 +97,7 @@ export function playerFactory() {
     FormsModule,
     RouterModule.forRoot(appRoutes, {
       anchorScrolling: 'enabled',
-      scrollPositionRestoration: 'enabled', // Scrolls to top when fragment is removed
+      scrollPositionRestoration: 'enabled' // Scrolls to top when fragment is removed
     }),
     BrowserAnimationsModule,
     ToastrModule.forRoot({
