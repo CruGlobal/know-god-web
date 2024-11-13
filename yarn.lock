@@ -1827,9 +1827,9 @@
     tslib "^2.6.0"
 
 "@rails/actioncable@^7.0.0":
-  version "7.0.6"
-  resolved "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.0.6.tgz"
-  integrity sha512-ybBsUrIsu5geM8BtqnpM7ZA9D8uzSz+e1B4JR57NaCmasHKWap6AX5DT7NHIbp21opVet1qqoVSdsoLDqXeB2A==
+  version "7.2.200"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-7.2.200.tgz#7f56b3313762dbb85b64490aa33c5f431419aafd"
+  integrity sha512-gVmi3MabEa+Bkatvw0/k1Y3WTidcIf3qNbb9L8qc+AmT2UmkVqUZhJpSLvKmH10twCYIGzn7yySW/lOpg81Duw==
 
 "@rollup/rollup-android-arm-eabi@4.24.3":
   version "4.24.3"
@@ -1843,7 +1843,7 @@
 
 "@rollup/rollup-darwin-arm64@4.24.3":
   version "4.24.3"
-  resolved "https://registry.npmjs.org/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.24.3.tgz"
+  resolved "https://registry.yarnpkg.com/@rollup/rollup-darwin-arm64/-/rollup-darwin-arm64-4.24.3.tgz#16772c0309d0dc3cca716580cdac7a1c560ddf46"
   integrity sha512-QPW2YmkWLlvqmOa2OwrfqLJqkHm7kJCIMq9kOz40Zo9Ipi40kf9ONG5Sz76zszrmIZZ4hgRIkez69YnTHgEz1w==
 
 "@rollup/rollup-darwin-x64@4.24.3":
@@ -1922,13 +1922,13 @@
   integrity sha512-HGZgRFFYrMrP3TJlq58nR1xy8zHKId25vhmm5S9jETEfDf6xybPxsavFTJaufe2zgOGYJBskGlj49CwtEuFhWQ==
 
 "@scarf/scarf@^1.1.1":
-  version "1.1.1"
-  resolved "https://registry.npmjs.org/@scarf/scarf/-/scarf-1.1.1.tgz"
-  integrity sha512-VGbKDbk1RFIaSmdVb0cNjjWJoRWRI/Weo23AjRCC2nryO0iAS8pzsToJfPVPtVs74WHw4L1UTADNdIYRLkirZQ==
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@scarf/scarf/-/scarf-1.4.0.tgz#3bbb984085dbd6d982494538b523be1ce6562972"
+  integrity sha512-xxeapPiUXdZAE3che6f3xogoJPeZgig6omHEy1rIY5WVsB3H2BHNnZH+gHG6x91SCWyQCzWGsuL2Hh3ClO5/qQ==
 
 "@schematics/angular@17.3.11":
   version "17.3.11"
-  resolved "https://registry.npmjs.org/@schematics/angular/-/angular-17.3.11.tgz"
+  resolved "https://registry.yarnpkg.com/@schematics/angular/-/angular-17.3.11.tgz#a04a449746b30b29c8bfed0a04bfb564f013ba5b"
   integrity sha512-tvJpTgYC+hCnTyLszYRUZVyNTpPd+C44gh5CPTcG3qkqStzXQwynQAf6X/DjtwXbUiPQF0XfF0+0R489GpdZPA==
   dependencies:
     "@angular-devkit/core" "17.3.11"
