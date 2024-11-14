@@ -60,10 +60,13 @@ const standardTypeValues = () => {
 const createText = (text: string): Text => {
   return {
     text: text,
-    textAlign: null,
-    textColor: null,
+    textAlign: {
+      name: 'START',
+      ordinal: 0
+    },
+    textColor: '#000000',
     textScale: null,
-    _textStyles: null,
+    _textStyles: [],
     minimumLines: null,
     startImage: null,
     startImageSize: null,
