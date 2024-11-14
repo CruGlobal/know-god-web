@@ -55,11 +55,23 @@ export class ContentTextComponent implements OnChanges {
 
   private init(): void {
     const styles = {
-      'font-weight': this.text.textStyles.some(style => style.name === 'BOLD') ? 'bold' : '',
-      'font-style': this.text.textStyles.some(style => style.name === 'ITALIC') ? 'italic' : '',
-      'text-decoration': this.text.textStyles.some(style => style.name === 'UNDERLINE') ? 'underline' : '',
+      'font-weight': this.text.textStyles?.some(
+        (style) => style.name === 'BOLD'
+      )
+        ? 'bold'
+        : '',
+      'font-style': this.text.textStyles?.some(
+        (style) => style.name === 'ITALIC'
+      )
+        ? 'italic'
+        : '',
+      'text-decoration': this.text.textStyles?.some(
+        (style) => style.name === 'UNDERLINE'
+      )
+        ? 'underline'
+        : '',
       'text-align': this.text.textAlign.name || '',
-      'color': this.text.textColor || ''
+      color: this.text.textColor || ''
     };
 
     this.textColor = this.text?.textColor || null;
