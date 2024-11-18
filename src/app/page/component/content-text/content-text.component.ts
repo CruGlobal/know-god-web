@@ -54,14 +54,28 @@ export class ContentTextComponent implements OnChanges {
   }
 
   private init(): void {
-    const styles = {};
-    this.text?.textStyles?.forEach((style) => {
-      if (style.name === 'BOLD') styles['font-weight'] = 'bold';
-      if (style.name === 'ITALIC') styles['font-style'] = 'italic';
-      if (style.name === 'UNDERLINE') styles['text-decoration'] = 'underline';
-    });
+    const styles = {
+      'font-weight': this.text.textStyles?.some(
+        (style) => style.name === 'BOLD'
+      )
+        ? 'bold'
+        : '',
+      'font-style': this.text.textStyles?.some(
+        (style) => style.name === 'ITALIC'
+      )
+        ? 'italic'
+        : '',
+      'text-decoration': this.text.textStyles?.some(
+        (style) => style.name === 'UNDERLINE'
+      )
+        ? 'underline'
+        : '',
+      'text-align': this.text.textAlign.name || '',
+      color: this.text.textColor || ''
+    };
+
+    this.textColor = this.text?.textColor || null;
     this.styles = styles;
-    this.textColor = this.text.textColor || null;
     const text = parseTextAddBrTags(this.text.text);
     this.textValue = text || '';
     this.ready = true;
