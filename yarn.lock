@@ -1828,10 +1828,10 @@
     picocolors "^1.0.0"
     tslib "^2.6.0"
 
-"@rails/actioncable@^7.0.0":
-  version "7.0.6"
-  resolved "https://registry.npmjs.org/@rails/actioncable/-/actioncable-7.0.6.tgz"
-  integrity sha512-ybBsUrIsu5geM8BtqnpM7ZA9D8uzSz+e1B4JR57NaCmasHKWap6AX5DT7NHIbp21opVet1qqoVSdsoLDqXeB2A==
+"@rails/actioncable@8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@rails/actioncable/-/actioncable-8.0.0.tgz#b12d87d4c2bb152c4445e2c168df93b585068e7c"
+  integrity sha512-9IXyJeaBggOzlD3pF4/yWELdyUWZm/KTyKBRqxNf9laLBXPqxJt3t6fO+X4s0WajMR8cIhzkxvq1gxsXVbn3LA==
 
 "@rollup/rollup-android-arm-eabi@4.24.3":
   version "4.24.3"
