@@ -28,7 +28,7 @@ jobs:
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: yarn install
@@ -60,13 +60,10 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Install AWSCLI
-        run: pip install --user awscli
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: yarn install
