@@ -2,12 +2,10 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PageService } from '../../service/page-service.service';
-import { org } from '@cruglobal/godtools-shared';
 import {
   TractPageCard,
   Text,

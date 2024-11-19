@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
