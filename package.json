@@ -32,7 +32,7 @@
     "lottie-web": "5.12.2",
     "ngx-lottie": "^8.3.0",
     "ngx-toastr": "^17.0.2",
-    "rxjs": "^6.6.7",
+    "rxjs": "7.8.1",
     "ts-clipboard": "^1.0.17",
     "tslib": "^2.6.2",
     "zone.js": "~0.13.0"
