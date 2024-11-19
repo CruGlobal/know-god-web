@@ -24,7 +24,7 @@ export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
   @ViewChildren(ContentRepeaterComponent)
   private _inputChildren: QueryList<ContentRepeaterComponent>;
 
-  private _unsubscribeAll = new Subject<any>();
+  private _unsubscribeAll = new Subject<void>();
 
   form: Content[];
   ready: boolean;

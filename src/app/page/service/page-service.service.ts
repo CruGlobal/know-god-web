@@ -6,13 +6,13 @@ import { XmlParser } from '../../services/xml-parser-service/xmp-parser.service'
   providedIn: 'root'
 })
 export class PageService {
-  private _nextPage = new Subject<any>();
-  private _previousPage = new Subject<any>();
+  private _nextPage = new Subject<void>();
+  private _previousPage = new Subject<void>();
   private _formAction = new Subject<string>();
   private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
-  private _getEmailSignupFormData = new Subject<any>();
-  private _emailSignupFormData = new Subject<any>();
+  private _getEmailSignupFormData = new Subject<void>();
+  private _emailSignupFormData = new Subject<void>();
   private _dir = new BehaviorSubject<string>('ltr');
   private _visibleTip = new BehaviorSubject<string>('');
   private _isFirstPage = new BehaviorSubject<boolean>(false);
