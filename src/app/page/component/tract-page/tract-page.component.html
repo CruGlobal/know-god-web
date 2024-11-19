@@ -43,30 +43,44 @@
       <ng-container *ngIf="(dir$ | async) === 'ltr'">
         <!-- If not first page -->
         <ng-container *ngIf="(isFirstPage$ | async) === false">
-          <button
+          <a
             (click)="previous()"
+            href="javascript:void(0)"
             class="button button-white far fa-arrow-left"
-          ></button>
+            ><span class="hide"></span
+          ></a>
         </ng-container>
 
         <!-- If not last page -->
         <ng-container *ngIf="(isLastPage$ | async) === false">
-          <button (click)="next()" class="button far fa-arrow-right"></button>
+          <a
+            (click)="next()"
+            href="javascript:void(0)"
+            class="button far fa-arrow-right"
+            ><span class="hide"></span
+          ></a>
         </ng-container>
       </ng-container>
 
       <ng-container *ngIf="(dir$ | async) === 'rtl'">
         <!-- If not first page -->
         <ng-container *ngIf="(isLastPage$ | async) === false">
-          <button (click)="next()" class="button far fa-arrow-left"></button>
+          <a
+            (click)="next()"
+            href="javascript:void(0)"
+            class="button far fa-arrow-left"
+            ><span class="hide"></span
+          ></a>
         </ng-container>
 
         <!-- If not last page -->
         <ng-container *ngIf="(isFirstPage$ | async) === false">
-          <button
+          <a
             (click)="previous()"
+            href="javascript:void(0)"
             class="button button-white far fa-arrow-right"
-          ></button>
+            ><span class="hide"></span
+          ></a>
         </ng-container>
       </ng-container>
     </div>
