@@ -46,8 +46,8 @@ interface LiveShareSubscriptionPayload {
   encapsulation: ViewEncapsulation.None
 })
 export class PageComponent implements OnInit, OnDestroy {
-  private _unsubscribeAll = new Subject<any>();
-  private _pageChanged = new Subject<any>();
+  private _unsubscribeAll = new Subject<void>();
+  private _pageChanged = new Subject<void>();
   private _pageParams: IPageParameters;
   private _allLanguagesLoaded: boolean;
   private _allLanguages: any[];

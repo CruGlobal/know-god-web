@@ -31,7 +31,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
   @Input() order: number;
   @Input() totalPages: number;
 
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
   private _page: TractPage;
   private _cardShownOnFormAction = -1;
   private _cardsHiddenOnFormAction: number[] = [];
@@ -52,7 +52,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
   currentYear = new Date().getFullYear();
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isModal$ = this.pageService.isModal$;

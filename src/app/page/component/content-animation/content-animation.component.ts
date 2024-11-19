@@ -21,7 +21,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Animation;
 
-  private _unsubscribeAll = new Subject<any>();
+  private _unsubscribeAll = new Subject<void>();
   animation: Animation;
   ready: boolean;
   anmResource: string;

@@ -23,7 +23,7 @@ import {
 export class PageHeroComponent implements OnDestroy, OnChanges {
   @Input() hero: Hero;
 
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   ready: boolean;
   heading: Text;
@@ -35,7 +35,7 @@ export class PageHeroComponent implements OnDestroy, OnChanges {
   changeHeader$: Observable<string>;
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isFirstPage$ = this.pageService.isFirstPage$;
