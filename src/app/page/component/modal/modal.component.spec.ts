@@ -1,7 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { PageService } from '../../service/page-service.service';
 import { mockModal } from '../../../_tests/mocks';
+import { PageService } from '../../service/page-service.service';
 import { ModalComponent } from './modal.component';
 
 describe('ModalComponent', () => {

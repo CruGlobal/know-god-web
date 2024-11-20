@@ -1,9 +1,9 @@
-import {
-  org,
-  ManifestParser as manifestParser
-} from '@cruglobal/godtools-shared';
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import {
+  ManifestParser as manifestParser,
+  org
+} from '@cruglobal/godtools-shared';
 
 export type Text = org.cru.godtools.shared.tool.parser.model.Text;
 export type Content = org.cru.godtools.shared.tool.parser.model.Content;

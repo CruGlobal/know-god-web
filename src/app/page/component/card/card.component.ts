@@ -1,16 +1,12 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageService } from '../../service/page-service.service';
 import {
-  TractPageCard,
+  Content,
   Text,
-  Content
+  TractPageCard
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
+
 @Component({
   selector: 'app-page-new-card',
   templateUrl: './card.component.html',

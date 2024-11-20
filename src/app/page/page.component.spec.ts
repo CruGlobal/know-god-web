@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
-import { RouterTestingModule } from '@angular/router/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { mockPageComponent, mockTractPage } from '../_tests/mocks';
+import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { PageComponent } from './page.component';
-import { CommonService } from '../services/common.service';
 import { PageService } from './service/page-service.service';
-import { mockTractPage, mockPageComponent } from '../_tests/mocks';
 
 describe('PageComponent', () => {
   let component: any;

@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import {
   Component,
   HostListener,
@@ -6,25 +7,24 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as ActionCable from '@rails/actioncable';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
-import { ViewportScroller } from '@angular/common';
-import * as ActionCable from '@rails/actioncable';
+import { environment } from '../../environments/environment';
+import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { IPageParameters } from './model/page-parameters';
-import { APIURL } from '../api/url';
-import { environment } from './../../environments/environment';
-import { PageService } from './service/page-service.service';
 import {
-  PullParserFactory,
-  Page,
+  Animation,
   Manifest,
+  Page,
+  PullParserFactory,
   TractPage,
   XmlParser,
-  XmlParserData,
-  Animation
+  XmlParserData
 } from '../services/xml-parser-service/xmp-parser.service';
+import { IPageParameters } from './model/page-parameters';
+import { PageService } from './service/page-service.service';
 
 interface LiveShareSubscriptionPayload {
   data?: {

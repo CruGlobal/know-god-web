@@ -5,12 +5,12 @@ import {
   OnDestroy,
   SimpleChanges
 } from '@angular/core';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageService } from '../../service/page-service.service';
 import { Animation } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { AnimationOptions } from 'ngx-lottie';
-import { AnimationItem } from 'lottie-web';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-content-new-animation',
@@ -18,7 +18,6 @@ import { AnimationItem } from 'lottie-web';
   styleUrls: ['./content-animation.component.css']
 })
 export class ContentAnimationComponent implements OnChanges, OnDestroy {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Animation;
 
   private _unsubscribeAll = new Subject<void>();

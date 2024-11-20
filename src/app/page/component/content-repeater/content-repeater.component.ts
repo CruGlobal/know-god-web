@@ -6,13 +6,14 @@ import {
   SimpleChanges,
   ViewChildren
 } from '@angular/core';
-import { ContentInputComponent } from '../content-input/content-input.component';
 import {
-  ContentItems,
   Content,
-  ContentParser,
-  ContentItemsType
+  ContentItems,
+  ContentItemsType,
+  ContentParser
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { ContentInputComponent } from '../content-input/content-input.component';
+
 @Component({
   selector: 'app-content-new-repeater',
   templateUrl: './content-repeater.component.html',
