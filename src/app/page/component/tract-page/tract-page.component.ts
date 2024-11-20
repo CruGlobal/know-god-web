@@ -175,8 +175,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
         isHideModal = !!dismissListeners.filter(
           (dismissListener) => dismissListener.name === functionName
         )?.length;
-        listeners.forEach((l) => {});
-        dismissListeners.forEach((l) => {});
       }
     }
 
