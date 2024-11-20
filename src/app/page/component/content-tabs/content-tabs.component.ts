@@ -53,7 +53,7 @@ export class ContentTabsComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 

@@ -47,12 +47,9 @@ export type Flow = org.cru.godtools.shared.tool.parser.model.Flow;
 export type FlowItem = org.cru.godtools.shared.tool.parser.model.Flow.Item;
 export type Dimension = org.cru.godtools.shared.tool.parser.model.Dimension;
 export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
-
-export namespace XmlParser {
-  export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
-  export const ManifestParser = manifestParser;
-  export const State = org.cru.godtools.shared.tool.state.State;
-}
+export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
+export const ManifestParser = manifestParser;
+export const State = org.cru.godtools.shared.tool.state.State;
 
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {

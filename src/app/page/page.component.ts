@@ -15,12 +15,12 @@ import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import {
-  Animation,
   Manifest,
+  ManifestParser,
   Page,
+  ParserConfig,
   PullParserFactory,
   TractPage,
-  XmlParser,
   XmlParserData
 } from '../services/xml-parser-service/xmp-parser.service';
 import { IPageParameters } from './model/page-parameters';
@@ -257,19 +257,16 @@ export class PageComponent implements OnInit, OnDestroy {
         ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
         : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName;
       this.pullParserFactory.setOrigin(fileName);
-      const config = XmlParser.ParserConfig.createParserConfig()
+      const config = ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
         .withSupportedFeatures([
-          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
-          XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT,
-          XmlParser.ParserConfig.Companion.FEATURE_FLOW,
-          XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD
+          ParserConfig.Companion.FEATURE_ANIMATION,
+          ParserConfig.Companion.FEATURE_MULTISELECT,
+          ParserConfig.Companion.FEATURE_FLOW,
+          ParserConfig.Companion.FEATURE_CONTENT_CARD
         ])
         .withParseTips(false);
-      const newParser = new XmlParser.ManifestParser(
-        this.pullParserFactory,
-        config
-      );
+      const newParser = new ManifestParser(this.pullParserFactory, config);
       const controller = new AbortController();
       const signal = controller.signal;
       try {

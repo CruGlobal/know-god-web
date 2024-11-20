@@ -64,7 +64,7 @@ export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
     this._unsubscribeAll.complete();
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 

@@ -47,7 +47,7 @@ export class ModalComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 

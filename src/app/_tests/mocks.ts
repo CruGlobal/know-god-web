@@ -310,7 +310,7 @@ export const mockMultiselectOption = (
     _content: null,
     isSelected: () => selectedValue,
     isSelectedFlow: null,
-    watchIsSelected: (state, callback) => null,
+    watchIsSelected: () => null,
     toggleSelected: () => {
       selectedValue = !selectedValue;
       return selectedValue;
