@@ -8,7 +8,7 @@
     "build": "ng build --configuration production",
     "build:dev": "ng build --configuration development",
     "test": "ng test --watch=false",
-    "lint": "npx eslint 'src/**/*.{js,ts,html}' --fix",
+    "lint": "eslint 'src/**/*.{js,ts,html}' --fix",
     "prettier:check": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
     "prettier:write": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
     "precommit": "pretty-quick --staged",

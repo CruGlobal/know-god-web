@@ -8,15 +8,7 @@ import eslintPluginPrettier from 'eslint-plugin-prettier';
 
 export default [
   {
-    ignores: [
-      '.github',
-      '.angular',
-      '*package.json',
-      'yarn.lock',
-      'dist/**',
-      'karma.conf.cjs',
-      'commitlint.config.js*',
-    ],
+    ignores: ['dist/**']
   },
   {
     files: ['**/*.ts'],
@@ -24,23 +16,23 @@ export default [
       parser: typescriptParser,
       parserOptions: {
         project: [path.resolve('tsconfig.json')],
-        createDefaultProgram: true,
-      },
+        createDefaultProgram: true
+      }
     },
     plugins: {
       '@angular-eslint': angularEslintPlugin,
       import: eslintPluginImport,
       '@typescript-eslint': typescriptEslintPlugin,
-      prettier: eslintPluginPrettier,
+      prettier: eslintPluginPrettier
     },
     settings: {
       'import/resolver': {
         node: {
           // Allows to import url starting from 'src'
           paths: ['.'],
-          extensions: ['.js', '.ts', '.d.ts'],
-        },
-      },
+          extensions: ['.js', '.ts', '.d.ts']
+        }
+      }
     },
 
     rules: {
@@ -55,21 +47,21 @@ export default [
         {
           prefix: 'app',
           style: 'kebab-case',
-          type: 'element',
-        },
+          type: 'element'
+        }
       ],
       '@angular-eslint/directive-selector': [
         'error',
         {
           prefix: 'app',
           style: 'camelCase',
-          type: 'attribute',
-        },
+          type: 'attribute'
+        }
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'error',
-        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }
       ],
       'import/no-duplicates': 'error',
       'import/extensions': 'error',
@@ -84,7 +76,7 @@ export default [
             'sibling',
             'index',
             'object',
-            'type',
+            'type'
           ],
           alphabetize: { order: 'asc' },
           'newlines-between': 'never',
@@ -92,15 +84,15 @@ export default [
             {
               pattern: '{@angular,angular/**}',
               group: 'external',
-              position: 'before',
+              position: 'before'
             },
             {
               pattern: '{src}/**',
               group: 'parent',
-              position: 'before',
-            },
-          ],
-        },
+              position: 'before'
+            }
+          ]
+        }
       ],
       'import/newline-after-import': 'error',
       'import/no-named-default': 'error',
@@ -112,18 +104,18 @@ export default [
         'error',
         {
           ignoreDeclarationSort: true,
-          ignoreMemberSort: false,
-        },
-      ],
-    },
+          ignoreMemberSort: false
+        }
+      ]
+    }
   },
   {
     files: ['*.html'],
     plugins: {
-      '@angular-eslint/template': angularEslintTemplatePlugin,
+      '@angular-eslint/template': angularEslintTemplatePlugin
     },
     rules: {
-      ...angularEslintTemplatePlugin.configs.recommended.rules,
-    },
-  },
+      ...angularEslintTemplatePlugin.configs.recommended.rules
+    }
+  }
 ];
