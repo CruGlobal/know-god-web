@@ -1,9 +1,9 @@
-import { TestBed, waitForAsync } from '@angular/core/testing';
 import { HttpClientModule } from '@angular/common/http';
+import { TestBed, waitForAsync } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LoaderService } from './services/loader-service/loader.service';
-import { AnalyticsService } from './services/analytics.service';
 import { AppComponent } from './app.component';
+import { AnalyticsService } from './services/analytics.service';
+import { LoaderService } from './services/loader-service/loader.service';
 
 describe('AppComponent', () => {
   beforeEach(waitForAsync(() => {

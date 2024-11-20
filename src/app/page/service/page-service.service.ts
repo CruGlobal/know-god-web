@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { XmlParser } from '../../services/xml-parser-service/xmp-parser.service';
+import { State } from '../../services/xml-parser-service/xmp-parser.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PageService {
-  private _nextPage = new Subject<any>();
-  private _previousPage = new Subject<any>();
+  private _nextPage = new Subject<void>();
+  private _previousPage = new Subject<void>();
   private _formAction = new Subject<string>();
   private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
-  private _getEmailSignupFormData = new Subject<any>();
-  private _emailSignupFormData = new Subject<any>();
+  private _getEmailSignupFormData = new Subject<void>();
+  private _emailSignupFormData = new Subject<void>();
   private _dir = new BehaviorSubject<string>('ltr');
   private _visibleTip = new BehaviorSubject<string>('');
   private _isFirstPage = new BehaviorSubject<boolean>(false);
@@ -22,7 +22,7 @@ export class PageService {
   private _imageUrlsDict = new BehaviorSubject<string[]>([]);
   private _animationUrlsDict = new BehaviorSubject<string[]>([]);
   private _allAttachmentResources = new Map<string, string>();
-  private XmlParserState = XmlParser.State.createState();
+  private XmlParserState = State.createState();
 
   formAction$: Observable<string> = this._formAction.asObservable();
   contentEvent$: Observable<string> = this._formAction.asObservable();
