@@ -3,22 +3,21 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageService } from '../../service/page-service.service';
 import {
-  TractPage,
-  Modal,
-  TractPageCard,
-  Hero,
-  Header,
   CallToAction,
-  EventId
+  EventId,
+  Header,
+  Hero,
+  Modal,
+  TractPage,
+  TractPageCard
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-tract-new-page',
@@ -31,7 +30,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
   @Input() order: number;
   @Input() totalPages: number;
 
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
   private _page: TractPage;
   private _cardShownOnFormAction = -1;
   private _cardsHiddenOnFormAction: number[] = [];
@@ -52,7 +51,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
   currentYear = new Date().getFullYear();
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isModal$ = this.pageService.isModal$;
@@ -176,8 +175,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
         isHideModal = !!dismissListeners.filter(
           (dismissListener) => dismissListener.name === functionName
         )?.length;
-        listeners.forEach((l) => {});
-        dismissListeners.forEach((l) => {});
       }
     }
 
