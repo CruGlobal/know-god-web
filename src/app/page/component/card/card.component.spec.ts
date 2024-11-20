@@ -1,7 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { PageService } from '../../service/page-service.service';
 import { mockTractCard } from '../../../_tests/mocks';
+import { PageService } from '../../service/page-service.service';
 import { CardComponent } from './card.component';
 
 describe('ContentCardComponent', () => {

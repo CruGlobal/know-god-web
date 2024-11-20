@@ -20,14 +20,10 @@ export class SharingModalComponent implements OnInit {
     this.ShareState = 'min';
   }
 
-  CopyToClipboard(event) {
+  CopyToClipboard() {
     const url = location.href;
     Clipboard.copy(url);
 
-    const options = {
-      messageClass: 'toast-message1',
-      positionClass: 'toast-top-right1'
-    };
     this.toastr.success(url + '     ', 'Link copied to clipboard');
 
     document.getElementById('toast-container').style.top = '261px';
