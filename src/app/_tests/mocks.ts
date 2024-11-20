@@ -1,26 +1,26 @@
+import { org } from '@cruglobal/godtools-shared';
 import {
+  Animation,
   Button,
   CallToAction,
-  Text,
-  EventId,
-  Image,
-  Resource,
-  Input,
-  Link,
-  Paragraph,
+  Card,
   Content,
-  Video,
-  TractPageCard,
-  Modal,
-  Animation,
-  Multiselect,
-  MultiselectOption,
+  EventId,
   Flow,
   FlowItem,
-  Card,
-  Spacer
+  Image,
+  Input,
+  Link,
+  Modal,
+  Multiselect,
+  MultiselectOption,
+  Paragraph,
+  Resource,
+  Spacer,
+  Text,
+  TractPageCard,
+  Video
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { org } from '@cruglobal/godtools-shared';
 
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);

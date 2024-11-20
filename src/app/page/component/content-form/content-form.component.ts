@@ -1,18 +1,18 @@
 import {
-  OnChanges,
-  QueryList,
   Component,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
+  QueryList,
   SimpleChanges,
   ViewChildren
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 import { ContentRepeaterComponent } from '../content-repeater/content-repeater.component';
-import { Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
   selector: 'app-content-new-form',

@@ -1,12 +1,7 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageService } from '../../service/page-service.service';
 import { Spacer } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-content-new-spacer',
@@ -14,7 +9,6 @@ import { Spacer } from 'src/app/services/xml-parser-service/xmp-parser.service';
   styleUrls: ['./content-spacer.component.css']
 })
 export class ContentSpacerComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Spacer;
 
   spacer: Spacer;

@@ -1,16 +1,11 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageService } from '../../service/page-service.service';
 import {
   Header,
   parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-page-new-header',

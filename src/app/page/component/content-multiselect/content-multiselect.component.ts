@@ -17,7 +17,6 @@ interface MultiselectOptionWithContent {
   styleUrls: ['./content-multiselect.component.css']
 })
 export class ContentMultiselectComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Multiselect;
 
   multiselect: Multiselect;

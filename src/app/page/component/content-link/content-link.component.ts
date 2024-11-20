@@ -1,17 +1,12 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageService } from '../../service/page-service.service';
 import {
+  EventId,
   Link,
-  Text,
-  EventId
+  Text
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-content-new-link',
