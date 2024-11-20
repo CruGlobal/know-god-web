@@ -1,8 +1,8 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { mockCallToAction } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { CalltoactionComponent } from './calltoaction.component';
-import { mockCallToAction } from '../../../_tests/mocks';
 
 describe('CallToActionComponent', () => {
   let component: CalltoactionComponent;

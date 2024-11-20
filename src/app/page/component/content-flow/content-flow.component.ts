@@ -8,7 +8,6 @@ import { PageService } from '../../service/page-service.service';
   styleUrls: ['./content-flow.component.css']
 })
 export class ContentFlowComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Flow;
 
   flow: Flow;

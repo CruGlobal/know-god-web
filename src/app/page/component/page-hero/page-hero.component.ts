@@ -7,13 +7,14 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageService } from '../../service/page-service.service';
 import {
-  Text,
+  Content,
   Hero,
-  parseTextAddBrTags,
-  Content
+  Text,
+  parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
+
 @Component({
   selector: 'app-page-new-hero',
   templateUrl: './page-hero.component.html',

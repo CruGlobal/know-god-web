@@ -8,16 +8,16 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageService } from '../../service/page-service.service';
 import {
-  TractPage,
-  Modal,
-  TractPageCard,
-  Hero,
-  Header,
   CallToAction,
-  EventId
+  EventId,
+  Header,
+  Hero,
+  Modal,
+  TractPage,
+  TractPageCard
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-tract-new-page',

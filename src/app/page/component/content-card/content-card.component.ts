@@ -4,8 +4,8 @@ import {
   Content,
   EventId
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { PageService } from '../../service/page-service.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-content-new-card',
@@ -13,7 +13,6 @@ import { formatEvents } from 'src/app/shared/formatEvents';
   styleUrls: ['./content-card.component.css']
 })
 export class ContentCardComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Card;
   card: Card;
   contents: Content[];

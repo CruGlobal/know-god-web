@@ -1,8 +1,8 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { mockCard } from '../../../_tests/mocks';
-import { ContentCardComponent } from './content-card.component';
 import { PageService } from '../../service/page-service.service';
+import { ContentCardComponent } from './content-card.component';
 
 describe('ContentCardComponent', () => {
   let component: ContentCardComponent;

@@ -8,7 +8,7 @@
     "build": "ng build --configuration production",
     "build:dev": "ng build --configuration development",
     "test": "ng test --watch=false",
-    "lint": "npx eslint 'src/**/*.{js,ts,html}' --quiet --fix",
+    "lint": "npx eslint 'src/**/*.{js,ts,html}' --fix --debug",
     "prettier:check": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
     "prettier:write": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
     "precommit": "pretty-quick --staged",
@@ -48,11 +48,11 @@
     "@angular/language-service": "^17.3.12",
     "@types/jasmine": "~5.1.4",
     "@types/node": "^18.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.12.2",
-    "@typescript-eslint/parser": "^8.12.2",
-    "eslint": "~9.15.0",
-    "eslint-config-prettier": "^8.8.0",
-    "eslint-plugin-import": "^2.27.5",
+    "@typescript-eslint/eslint-plugin": "^8.15.0",
+    "@typescript-eslint/parser": "^8.15.0",
+    "eslint": "^9.15.0",
+    "eslint-import-resolver-typescript": "^3.6.3",
+    "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.0.0",
     "husky": "^8.0.0",
     "jasmine-core": "~5.4.0",
@@ -64,6 +64,6 @@
     "prettier": "^3.0.0",
     "pretty-quick": "^3.1.0",
     "stream": "^0.0.3",
-    "typescript": "^5.2.2"
+    "typescript": "^5.4.5"
   }
 }
