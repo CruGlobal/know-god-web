@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { XmlParser } from '../../services/xml-parser-service/xmp-parser.service';
+import { State } from '../../services/xml-parser-service/xmp-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,7 @@ export class PageService {
   private _imageUrlsDict = new BehaviorSubject<string[]>([]);
   private _animationUrlsDict = new BehaviorSubject<string[]>([]);
   private _allAttachmentResources = new Map<string, string>();
-  private XmlParserState = XmlParser.State.createState();
+  private XmlParserState = State.createState();
 
   formAction$: Observable<string> = this._formAction.asObservable();
   contentEvent$: Observable<string> = this._formAction.asObservable();

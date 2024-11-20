@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
-import { LoaderService } from './loader-service/loader.service';
 
 declare global {
   interface Window {
@@ -30,7 +29,7 @@ export class AnalyticsService {
   subscribeToRouterEvents() {
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
-        const [_, language, pageName, pageNumber] = event.url.split('/');
+        const [_domain, language, pageName, pageNumber] = event.url.split('/');
 
         this.setDigitalData(pageName || 'knowgod', language, pageNumber);
 

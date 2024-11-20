@@ -38,7 +38,7 @@ export class ContentFlowComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 

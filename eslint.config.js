@@ -67,6 +67,10 @@ export default [
         },
       ],
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
       'import/no-duplicates': 'error',
       'import/extensions': 'error',
       'import/order': [
