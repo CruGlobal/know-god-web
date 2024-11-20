@@ -1,4 +1,4 @@
-import { environment } from './../../environments/environment';
+import { environment } from '../../environments/environment';
 
 export const MOBILE_CONTENT_API_WS_URL = environment.mobileContentApiWsUrl;
 
