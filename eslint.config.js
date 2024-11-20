@@ -14,7 +14,7 @@ export default [
       '*package.json',
       'yarn.lock',
       'dist/**',
-      'karma.conf.js',
+      'karma.conf.cjs',
       'commitlint.config.js*',
     ],
   },
