@@ -1,8 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { paragraph, text, content } from '../../../_tests/mocks';
+import { content } from '../../../_tests/mocks';
 import { ContentRepeaterComponent } from './content-repeater.component';
-import { ContentParser } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 describe('ContentInputComponent', () => {
   let component: ContentRepeaterComponent;
