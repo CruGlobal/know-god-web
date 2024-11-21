@@ -3,41 +3,43 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwTractComplexTypeCallToAction } from '../../model/xmlns/tract/tract-ct-call-to-action';
-import { KgwTractComplexTypeCard } from '../../model/xmlns/tract/tract-ct-card';
-import { KgwTractComplexTypeModal } from '../../model/xmlns/tract/tract-ct-modal';
-import { KgwTractComplexTypePage } from '../../model/xmlns/tract/tract-ct-page';
-import { KgwTractComplexTypePageHeader } from '../../model/xmlns/tract/tract-ct-page-header';
-import { KgwTractComplexTypePageHero } from '../../model/xmlns/tract/tract-ct-page-hero';
+import {
+  CallToAction,
+  EventId,
+  Header,
+  Hero,
+  Modal,
+  TractPage,
+  TractPageCard
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-tract-page',
+  selector: 'app-tract-new-page',
   templateUrl: './tract-page.component.html',
   styleUrls: ['./tract-page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class TractPageComponent implements OnChanges, OnDestroy {
-  @Input() page: KgwTractComplexTypePage;
+  @Input() page: TractPage;
   @Input() order: number;
   @Input() totalPages: number;
 
-  private _unsubscribeAll: Subject<any>;
-  private _page: KgwTractComplexTypePage;
+  private _unsubscribeAll: Subject<void>;
+  private _page: TractPage;
   private _cardShownOnFormAction = -1;
   private _cardsHiddenOnFormAction: number[] = [];
 
-  header: KgwTractComplexTypePageHeader;
-  hero: KgwTractComplexTypePageHero;
-  cards: KgwTractComplexTypeCard[];
-  modal: KgwTractComplexTypeModal;
-  callToAction: KgwTractComplexTypeCallToAction;
+  header: Header;
+  hero: Hero;
+  cards: TractPageCard[];
+  modal: Modal;
+  callToAction: CallToAction;
   ready: boolean;
   hasPageHeader: boolean;
   dir$: Observable<string>;
@@ -49,7 +51,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
   currentYear = new Date().getFullYear();
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isModal$ = this.pageService.isModal$;
@@ -67,7 +69,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     if (!this.ready) {
       return;
     }
-
     this.pageService.nextPage();
   }
 
@@ -127,81 +128,95 @@ export class TractPageComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     } else {
-      if (this.cards && this.cards.length > 0) {
-        for (let index = 0; index < this.cards.length; index++) {
-          const element = this.cards[index];
-          if (
-            element.attributes.listeners &&
-            element.attributes.listeners === functionName
-          ) {
-            this._cardShownOnFormAction = index;
-            isShowCard = true;
-            break;
-          }
-        }
+      if (functionName.includes('-no-thanks')) {
+        let isFirstPage = false;
+        let isLastPage = true;
+        this.isFirstPage$.subscribe((value) => {
+          isFirstPage = value;
+        });
+        this.isLastPage$.subscribe((value) => {
+          isLastPage = value;
+        });
 
-        for (let index = 0; index < this.cards.length; index++) {
-          const element = this.cards[index];
-          if (
-            element.attributes.dismissListeners &&
-            element.attributes.dismissListeners === functionName
-          ) {
-            isHideCard = true;
-            break;
-          }
+        if (!isLastPage) {
+          this.pageService.nextPage();
+        } else if (!isFirstPage) {
+          this.pageService.previousPage();
         }
+        return;
       }
 
+      if (this.cards.length) {
+        const cardListener = this.cards.find((card) =>
+          card.listeners
+            ? card.listeners.find((listener) => listener.name === functionName)
+            : null
+        );
+        if (cardListener) {
+          this._cardShownOnFormAction = cardListener.position;
+          isShowCard = true;
+        }
+
+        const cardDismissListener = this.cards.find((card) =>
+          card.dismissListeners
+            ? card.dismissListeners.find(
+                (dismissListener) => dismissListener.name === functionName
+              )
+            : null
+        );
+        if (cardDismissListener) isHideCard = true;
+      }
       if (!isShowCard && !isHideCard && this.modal) {
-        isShowModal =
-          this.modal.attributes.listeners &&
-          this.modal.attributes.listeners === functionName;
-        isHideModal =
-          this.modal.attributes.dismissListeners &&
-          this.modal.attributes.dismissListeners === functionName;
+        const listeners = this.modal.listeners as EventId[];
+        const dismissListeners = this.modal.dismissListeners as EventId[];
+        isShowModal = !!listeners.filter(
+          (listener) => listener.name === functionName
+        )?.length;
+        isHideModal = !!dismissListeners.filter(
+          (dismissListener) => dismissListener.name === functionName
+        )?.length;
       }
     }
 
     if (isShowCard) {
+      // Set type as Any so we can edit isHidden property.
       const card_to_show = this.cards[this._cardShownOnFormAction];
-      card_to_show.attributes.hidden = false;
+      (card_to_show as any).isHidden = false;
       this.pageService.formVisible();
       this.pageService.modalHidden();
 
-      if (card_to_show.label && card_to_show.label.text) {
-        this.pageService.changeHeader(card_to_show.label.text.value);
+      if (card_to_show.label?.text) {
+        this.pageService.changeHeader(card_to_show.label.text);
       }
 
-      for (let index = 0; index < this.cards.length; index++) {
-        const element = this.cards[index];
-        if (
-          !element.attributes.hidden &&
-          (!element.attributes.listeners ||
-            element.attributes.listeners !== functionName)
-        ) {
-          this._cardsHiddenOnFormAction.push(index);
+      this.cards.forEach((card) => {
+        if (card.listeners?.length) {
+          card.listeners.forEach((listener) => {
+            if (!card.isHidden && listener.name !== functionName) {
+              this._cardsHiddenOnFormAction.push(card.position);
+            }
+          });
+        } else {
+          this._cardsHiddenOnFormAction.push(card.position);
         }
-      }
+      });
 
-      if (this._cardsHiddenOnFormAction.length > 0) {
-        this._cardsHiddenOnFormAction.forEach((cardIndex) => {
-          this.cards[cardIndex].attributes.hidden = true;
-        });
+      if (this._cardsHiddenOnFormAction.length) {
+        this.cards
+          .filter((card) =>
+            this._cardsHiddenOnFormAction.includes(card.position)
+          )
+          .map((card) => {
+            (card as any).isHidden = true;
+          });
       }
     } else if (isHideCard) {
       this.next();
       setTimeout(() => {
         this.pageService.formHidden();
         this.pageService.modalHidden();
-        if (this._cardsHiddenOnFormAction.length > 0) {
-          this._cardsHiddenOnFormAction.forEach((cardIndex) => {
-            this.cards[cardIndex].attributes.hidden = false;
-          });
-        }
-
-        if (this._cardShownOnFormAction >= 0) {
-          this.cards[this._cardShownOnFormAction].attributes.hidden = true;
-        }
+        if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
+        if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
 
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
@@ -214,15 +229,8 @@ export class TractPageComponent implements OnChanges, OnDestroy {
       this.pageService.formHidden();
       this.next();
       setTimeout(() => {
-        if (this._cardsHiddenOnFormAction.length > 0) {
-          this._cardsHiddenOnFormAction.forEach((cardIndex) => {
-            this.cards[cardIndex].attributes.hidden = false;
-          });
-        }
-
-        if (this._cardShownOnFormAction >= 0) {
-          this.cards[this._cardShownOnFormAction].attributes.hidden = true;
-        }
+        if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
+        if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
 
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
@@ -232,34 +240,33 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     }
   }
 
+  private setHiddenCardToShow(): void {
+    this.cards
+      .filter((card) => this._cardsHiddenOnFormAction.includes(card.position))
+      .forEach((card) => {
+        (card as any).isHidden = false;
+      });
+  }
+
+  private setShownCardToHidden(): void {
+    const card = this.cards.find(
+      (card) => card.position === this._cardShownOnFormAction
+    );
+    if (card) (card as any).isHidden = true;
+  }
+
   private init(): void {
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
-
-    if (this._page.header) {
-      this.header = this._page.header;
-      this.hasPageHeader =
-        this.header.title &&
-        this.header.title.text &&
-        !!this.header.title.text.value;
-    }
-
-    if (this._page.hero) {
-      this.hero = this._page.hero;
-    }
-
-    if (this.page.cards) {
-      this.cards = this.page.cards;
-    }
-
-    if (this.page.modals && this.page.modals.length) {
-      this.modal = this.page.modals[0];
-    }
-
-    if (this.page.callToAction) {
-      this.callToAction = this.page.callToAction;
-    }
+    this.header = this._page.header || null;
+    this.hasPageHeader = !!this._page.header?.title?.text;
+    this.hero = this._page.hero || null;
+    this.cards = this._page.cards || [];
+    this.modal = this._page.modals ? this._page.modals[0] : null;
+    this.callToAction = this._page.callToAction?.label?.text
+      ? this._page.callToAction
+      : null;
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))

@@ -1,25 +1,18 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeVideo } from '../../model/xmlns/content/content-ct-video';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
+import { Video } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-video',
+  selector: 'app-content-new-video',
   templateUrl: './content-video.component.html',
   styleUrls: ['./content-video.component.css']
 })
 export class ContentVideoComponent implements OnChanges {
-  @Input() item: KgwContentElementItem;
+  @Input() item: Video;
 
-  video: KgwContentComplexTypeVideo;
+  video: Video;
   ready: boolean;
   provider: string;
   videoId: string;
@@ -44,7 +37,7 @@ export class ContentVideoComponent implements OnChanges {
             ) {
               this.provider = '';
               this.videoId = '';
-              this.video = this.item.element as KgwContentComplexTypeVideo;
+              this.video = this.item;
               this.ready = false;
               this.init();
             }
@@ -55,19 +48,13 @@ export class ContentVideoComponent implements OnChanges {
   }
 
   private init(): void {
-    if (this.video.attributes.provider) {
-      this.provider = this.video.attributes.provider;
-    }
-
-    if (this.video.attributes.videoId) {
-      setTimeout(() => {
-        this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
-          `https://www.youtube.com/embed/${this.video.attributes.videoId}`
-        );
-        this.videoId = this.video.attributes.videoId;
-      }, 0);
-    }
-
+    this.provider = this.video.provider.name || '';
+    this.videoId = this.video.videoId || '';
+    setTimeout(() => {
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.youtube.com/embed/${this.videoId}`
+      );
+    }, 0);
     this.ready = true;
   }
 }

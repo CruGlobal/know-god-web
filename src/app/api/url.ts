@@ -1,14 +1,14 @@
-const MOBILE_CONTENT_API_URL = 'https://mobile-content-api.cru.org';
-export const MOBILE_CONTENT_API_WS_URL =
-  'wss://mobile-content-api.cru.org/cable';
+import { environment } from '../../environments/environment';
+
+export const MOBILE_CONTENT_API_WS_URL = environment.mobileContentApiWsUrl;
 
 export const APIURL = {
-  GET_ALL_BOOKS: `${MOBILE_CONTENT_API_URL}/resources/`,
-  GET_ALL_LANGUAGES: `${MOBILE_CONTENT_API_URL}/languages/`,
-  GET_ZIP_FILES: `${MOBILE_CONTENT_API_URL}/translations/`,
-  GET_INDEX_FILE: `${MOBILE_CONTENT_API_URL}/resources/{0}?include=latest-translations,attachments`,
-  POST_CREATE_SUBSCRIBER: `${MOBILE_CONTENT_API_URL}/follow_ups/`,
-  GET_XML_FILES_FOR_MANIFEST: 'https://s3.amazonaws.com/know-god-assets/',
+  GET_ALL_BOOKS: `${environment.mobileContentApiUrl}/resources/`,
+  GET_ALL_LANGUAGES: `${environment.mobileContentApiUrl}/languages/`,
+  GET_ZIP_FILES: `${environment.mobileContentApiUrl}/translations/`,
+  GET_INDEX_FILE: `${environment.mobileContentApiUrl}/resources/{0}?include=latest-translations,attachments`,
+  POST_CREATE_SUBSCRIBER: `${environment.mobileContentApiUrl}/follow_ups/`,
+  GET_XML_FILES_FOR_MANIFEST: environment.GetXmlFilesForManifest,
   GET_ATTACHMENTS: '/attachments/'
 };
 

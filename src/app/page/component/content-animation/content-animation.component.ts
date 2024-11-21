@@ -3,32 +3,31 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
+import { AnimationItem } from 'lottie-web';
+import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwContentComplexTypeAnimation } from '../../model/xmlns/content/content-ct-animation';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
+import { Animation } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-animation',
+  selector: 'app-content-new-animation',
   templateUrl: './content-animation.component.html',
   styleUrls: ['./content-animation.component.css']
 })
 export class ContentAnimationComponent implements OnChanges, OnDestroy {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
-  @Input() item: KgwContentElementItem;
+  @Input() item: Animation;
 
-  private _unsubscribeAll = new Subject<any>();
-  animation: KgwContentComplexTypeAnimation;
+  private _unsubscribeAll = new Subject<void>();
+  animation: Animation;
   ready: boolean;
   anmResource: string;
-  anmOptions: any;
-  anmViewItem: any;
+  anmViewItem: AnimationItem;
   hasEvents: boolean;
   dir$: Observable<string>;
+  lottieOptions: AnimationOptions;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
@@ -49,8 +48,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.animation = this.item
-                .element as KgwContentComplexTypeAnimation;
+              this.animation = this.item;
               this.init();
             }
           }
@@ -60,38 +58,49 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   onAnimationClick(): void {
-    if (this.animation.attributes.events) {
-      this.pageService.formAction(this.animation.attributes.events);
+    if (this.animation.events) {
+      let action = '';
+      this.animation.events.forEach((event, idx) => {
+        const value = event?.namespace
+          ? `${event.namespace}:${event.name}`
+          : event.name;
+        action += idx ? ` ${value}` : value;
+      });
+      this.pageService.formAction(action);
     }
   }
 
   onAnimationCreated(anim: any) {
-    this.anmViewItem = anim;
+    this.anmViewItem = anim as AnimationItem;
   }
 
   private init(): void {
-    this.anmResource = this.pageService.getAnimationUrl(
-      this.animation.attributes.resource
-        ? this.animation.attributes.resource.trim()
-        : ''
-    );
+    // TODO
+    // Need to update to e31_1 when we release a new Shared Parser.
+    const resource = {
+      name: (this.animation as any).e31_1 || ''
+    };
+    this.anmResource = this.pageService.getAnimationUrl(resource.name || '');
+    if (
+      this.anmResource === resource.name &&
+      !this.anmResource.includes('http')
+    ) {
+      this.anmResource = this.pageService.findAttachment(resource.name) || '';
+    }
+
     if (this.anmResource) {
-      this.anmOptions = {
+      this.lottieOptions = {
         path: this.anmResource,
-        loop: !!this.animation.attributes.loop,
-        autoplay: !!this.animation.attributes.autoplay
+        loop: !!this.animation.loop,
+        autoplay: !!this.animation.autoPlay
       };
     }
 
-    this.hasEvents = !!this.animation.attributes.events;
+    this.hasEvents = !!this.animation.events;
 
-    if (
-      !!this.animation.attributes.playListeners ||
-      !!this.animation.attributes.stopListeners
-    ) {
+    if (!!this.animation.playListeners || !!this.animation.stopListeners) {
       this.awaitAnimEvent();
     }
-
     this.ready = true;
   }
 
@@ -99,36 +108,18 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
     this.pageService.contentEvent$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((event) => {
-        if (this.animation.attributes.playListeners) {
-          const tEvents = this.animation.attributes.playListeners.split(' ');
-          if (tEvents.find((playEvent) => playEvent === event)) {
-            // Start animation
-            if (this.anmViewItem) {
-              if (
-                this.animation.attributes.events &&
-                this.animation.attributes.events === event
-              ) {
-                this.anmViewItem.togglePause();
-              } else {
-                this.anmViewItem.play();
-              }
-            }
-          }
-        } else if (this.animation.attributes.stopListeners) {
-          const tEvents = this.animation.attributes.stopListeners.split(' ');
-          if (tEvents.find((playEvent) => playEvent === event)) {
-            // Stop animation
-            if (this.anmViewItem) {
-              if (
-                this.animation.attributes.events &&
-                this.animation.attributes.events === event
-              ) {
-                this.anmViewItem.togglePause();
-              } else {
-                this.anmViewItem.pause();
-              }
-            }
-          }
+        if (!this.anmViewItem) return;
+        const playListeners = this.animation.playListeners.filter(
+          (listener) => listener.name === event
+        ).length;
+        const stopListeners = this.animation.stopListeners.filter(
+          (listener) => listener.name === event
+        ).length;
+
+        if (playListeners) {
+          this.anmViewItem.play();
+        } else if (stopListeners) {
+          this.anmViewItem.pause();
         }
       });
   }

@@ -1,20 +1,26 @@
+import { org } from '@cruglobal/godtools-shared';
 import {
+  Animation,
   Button,
   CallToAction,
-  Text,
+  Card,
+  Content,
   EventId,
+  Flow,
+  FlowItem,
   Image,
-  Resource,
   Input,
   Link,
-  Paragraph,
-  Content,
-  Video,
-  TractPageCard,
   Modal,
-  Animation
+  Multiselect,
+  MultiselectOption,
+  Paragraph,
+  Resource,
+  Spacer,
+  Text,
+  TractPageCard,
+  Video
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { org } from '@cruglobal/godtools-shared';
 
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);
@@ -45,17 +51,22 @@ const standardTypeValues = () => {
     __doNotUseOrImplementIt: null,
     _events: null,
     _getAnalyticsEvents: null,
-    getAnalyticsEvents: null
+    getAnalyticsEvents: null,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
 const createText = (text: string): Text => {
   return {
     text: text,
-    textAlign: null,
-    textColor: null,
+    textAlign: {
+      name: 'START',
+      ordinal: 0
+    },
+    textColor: '#000000',
     textScale: null,
-    _textStyles: null,
+    _textStyles: [],
     minimumLines: null,
     startImage: null,
     startImageSize: null,
@@ -80,7 +91,9 @@ const createEventId = (name: string, namespace?: string): EventId => {
 const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
-    name
+    name,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
@@ -98,10 +111,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     width: '',
     buttonColor: '',
     backgroundColor: '',
-    icon: {
-      localName: '',
-      name: ''
-    },
+    icon: createResource('', ''),
     iconGravity: {
       name: 'CENTER',
       ordinal: 1
@@ -244,7 +254,7 @@ export const mockVideo = (videoId): Video => {
   };
 };
 
-export const mockCard = (
+export const mockTractCard = (
   label: string,
   position: number,
   listeners,
@@ -280,6 +290,79 @@ export const mockModal = (title: string, listeners): Modal => {
     _listeners: null,
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
+    ...standardTypeValues()
+  };
+};
+
+export const mockMultiselectOption = (
+  initialSelectedValue
+): MultiselectOption => {
+  let selectedValue = initialSelectedValue;
+  return {
+    style: {
+      name: 'CARD',
+      ordinal: 0
+    },
+    backgroundColor: '#000000',
+    selectedColor: '#ffffff',
+    multiselect: null,
+    content: [],
+    _content: null,
+    isSelected: () => selectedValue,
+    isSelectedFlow: null,
+    watchIsSelected: () => null,
+    toggleSelected: () => {
+      selectedValue = !selectedValue;
+      return selectedValue;
+    },
+    ...standardTypeValues()
+  };
+};
+
+export const mockMultiselect = (): Multiselect => {
+  return {
+    columns: 4,
+    options: [mockMultiselectOption(false), mockMultiselectOption(true)],
+    _options: null,
+    ...standardTypeValues()
+  };
+};
+
+export const mockFlowItem = (initialSelectedValue): FlowItem => {
+  return {
+    flow: null,
+    _content: null,
+    content: [mockImage('filename', 'url_to_path')],
+    ...standardTypeValues(),
+    isGone: () => initialSelectedValue,
+    watchIsGone: () => null
+  };
+};
+
+export const mockFlow = (): Flow => {
+  return {
+    items: [
+      mockFlowItem(false),
+      mockFlowItem(false),
+      mockFlowItem(true),
+      mockFlowItem(true),
+      mockFlowItem(false)
+    ],
+    _items: null,
+    ...standardTypeValues()
+  };
+};
+
+export const mockCard = (isClickable): Card => {
+  return {
+    backgroundColor: '#000000',
+    _content: null,
+    url: 'URL',
+    content: mockContent(),
+    isClickable,
+    events: isClickable
+      ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
+      : [],
     ...standardTypeValues()
   };
 };
@@ -326,9 +409,9 @@ export const mockTractPage = (
     cardTextColor: '#000000',
     cards: cardLabel
       ? [
-          mockCard(`${cardLabel}-0`, 0, `${cardLabel}-0`, false),
-          mockCard(`${cardLabel}-1`, 1, `${cardLabel}-1`, true),
-          mockCard(`${cardLabel}-2`, 2, `${cardLabel}-2`, true)
+          mockTractCard(`${cardLabel}-0`, 0, `${cardLabel}-0`, false),
+          mockTractCard(`${cardLabel}-1`, 1, `${cardLabel}-1`, true),
+          mockTractCard(`${cardLabel}-2`, 2, `${cardLabel}-2`, true)
         ]
       : [],
     modals: [mockModal(modalTitle, `${modalTitle}-0`)],
@@ -463,4 +546,15 @@ export const mockPageComponent = {
       name: 'English'
     }
   }
+};
+
+export const mockSpacer = (height = 100): Spacer => {
+  return {
+    height,
+    mode: {
+      name: 'FIXED',
+      ordinal: 0
+    },
+    ...standardTypeValues()
+  };
 };

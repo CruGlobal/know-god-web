@@ -1,9 +1,9 @@
-import {
-  org,
-  ManifestParser as manifestParser
-} from '@cruglobal/godtools-shared';
-import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import {
+  ManifestParser as manifestParser,
+  org
+} from '@cruglobal/godtools-shared';
 
 export type Text = org.cru.godtools.shared.tool.parser.model.Text;
 export type Content = org.cru.godtools.shared.tool.parser.model.Content;
@@ -43,12 +43,13 @@ export type Card = org.cru.godtools.shared.tool.parser.model.Card;
 export type Multiselect = org.cru.godtools.shared.tool.parser.model.Multiselect;
 export type MultiselectOption =
   org.cru.godtools.shared.tool.parser.model.Multiselect.Option;
-
-export namespace XmlParser {
-  export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
-  export const ManifestParser = manifestParser;
-  export const State = org.cru.godtools.shared.tool.state.State;
-}
+export type Flow = org.cru.godtools.shared.tool.parser.model.Flow;
+export type FlowItem = org.cru.godtools.shared.tool.parser.model.Flow.Item;
+export type Dimension = org.cru.godtools.shared.tool.parser.model.Dimension;
+export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
+export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
+export const ManifestParser = manifestParser;
+export const State = org.cru.godtools.shared.tool.state.State;
 
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
@@ -117,12 +118,48 @@ export const ContentParser = (content: any): string => {
   } else if (
     content instanceof org.cru.godtools.shared.tool.parser.model.Multiselect
   ) {
-    // console.log('CONTENT: Multiselect');
-    return '';
+    // console.log('CONTENT: multiselect')
+    return 'multiselect';
+  } else if (
+    content instanceof org.cru.godtools.shared.tool.parser.model.Flow
+  ) {
+    // console.log('CONTENT: Flow');
+    return 'flow';
   } else {
-    console.log('CONTENT: Unknown');
+    // console.log('CONTENT: Unknown');
     return '';
   }
+};
+
+interface DimensionParser {
+  type: string;
+  symbol: string;
+  value: number;
+}
+export const DimensionParser = (dimension: any): DimensionParser => {
+  let type = null,
+    symbol = null,
+    value = null;
+  if (
+    dimension instanceof
+    org.cru.godtools.shared.tool.parser.model.Dimension.Percent
+  ) {
+    type = 'percent';
+    symbol = '%';
+    value = dimension.value * 100;
+  } else if (
+    dimension instanceof
+    org.cru.godtools.shared.tool.parser.model.Dimension.Pixels
+  ) {
+    type = 'pixel';
+    symbol = 'px';
+    value = dimension.value;
+  }
+  return {
+    type,
+    symbol,
+    value
+  };
 };
 
 export type ContentItems =
@@ -133,11 +170,19 @@ export type ContentItems =
   | Video
   | Button
   | Form
-  | Input;
+  | Input
+  | Spacer
+  | Link
+  | Tabs
+  | Accordion
+  | Card
+  | Animation
+  | Multiselect
+  | Flow;
 
 export type ContentItemsType = {
   type: string;
-  content: ContentItems;
+  content: ContentItems | Content;
 };
 
 export const parseTextAddBrTags = (text: string): string => {

@@ -1,26 +1,21 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeAccordion } from '../../model/xmlns/content/content-ct-accordion';
-import { KgwContentComplexTypeAccordionSection } from '../../model/xmlns/content/content-ct-accordion-section';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
+import {
+  Accordion,
+  Content
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-accordion',
+  selector: 'app-content-new-accordion',
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })
 export class ContentAccordionComponent implements OnChanges {
-  @Input() item: KgwContentElementItem;
+  @Input() item: Accordion;
 
-  accordion: KgwContentComplexTypeAccordion;
-  sections: Array<KgwContentComplexTypeAccordionSection>;
+  accordion: Accordion;
+  sections: any[];
   ready: boolean;
   dir$: Observable<string>;
 
@@ -38,8 +33,7 @@ export class ContentAccordionComponent implements OnChanges {
               changes['item'].currentValue !== changes['item'].previousValue
             ) {
               this.ready = false;
-              this.accordion = this.item
-                .element as KgwContentComplexTypeAccordion;
+              this.accordion = this.item;
               this.sections = [];
               this.init();
             }
@@ -49,15 +43,29 @@ export class ContentAccordionComponent implements OnChanges {
     }
   }
 
-  private init(): void {
-    if (this.accordion.sections && this.accordion.sections.length) {
-      this.accordion.sections.forEach((section) => {
-        section.children = this.pageService.checkContentElements(
-          section.children
-        );
-        this.sections.push(section);
-      });
+  onClick(event: any) {
+    const parent = event.target.classList.contains('far')
+      ? event.target.parentElement.parentElement
+      : event.target.parentElement;
+    const hasActiveClass = parent.classList.contains('active');
+    if (hasActiveClass) {
+      parent.classList.remove('active');
+    } else {
+      parent.classList.add('active');
     }
+  }
+
+  private init(): void {
+    this.item.sections.forEach((section) => {
+      const contents: Content[] = [];
+      if (section.content) {
+        section.content.forEach((content) =>
+          content ? contents.push(content) : null
+        );
+      }
+      this.sections.push({ section, contents });
+    });
+
     this.ready = true;
   }
 }

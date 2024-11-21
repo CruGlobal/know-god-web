@@ -1,13 +1,16 @@
 :root {
-  --kg-blue: #3BA4DB;
+  --kg-blue: #3ba4db;
   --kg-blue-light: #7fbfe0;
-  --kg-gray: #BEBEBE;
-  --kg-gray-light: #E6E6E6;
-  --kg-gray-dark: #5A5A5A;
-  --kg-white: #FFFFFF;
+  --kg-gray-light: #e6e6e6;
+  --kg-gray: #bebebe;
+  --kg-gray-medium-dark: #999;
+  --kg-gray-dark: #5a5a5a;
+  --kg-white: #ffffff;
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
@@ -16,17 +19,26 @@ html {
 }
 body {
   margin: 0;
-  font-family: "Source Sans Pro", sans-serif !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
   color: var(--kg-gray-dark);
 }
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0 0 14.5px;
   color: var(--kg-blue);
 }
-h1, h2, h3, h4 {
+h1,
+h2,
+h3,
+h4 {
   font-weight: 200;
 }
-h5, h6 {
+h5,
+h6 {
   font-weight: 400;
 }
 h1 {
@@ -44,7 +56,7 @@ h4 {
   font-size: 36px;
 }
 p {
-  margin:0 0 14.5px;
+  margin: 0 0 14.5px;
 }
 a {
   text-decoration: none;
@@ -140,10 +152,10 @@ img {
   margin-left: 114px;
   margin-right: 114px;
 }
-.action{
+.action {
   text-align: right;
-    font-style: italic;
-    padding-top: 10px;
+  font-style: italic;
+  padding-top: 10px;
 }
 .db {
   display: block;
@@ -173,11 +185,11 @@ img {
   height: 8px;
 }
 .fa-chevron-up {
-  transition: .2s;
+  transition: 0.2s;
 }
-.fa-chevron-up.flip{
+.fa-chevron-up.flip {
   transform: scaleY(-1);
-  transition: .2s;
+  transition: 0.2s;
 }
 .tc {
   text-align: center;
@@ -203,22 +215,22 @@ img {
 }
 
 .frame-square img {
-    width: 100%;
-    height: auto;
-    margin: auto;
-    position: absolute;
-    top: -100%;
-    right: -100%;
-    bottom: -100%;
-    left: -100%;
-  }
+  width: 100%;
+  height: auto;
+  margin: auto;
+  position: absolute;
+  top: -100%;
+  right: -100%;
+  bottom: -100%;
+  left: -100%;
+}
 
 /*CSS Colors */
 .kg-blue {
   color: var(--kg-blue);
 }
 .kg-bg-blue {
-  background-color: var(--kg-blue);  
+  background-color: var(--kg-blue);
 }
 .kg-bg-gray {
   background-color: var(--kg-gray);
@@ -246,7 +258,6 @@ img {
   background-color: var(--kg-white);
   cursor: pointer;
 }
-
 
 /***** Bootstrap-ish *****/
 .bs-container {
@@ -324,7 +335,7 @@ img {
   word-wrap: break-word;
   background-color: white;
   background-clip: border-box;
-  border: 0px solid rgba(0,0,0,0.125);
+  border: 0px solid rgba(0, 0, 0, 0.125);
   border-radius: 8px;
 }
 

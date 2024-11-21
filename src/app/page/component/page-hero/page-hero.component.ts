@@ -3,39 +3,39 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwContentComplexTypeForm } from '../../model/xmlns/content/content-ct-form';
-import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
-import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
-import { KgwTractComplexTypePageHero } from '../../model/xmlns/tract/tract-ct-page-hero';
+import {
+  Content,
+  Hero,
+  Text,
+  parseTextAddBrTags
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-hero',
+  selector: 'app-page-new-hero',
   templateUrl: './page-hero.component.html',
   styleUrls: ['./page-hero.component.css']
 })
 export class PageHeroComponent implements OnDestroy, OnChanges {
-  @Input() hero: KgwTractComplexTypePageHero;
+  @Input() hero: Hero;
 
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   ready: boolean;
-  heading: KgwContentComplexTypeTextchild;
+  heading: Text;
   headingText: string;
-  content: Array<KgwContentElementItem>;
+  content: Array<Content>;
   dir$: Observable<string>;
   isForm$: Observable<boolean>;
   isFirstPage$: Observable<boolean>;
   changeHeader$: Observable<string>;
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isFirstPage$ = this.pageService.isFirstPage$;
@@ -69,38 +69,9 @@ export class PageHeroComponent implements OnDestroy, OnChanges {
   }
 
   private init(): void {
-    if (this.hero.heading) {
-      this.heading = this.hero.heading;
-      this.headingText =
-        this.heading.text && this.heading.text.value
-          ? this.heading.text.value.trim()
-          : '';
-    }
-    if (this.hero.content && this.hero.content.length) {
-      this.hero.content.forEach((contentChild) => {
-        if (contentChild.contentType === 'paragraph') {
-          const tParagraph: KgwContentComplexTypeParagraph =
-            contentChild as KgwContentComplexTypeParagraph;
-          if (
-            !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
-          ) {
-            const tItemToAdd: KgwContentElementItem = {
-              type: 'paragraph',
-              element: tParagraph
-            };
-            this.content.push(tItemToAdd);
-          }
-        } else if (contentChild.contentType === 'form') {
-          const tForm: KgwContentComplexTypeForm =
-            contentChild as KgwContentComplexTypeForm;
-          const tItemToAdd: KgwContentElementItem = {
-            type: 'form',
-            element: tForm
-          };
-          this.content.push(tItemToAdd);
-        }
-      });
-    }
+    this.heading = this.hero?.heading;
+    this.headingText = parseTextAddBrTags(this.heading?.text);
+    this.content = this.hero.content;
 
     this.changeHeader$
       .pipe(takeUntil(this._unsubscribeAll))

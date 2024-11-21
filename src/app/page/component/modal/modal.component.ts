@@ -1,28 +1,24 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { KgwContentComplexTypeParagraph } from '../../model/xmlns/content/content-ct-paragraph';
-import { KgwContentComplexTypeTextchild } from '../../model/xmlns/content/content-ct-text-child';
-import { KgwContentElementItem } from '../../model/xmlns/content/content-element';
-import { KgwTractComplexTypeModal } from '../../model/xmlns/tract/tract-ct-modal';
+import {
+  Content,
+  Modal,
+  Text,
+  parseTextAddBrTags
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-modal',
+  selector: 'app-page-new-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnChanges {
-  @Input() modal: KgwTractComplexTypeModal;
+  @Input() modal: Modal;
 
   ready: boolean;
-  title: KgwContentComplexTypeTextchild;
-  content: Array<KgwContentElementItem>;
+  title: Text;
+  content: Content[];
   titleText: string;
   dir$: Observable<string>;
 
@@ -51,37 +47,14 @@ export class ModalComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 
   private init(): void {
-    if (this.modal.title) {
-      this.title = this.modal.title;
-      this.titleText =
-        this.title.text && this.title.text.value
-          ? this.title.text.value.trim()
-          : '';
-    }
-
-    if (this.modal.content && this.modal.content.length) {
-      this.modal.content.forEach((contentChild) => {
-        if (contentChild.contentType === 'paragraph') {
-          const tParagraph: KgwContentComplexTypeParagraph =
-            contentChild as KgwContentComplexTypeParagraph;
-          if (
-            !this.pageService.isRestricted(tParagraph.attributes.restrictTo)
-          ) {
-            const tItemToAdd: KgwContentElementItem = {
-              type: 'paragraph',
-              element: tParagraph
-            };
-            this.content.push(tItemToAdd);
-          }
-        }
-      });
-    }
-
+    this.title = this.modal?.title || null;
+    this.titleText = parseTextAddBrTags(this.title?.text) || '';
+    this.content = this.modal.content;
     this.ready = true;
   }
 }

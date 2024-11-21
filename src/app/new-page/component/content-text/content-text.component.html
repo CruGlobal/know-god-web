@@ -1,8 +1,0 @@
-<ng-container *ngIf="ready">
-  <p
-    class="mw568 textContent"
-    [ngClass]="{ firstContent: isFirstPage$ | async }"
-    [innerHTML]="textValue"
-    dir="{{ dir$ | async }}"
-  ></p>
-</ng-container>

@@ -11,10 +11,10 @@ import { CommonService } from '../services/common.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit, OnDestroy {
-  private _unsubscribeAll = new Subject<any>();
-  private _languagesReady = new Subject<any>();
-  private _languageChanged = new Subject<any>();
-  private _prepareDataForLanguage = new Subject<any>();
+  private _unsubscribeAll = new Subject<void>();
+  private _languagesReady = new Subject<void>();
+  private _languageChanged = new Subject<void>();
+  private _prepareDataForLanguage = new Subject<void>();
   private _booksData: any;
   private _languagesData: any;
 

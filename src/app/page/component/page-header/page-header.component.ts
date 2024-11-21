@@ -1,27 +1,25 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { KgwTractComplexTypePageHeader } from '../../model/xmlns/tract/tract-ct-page-header';
+import {
+  Header,
+  parseTextAddBrTags
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-header',
+  selector: 'app-page-new-header',
   templateUrl: './page-header.component.html',
   styleUrls: ['./page-header.component.css']
 })
 export class PageHeaderComponent implements OnChanges {
-  @Input() header: KgwTractComplexTypePageHeader;
+  @Input() header: Header;
 
   private _unsubscribeAll: Subject<any>;
 
   ready: boolean;
   headerText: string;
+  headerNumber: number | null;
   dir$: Observable<string>;
   changeHeader$: Observable<string>;
   isForm$: Observable<boolean>;
@@ -46,6 +44,7 @@ export class PageHeaderComponent implements OnChanges {
             ) {
               this.ready = false;
               this.headerText = '';
+              this.headerNumber = null;
               this.init();
             }
           }
@@ -55,14 +54,9 @@ export class PageHeaderComponent implements OnChanges {
   }
 
   private init(): void {
-    if (
-      this.header &&
-      this.header.title &&
-      this.header.title.text &&
-      this.header.title.text.value
-    ) {
-      this.headerText = this.header.title.text.value;
-    }
+    const { title, number } = this.header;
+    this.headerText = parseTextAddBrTags(title?.text) || '';
+    this.headerNumber = number?.text ? Number(number.text) : null;
 
     this.changeHeader$
       .pipe(takeUntil(this._unsubscribeAll))
