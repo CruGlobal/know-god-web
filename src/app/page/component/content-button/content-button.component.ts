@@ -1,17 +1,11 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageService } from '../../service/page-service.service';
 import {
   Button,
   EventId
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
+import { PageService } from '../../service/page-service.service';
 
 @Component({
   selector: 'app-content-new-button',
@@ -19,7 +13,6 @@ import { formatEvents } from 'src/app/shared/formatEvents';
   styleUrls: ['./content-button.component.css']
 })
 export class ContentButtonComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Button;
 
   button: Button;
