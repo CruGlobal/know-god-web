@@ -1,8 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
-  Paragraph,
-  Content
+  Content,
+  Paragraph
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+
 @Component({
   selector: 'app-content-new-paragraph',
   templateUrl: './content-paragraph.component.html',
