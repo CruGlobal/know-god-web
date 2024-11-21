@@ -1,17 +1,11 @@
-import {
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges
-} from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { PageService } from '../../service/page-service.service';
 import {
-  Tabs,
+  Content,
   Tab,
-  Content
+  Tabs
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
 
 interface TabWithContent {
   tab: Tab;
@@ -24,7 +18,6 @@ interface TabWithContent {
   styleUrls: ['./content-tabs.component.css']
 })
 export class ContentTabsComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Tabs;
 
   tabs: Tabs;
@@ -60,7 +53,7 @@ export class ContentTabsComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 

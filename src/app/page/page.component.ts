@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import {
   Component,
   HostListener,
@@ -6,25 +7,24 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import * as ActionCable from '@rails/actioncable';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
-import { ViewportScroller } from '@angular/common';
-import * as ActionCable from '@rails/actioncable';
+import { environment } from '../../environments/environment';
+import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { IPageParameters } from './model/page-parameters';
-import { APIURL } from '../api/url';
-import { environment } from './../../environments/environment';
-import { PageService } from './service/page-service.service';
 import {
-  PullParserFactory,
-  Page,
   Manifest,
+  ManifestParser,
+  Page,
+  ParserConfig,
+  PullParserFactory,
   TractPage,
-  XmlParser,
-  XmlParserData,
-  Animation
+  XmlParserData
 } from '../services/xml-parser-service/xmp-parser.service';
+import { IPageParameters } from './model/page-parameters';
+import { PageService } from './service/page-service.service';
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -46,8 +46,8 @@ interface LiveShareSubscriptionPayload {
   encapsulation: ViewEncapsulation.None
 })
 export class PageComponent implements OnInit, OnDestroy {
-  private _unsubscribeAll = new Subject<any>();
-  private _pageChanged = new Subject<any>();
+  private _unsubscribeAll = new Subject<void>();
+  private _pageChanged = new Subject<void>();
   private _pageParams: IPageParameters;
   private _allLanguagesLoaded: boolean;
   private _allLanguages: any[];
@@ -257,19 +257,16 @@ export class PageComponent implements OnInit, OnDestroy {
         ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
         : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName;
       this.pullParserFactory.setOrigin(fileName);
-      const config = XmlParser.ParserConfig.createParserConfig()
+      const config = ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
         .withSupportedFeatures([
-          XmlParser.ParserConfig.Companion.FEATURE_ANIMATION,
-          XmlParser.ParserConfig.Companion.FEATURE_MULTISELECT,
-          XmlParser.ParserConfig.Companion.FEATURE_FLOW,
-          XmlParser.ParserConfig.Companion.FEATURE_CONTENT_CARD
+          ParserConfig.Companion.FEATURE_ANIMATION,
+          ParserConfig.Companion.FEATURE_MULTISELECT,
+          ParserConfig.Companion.FEATURE_FLOW,
+          ParserConfig.Companion.FEATURE_CONTENT_CARD
         ])
         .withParseTips(false);
-      const newParser = new XmlParser.ManifestParser(
-        this.pullParserFactory,
-        config
-      );
+      const newParser = new ManifestParser(this.pullParserFactory, config);
       const controller = new AbortController();
       const signal = controller.signal;
       try {

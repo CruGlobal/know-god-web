@@ -1,15 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
-  Content,
   Multiselect,
   MultiselectOption
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
-
-interface MultiselectOptionWithContent {
-  option: MultiselectOption;
-  contents: Content[];
-}
 
 @Component({
   selector: 'app-content-new-multiselect',
@@ -17,7 +11,6 @@ interface MultiselectOptionWithContent {
   styleUrls: ['./content-multiselect.component.css']
 })
 export class ContentMultiselectComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input() item: Multiselect;
 
   multiselect: Multiselect;
@@ -51,7 +44,7 @@ export class ContentMultiselectComponent implements OnChanges {
     }
   }
 
-  trackByFn(index, item) {
+  trackByFn(index) {
     return index;
   }
 

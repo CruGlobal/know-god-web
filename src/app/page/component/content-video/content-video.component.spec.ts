@@ -1,9 +1,8 @@
-import { SimpleChange } from '@angular/core';
+import { SimpleChange, ɵunwrapSafeValue } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { PageService } from '../../service/page-service.service';
 import { mockVideo } from '../../../_tests/mocks';
+import { PageService } from '../../service/page-service.service';
 import { ContentVideoComponent } from './content-video.component';
-import { ɵunwrapSafeValue } from '@angular/core';
 
 describe('ContentVideoComponent', () => {
   let component: ContentVideoComponent;
