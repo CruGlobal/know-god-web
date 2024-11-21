@@ -8,15 +8,7 @@ import eslintPluginPrettier from 'eslint-plugin-prettier';
 
 export default [
   {
-    ignores: [
-      '.github',
-      '.angular',
-      '*package.json',
-      'yarn.lock',
-      'dist/**',
-      'karma.conf.cjs',
-      'commitlint.config.js*'
-    ]
+    ignores: ['dist/**']
   },
   {
     files: ['**/*.ts'],
