@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   Content,
   FlowWatcher,
@@ -11,7 +17,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-multiselect-option.component.html',
   styleUrls: ['./content-multiselect-option.component.css']
 })
-export class ContentMultiselectOptionComponent implements OnChanges {
+export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
   @Input() item: MultiselectOption;
   option: MultiselectOption;
   contents: Content[];
