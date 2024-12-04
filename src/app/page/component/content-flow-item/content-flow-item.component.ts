@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   Content,
   FlowItem,
@@ -11,7 +17,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-flow-item.component.html',
   styleUrls: ['./content-flow-item.component.css']
 })
-export class ContentFlowItemComponent implements OnChanges {
+export class ContentFlowItemComponent implements OnChanges, OnDestroy {
   @Input() item: FlowItem;
   contents: Content[];
   ready: boolean;
