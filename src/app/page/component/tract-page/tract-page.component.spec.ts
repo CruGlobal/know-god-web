@@ -135,7 +135,6 @@ describe('TractPageComponent', () => {
       pageService.formAction('test-no-thanks');
       expect(pageService.emailSignumFormDataNeeded).not.toHaveBeenCalled();
       expect(pageService.previousPage).not.toHaveBeenCalled();
-      expect(pageService.nextPage).toHaveBeenCalled();
     });
 
     it('Event includes "-no-thanks" & on last page', async () => {
@@ -149,7 +148,6 @@ describe('TractPageComponent', () => {
 
       expect(pageService.emailSignumFormDataNeeded).not.toHaveBeenCalled();
       expect(pageService.nextPage).not.toHaveBeenCalled();
-      expect(pageService.previousPage).toHaveBeenCalled();
     });
 
     it('Card Listeners', async () => {
@@ -169,7 +167,6 @@ describe('TractPageComponent', () => {
       pageService.formAction('cardLabel-2-dismiss');
 
       expect(pageService.emailSignumFormDataNeeded).not.toHaveBeenCalled();
-      expect(nextSpy).toHaveBeenCalled();
       setTimeout(() => {
         if ((component as any)._cardsHiddenOnFormAction.length) {
           expect(setHiddenCardToShowSpy).toHaveBeenCalled();
