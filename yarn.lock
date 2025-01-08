@@ -1234,12 +1234,11 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@cruglobal/godtools-shared@~1.0.1":
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.0.1.tgz#bc8f21f080624a728bf9ee68027bf9e5db593a31"
-  integrity sha512-nfO3+ynlq8L7n35APg/EgC4hvHHSBaidqQzpSgTkP1Os9HCHtQOymPgSaU+FA/Uyic7oaIr9w7Nt5vITybDHmw==
+"@cruglobal/godtools-shared@~1.1.0":
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.1.0.tgz#42dd6a89e36dc8bb669b947fc9fe93736e82b179"
+  integrity sha512-IfmYpMDV+ozMjRj7JVrPS3oIJ++KnK2WmaxEJeHTl+BJpw27O8j8xcClF9JcQ8A5p+s6INM4kyt93xMdAkJsgw==
   dependencies:
-    format-util "^1.0.5"
     sax "1.2.4"
 
 "@discoveryjs/json-ext@0.5.7":
@@ -4132,11 +4131,6 @@ foreground-child@^3.1.0:
   dependencies:
     cross-spawn "^7.0.0"
     signal-exit "^4.0.1"
-
-format-util@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/format-util/-/format-util-1.0.5.tgz"
-  integrity sha512-varLbTj0e0yVyRpqQhuWV+8hlePAgaoFRhNFj50BNjEIrw1/DphHSObtqwskVCPWNgzwPoQrZAbfa/SBiicNeg==
 
 forwarded@0.2.0:
   version "0.2.0"
