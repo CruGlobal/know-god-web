@@ -5,11 +5,11 @@ on:
     branches:
       - staging
       - development
-      - master
+      - main
   pull_request:
     branches:
       - staging
-      - master
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -47,10 +47,10 @@ jobs:
 
   deploy:
     name: Deploy
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/development')
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/development')
     runs-on: ubuntu-latest
     environment:
-      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
+      name: ${{ (github.ref == 'refs/heads/main' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
     needs: build
     permissions:
       id-token: write
@@ -70,7 +70,7 @@ jobs:
 
       - name: 🏗️ Build app
         run: yarn build --configuration $buildEnvironment
-        env: 
+        env:
           buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'development' || 'production' }}
 
       - name: Copy embed.js

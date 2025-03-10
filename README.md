@@ -3,8 +3,8 @@
 ## Embed
 
 ```html
- <div id="knowGodEmbed" data-book="kgp-us" data-lang="en"></div>
- <script src="https://knowgod.com/embed.js"></script>
+<div id="knowGodEmbed" data-book="kgp-us" data-lang="en"></div>
+<script src="https://knowgod.com/embed.js"></script>
 ```
 
 ## Development
@@ -18,4 +18,4 @@
 ### Deploy
 
 - Push to `staging` to auto-deploy to stage.knowgod.com
-- Push to `master` to auto-deploy to knowgod.com
+- Push to `main` to auto-deploy to knowgod.com
