@@ -1,7 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "downlevelIteration": true,
     "module": "es2020",
     "outDir": "./dist/out-tsc",
@@ -9,7 +9,7 @@
     "declaration": false,
     "moduleResolution": "node",
     "experimentalDecorators": true,
-    "target": "es2015",
+    "target": "ES2022",
     "typeRoots": ["node_modules/@types"],
     "lib": ["es2017", "dom"]
   }

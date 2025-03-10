@@ -1,26 +1,26 @@
+import { org } from '@cruglobal/godtools-shared';
 import {
+  Animation,
   Button,
   CallToAction,
-  Text,
-  EventId,
-  Image,
-  Resource,
-  Input,
-  Link,
-  Paragraph,
+  Card,
   Content,
-  Video,
-  TractPageCard,
-  Modal,
-  Animation,
-  Multiselect,
-  MultiselectOption,
+  EventId,
   Flow,
   FlowItem,
-  Card,
-  Spacer
+  Image,
+  Input,
+  Link,
+  Modal,
+  Multiselect,
+  MultiselectOption,
+  Paragraph,
+  Resource,
+  Spacer,
+  Text,
+  TractPageCard,
+  Video
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { org } from '@cruglobal/godtools-shared';
 
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);
@@ -51,25 +51,17 @@ const standardTypeValues = () => {
     __doNotUseOrImplementIt: null,
     _events: null,
     _getAnalyticsEvents: null,
-    getAnalyticsEvents: null
+    getAnalyticsEvents: null,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
 const createText = (text: string): Text => {
-  return {
-    text: text,
-    textAlign: null,
-    textColor: null,
-    textScale: null,
-    _textStyles: null,
-    minimumLines: null,
-    startImage: null,
-    startImageSize: null,
-    endImage: null,
-    endImageSize: null,
-    textStyles: null,
-    ...standardTypeValues()
-  };
+  return org.cru.godtools.shared.tool.parser.model.Text.createTestText(
+    null,
+    text
+  );
 };
 
 const createEventId = (name: string, namespace?: string): EventId => {
@@ -86,7 +78,9 @@ const createEventId = (name: string, namespace?: string): EventId => {
 const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
-    name
+    name,
+    equals: () => null,
+    hashCode: () => null
   };
 };
 
@@ -104,10 +98,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     width: '',
     buttonColor: '',
     backgroundColor: '',
-    icon: {
-      localName: '',
-      name: ''
-    },
+    icon: createResource('', ''),
     iconGravity: {
       name: 'CENTER',
       ordinal: 1
@@ -306,7 +297,7 @@ export const mockMultiselectOption = (
     _content: null,
     isSelected: () => selectedValue,
     isSelectedFlow: null,
-    watchIsSelected: (state, callback) => null,
+    watchIsSelected: () => null,
     toggleSelected: () => {
       selectedValue = !selectedValue;
       return selectedValue;
@@ -414,6 +405,9 @@ export const mockTractPage = (
     id: '1',
     position,
     parentPage: null,
+    parentPageParams: null,
+    nextPage: null,
+    previousPage: null,
     isHidden: false,
     _modals: null,
     findModal: null,

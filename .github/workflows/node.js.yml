@@ -5,11 +5,11 @@ on:
     branches:
       - staging
       - development
-      - master
+      - main
   pull_request:
     branches:
       - staging
-      - master
+      - main
   workflow_dispatch:
 
 concurrency:
@@ -28,7 +28,7 @@ jobs:
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: yarn install
@@ -47,10 +47,10 @@ jobs:
 
   deploy:
     name: Deploy
-    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/development')
+    if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/development')
     runs-on: ubuntu-latest
     environment:
-      name: ${{ (github.ref == 'refs/heads/master' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
+      name: ${{ (github.ref == 'refs/heads/main' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
     needs: build
     permissions:
       id-token: write
@@ -60,20 +60,17 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Install AWSCLI
-        run: pip install --user awscli
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
-          node-version: '16.x'
+          node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
         run: yarn install
 
       - name: 🏗️ Build app
         run: yarn build --configuration $buildEnvironment
-        env: 
+        env:
           buildEnvironment: ${{ github.ref == 'refs/heads/development' && 'development' || 'production' }}
 
       - name: Copy embed.js

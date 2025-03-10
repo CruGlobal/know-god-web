@@ -3,18 +3,18 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { PageService } from '../../service/page-service.service';
 import {
-  Text,
+  Content,
   Hero,
-  parseTextAddBrTags,
-  Content
+  Text,
+  parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { PageService } from '../../service/page-service.service';
+
 @Component({
   selector: 'app-page-new-hero',
   templateUrl: './page-hero.component.html',
@@ -23,7 +23,7 @@ import {
 export class PageHeroComponent implements OnDestroy, OnChanges {
   @Input() hero: Hero;
 
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   ready: boolean;
   heading: Text;
@@ -35,7 +35,7 @@ export class PageHeroComponent implements OnDestroy, OnChanges {
   changeHeader$: Observable<string>;
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isFirstPage$ = this.pageService.isFirstPage$;

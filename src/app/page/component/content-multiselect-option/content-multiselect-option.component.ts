@@ -1,8 +1,14 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   Content,
-  MultiselectOption,
-  FlowWatcher
+  FlowWatcher,
+  MultiselectOption
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -11,8 +17,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-multiselect-option.component.html',
   styleUrls: ['./content-multiselect-option.component.css']
 })
-export class ContentMultiselectOptionComponent implements OnChanges {
-  // eslint-disable-next-line @angular-eslint/no-input-rename
+export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
   @Input() item: MultiselectOption;
   option: MultiselectOption;
   contents: Content[];
