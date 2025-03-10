@@ -5656,10 +5656,10 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
-ngx-lottie@^8.3.0:
-  version "8.3.0"
-  resolved "https://registry.npmjs.org/ngx-lottie/-/ngx-lottie-8.3.0.tgz"
-  integrity sha512-pKjWFPzcDuj5+cNs80tuBvnOtG6BInDn0SoD19rLjRLUgRSRDlRkz+qc7T7/QlzRGizWiYnL4HiIcHCw49v6Uw==
+ngx-lottie@^11.0.0:
+  version "11.0.2"
+  resolved "https://registry.yarnpkg.com/ngx-lottie/-/ngx-lottie-11.0.2.tgz#359ca9b2417a5af3c12e98c982eaee27c818342f"
+  integrity sha512-sQhCTxfrzWpjN2HVFCSyAQYQg8ZjZVtO1xIhOkrJNHY3/TR/zZkVrhakWcaM5bVxyA7gfUnK3ox+iK59Yd8Bsw==
   dependencies:
     "@scarf/scarf" "^1.1.1"
     tslib "^2.3.0"
