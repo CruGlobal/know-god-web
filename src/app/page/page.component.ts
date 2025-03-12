@@ -366,7 +366,9 @@ export class PageComponent implements OnInit, OnDestroy {
           jsonResource.data &&
           jsonResource.data.attributes &&
           jsonResource.data.attributes['resource-type'] &&
-          jsonResource.data.attributes['resource-type'] === 'tract'
+          ['tract', 'cyoa'].includes(
+            jsonResource.data.attributes['resource-type']
+          )
         ) {
           if (!jsonResource.data.attributes['manifest']) {
             this.pageService.setDir('ltr');
