@@ -161,9 +161,8 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     }
 
     if (isShowCard) {
-      // Set type as Any so we can edit isHidden property.
       const card_to_show = this.cards[this._cardShownOnFormAction];
-      (card_to_show as any).isHidden = false;
+      card_to_show.isTemporarilyHidden = false;
       this.pageService.formVisible();
       this.pageService.modalHidden();
 
@@ -172,14 +171,14 @@ export class TractPageComponent implements OnChanges, OnDestroy {
       }
 
       this.cards.forEach((card) => {
-        if (card.listeners?.length) {
-          card.listeners.forEach((listener) => {
-            if (!card.isHidden && listener.name !== functionName) {
-              this._cardsHiddenOnFormAction.push(card.position);
-            }
-          });
-        } else {
-          this._cardsHiddenOnFormAction.push(card.position);
+        const shouldHideCard = !card.listeners?.some(
+          (listener) => listener.name === functionName
+        );
+        if (shouldHideCard) {
+          card.isTemporarilyHidden = true;
+          if (!this._cardsHiddenOnFormAction.includes(card.position)) {
+            this._cardsHiddenOnFormAction.push(card.position);
+          }
         }
       });
 
@@ -224,7 +223,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     this.cards
       .filter((card) => this._cardsHiddenOnFormAction.includes(card.position))
       .forEach((card) => {
-        (card as any).isHidden = false;
+        card.isTemporarilyHidden = false;
       });
   }
 
@@ -232,7 +231,9 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     const card = this.cards.find(
       (card) => card.position === this._cardShownOnFormAction
     );
-    if (card) (card as any).isHidden = true;
+    if (card) {
+      card.isTemporarilyHidden = true;
+    }
   }
 
   private init(): void {
@@ -248,6 +249,12 @@ export class TractPageComponent implements OnChanges, OnDestroy {
       ? this._page.callToAction
       : null;
 
+    // Reset the property "isTemporarilyHidden" to "isHidden"
+    // "isHidden" is the default value from the server
+    // "isTemporarilyHidden" changes when a listener is triggered
+    this.cards.forEach((card) => {
+      card.isTemporarilyHidden = card.isHidden;
+    });
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((action) => {
