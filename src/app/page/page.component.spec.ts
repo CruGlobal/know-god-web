@@ -250,7 +250,7 @@ describe('PageComponent', () => {
     }, 0);
   });
 
-  describe('awaitNavigationToPageOnPageEvent()', () => {
+  describe('awaitPageEvent()', () => {
     const tractPageWithListeners = mockTractPage(
       false,
       '0',
@@ -275,7 +275,7 @@ describe('PageComponent', () => {
         pageid: 1
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
-      component.navigateToPageOnPageEvent();
+      component.awaitPageEvent();
       onNextPageSpy = spyOn(component, 'onNextPage');
     });
 
