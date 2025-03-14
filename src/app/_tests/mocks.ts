@@ -58,23 +58,10 @@ const standardTypeValues = () => {
 };
 
 const createText = (text: string): Text => {
-  return {
-    text: text,
-    textAlign: {
-      name: 'START',
-      ordinal: 0
-    },
-    textColor: '#000000',
-    textScale: null,
-    _textStyles: [],
-    minimumLines: null,
-    startImage: null,
-    startImageSize: null,
-    endImage: null,
-    endImageSize: null,
-    textStyles: null,
-    ...standardTypeValues()
-  };
+  return org.cru.godtools.shared.tool.parser.model.Text.createTestText(
+    null,
+    text
+  );
 };
 
 const createEventId = (name: string, namespace?: string): EventId => {
@@ -418,6 +405,9 @@ export const mockTractPage = (
     id: '1',
     position,
     parentPage: null,
+    parentPageParams: null,
+    nextPage: null,
+    previousPage: null,
     isHidden: false,
     _modals: null,
     findModal: null,
