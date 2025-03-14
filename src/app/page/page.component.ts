@@ -574,6 +574,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private awaitPageNavigation(): void {
+    // Go to next page
     this.pageService.nextPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -584,6 +585,7 @@ export class PageComponent implements OnInit, OnDestroy {
         this.onNextPage();
       });
 
+    // Go to previous page
     this.pageService.previousPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -593,6 +595,69 @@ export class PageComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.onPreviousPage();
       });
+
+    // Go to any page on page event
+    this.awaitNavigationToPageOnPageEvent();
+  }
+
+  private awaitNavigationToPageOnPageEvent(): void {
+    // We listen for page events and dismiss events
+    // We then navigate to the page that has the event
+    const pageListeners = this._pageBookSubPages.map((page) =>
+      page.listeners.map((listener) => listener.name)
+    );
+    const pageDismissListeners = this._pageBookSubPages.map((page) =>
+      page.dismissListeners.map((listener) => listener.name)
+    );
+    const allListenersOnAllPages = [...pageListeners, ...pageDismissListeners];
+
+    this.pageService.contentEvent$
+      .pipe(
+        filter((event) =>
+          allListenersOnAllPages.some((allListenersOnPage) =>
+            allListenersOnPage.includes(event)
+          )
+        )
+      )
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((event) => {
+        this.navigateToPageOnEvent(event);
+      });
+  }
+
+  private navigateToPageOnEvent(event: string): void {
+    let isListener = false;
+    let isDismissListener = false;
+    let pageToNavigateTo = null;
+    this._pageBookSubPages.forEach((page) => {
+      const foundListener = page.listeners.some(
+        (listener) => listener.name === event
+      );
+      const foundDismissListener = page.dismissListeners.some(
+        (listener) => listener.name === event
+      );
+
+      if (foundListener || foundDismissListener) {
+        pageToNavigateTo = page;
+        isListener = foundListener;
+        isDismissListener = foundDismissListener;
+        return true;
+      }
+      return false;
+    });
+
+    if (isListener) {
+      this.router.navigate([
+        this._pageParams.langid,
+        this._pageParams.bookid,
+        pageToNavigateTo.position
+      ]);
+    }
+
+    if (isDismissListener) {
+      // We want to hide the page, for now I've set this to go to the next page.
+      this.onNextPage();
+    }
   }
 
   private awaitEmailFormSignupDataSubmitted(): void {
