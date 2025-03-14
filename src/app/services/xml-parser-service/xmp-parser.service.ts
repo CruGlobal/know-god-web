@@ -17,7 +17,11 @@ export type Modal = org.cru.godtools.shared.tool.parser.model.tract.Modal;
 export type TractPage =
   org.cru.godtools.shared.tool.parser.model.tract.TractPage;
 export type TractPageCard =
-  org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card;
+  org.cru.godtools.shared.tool.parser.model.tract.TractPage.Card & {
+    // isHidden is a default property of Card and can't be edited
+    // isTemporarilyHidden is a new property that can be edited to prevent us from type casting.
+    isTemporarilyHidden?: boolean;
+  };
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
 export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph;
 export type Resource = org.cru.godtools.shared.tool.parser.model.Resource;

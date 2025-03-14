@@ -2,7 +2,11 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { mockPageComponent, mockTractPage } from '../_tests/mocks';
+import {
+  createEventId,
+  mockPageComponent,
+  mockTractPage
+} from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import { PageComponent } from './page.component';
@@ -81,15 +85,15 @@ describe('PageComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['de', bookid, pageid]);
   });
 
-  it('onToggleLanaguageSelect()', () => {
+  it('onToggleLanguageSelect()', () => {
     component.languagesVisible = false;
-    component.onToggleLanaguageSelect();
+    component.onToggleLanguageSelect();
     expect(component.languagesVisible).toBeTrue();
   });
 
-  it('onToggleLanaguageSelect()', () => {
+  it('onToggleLanguageSelect()', () => {
     component.languagesVisible = false;
-    component.onToggleLanaguageSelect();
+    component.onToggleLanguageSelect();
     expect(component.languagesVisible).toBeTrue();
   });
 
@@ -168,7 +172,7 @@ describe('PageComponent', () => {
 
   it('loadPageBook() - page does not exist', () => {
     const loadPageBookIndexSpy = spyOn(component, 'loadPageBookIndex');
-    component._pageParams.bookid = 'connectingwithgod';
+    component._pageParams.bookid = 'connectingWithGod';
     component.loadPageBook();
     expect(component._pageBookLoaded).toBeFalse();
     expect(loadPageBookIndexSpy).toHaveBeenCalledTimes(0);
@@ -202,8 +206,8 @@ describe('PageComponent', () => {
   it('clearData()', () => {
     component._booksLoaded = true;
     component._pageBookLoaded = true;
-    component._pageBookMainfestLoaded = true;
-    component._pageBookMainfest = { test: true };
+    component._pageBookManifestLoaded = true;
+    component._pageBookManifest = { test: true };
     component._pageBookTranslationId = 10;
     component.availableLanguages = [{ lang: 'en' }];
     component.selectedBookName = 'Four Laws';
@@ -219,8 +223,8 @@ describe('PageComponent', () => {
     expect(component._pageBookLoaded).toEqual(false);
     expect(component._pageBook).toEqual({});
     expect(component._pageBookIndex).toEqual({});
-    expect(component._pageBookMainfestLoaded).toEqual(false);
-    expect(component._pageBookMainfest).toEqual({});
+    expect(component._pageBookManifestLoaded).toEqual(false);
+    expect(component._pageBookManifest).toEqual({});
     expect(component._pageBookTranslations).toEqual([]);
     expect(component._pageBookTranslationId).toEqual(0);
     expect(component._pageBookSubPagesManifest).toEqual([]);
@@ -244,5 +248,55 @@ describe('PageComponent', () => {
     setTimeout(() => {
       expect(component.pagesLoaded).toBe(true);
     }, 0);
+  });
+
+  describe('awaitPageEvent()', () => {
+    const tractPageWithListeners = mockTractPage(
+      false,
+      '0',
+      'headerText',
+      'heroText',
+      'callToActionText',
+      'cardLabel',
+      'modalTitle',
+      5,
+      [
+        createEventId('page-event', null),
+        createEventId('another-page-event', null)
+      ],
+      [createEventId('dismiss-event', null)]
+    );
+    let onNextPageSpy;
+
+    beforeEach(() => {
+      component._pageParams = {
+        langid,
+        bookid,
+        pageid: 1
+      };
+      component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
+      component.awaitPageEvent();
+      onNextPageSpy = spyOn(component, 'onNextPage');
+    });
+
+    it('should navigate to page 8', () => {
+      pageService.formAction('another-page-event');
+
+      expect(router.navigate).toHaveBeenCalledWith(['en', bookid, 5]);
+    });
+
+    it('should not navigate to new page', () => {
+      pageService.formAction('card-event');
+
+      expect(router.navigate).not.toHaveBeenCalled();
+      expect(onNextPageSpy).not.toHaveBeenCalled();
+    });
+
+    it('should navigate to the next page (2)', () => {
+      pageService.formAction('dismiss-event');
+
+      expect(router.navigate).not.toHaveBeenCalled();
+      expect(onNextPageSpy).toHaveBeenCalled();
+    });
   });
 });

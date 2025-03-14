@@ -64,7 +64,7 @@ const createText = (text: string): Text => {
   );
 };
 
-const createEventId = (name: string, namespace?: string): EventId => {
+export const createEventId = (name: string, namespace?: string): EventId => {
   return {
     namespace,
     name,
@@ -386,7 +386,9 @@ export const mockTractPage = (
   callToActionText: string,
   cardLabel: string,
   modalTitle: string,
-  position: number
+  position: number,
+  listeners: EventId[] = [],
+  dismissListeners: EventId[] = []
 ): org.cru.godtools.shared.tool.parser.model.tract.TractPage => {
   return {
     isLastPage,
@@ -405,9 +407,6 @@ export const mockTractPage = (
     id: '1',
     position,
     parentPage: null,
-    parentPageParams: null,
-    nextPage: null,
-    previousPage: null,
     isHidden: false,
     _modals: null,
     findModal: null,
@@ -415,10 +414,10 @@ export const mockTractPage = (
     visibleCards: null,
     backgroundImage: null,
     getAnalyticsEvents: null,
-    _dismissListeners: null,
-    _listeners: null,
-    dismissListeners: null,
-    listeners: null,
+    _dismissListeners: dismissListeners,
+    _listeners: listeners,
+    dismissListeners: dismissListeners,
+    listeners: listeners,
     ...standardTypeValues()
   };
 };
