@@ -414,8 +414,8 @@ export const mockTractPage = (
     visibleCards: null,
     backgroundImage: null,
     getAnalyticsEvents: null,
-    _dismissListeners: dismissListeners,
-    _listeners: listeners,
+    _dismissListeners: null,
+    _listeners: null,
     dismissListeners: dismissListeners,
     listeners: listeners,
     ...standardTypeValues()
