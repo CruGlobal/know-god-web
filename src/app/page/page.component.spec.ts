@@ -85,15 +85,15 @@ describe('PageComponent', () => {
     expect(router.navigate).toHaveBeenCalledWith(['de', bookid, pageid]);
   });
 
-  it('onToggleLanaguageSelect()', () => {
+  it('onToggleLanguageSelect()', () => {
     component.languagesVisible = false;
-    component.onToggleLanaguageSelect();
+    component.onToggleLanguageSelect();
     expect(component.languagesVisible).toBeTrue();
   });
 
-  it('onToggleLanaguageSelect()', () => {
+  it('onToggleLanguageSelect()', () => {
     component.languagesVisible = false;
-    component.onToggleLanaguageSelect();
+    component.onToggleLanguageSelect();
     expect(component.languagesVisible).toBeTrue();
   });
 
@@ -172,7 +172,7 @@ describe('PageComponent', () => {
 
   it('loadPageBook() - page does not exist', () => {
     const loadPageBookIndexSpy = spyOn(component, 'loadPageBookIndex');
-    component._pageParams.bookid = 'connectingwithgod';
+    component._pageParams.bookid = 'connectingWithGod';
     component.loadPageBook();
     expect(component._pageBookLoaded).toBeFalse();
     expect(loadPageBookIndexSpy).toHaveBeenCalledTimes(0);
@@ -206,8 +206,8 @@ describe('PageComponent', () => {
   it('clearData()', () => {
     component._booksLoaded = true;
     component._pageBookLoaded = true;
-    component._pageBookMainfestLoaded = true;
-    component._pageBookMainfest = { test: true };
+    component._pageBookManifestLoaded = true;
+    component._pageBookManifest = { test: true };
     component._pageBookTranslationId = 10;
     component.availableLanguages = [{ lang: 'en' }];
     component.selectedBookName = 'Four Laws';
@@ -223,8 +223,8 @@ describe('PageComponent', () => {
     expect(component._pageBookLoaded).toEqual(false);
     expect(component._pageBook).toEqual({});
     expect(component._pageBookIndex).toEqual({});
-    expect(component._pageBookMainfestLoaded).toEqual(false);
-    expect(component._pageBookMainfest).toEqual({});
+    expect(component._pageBookManifestLoaded).toEqual(false);
+    expect(component._pageBookManifest).toEqual({});
     expect(component._pageBookTranslations).toEqual([]);
     expect(component._pageBookTranslationId).toEqual(0);
     expect(component._pageBookSubPagesManifest).toEqual([]);
