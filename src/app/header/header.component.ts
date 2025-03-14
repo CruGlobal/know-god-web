@@ -24,6 +24,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   englishLangName = 'English';
   englishLangDirection = 'ltr';
   sectionReady: boolean;
+  webContentTypes = ['tract', 'cyoa'];
 
   currentYear = new Date().getFullYear();
   dispLanguage: number;
@@ -180,7 +181,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
               if (resource.attributes['attr-hidden']) {
                 return;
               }
-              if (resource.attributes['resource-type'] !== 'tract') {
+              if (
+                !this.webContentTypes.includes(
+                  resource.attributes['resource-type']
+                )
+              ) {
                 return;
               }
 
