@@ -16,6 +16,11 @@
       *ngIf="hero && (isModal$ | async) === false"
       [hero]="hero"
     ></app-page-new-hero>
+    <app-page-new-hero
+      *ngIf="content && (isModal$ | async) === false"
+      [hero]="{ content: content }"
+    >
+    </app-page-new-hero>
     <ng-container *ngIf="cards && cards.length && (isModal$ | async) === false">
       <app-page-new-card
         *ngFor="let card of cards"
