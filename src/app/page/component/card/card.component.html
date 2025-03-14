@@ -2,7 +2,7 @@
   attr.id="card-{{ cardPosition }}"
   class="cardContent"
   *ngIf="ready"
-  [hidden]="card.isHidden"
+  [hidden]="card.isTemporarilyHidden"
   [ngClass]="{
     hasHeading: !(card.listeners.length && card.dismissListeners.length)
   }"
