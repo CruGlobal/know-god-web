@@ -56,8 +56,8 @@ export class PageComponent implements OnInit, OnDestroy {
   private _pageBookLoaded: boolean;
   private _pageBook: any;
   private _pageBookIndex: any;
-  private _pageBookMainfest: Manifest;
-  private _pageBookMainfestLoaded: boolean;
+  private _pageBookManifest: Manifest;
+  private _pageBookManifestLoaded: boolean;
   private _pageBookTranslations: any[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
@@ -132,7 +132,7 @@ export class PageComponent implements OnInit, OnDestroy {
     return;
   }
 
-  onToggleLanaguageSelect(): void {
+  onToggleLanguageSelect(): void {
     this.languagesVisible = !this.languagesVisible;
   }
 
@@ -272,7 +272,7 @@ export class PageComponent implements OnInit, OnDestroy {
       try {
         newParser.parseManifest(fileName, signal).then((data) => {
           const { manifest } = data as XmlParserData;
-          this._pageBookMainfest = manifest;
+          this._pageBookManifest = manifest;
 
           // Loop through and get all resources.
           this._pageBookIndex.included.forEach((resource) => {
@@ -298,7 +298,7 @@ export class PageComponent implements OnInit, OnDestroy {
             this._pageBookSubPagesManifest = manifest.pages;
             this._pageBookSubPages = manifest.pages;
             this.totalPages = manifest.pages.length;
-            this._pageBookMainfestLoaded = true;
+            this._pageBookManifestLoaded = true;
             manifest.pages.forEach((page) => {
               this.loadBookPage(page as TractPage);
             });
@@ -515,7 +515,7 @@ export class PageComponent implements OnInit, OnDestroy {
           this.loaderService.display(true);
           this.loadPageBook();
         } else {
-          if (this._pageBookMainfestLoaded) {
+          if (this._pageBookManifestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
               const index = this._pageBookSubPages.findIndex(
                 (sPage) => sPage.position === this._pageParams.pageid
@@ -531,7 +531,7 @@ export class PageComponent implements OnInit, OnDestroy {
               this._pageBookSubPagesManifest &&
               this._pageBookSubPagesManifest.length > this._pageParams.pageid
             ) {
-              const tSubPageManifest = this._pageBookMainfest.pages[
+              const tSubPageManifest = this._pageBookManifest.pages[
                 this._pageParams.pageid
               ] as TractPage;
               if (tSubPageManifest) {
@@ -693,8 +693,8 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBookLoaded = false;
     this._pageBook = {};
     this._pageBookIndex = {};
-    this._pageBookMainfestLoaded = false;
-    this._pageBookMainfest = {} as Manifest;
+    this._pageBookManifestLoaded = false;
+    this._pageBookManifest = {} as Manifest;
     this._pageBookTranslations = [];
     this._pageBookTranslationId = 0;
     this._pageBookSubPagesManifest = [];
