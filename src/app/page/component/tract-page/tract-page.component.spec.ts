@@ -110,7 +110,7 @@ describe('TractPageComponent', () => {
   });
 
   describe('onFormAction', () => {
-    let nextSpy, setHiddenCardToShowSpy, setShownCardToHiddenSpy;
+    let setHiddenCardToShowSpy, setShownCardToHiddenSpy;
 
     beforeEach(waitForAsync(() => {
       spyOn(pageService, 'emailSignumFormDataNeeded');
@@ -121,7 +121,6 @@ describe('TractPageComponent', () => {
       spyOn(pageService, 'formVisible');
       spyOn(pageService, 'modalHidden');
       spyOn(pageService, 'modalVisible');
-      nextSpy = spyOn<any>(component, 'next');
       setHiddenCardToShowSpy = spyOn<any>(component, 'setHiddenCardToShow');
       setShownCardToHiddenSpy = spyOn<any>(component, 'setShownCardToHidden');
     }));
