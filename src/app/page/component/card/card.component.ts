@@ -20,7 +20,6 @@ export class CardComponent implements OnChanges {
   labelText: string;
   cardPosition: number;
   content: Array<Content>;
-  isHidden: boolean;
   dir$: Observable<string>;
   isForm$: Observable<boolean>;
   isModal$: Observable<boolean>;
@@ -66,7 +65,6 @@ export class CardComponent implements OnChanges {
       this.labelText = this.card.label.text?.trim() || '';
     }
 
-    this.isHidden = this.card.isTemporarilyHidden ?? this.card.isHidden;
     this.content = this.card.content;
 
     this.ready = true;
