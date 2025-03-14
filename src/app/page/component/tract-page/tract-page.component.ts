@@ -121,43 +121,48 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     let isShowModal: boolean;
     let isHideModal: boolean;
 
+    // Check if form submission
     if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
       this.pageService.emailSignumFormDataNeeded();
       setTimeout(() => {
         this.onFormAction(functionName);
       }, 0);
       return;
-    } else {
-      if (this.cards.length) {
-        const cardListener = this.cards.find((card) =>
-          card.listeners
-            ? card.listeners.find((listener) => listener.name === functionName)
-            : null
-        );
-        if (cardListener) {
-          this._cardShownOnFormAction = cardListener.position;
-          isShowCard = true;
-        }
+    }
 
-        const cardDismissListener = this.cards.find((card) =>
-          card.dismissListeners
-            ? card.dismissListeners.find(
-                (dismissListener) => dismissListener.name === functionName
-              )
-            : null
-        );
-        if (cardDismissListener) isHideCard = true;
+    // Check if we should hide or show cards
+    if (this.cards.length) {
+      const cardListener = this.cards.find((card) => {
+        return card.listeners
+          ? card.listeners.find((listener) => listener.name === functionName)
+          : null;
+      });
+      if (cardListener) {
+        this._cardShownOnFormAction = cardListener.position;
+        isShowCard = true;
       }
-      if (!isShowCard && !isHideCard && this.modal) {
-        const listeners = this.modal.listeners as EventId[];
-        const dismissListeners = this.modal.dismissListeners as EventId[];
-        isShowModal = !!listeners.filter(
-          (listener) => listener.name === functionName
-        )?.length;
-        isHideModal = !!dismissListeners.filter(
-          (dismissListener) => dismissListener.name === functionName
-        )?.length;
+
+      const cardDismissListener = this.cards.find((card) => {
+        return card.dismissListeners
+          ? card.dismissListeners.find(
+              (dismissListener) => dismissListener.name === functionName
+            )
+          : null;
+      });
+      if (cardDismissListener) {
+        isHideCard = true;
       }
+    }
+
+    if (!isShowCard && !isHideCard && this.modal) {
+      const listeners = this.modal.listeners as EventId[];
+      const dismissListeners = this.modal.dismissListeners as EventId[];
+      isShowModal = !!listeners.filter(
+        (listener) => listener.name === functionName
+      )?.length;
+      isHideModal = !!dismissListeners.filter(
+        (dismissListener) => dismissListener.name === functionName
+      )?.length;
     }
 
     if (isShowCard) {
@@ -170,6 +175,7 @@ export class TractPageComponent implements OnChanges, OnDestroy {
         this.pageService.changeHeader(card_to_show.label.text);
       }
 
+      // Hide all other cards that are not listeners of the current event.
       this.cards.forEach((card) => {
         const shouldHideCard = !card.listeners?.some(
           (listener) => listener.name === functionName
@@ -181,22 +187,16 @@ export class TractPageComponent implements OnChanges, OnDestroy {
           }
         }
       });
-
-      if (this._cardsHiddenOnFormAction.length) {
-        this.cards
-          .filter((card) =>
-            this._cardsHiddenOnFormAction.includes(card.position)
-          )
-          .map((card) => {
-            (card as any).isHidden = true;
-          });
-      }
     } else if (isHideCard) {
       setTimeout(() => {
         this.pageService.formHidden();
         this.pageService.modalHidden();
-        if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
-        if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
+        if (this._cardsHiddenOnFormAction.length) {
+          this.setHiddenCardToShow();
+        }
+        if (this._cardShownOnFormAction >= 0) {
+          this.setShownCardToHidden();
+        }
 
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
@@ -208,8 +208,12 @@ export class TractPageComponent implements OnChanges, OnDestroy {
       this.pageService.modalHidden();
       this.pageService.formHidden();
       setTimeout(() => {
-        if (this._cardsHiddenOnFormAction.length) this.setHiddenCardToShow();
-        if (this._cardShownOnFormAction >= 0) this.setShownCardToHidden();
+        if (this._cardsHiddenOnFormAction.length) {
+          this.setHiddenCardToShow();
+        }
+        if (this._cardShownOnFormAction >= 0) {
+          this.setShownCardToHidden();
+        }
 
         this._cardShownOnFormAction = -1;
         this._cardsHiddenOnFormAction = [];
