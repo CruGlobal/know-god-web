@@ -123,6 +123,7 @@ describe('TractPageComponent', () => {
       spyOn(pageService, 'modalVisible');
       setHiddenCardToShowSpy = spyOn<any>(component, 'setHiddenCardToShow');
       setShownCardToHiddenSpy = spyOn<any>(component, 'setShownCardToHidden');
+      (component as any).init();
     }));
 
     it('Event followup:send', async () => {
@@ -149,7 +150,9 @@ describe('TractPageComponent', () => {
       expect(pageService.nextPage).not.toHaveBeenCalled();
     });
 
-    it('Card Listeners', async () => {
+    it('should show Card 3 and hide the first 2 cards', async () => {
+      component.cards[0].isTemporarilyHidden = false;
+      component.cards[1].isTemporarilyHidden = false;
       pageService.formAction('cardLabel-2');
 
       expect(pageService.emailSignumFormDataNeeded).not.toHaveBeenCalled();
@@ -159,7 +162,7 @@ describe('TractPageComponent', () => {
       expect(pageService.changeHeader).toHaveBeenCalledWith(
         page.cards[2].label.text
       );
-      expect((component as any)._cardsHiddenOnFormAction).toEqual([0]);
+      expect((component as any)._cardsHiddenOnFormAction).toEqual([0, 1]);
     });
 
     it('Card Dismiss Listeners', async () => {
