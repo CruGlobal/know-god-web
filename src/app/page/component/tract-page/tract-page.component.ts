@@ -180,14 +180,14 @@ export class TractPageComponent implements OnChanges, OnDestroy {
 
       // Hide all other cards that are not listeners of the current event.
       this.cards.forEach((card) => {
-        const shouldHideCard =
-          !card.listeners?.some(
-            (listener) =>
-              !card.isTemporarilyHidden && listener.name === functionName
-          ) || !card.listeners?.length;
+        const shouldHideCard = !card.listeners?.some(
+          (listener) => listener.name === functionName
+        );
         if (shouldHideCard) {
           card.isTemporarilyHidden = true;
-          this._cardsHiddenOnFormAction.push(card.position);
+          if (!this._cardsHiddenOnFormAction.includes(card.position)) {
+            this._cardsHiddenOnFormAction.push(card.position);
+          }
         }
       });
     } else if (isHideCard) {
