@@ -1,4 +1,4 @@
-name: Update staging and development
+name: Pipeline
 on:
   push:
     branches:
@@ -8,6 +8,7 @@ on:
 
 jobs:
   update-staging:
+    name: 🌱 Merge to Staging
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'On Staging')
     steps:
@@ -18,8 +19,9 @@ jobs:
           type: now
           target_branch: 'staging'
           github_token: ${{ github.token }}
-  
+
   update-development:
+    name: 🛠 Merge to Development
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'On Staging') || contains(github.event.pull_request.labels.*.name, 'On Development')
     steps:
