@@ -64,7 +64,9 @@ export class ContentTextComponent implements OnChanges {
       )
         ? 'underline'
         : '',
-      'text-align': this.text.textAlign.name || ''
+      'text-align': this.text.textAlign.name || '',
+
+      'font-size': this.text.textScale ? `${this.text.textScale}rem` : ''
       // Do not use color for now since we don't want to support desktop and mobile colors
       // color: this.text.textColor || ''
     };
