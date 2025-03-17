@@ -18,6 +18,7 @@ import {
   Manifest,
   ManifestParser,
   Page,
+  PageType,
   ParserConfig,
   PullParserFactory,
   TractPage,
@@ -69,6 +70,7 @@ export class PageComponent implements OnInit, OnDestroy {
   selectedLang: string;
   availableLanguages: Array<any>;
   languagesVisible: boolean;
+  resourceType: PageType;
   selectedBookName: string;
   activePage: any;
   activePageOrder: number;
@@ -360,65 +362,57 @@ export class PageComponent implements OnInit, OnDestroy {
         const result = enc.decode(arr);
         const jsonResource = JSON.parse(result);
         this._pageBookIndex = jsonResource;
+        const webContentTypes = ['tract', 'cyoa'];
+
 
         if (
-          jsonResource &&
-          jsonResource.data &&
-          jsonResource.data.attributes &&
-          jsonResource.data.attributes['resource-type'] &&
-          jsonResource.data.attributes['resource-type'] === 'tract'
+          !webContentTypes.includes(
+            jsonResource?.data?.attributes?.['resource-type']
+          )
         ) {
-          if (!jsonResource.data.attributes['manifest']) {
-            this.pageService.setDir('ltr');
-            this.bookNotAvailable = true;
-            this.loaderService.display(false);
-            return;
-          }
-
-          if (
-            jsonResource.data.relationships &&
-            jsonResource.data.relationships['latest-translations'] &&
-            jsonResource.data.relationships['latest-translations'].data
-          ) {
-            const tPageBookRequiredTranslations =
-              jsonResource.data.relationships['latest-translations'].data;
-            if (
-              tPageBookRequiredTranslations &&
-              tPageBookRequiredTranslations.length > 0 &&
-              jsonResource.included &&
-              jsonResource.included.length > 0
-            ) {
-              const tIncluded = jsonResource.included;
-              tPageBookRequiredTranslations.forEach(
-                (pageBookTranslationItem) => {
-                  const translations = tIncluded.filter((row) => {
-                    if (
-                      row.type === 'translation' &&
-                      row.id === pageBookTranslationItem.id
-                    ) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  });
-                  if (translations && translations.length > 0) {
-                    translations.forEach((item) => {
-                      this._pageBookTranslations.push(item);
-                    });
-                  }
-                }
-              );
-            }
-          }
-
-          this.selectedBookName = jsonResource.data.attributes['name'];
-
-          this.getAvailableLanguagesForSelectedBook();
-        } else {
           this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
           this.loaderService.display(false);
+          return;
         }
+
+        this.resourceType = jsonResource?.data?.attributes?.['resource-type'];
+
+          this.selectedBookName = jsonResource.data.attributes['name'];
+
+        if (!jsonResource.data.attributes['manifest']) {
+          this.pageService.setDir('ltr');
+          this.bookNotAvailable = true;
+          this.loaderService.display(false);
+          return;
+        }
+        const latestTranslations =
+          jsonResource.data.relationships?.['latest-translations']?.data;
+
+        if (latestTranslations?.length) {
+          if (jsonResource.included?.length) {
+            const includedTranslations = jsonResource.included;
+            latestTranslations.forEach((pageBookTranslationItem) => {
+              const translations = includedTranslations.filter((row) => {
+                if (
+                  row.type === 'translation' &&
+                  row.id === pageBookTranslationItem.id
+                ) {
+                  return true;
+                }
+
+                return false;
+              });
+              translations?.forEach((item) => {
+                this._pageBookTranslations.push(item);
+              });
+            });
+          }
+        }
+
+        this.selectedBookName = jsonResource.data.attributes['name'];
+
+        this.getAvailableLanguagesForSelectedBook();
       });
   }
 
