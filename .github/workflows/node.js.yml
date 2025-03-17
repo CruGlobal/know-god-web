@@ -1,4 +1,4 @@
-name: Build & Deploy
+name: CI
 
 on:
   push:
@@ -17,8 +17,47 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  lint-and-prettier:
+    name: 🧹 Lint & Prettier Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: 📦 Install dependencies
+        run: yarn install --immutable --immutable-cache
+
+      - name: 💅 Prettier check
+        run: yarn prettier:check
+
+      - name: 💨 Lint check
+        run: yarn lint
+
+  test:
+    name: ✅ Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: 📦 Install dependencies
+        run: yarn install --immutable --immutable-cache
+
+      - name: ✅ Run Tests
+        run: yarn test --no-watch
+
   build:
-    name: Checks, Tests & Build
+    name: 🏗️ Build app
     runs-on: ubuntu-latest
 
     steps:
@@ -31,27 +70,18 @@ jobs:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install
-
-      - name: 💅 Prettier check
-        run: yarn prettier:check
-
-      - name: 💨 Lint check
-        run: yarn lint
-
-      - name: ✅ Run Tests
-        run: yarn test --no-watch
+        run: yarn install --immutable --immutable-cache
 
       - name: 🏗️ Build app
         run: yarn build
 
   deploy:
-    name: Deploy
+    name: 🚀 Deploy app
     if: (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/staging' || github.ref == 'refs/heads/development')
     runs-on: ubuntu-latest
     environment:
       name: ${{ (github.ref == 'refs/heads/main' && 'prod') || (github.ref == 'refs/heads/staging' && 'stage') || 'dev' }}
-    needs: build
+    needs: [lint-and-prettier, test, build]
     permissions:
       id-token: write
       contents: read
