@@ -1234,10 +1234,10 @@
   resolved "https://registry.npmjs.org/@colors/colors/-/colors-1.5.0.tgz"
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
-"@cruglobal/godtools-shared@~1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.1.0.tgz#42dd6a89e36dc8bb669b947fc9fe93736e82b179"
-  integrity sha512-IfmYpMDV+ozMjRj7JVrPS3oIJ++KnK2WmaxEJeHTl+BJpw27O8j8xcClF9JcQ8A5p+s6INM4kyt93xMdAkJsgw==
+"@cruglobal/godtools-shared@1.1.1-PR767-SNAPSHOT.1681":
+  version "1.1.1-PR767-SNAPSHOT.1681"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.1.1-PR767-SNAPSHOT.1681.tgz#5e9aaea9131e9576886a5ccf01b948948860e557"
+  integrity sha512-TL/slss5965AM+3n66eUu8VuE73FimKIEyGLnorGlD3l8CSuICAKue42/+k/KirEDyo18WS7kn6CCUgBYNq2Qw==
   dependencies:
     sax "1.2.4"
 
