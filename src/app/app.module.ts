@@ -30,6 +30,7 @@ import { ContentTabsComponent } from './page/component/content-tabs/content-tabs
 import { ContentTextComponent } from './page/component/content-text/content-text.component';
 import { ContentVideoComponent } from './page/component/content-video/content-video.component';
 import { ModalComponent } from './page/component/modal/modal.component';
+import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { PageHeroComponent } from './page/component/page-hero/page-hero.component';
 import { TractPageComponent } from './page/component/tract-page/tract-page.component';
@@ -89,7 +90,8 @@ export function playerFactory() {
     ContentMultiselectOptionComponent,
     ContentFlowComponent,
     ContentFlowItemComponent,
-    ContentCardComponent
+    ContentCardComponent,
+    CYOAComponent
   ],
   imports: [
     BrowserModule,
