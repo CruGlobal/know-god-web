@@ -1235,9 +1235,9 @@
   integrity sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==
 
 "@cruglobal/godtools-shared@~1.1.0":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.1.0.tgz#42dd6a89e36dc8bb669b947fc9fe93736e82b179"
-  integrity sha512-IfmYpMDV+ozMjRj7JVrPS3oIJ++KnK2WmaxEJeHTl+BJpw27O8j8xcClF9JcQ8A5p+s6INM4kyt93xMdAkJsgw==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@cruglobal/godtools-shared/-/godtools-shared-1.1.1.tgz#1660389d96f12ff5e6e5b7e74d8bf750e5162262"
+  integrity sha512-/vlTxxonC8lkK/aguoDH6hCCLSEKKeqnS2ciBIVbELa823z3y0MVfKZNJ31V1gFzysprRvI2so5i7Jt5Q/L3gg==
   dependencies:
     sax "1.2.4"
 

@@ -211,7 +211,6 @@ export const mockParagraph = (): Paragraph => {
       } as Paragraph,
       mockInput('inputName', 'inputValue', 'inputLabel', 'inputPlaceholder')
     ],
-    _content: null,
     ...standardTypeValues()
   };
 };
@@ -254,14 +253,11 @@ export const mockTractCard = (
     visiblePosition: null,
     isLastVisibleCard: null,
     isHidden,
-    _listeners: null,
-    _dismissListeners: null,
     backgroundImage: null,
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
     content: mockContent(),
-    _content: null,
     ...standardTypeValues()
   };
 };
@@ -272,9 +268,6 @@ export const mockModal = (title: string, listeners): Modal => {
     content: content,
     page: null,
     id: null,
-    _content: null,
-    _dismissListeners: null,
-    _listeners: null,
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
     ...standardTypeValues()
@@ -294,7 +287,6 @@ export const mockMultiselectOption = (
     selectedColor: '#ffffff',
     multiselect: null,
     content: [],
-    _content: null,
     isSelected: () => selectedValue,
     isSelectedFlow: null,
     watchIsSelected: () => null,
@@ -310,7 +302,6 @@ export const mockMultiselect = (): Multiselect => {
   return {
     columns: 4,
     options: [mockMultiselectOption(false), mockMultiselectOption(true)],
-    _options: null,
     ...standardTypeValues()
   };
 };
@@ -318,7 +309,6 @@ export const mockMultiselect = (): Multiselect => {
 export const mockFlowItem = (initialSelectedValue): FlowItem => {
   return {
     flow: null,
-    _content: null,
     content: [mockImage('filename', 'url_to_path')],
     ...standardTypeValues(),
     isGone: () => initialSelectedValue,
@@ -335,7 +325,6 @@ export const mockFlow = (): Flow => {
       mockFlowItem(true),
       mockFlowItem(false)
     ],
-    _items: null,
     ...standardTypeValues()
   };
 };
@@ -343,7 +332,6 @@ export const mockFlow = (): Flow => {
 export const mockCard = (isClickable): Card => {
   return {
     backgroundColor: '#000000',
-    _content: null,
     url: 'URL',
     content: mockContent(),
     isClickable,
@@ -372,7 +360,6 @@ export const mockHero = (
     heading: createText(heading),
     content,
     getAnalyticsEvents: null,
-    _content: null,
     _getAnalyticsEvents: null,
     ...standardTypeValues()
   };
@@ -411,14 +398,10 @@ export const mockTractPage = (
     nextPage: null,
     previousPage: null,
     isHidden: false,
-    _modals: null,
     findModal: null,
-    _cards: null,
     visibleCards: null,
     backgroundImage: null,
     getAnalyticsEvents: null,
-    _dismissListeners: null,
-    _listeners: null,
     dismissListeners: dismissListeners,
     listeners: listeners,
     ...standardTypeValues()
