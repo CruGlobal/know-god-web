@@ -18,7 +18,7 @@ import { PageService } from '../../../service/page-service.service';
 @Component({
   selector: 'app-cyoa-page',
   templateUrl: './cyoa-page.component.html',
-  styleUrls: ['./cyoa-page.component.css'],
+  styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class CYOAComponent implements OnChanges, OnDestroy {
@@ -76,7 +76,14 @@ export class CYOAComponent implements OnChanges, OnDestroy {
     }
   }
 
+  // We go straight into content
+
+  // Do you have a parent page if so, we need to add that to the navigation stack.
+
   private init(): void {
+    console.log('CYOA Page:', this._page);
+    console.log('Order:', this.order);
+    console.log('Total Pages:', this.totalPages);
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
@@ -109,5 +116,7 @@ export class CYOAComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     }
+
+    console.log('Function Name:', functionName);
   }
 }
