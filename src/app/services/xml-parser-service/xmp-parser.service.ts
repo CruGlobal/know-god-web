@@ -22,6 +22,19 @@ export type TractPageCard =
     // isTemporarilyHidden is a new property that can be edited to prevent us from type casting.
     isTemporarilyHidden?: boolean;
   };
+export type CyoaContentPage =
+  org.cru.godtools.shared.tool.parser.model.page.ContentPage;
+export type CyoaCardCollectionPage =
+  org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage;
+export type CyoaPageCollectionPage =
+  org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage;
+
+export type CYOAPage =
+  | CyoaContentPage
+  | CyoaCardCollectionPage
+  | CyoaPageCollectionPage;
+export type CYOAPageCard =
+  org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card;
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
 export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph;
 export type Resource = org.cru.godtools.shared.tool.parser.model.Resource;
@@ -232,4 +245,9 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
         });
     });
   }
+}
+
+export enum PageType {
+  Tract = 'tract',
+  CYOA = 'cyoa'
 }

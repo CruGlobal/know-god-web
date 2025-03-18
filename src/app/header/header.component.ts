@@ -24,16 +24,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   englishLangName = 'English';
   englishLangDirection = 'ltr';
   sectionReady: boolean;
-  webContentTypes = ['tract', 'cyoa'];
-
   currentYear = new Date().getFullYear();
   dispLanguage: number;
   dispLanguageCode: string;
   dispLanguageName: string;
   dispLanguageDirection: string;
-
   langSwitchOn: boolean;
   availableLangs: [];
+  webContentTypes = ['tract', 'cyoa'];
 
   constructor(
     public route: Router,
