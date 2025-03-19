@@ -6,11 +6,11 @@ import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
   private _languagesReady = new Subject<void>();
   private _languageChanged = new Subject<void>();
@@ -185,6 +185,10 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 )
               ) {
                 return;
+              }
+
+              if (resource.attributes['resource-type'] === 'cyoa') {
+                console.log('CYOA', resource);
               }
 
               const resourceId = resource.id;
