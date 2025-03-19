@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LottieModule } from 'ngx-lottie';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { CalltoactionComponent } from './page/component/calltoaction/calltoaction.component';
 import { CardComponent } from './page/component/card/card.component';
 import { ContentAccordionComponent } from './page/component/content-accordion/content-accordion.component';
@@ -45,8 +45,8 @@ const appRoutes: Routes = [
     redirectTo: ':langid/:bookid/0',
     pathMatch: 'full'
   },
-  { path: ':langid', component: HeaderComponent },
-  { path: '', component: HeaderComponent },
+  { path: ':langid', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   { path: ':langid/embed/:bookid', component: PageComponent },
   {
     path: ':langid/:bookid/:page',
@@ -63,7 +63,7 @@ export function playerFactory() {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
+    DashboardComponent,
     SharingModalComponent,
     LoaderComponent,
     PageComponent,
