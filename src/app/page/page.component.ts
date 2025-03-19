@@ -89,8 +89,8 @@ export class PageComponent implements OnInit, OnDestroy {
     private pullParserFactory: PullParserFactory
   ) {
     this._pageParams = {
-      langid: '',
-      bookid: ''
+      langId: '',
+      bookId: ''
     };
     this._books = [];
     this.activePageOrder = 0;
@@ -128,7 +128,7 @@ export class PageComponent implements OnInit, OnDestroy {
     const tPageOrder = this._pageParams.pageid || 0;
     this.router.navigate([
       lang.attributes.code,
-      this._pageParams.bookid,
+      this._pageParams.bookId,
       tPageOrder
     ]);
     return;
@@ -141,8 +141,8 @@ export class PageComponent implements OnInit, OnDestroy {
   private onPreviousPage(): void {
     if (this._pageParams.pageid > 0) {
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
+        this._pageParams.langId,
+        this._pageParams.bookId,
         this._pageParams.pageid - 1
       ]);
     }
@@ -151,8 +151,8 @@ export class PageComponent implements OnInit, OnDestroy {
   private onNextPage(): void {
     if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
+        this._pageParams.langId,
+        this._pageParams.bookId,
         this._pageParams.pageid + 1
       ]);
     }
@@ -418,7 +418,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private loadPageBook(): void {
     this._pageBook =
       this._books.find((book) =>
-        book.attributes.abbreviation === this._pageParams.bookid ? book : false
+        book.attributes.abbreviation === this._pageParams.bookId ? book : false
       ) || {};
 
     if (!this._pageBook.id) {
@@ -457,7 +457,7 @@ export class PageComponent implements OnInit, OnDestroy {
         if (data && data.data) {
           this._allLanguages = data.data;
           this._allLanguagesLoaded = true;
-          if (this._pageParams && this._pageParams.langid) {
+          if (this._pageParams && this._pageParams.langId) {
             this.setSelectedLanguage();
           }
           this.getAllBooks();
@@ -472,7 +472,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
       const attributes = lang.attributes;
-      if (attributes?.code && attributes?.code === this._pageParams.langid) {
+      if (attributes?.code && attributes?.code === this._pageParams.langId) {
         this._selectedLanguage = lang;
         this.selectedLang = attributes.name;
         this.pageService.setDir(attributes.direction);
@@ -547,15 +547,15 @@ export class PageComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params) => {
-        const { langid, bookid } = this._pageParams;
+        const { langId, bookId } = this._pageParams;
         const bookChanged =
-          langid !== params['langid'] || bookid !== params['bookid'];
+          langId !== params['langId'] || bookId !== params['bookId'];
 
         if (!bookChanged) {
           this._pageParams.pageid = Number(params['page']);
         } else {
-          this._pageParams.langid = params['langid'];
-          this._pageParams.bookid = params['bookid'];
+          this._pageParams.langId = params['langId'];
+          this._pageParams.bookId = params['bookId'];
           this._pageParams.pageid = Number(params['page']);
           this.clearData();
           if (this._allLanguagesLoaded) {
@@ -642,8 +642,8 @@ export class PageComponent implements OnInit, OnDestroy {
     if (isListener) {
       this.pageService.addToNavigationStack(pageToNavigateTo.position);
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
+        this._pageParams.langId,
+        this._pageParams.bookId,
         pageToNavigateTo.position
       ]);
     }
@@ -653,8 +653,8 @@ export class PageComponent implements OnInit, OnDestroy {
       this.pageService.getNavigationStack().subscribe((stack) => {
         const previousPage = stack[stack.length - 1];
         this.router.navigate([
-          this._pageParams.langid,
-          this._pageParams.bookid,
+          this._pageParams.langId,
+          this._pageParams.bookId,
           previousPage
         ]);
       });
