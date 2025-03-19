@@ -640,6 +640,7 @@ export class PageComponent implements OnInit, OnDestroy {
     });
 
     if (isListener) {
+      this.pageService.addToNavigationStack(pageToNavigateTo.position);
       this.router.navigate([
         this._pageParams.langid,
         this._pageParams.bookid,
@@ -648,6 +649,15 @@ export class PageComponent implements OnInit, OnDestroy {
     }
 
     if (isDismissListener) {
+      this.pageService.removeFromNavigationStack(pageToNavigateTo.position);
+      this.pageService.getNavigationStack().subscribe((stack) => {
+        const previousPage = stack[stack.length - 1];
+        this.router.navigate([
+          this._pageParams.langid,
+          this._pageParams.bookid,
+          previousPage
+        ]);
+      });
       // We want to hide the page, for now I've set this to go to the next page.
       this.onNextPage();
     }
