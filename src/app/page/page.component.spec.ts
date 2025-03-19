@@ -17,8 +17,8 @@ describe('PageComponent', () => {
   let fixture: ComponentFixture<PageComponent>;
   let pageService: PageService;
   let router: Router;
-  const bookid = 'fourlaws',
-    langid = 'en',
+  const bookId = 'fourlaws',
+    langId = 'en',
     pageid = 0;
   const tractPage = mockTractPage(
     false,
@@ -62,8 +62,8 @@ describe('PageComponent', () => {
     spyOn(router, 'navigate');
 
     component._pageParams = {
-      langid,
-      bookid,
+      langId,
+      bookId,
       pageid
     };
     component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
@@ -82,7 +82,7 @@ describe('PageComponent', () => {
 
   it('selectLanguage()', () => {
     component.selectLanguage({ attributes: { code: 'de' } });
-    expect(router.navigate).toHaveBeenCalledWith(['de', bookid, pageid]);
+    expect(router.navigate).toHaveBeenCalledWith(['de', bookId, pageid]);
   });
 
   it('onToggleLanguageSelect()', () => {
@@ -103,22 +103,22 @@ describe('PageComponent', () => {
   });
   it('onPreviousPage() on page > 0', () => {
     component._pageParams = {
-      langid,
-      bookid,
+      langId,
+      bookId,
       pageid: 5
     };
     component.onPreviousPage();
-    expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 4]);
+    expect(router.navigate).toHaveBeenCalledWith([langId, bookId, 4]);
   });
 
   it('onNextPage() on page 0', () => {
     component.onNextPage();
-    expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 1]);
+    expect(router.navigate).toHaveBeenCalledWith([langId, bookId, 1]);
   });
   it('onNextPage() on final page', () => {
     component._pageParams = {
-      langid,
-      bookid,
+      langId,
+      bookId,
       pageid: 6
     };
     component.onNextPage();
@@ -172,7 +172,7 @@ describe('PageComponent', () => {
 
   it('loadPageBook() - page does not exist', () => {
     const loadPageBookIndexSpy = spyOn(component, 'loadPageBookIndex');
-    component._pageParams.bookid = 'connectingWithGod';
+    component._pageParams.bookId = 'connectingWithGod';
     component.loadPageBook();
     expect(component._pageBookLoaded).toBeFalse();
     expect(loadPageBookIndexSpy).toHaveBeenCalledTimes(0);
@@ -270,8 +270,8 @@ describe('PageComponent', () => {
 
     beforeEach(() => {
       component._pageParams = {
-        langid,
-        bookid,
+        langId,
+        bookId,
         pageid: 1
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
@@ -282,7 +282,7 @@ describe('PageComponent', () => {
     it('should navigate to page 8', () => {
       pageService.formAction('another-page-event');
 
-      expect(router.navigate).toHaveBeenCalledWith(['en', bookid, 5]);
+      expect(router.navigate).toHaveBeenCalledWith(['en', bookId, 5]);
     });
 
     it('should not navigate to new page', () => {

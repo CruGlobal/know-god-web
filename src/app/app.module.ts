@@ -41,15 +41,15 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 
 const appRoutes: Routes = [
   {
-    path: ':langid/tool/t/:bookid',
-    redirectTo: ':langid/tool/t/:bookid/0',
+    path: ':langId/tool/t/:bookId',
+    redirectTo: ':langId/tool/t/:bookId/0',
     pathMatch: 'full'
   },
-  { path: ':langid', component: DashboardComponent },
+  { path: ':langId', component: DashboardComponent },
   { path: '', component: DashboardComponent },
-  { path: ':langid/embed/tool/t/:bookid', component: PageComponent },
+  { path: ':langId/embed/tool/t/:bookId', component: PageComponent },
   {
-    path: ':langid/tool/t/:bookid/:page',
+    path: ':langId/tool/t/:bookId/:page',
     component: PageComponent
   }
 ];

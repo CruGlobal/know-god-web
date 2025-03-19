@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.awaitBooks();
 
     this.activatedRoute.paramMap.subscribe((params) => {
-      const _langId = params.get('langid');
+      const _langId = params.get('langId');
       if (!_langId || _langId == null || _langId.trim() === '') {
         this.dispLanguage = this.englishLangId;
         this.dispLanguageCode = this.englishLangCode;
