@@ -125,7 +125,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   selectLanguage(lang): void {
-    const tPageOrder = this._pageParams.pageid || 0;
+    const tPageOrder = this._pageParams.pageId || 0;
     this.router.navigate([
       lang.attributes.code,
       this._pageParams.bookId,
@@ -139,21 +139,21 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private onPreviousPage(): void {
-    if (this._pageParams.pageid > 0) {
+    if (this._pageParams.pageId > 0) {
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.bookId,
-        this._pageParams.pageid - 1
+        this._pageParams.pageId - 1
       ]);
     }
   }
 
   private onNextPage(): void {
-    if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
+    if (this._pageParams.pageId + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.bookId,
-        this._pageParams.pageid + 1
+        this._pageParams.pageId + 1
       ]);
     }
   }
@@ -221,11 +221,13 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private loadBookPage(page: TractPage): void {
-    const pageId = this._pageParams.pageid;
-    const showpage: boolean = pageId
+    const pageId = this._pageParams.pageId;
+    const showPage: boolean = pageId
       ? page.position === pageId
       : page.position === 0;
-    if (showpage) this.showPage(page);
+    if (showPage) {
+      this.showPage(page);
+    }
   }
 
   private loadBookManifestXML(): void {
@@ -511,7 +513,7 @@ export class PageComponent implements OnInit, OnDestroy {
           if (this._pageBookManifestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
               const index = this._pageBookSubPages.findIndex(
-                (sPage) => sPage.position === this._pageParams.pageid
+                (sPage) => sPage.position === this._pageParams.pageId
               );
               if (index >= 0) {
                 const tTract = this._pageBookSubPages[index] as TractPage;
@@ -521,11 +523,10 @@ export class PageComponent implements OnInit, OnDestroy {
             }
 
             if (
-              this._pageBookSubPagesManifest &&
-              this._pageBookSubPagesManifest.length > this._pageParams.pageid
+              this._pageBookSubPagesManifest?.length > this._pageParams.pageId
             ) {
               const tSubPageManifest = this._pageBookManifest.pages[
-                this._pageParams.pageid
+                this._pageParams.pageId
               ] as TractPage;
               if (tSubPageManifest) {
                 this.pagesLoaded = false;
@@ -552,11 +553,11 @@ export class PageComponent implements OnInit, OnDestroy {
           langId !== params['langId'] || bookId !== params['bookId'];
 
         if (!bookChanged) {
-          this._pageParams.pageid = Number(params['page']);
+          this._pageParams.pageId = Number(params['page']);
         } else {
           this._pageParams.langId = params['langId'];
           this._pageParams.bookId = params['bookId'];
-          this._pageParams.pageid = Number(params['page']);
+          this._pageParams.pageId = Number(params['page']);
           this.clearData();
           if (this._allLanguagesLoaded) {
             this.setSelectedLanguage();
