@@ -19,7 +19,7 @@ describe('PageComponent', () => {
   let router: Router;
   const bookId = 'fourlaws',
     langId = 'en',
-    pageid = 0;
+    pageId = 0;
   const tractPage = mockTractPage(
     false,
     '2',
@@ -64,7 +64,7 @@ describe('PageComponent', () => {
     component._pageParams = {
       langId,
       bookId,
-      pageid
+      pageId
     };
     component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
     component._pageBookIndex = mockPageComponent.pageBookIndex;
@@ -82,7 +82,7 @@ describe('PageComponent', () => {
 
   it('selectLanguage()', () => {
     component.selectLanguage({ attributes: { code: 'de' } });
-    expect(router.navigate).toHaveBeenCalledWith(['de', bookId, pageid]);
+    expect(router.navigate).toHaveBeenCalledWith(['de', bookId, pageId]);
   });
 
   it('onToggleLanguageSelect()', () => {
@@ -105,7 +105,7 @@ describe('PageComponent', () => {
     component._pageParams = {
       langId,
       bookId,
-      pageid: 5
+      pageId: 5
     };
     component.onPreviousPage();
     expect(router.navigate).toHaveBeenCalledWith([langId, bookId, 4]);
@@ -119,7 +119,7 @@ describe('PageComponent', () => {
     component._pageParams = {
       langId,
       bookId,
-      pageid: 6
+      pageId: 6
     };
     component.onNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
@@ -272,7 +272,7 @@ describe('PageComponent', () => {
       component._pageParams = {
         langId,
         bookId,
-        pageid: 1
+        pageId: 1
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
       component.awaitPageEvent();
