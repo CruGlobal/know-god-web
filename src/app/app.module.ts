@@ -39,17 +39,30 @@ import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 
+//============
+// Routes - The routes for the application
+//
+// :langId - The language ID
+// :toolType - The tool type 'tool' or 'lesson'
+// :resourceType - The resource type 't' for tract or 'c' for cyoa
+// :bookId - The book ID ('thefour', 'kgp', etc.)
+// :page - The page number
+//============
+
 const appRoutes: Routes = [
   {
-    path: ':langId/tool/t/:bookId',
-    redirectTo: ':langId/tool/t/:bookId/0',
+    path: ':langId/:toolType/:resourceType/:bookId',
+    redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
     pathMatch: 'full'
   },
   { path: ':langId', component: DashboardComponent },
   { path: '', component: DashboardComponent },
-  { path: ':langId/embed/tool/t/:bookId', component: PageComponent },
   {
-    path: ':langId/tool/t/:bookId/:page',
+    path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page',
     component: PageComponent
   }
 ];

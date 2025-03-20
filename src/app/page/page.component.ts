@@ -90,6 +90,8 @@ export class PageComponent implements OnInit, OnDestroy {
   ) {
     this._pageParams = {
       langId: '',
+      resourceType: '',
+      toolType: '',
       bookId: ''
     };
     this._books = [];
@@ -128,6 +130,8 @@ export class PageComponent implements OnInit, OnDestroy {
     const tPageOrder = this._pageParams.pageId || 0;
     this.router.navigate([
       lang.attributes.code,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
       this._pageParams.bookId,
       tPageOrder
     ]);
@@ -142,6 +146,8 @@ export class PageComponent implements OnInit, OnDestroy {
     if (this._pageParams.pageId > 0) {
       this.router.navigate([
         this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
         this._pageParams.bookId,
         this._pageParams.pageId - 1
       ]);
@@ -152,6 +158,8 @@ export class PageComponent implements OnInit, OnDestroy {
     if (this._pageParams.pageId + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
         this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
         this._pageParams.bookId,
         this._pageParams.pageId + 1
       ]);
@@ -556,6 +564,8 @@ export class PageComponent implements OnInit, OnDestroy {
           this._pageParams.pageId = Number(params['page']);
         } else {
           this._pageParams.langId = params['langId'];
+          this._pageParams.resourceType = params['resourceType'];
+          this._pageParams.toolType = params['toolType'];
           this._pageParams.bookId = params['bookId'];
           this._pageParams.pageId = Number(params['page']);
           this.clearData();
@@ -644,6 +654,8 @@ export class PageComponent implements OnInit, OnDestroy {
       this.pageService.addToNavigationStack(pageToNavigateTo.position);
       this.router.navigate([
         this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
         this._pageParams.bookId,
         pageToNavigateTo.position
       ]);
@@ -655,6 +667,8 @@ export class PageComponent implements OnInit, OnDestroy {
         const previousPage = stack[stack.length - 1];
         this.router.navigate([
           this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.resourceType,
           this._pageParams.bookId,
           previousPage
         ]);
@@ -744,6 +758,9 @@ export class PageComponent implements OnInit, OnDestroy {
               .createUrlTree(
                 [
                   data.attributes.locale,
+                  // TODO - Add the following to the URL:
+                  // ResourceType
+                  // toolType
                   data.attributes.tool,
                   data.attributes.page
                 ],
