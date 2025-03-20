@@ -21,6 +21,8 @@ export class ContentTextComponent implements OnChanges {
   dir$: Observable<string>;
   textColor: string;
   styles: any;
+  startImgResource: string;
+  startImgWidth: string;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
@@ -71,6 +73,21 @@ export class ContentTextComponent implements OnChanges {
       // Do not use color for now since we don't want to support desktop and mobile colors
       // color: this.text.textColor || ''
     };
+
+    this.startImgResource = this.item.startImage
+      ? this.pageService.getImageUrl(this.item.startImage.name || '')
+      : null;
+    // Try to find image in all attachments
+    if (
+      this.startImgResource === this.item.startImage?.name &&
+      !this.startImgResource.includes('http')
+    ) {
+      this.startImgResource =
+        this.pageService.findAttachment(this.item.startImage?.name) || '';
+    }
+    this.startImgWidth = this.item.startImageSize
+      ? this.item.startImageSize + 'px'
+      : null;
 
     this.textColor = this.text?.textColor || null;
     this.styles = styles;
