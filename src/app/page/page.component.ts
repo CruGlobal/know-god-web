@@ -101,9 +101,9 @@ export class PageComponent implements OnInit, OnDestroy {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowLeft') {
-      this.onPreviousPage();
+      this.onTractPreviousPage();
     } else if (event.key === 'ArrowRight') {
-      this.onNextPage();
+      this.onTractNextPage();
     }
   }
 
@@ -142,7 +142,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.languagesVisible = !this.languagesVisible;
   }
 
-  private onPreviousPage(): void {
+  private onTractPreviousPage(): void {
     if (this._pageParams.pageId > 0) {
       this.router.navigate([
         this._pageParams.langId,
@@ -154,7 +154,7 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  private onNextPage(): void {
+  private onTractNextPage(): void {
     if (this._pageParams.pageId + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
         this._pageParams.langId,
@@ -387,8 +387,6 @@ export class PageComponent implements OnInit, OnDestroy {
 
         this.resourceType = jsonResource?.data?.attributes?.['resource-type'];
 
-        this.selectedBookName = jsonResource.data.attributes['name'];
-
         if (!jsonResource.data.attributes['manifest']) {
           this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
@@ -586,7 +584,7 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onNextPage();
+        this.onTractNextPage();
       });
 
     // Go to previous page
@@ -597,7 +595,7 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onPreviousPage();
+        this.onTractPreviousPage();
       });
 
     // Go to any page on page event
@@ -674,7 +672,7 @@ export class PageComponent implements OnInit, OnDestroy {
         ]);
       });
       // We want to hide the page, for now I've set this to go to the next page.
-      this.onNextPage();
+      this.onTractNextPage();
     }
   }
 
