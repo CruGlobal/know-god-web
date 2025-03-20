@@ -63,6 +63,8 @@ export type MultiselectOption =
 export type Flow = org.cru.godtools.shared.tool.parser.model.Flow;
 export type FlowItem = org.cru.godtools.shared.tool.parser.model.Flow.Item;
 export type Dimension = org.cru.godtools.shared.tool.parser.model.Dimension;
+export type Horizontal =
+  org.cru.godtools.shared.tool.parser.model.Gravity.Horizontal;
 export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
 export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
 export const ManifestParser = manifestParser;

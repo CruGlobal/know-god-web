@@ -1,8 +1,16 @@
 <ng-container *ngIf="ready">
-  <div class="flow mw568">
+  <div
+    class="flow mw568"
+    [ngStyle]="{
+      justifyContent: justifyContent
+    }"
+  >
     <app-content-flow-item
       *ngFor="let item of items; trackBy: trackByFn"
       [item]="item"
+      [ngStyle]="{
+        flexBasis: 'calc(' + item.itemWidth + ' - 20px)'
+      }"
     >
     </app-content-flow-item>
   </div>
