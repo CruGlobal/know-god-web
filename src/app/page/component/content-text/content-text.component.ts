@@ -21,8 +21,8 @@ export class ContentTextComponent implements OnChanges {
   dir$: Observable<string>;
   textColor: string;
   styles: any;
-  startImgResource: string;
-  startImgWidth: string;
+  startImgResource: string | null;
+  startImgWidth: string | null;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
