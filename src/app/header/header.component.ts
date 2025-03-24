@@ -24,15 +24,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   englishLangName = 'English';
   englishLangDirection = 'ltr';
   sectionReady: boolean;
-
   currentYear = new Date().getFullYear();
   dispLanguage: number;
   dispLanguageCode: string;
   dispLanguageName: string;
   dispLanguageDirection: string;
-
   langSwitchOn: boolean;
   availableLangs: [];
+  webContentTypes = ['tract', 'cyoa'];
 
   constructor(
     public route: Router,
@@ -180,7 +179,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
               if (resource.attributes['attr-hidden']) {
                 return;
               }
-              if (resource.attributes['resource-type'] !== 'tract') {
+              if (
+                !this.webContentTypes.includes(
+                  resource.attributes['resource-type']
+                )
+              ) {
                 return;
               }
 
