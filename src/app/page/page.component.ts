@@ -597,19 +597,21 @@ export class PageComponent implements OnInit, OnDestroy {
       });
 
     // Go to any page on page event
-    this.awaitNavigationToPageOnPageEvent();
+    this.awaitPageEvent();
   }
 
-  private awaitNavigationToPageOnPageEvent(): void {
+  private awaitPageEvent(): void {
     // We listen for page events and dismiss events
     // We then navigate to the page that has the event
-    const pageListeners = this._pageBookSubPages.map((page) =>
-      page.listeners.map((listener) => listener.name)
+    const allListenersOnAllPages = this._pageBookSubPages.reduce(
+      (allListeners, page) => {
+        return allListeners.concat(
+          page.listeners.map((listener) => listener.name),
+          page.dismissListeners.map((listener) => listener.name)
+        );
+      },
+      []
     );
-    const pageDismissListeners = this._pageBookSubPages.map((page) =>
-      page.dismissListeners.map((listener) => listener.name)
-    );
-    const allListenersOnAllPages = [...pageListeners, ...pageDismissListeners];
 
     this.pageService.contentEvent$
       .pipe(
@@ -641,9 +643,7 @@ export class PageComponent implements OnInit, OnDestroy {
         pageToNavigateTo = page;
         isListener = foundListener;
         isDismissListener = foundDismissListener;
-        return true;
       }
-      return false;
     });
 
     if (isListener) {
