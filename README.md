@@ -22,7 +22,7 @@ This is an Angular 17 project created with TypeScript.
 
 First, make sure that you have a suitable version of Node.js. This project uses node v20.17.0. To check your node version, run `node --version`. If you don't have node v20.17.0 installed or a suitable version, the recommended way to install it is with [asdf](https://asdf-vm.com/), a development tool version manager.
 
-You will also need to ensure you are using yarn version `4.7.0`, as previous versions sometimes cause PnP (Plug N Play) errors during builds.
+You will also need to ensure you are using yarn version `4.7.0`.
 
 ```bash
 # Install asdf and the node plugin
