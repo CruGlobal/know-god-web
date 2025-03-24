@@ -31,10 +31,10 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: Install Git LFS
+      - name: 🔧 Install Git LFS
         run: git lfs install
 
-      - name: Pull LFS Files
+      - name: 🌐 Pull LFS Files
         run: git lfs pull
 
       - name: 📦 Install dependencies
@@ -52,11 +52,19 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: 🔧 Install Git LFS
+        run: git lfs install
+
+      - name: 🌐 Pull LFS Files
+        run: git lfs pull
 
       - name: 📦 Install dependencies
         run: yarn install --immutable --immutable-cache
@@ -71,11 +79,19 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: 🔧 Install Git LFS
+        run: git lfs install
+
+      - name: 🌐 Pull LFS Files
+        run: git lfs pull
 
       - name: 📦 Install dependencies
         run: yarn install --immutable --immutable-cache
@@ -97,11 +113,19 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: 🔧 Install Git LFS
+        run: git lfs install
+
+      - name: 🌐 Pull LFS Files
+        run: git lfs pull
 
       - name: 📦 Install dependencies
         run: yarn install
