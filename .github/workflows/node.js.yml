@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
@@ -44,6 +46,8 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
@@ -55,7 +59,7 @@ jobs:
 
       - name: ✅ Run Tests
         run: yarn test --no-watch
-
+  
   build:
     name: 🏗️ Build app
     runs-on: ubuntu-latest
@@ -63,6 +67,8 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
@@ -89,6 +95,8 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+        with:
+          lfs: true
 
       - name: Node.js setup
         uses: actions/setup-node@v4
