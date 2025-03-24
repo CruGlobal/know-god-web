@@ -54,12 +54,6 @@ jobs:
         with:
           node-version-file: .tool-versions
 
-      - name: 🔧 Install Git LFS
-        run: git lfs install
-
-      - name: 🌐 Pull LFS Files
-        run: git lfs pull
-
       - name: 📦 Install dependencies
         run: yarn install --immutable --immutable-cache
 
@@ -80,12 +74,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-
-      - name: 🔧 Install Git LFS
-        run: git lfs install
-
-      - name: 🌐 Pull LFS Files
-        run: git lfs pull
 
       - name: 📦 Install dependencies
         run: yarn install --immutable --immutable-cache
@@ -114,12 +102,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
-
-      - name: 🔧 Install Git LFS
-        run: git lfs install
-
-      - name: 🌐 Pull LFS Files
-        run: git lfs pull
 
       - name: 📦 Install dependencies
         run: yarn install
