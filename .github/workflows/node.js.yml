@@ -30,7 +30,7 @@ jobs:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: 💅 Prettier check
         run: yarn prettier:check
@@ -51,7 +51,7 @@ jobs:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: ✅ Run Tests
         run: yarn test --no-watch
@@ -70,7 +70,7 @@ jobs:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: 🏗️ Build app
         run: yarn build
