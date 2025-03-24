@@ -29,6 +29,9 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: 📦 Install dependencies
         run: yarn install
 
@@ -50,6 +53,9 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: 📦 Install dependencies
         run: yarn install
 
@@ -68,6 +74,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
@@ -94,6 +103,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
