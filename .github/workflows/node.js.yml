@@ -55,6 +55,21 @@ jobs:
 
       - name: ✅ Run Tests
         run: yarn test --no-watch
+  
+  yarn-check-cache:
+    name: 🔍 Yarn Check Cache
+    runs-on: ubuntu-latest
+    steps:
+      - name: Repository checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js setup
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+
+      - name: Check Yarn Cache
+        run: yarn install --immutable --immutable-cache --check-cache
 
   build:
     name: 🏗️ Build app
