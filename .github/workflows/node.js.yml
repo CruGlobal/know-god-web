@@ -24,13 +24,16 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: 💅 Prettier check
         run: yarn prettier:check
@@ -45,13 +48,16 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: ✅ Run Tests
         run: yarn test --no-watch
@@ -64,13 +70,16 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
 
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: 🏗️ Build app
         run: yarn build
@@ -89,6 +98,9 @@ jobs:
     steps:
       - name: Repository checkout
         uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: Node.js setup
         uses: actions/setup-node@v4
