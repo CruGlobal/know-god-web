@@ -24,13 +24,13 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
@@ -48,13 +48,13 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
@@ -70,13 +70,13 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
@@ -99,13 +99,13 @@ jobs:
       - name: Repository checkout
         uses: actions/checkout@v4
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Node.js setup
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
