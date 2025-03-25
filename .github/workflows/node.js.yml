@@ -29,8 +29,11 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: 💅 Prettier check
         run: yarn prettier:check
@@ -50,8 +53,11 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: ✅ Run Tests
         run: yarn test --no-watch
@@ -69,8 +75,11 @@ jobs:
         with:
           node-version-file: .tool-versions
 
+      - name: Enable Corepack
+        run: corepack enable
+
       - name: 📦 Install dependencies
-        run: yarn install --immutable --immutable-cache
+        run: yarn install
 
       - name: 🏗️ Build app
         run: yarn build
@@ -94,6 +103,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version-file: .tool-versions
+
+      - name: Enable Corepack
+        run: corepack enable
 
       - name: 📦 Install dependencies
         run: yarn install
