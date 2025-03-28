@@ -1774,11 +1774,11 @@ __metadata:
   linkType: hard
 
 "@cruglobal/godtools-shared@npm:~1.1.0":
-  version: 1.1.1
-  resolution: "@cruglobal/godtools-shared@npm:1.1.1"
+  version: 1.1.2
+  resolution: "@cruglobal/godtools-shared@npm:1.1.2"
   dependencies:
     sax: "npm:1.2.4"
-  checksum: 10c0/21d1b1877d9e5bb251a17793363d6d787bf7a70b630fc051175c2469c55326cc84d1df23e21a76c13ccfd115587a109fc4040daa8a44c191e77f1691206dc8b2
+  checksum: 10c0/5b4870d02119aa2077ebb67066986fa1dbc4af83483dd15bec861035a83293b4c637ea57cf828236e473d4d3af812c7b6a2ba2494b1ac845ef7566800951fda6
   languageName: node
   linkType: hard
 
