@@ -51,11 +51,11 @@ export class ContentTextComponent implements OnChanges {
 
   private init(): void {
     const styles = {
-      'font-weight': this.text.textStyles?.some(
-        (style) => style.name === 'BOLD'
-      )
-        ? 'bold'
-        : '',
+      'font-weight': this.text.fontWeight
+        ? this.text.fontWeight
+        : this.text.textStyles?.some((style) => style.name === 'BOLD')
+          ? 'bold'
+          : '',
       'font-style': this.text.textStyles?.some(
         (style) => style.name === 'ITALIC'
       )
