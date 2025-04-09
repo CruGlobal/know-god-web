@@ -19,6 +19,8 @@ describe('PageComponent', () => {
   let router: Router;
   const bookId = 'fourlaws',
     langId = 'en',
+    toolType = 'tool',
+    resourceType = 't',
     pageId = 0;
   const tractPage = mockTractPage(
     false,
@@ -64,6 +66,8 @@ describe('PageComponent', () => {
     component._pageParams = {
       langId,
       bookId,
+      toolType,
+      resourceType,
       pageId
     };
     component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
@@ -82,7 +86,13 @@ describe('PageComponent', () => {
 
   it('selectLanguage()', () => {
     component.selectLanguage({ attributes: { code: 'de' } });
-    expect(router.navigate).toHaveBeenCalledWith(['de', bookId, pageId]);
+    expect(router.navigate).toHaveBeenCalledWith([
+      'de',
+      toolType,
+      resourceType,
+      bookId,
+      pageId
+    ]);
   });
 
   it('onToggleLanguageSelect()', () => {
@@ -97,31 +107,47 @@ describe('PageComponent', () => {
     expect(component.languagesVisible).toBeTrue();
   });
 
-  it('onPreviousPage() on page 0', () => {
-    component.onPreviousPage();
+  it('onTractPreviousPage() on page 0', () => {
+    component.onTractPreviousPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
-  it('onPreviousPage() on page > 0', () => {
+  it('onTractPreviousPage() on page > 0', () => {
     component._pageParams = {
       langId,
       bookId,
+      toolType,
+      resourceType,
       pageId: 5
     };
-    component.onPreviousPage();
-    expect(router.navigate).toHaveBeenCalledWith([langId, bookId, 4]);
+    component.onTractPreviousPage();
+    expect(router.navigate).toHaveBeenCalledWith([
+      langId,
+      toolType,
+      resourceType,
+      bookId,
+      4
+    ]);
   });
 
-  it('onNextPage() on page 0', () => {
-    component.onNextPage();
-    expect(router.navigate).toHaveBeenCalledWith([langId, bookId, 1]);
+  it('onTractNextPage() on page 0', () => {
+    component.onTractNextPage();
+    expect(router.navigate).toHaveBeenCalledWith([
+      langId,
+      toolType,
+      resourceType,
+      bookId,
+      1
+    ]);
   });
-  it('onNextPage() on final page', () => {
+  it('onTractNextPage() on final page', () => {
     component._pageParams = {
       langId,
       bookId,
+      toolType,
+      resourceType,
       pageId: 6
     };
-    component.onNextPage();
+    component.onTractNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
@@ -266,37 +292,54 @@ describe('PageComponent', () => {
       ],
       [createEventId('dismiss-event', null)]
     );
-    let onNextPageSpy;
+    let onTractNextPageSpy;
 
     beforeEach(() => {
       component._pageParams = {
         langId,
         bookId,
+        toolType,
+        resourceType,
         pageId: 1
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
       component.awaitPageEvent();
-      onNextPageSpy = spyOn(component, 'onNextPage');
+      onTractNextPageSpy = spyOn(component, 'onTractNextPage');
     });
 
-    it('should navigate to page 8', () => {
+    it('should navigate to page 5', () => {
       pageService.formAction('another-page-event');
 
-      expect(router.navigate).toHaveBeenCalledWith(['en', bookId, 5]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        'en',
+        toolType,
+        resourceType,
+        bookId,
+        5
+      ]);
     });
 
     it('should not navigate to new page', () => {
       pageService.formAction('card-event');
 
       expect(router.navigate).not.toHaveBeenCalled();
-      expect(onNextPageSpy).not.toHaveBeenCalled();
+      expect(onTractNextPageSpy).not.toHaveBeenCalled();
     });
 
-    it('should navigate to the next page (2)', () => {
+    it('should navigate to the next page (1)', () => {
+      pageService.addToNavigationStack(1);
+      pageService.addToNavigationStack(5);
       pageService.formAction('dismiss-event');
 
-      expect(router.navigate).not.toHaveBeenCalled();
-      expect(onNextPageSpy).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith([
+        'en',
+        toolType,
+        resourceType,
+        bookId,
+        1
+      ]);
+
+      expect(onTractNextPageSpy).toHaveBeenCalled();
     });
   });
 });

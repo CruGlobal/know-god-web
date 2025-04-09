@@ -309,6 +309,7 @@ export const mockMultiselect = (): Multiselect => {
 export const mockFlowItem = (initialSelectedValue): FlowItem => {
   return {
     flow: null,
+    width: null,
     content: [mockImage('filename', 'url_to_path')],
     ...standardTypeValues(),
     isGone: () => initialSelectedValue,
@@ -325,6 +326,7 @@ export const mockFlow = (): Flow => {
       mockFlowItem(true),
       mockFlowItem(false)
     ],
+    rowGravity: null,
     ...standardTypeValues()
   };
 };
