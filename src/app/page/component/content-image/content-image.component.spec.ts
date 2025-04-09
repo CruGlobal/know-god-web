@@ -9,7 +9,8 @@ describe('ContentImageComponent', () => {
   let fixture: ComponentFixture<ContentImageComponent>;
   const fileName = 'name-of-file.png';
   const filePath = `/some-folder/${fileName}`;
-  const image = mockImage(fileName, filePath);
+  const imageEvent = 'page3';
+  const image = mockImage(fileName, filePath, imageEvent);
   const fileNameNotAdded = 'name-of-file-not-added.png';
   const filePathNotAdded = `/some-folder/${fileName}`;
   const imageNoNameNotAdded = mockImage(fileNameNotAdded, filePathNotAdded);
@@ -43,5 +44,19 @@ describe('ContentImageComponent', () => {
       item: new SimpleChange(null, imageNoNameNotAdded, true)
     });
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
+  });
+
+  it('Test events', () => {
+    component.item = image;
+    component.ngOnChanges({
+      item: new SimpleChange(null, image, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+
+    component.formAction();
+
+    expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
   });
 });
