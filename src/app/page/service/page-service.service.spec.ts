@@ -36,6 +36,16 @@ describe('PageService', () => {
     });
   });
 
+  it('removeFromNavigationStack() should remove the specified page if only 2 pages are listed', (done) => {
+    service.addToNavigationStack(1);
+    service.addToNavigationStack(2);
+    service.removeFromNavigationStack(2);
+    service.getNavigationStack().subscribe((stack) => {
+      expect(stack).toEqual([1]);
+      done();
+    });
+  });
+
   it('removeFromNavigationStack() should remove the specified page and all pages after it', (done) => {
     service.addToNavigationStack(1);
     service.addToNavigationStack(2);

@@ -198,16 +198,21 @@ export class PageService {
 
   removeFromNavigationStack(pagePosition?: number): void {
     const currentStack = this._navigationStack.getValue();
-
     // if empty, we need to get the original page.
     if (!pagePosition) {
       this._navigationStack.next(currentStack.slice(0, -1));
     } else {
-      // We want to remove all pages
+      // We want to remove all pages that are after the pagePosition and the pagePosition itself.
+      // We need to reverse the stack to remove the pages in the correct order.
+      // For example, if the stack is [1, 2, 3, 4, 5] and the pagePosition is 3, we want to remove 4 and 5 as well.
+      // So we reverse the stack to [5, 4, 3, 2, 1] and remove all pages from currentStack variable.
+      // Which results in the stack being: 1, 2, 3
       const reverseStack = currentStack.slice().reverse();
       for (let i = reverseStack.length - 1; i >= 0; i--) {
         if (reverseStack[i] === pagePosition) {
-          currentStack.pop();
+          if (currentStack.includes(pagePosition)) {
+            currentStack.pop();
+          }
           break;
         }
         currentStack.pop();
