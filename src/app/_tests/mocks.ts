@@ -126,14 +126,18 @@ export const mockButton = (
   return createButton(text, url, event);
 };
 
-export const mockImage = (name: string, url: string): Image => {
+export const mockImage = (
+  name: string,
+  url: string,
+  event: string = ''
+): Image => {
   return {
     url,
     resource: createResource(name, url),
     gravity: null,
     width: null,
     isClickable: null,
-    events: null,
+    events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
 };
