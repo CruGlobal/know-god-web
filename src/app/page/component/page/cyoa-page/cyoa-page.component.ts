@@ -76,18 +76,18 @@ export class CYOAComponent implements OnChanges, OnDestroy {
     }
   }
 
-  // We go straight into content
-
-  // Do you have a parent page if so, we need to add that to the navigation stack.
-
   private init(): void {
-    console.log('CYOA Page:', this._page);
-    console.log('Order:', this.order);
-    console.log('Total Pages:', this.totalPages);
+    this.pageService
+      .getNavigationStack()
+      .subscribe((stack) => console.log('Nav stack', stack));
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
 
+    this.pageService.ensureParentPageIsInNavigationStack(
+      this._page.parentPage?.position
+    );
+    this.pageService.ensurePageIsLatestInNavigationStack(this._page.position);
     this.content = this._page.content;
 
     this.formAction$

@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LottieModule } from 'ngx-lottie';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { CalltoactionComponent } from './page/component/calltoaction/calltoaction.component';
 import { CardComponent } from './page/component/card/card.component';
 import { ContentAccordionComponent } from './page/component/content-accordion/content-accordion.component';
@@ -39,17 +39,30 @@ import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 
+//============
+// Routes - The routes for the application
+//
+// :langId - The language ID
+// :toolType - The tool type 'tool' or 'lesson'
+// :resourceType - The resource type 't' for tract or 'c' for cyoa
+// :bookId - The book ID ('thefour', 'kgp', etc.)
+// :page - The page number
+//============
+
 const appRoutes: Routes = [
   {
-    path: ':langid/:bookid',
-    redirectTo: ':langid/:bookid/0',
+    path: ':langId/:toolType/:resourceType/:bookId',
+    redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
     pathMatch: 'full'
   },
-  { path: ':langid', component: HeaderComponent },
-  { path: '', component: HeaderComponent },
-  { path: ':langid/embed/:bookid', component: PageComponent },
+  { path: ':langId', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   {
-    path: ':langid/:bookid/:page',
+    path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page',
     component: PageComponent
   }
 ];
@@ -63,7 +76,7 @@ export function playerFactory() {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
+    DashboardComponent,
     SharingModalComponent,
     LoaderComponent,
     PageComponent,
