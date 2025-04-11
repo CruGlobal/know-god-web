@@ -8,6 +8,7 @@ import { State } from '../../services/xml-parser-service/xmp-parser.service';
 export class PageService {
   private _nextPage = new Subject<void>();
   private _previousPage = new Subject<void>();
+  private _navigateToPage = new Subject<number>();
   private _formAction = new Subject<string>();
   private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
@@ -34,6 +35,7 @@ export class PageService {
     this._emailSignupFormData.asObservable();
   nextPage$: Observable<any> = this._nextPage.asObservable();
   previousPage$: Observable<any> = this._previousPage.asObservable();
+  navigateToPage$: Observable<number> = this._navigateToPage.asObservable();
   pageDir$: Observable<string> = this._dir.asObservable();
   isFirstPage$: Observable<boolean> = this._isFirstPage.asObservable();
   isLastPage$: Observable<boolean> = this._isLastPage.asObservable();
@@ -66,6 +68,10 @@ export class PageService {
 
   previousPage(): void {
     this._previousPage.next();
+  }
+
+  navigateToPage(pagePosition: number): void {
+    this._navigateToPage.next(pagePosition);
   }
 
   formAction(action: string): void {

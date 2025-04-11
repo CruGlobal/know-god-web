@@ -165,6 +165,16 @@ export class PageComponent implements OnInit, OnDestroy {
       ]);
     }
   }
+  private onNavigateToPage(pagePosition: number): void {
+    this.pageService.addToNavigationStack(pagePosition);
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      pagePosition
+    ]);
+  }
 
   private getAnimation(resource): void {
     if (resource === undefined || resource === '' || resource === null) {
@@ -576,7 +586,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private awaitPageNavigation(): void {
-    // Go to next page
+    // Navigate to the next page upon request
     this.pageService.nextPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -587,7 +597,7 @@ export class PageComponent implements OnInit, OnDestroy {
         this.onTractNextPage();
       });
 
-    // Go to previous page
+    // Navigate to the previous page upon request
     this.pageService.previousPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -596,6 +606,17 @@ export class PageComponent implements OnInit, OnDestroy {
       )
       .subscribe(() => {
         this.onTractPreviousPage();
+      });
+
+    // Navigate to specified page upon request
+    this.pageService.navigateToPage$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        takeUntil(this._pageChanged),
+        delay(0)
+      )
+      .subscribe((pagePosition) => {
+        this.onNavigateToPage(pagePosition);
       });
 
     // Go to any page on page event
