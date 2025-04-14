@@ -6,11 +6,11 @@
   box-sizing: border-box;
 }
 
-.flow-item app-content-new-repeater app-content-new-card > a {
+.flow-item app-content-repeater app-content-card > a {
   height: 100%;
 }
 
-.flow-item app-content-new-repeater {
+.flow-item app-content-repeater {
   display: block;
   height: 100%;
   margin-top: 0;
@@ -23,6 +23,6 @@
   margin-left: auto;
   margin-right: auto;
 }
-.flow-item app-content-new-text {
+.flow-item app-content-text {
   margin-top: 0 !important;
 }

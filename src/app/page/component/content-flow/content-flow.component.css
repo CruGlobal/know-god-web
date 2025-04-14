@@ -7,7 +7,7 @@
   min-width: 300px;
 }
 
-.flow app-content-new-flow-item {
+.flow app-content-flow-item {
   margin: 0;
   flex-grow: 0;
   flex-shrink: 0;
