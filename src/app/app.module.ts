@@ -51,6 +51,12 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 
 const appRoutes: Routes = [
   {
+    path: ':langId/:bookId/:page',
+    // Redirecting old URL format to the new one
+    redirectTo: ':langId/tool/v1/:bookId/:page',
+    pathMatch: 'full'
+  },
+  {
     path: ':langId/:toolType/:resourceType/:bookId',
     redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
     pathMatch: 'full'
