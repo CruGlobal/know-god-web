@@ -342,4 +342,37 @@ describe('PageComponent', () => {
       expect(onTractNextPageSpy).toHaveBeenCalled();
     });
   });
+
+  describe('awaitPageNavigation() - onNavigateToPage()', () => {
+    let addToNavigationStackSpy;
+
+    beforeEach(() => {
+      component._pageParams = {
+        langId,
+        bookId,
+        toolType,
+        resourceType,
+        pageId: 1
+      };
+      component._pageBookSubPages = [tractPageOne, tractPage];
+      component.awaitPageNavigation();
+      addToNavigationStackSpy = spyOn(pageService, 'addToNavigationStack');
+    });
+
+    it('should navigate to page 8', async () => {
+      pageService.navigateToPage(8);
+
+      waitForAsync(() => {
+        expect(addToNavigationStackSpy).toHaveBeenCalledWith(8);
+
+        expect(router.navigate).toHaveBeenCalledWith([
+          langId,
+          toolType,
+          resourceType,
+          bookId,
+          8
+        ]);
+      });
+    });
+  });
 });
