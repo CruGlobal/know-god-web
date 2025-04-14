@@ -23,7 +23,7 @@ import { PageService } from '../../../service/page-service.service';
 @Component({
   selector: 'app-tract-page',
   templateUrl: './tract-page.component.html',
-  styleUrls: ['../page/default-page.css'],
+  styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class TractPageComponent implements OnChanges, OnDestroy {

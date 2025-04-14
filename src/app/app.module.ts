@@ -44,12 +44,18 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 //
 // :langId - The language ID
 // :toolType - The tool type 'tool' or 'lesson'
-// :resourceType - The resource type 't' for tract or 'c' for cyoa
+// :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
 // :bookId - The book ID ('thefour', 'kgp', etc.)
 // :page - The page number
 //============
 
 const appRoutes: Routes = [
+  {
+    path: ':langId/:bookId/:page',
+    // Redirecting old URL format to the new one
+    redirectTo: ':langId/tool/v1/:bookId/:page',
+    pathMatch: 'full'
+  },
   {
     path: ':langId/:toolType/:resourceType/:bookId',
     redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
