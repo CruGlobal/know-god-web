@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
+import { getUrlResourceType } from '../shared/getUrlResourceType';
 
 interface Resource {
   imgUrl: string;
@@ -246,7 +247,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   navigateToPage(resource: Resource): void {
     const abbreviation = resource.abbreviation;
-    const urlResourceType = resource.resourceType === 'tract' ? 't' : 'c';
+    const urlResourceType = getUrlResourceType(resource.resourceType);
     const bookType = this.webContentTypes.includes(resource.resourceType)
       ? 'tool'
       : 'lesson';

@@ -44,7 +44,7 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 //
 // :langId - The language ID
 // :toolType - The tool type 'tool' or 'lesson'
-// :resourceType - The resource type 't' for tract or 'c' for cyoa
+// :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
 // :bookId - The book ID ('thefour', 'kgp', etc.)
 // :page - The page number
 //============
