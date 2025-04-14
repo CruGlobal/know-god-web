@@ -1,5 +1,7 @@
 export interface IPageParameters {
-  langid: string;
-  bookid: string;
-  pageid?: number;
+  langId: string;
+  toolType: string;
+  resourceType: string;
+  bookId: string;
+  pageId?: number;
 }
