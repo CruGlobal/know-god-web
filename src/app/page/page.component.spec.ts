@@ -20,7 +20,7 @@ describe('PageComponent', () => {
   const bookId = 'fourlaws',
     langId = 'en',
     toolType = 'tool',
-    resourceType = 't',
+    resourceType = 'v2',
     pageId = 0;
   const tractPage = mockTractPage(
     false,
