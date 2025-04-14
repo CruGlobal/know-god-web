@@ -31,9 +31,9 @@ import { ContentTextComponent } from './page/component/content-text/content-text
 import { ContentVideoComponent } from './page/component/content-video/content-video.component';
 import { ModalComponent } from './page/component/modal/modal.component';
 import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
+import { TractPageComponent } from './page/component/page/tract-page/tract-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { PageHeroComponent } from './page/component/page-hero/page-hero.component';
-import { TractPageComponent } from './page/component/tract-page/tract-page.component';
 import { PageComponent } from './page/page.component';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';

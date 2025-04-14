@@ -18,7 +18,7 @@ import {
   TractPage,
   TractPageCard
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { PageService } from '../../service/page-service.service';
+import { PageService } from '../../../service/page-service.service';
 
 @Component({
   selector: 'app-tract-new-page',
