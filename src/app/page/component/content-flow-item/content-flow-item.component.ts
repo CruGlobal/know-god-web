@@ -13,7 +13,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-flow-item',
+  selector: 'app-content-flow-item',
   templateUrl: './content-flow-item.component.html',
   styleUrls: ['./content-flow-item.component.css']
 })

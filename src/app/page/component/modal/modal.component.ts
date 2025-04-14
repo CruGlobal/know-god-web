@@ -9,7 +9,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-new-modal',
+  selector: 'app-page-modal',
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.css']
 })
