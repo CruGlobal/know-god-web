@@ -5,13 +5,13 @@
       justifyContent: justifyContent
     }"
   >
-    <app-content-new-flow-item
+    <app-content-flow-item
       *ngFor="let item of items; trackBy: trackByFn"
       [item]="item"
       [ngStyle]="{
         flexBasis: 'calc(' + item.itemWidth + ' - 20px)'
       }"
     >
-    </app-content-new-flow-item>
+    </app-content-flow-item>
   </div>
 </ng-container>

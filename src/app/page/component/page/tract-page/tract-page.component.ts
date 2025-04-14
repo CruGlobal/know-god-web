@@ -21,7 +21,7 @@ import {
 import { PageService } from '../../../service/page-service.service';
 
 @Component({
-  selector: 'app-tract-new-page',
+  selector: 'app-tract-page',
   templateUrl: './tract-page.component.html',
   styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
