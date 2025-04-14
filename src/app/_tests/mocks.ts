@@ -20,7 +20,7 @@ import {
   Text,
   TractPageCard,
   Video
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);
