@@ -8,7 +8,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-new-card',
+  selector: 'app-page-card',
   templateUrl: './card.component.html',
   styleUrls: ['./card.component.css']
 })

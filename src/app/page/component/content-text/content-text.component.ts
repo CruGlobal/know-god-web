@@ -7,7 +7,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-text',
+  selector: 'app-content-text',
   templateUrl: './content-text.component.html',
   styleUrls: ['./content-text.component.css']
 })

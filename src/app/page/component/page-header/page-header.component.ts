@@ -8,7 +8,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-new-header',
+  selector: 'app-page-header',
   templateUrl: './page-header.component.html',
   styleUrls: ['./page-header.component.css']
 })

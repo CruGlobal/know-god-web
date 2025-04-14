@@ -13,7 +13,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-multiselect-option',
+  selector: 'app-content-multiselect-option',
   templateUrl: './content-multiselect-option.component.html',
   styleUrls: ['./content-multiselect-option.component.css']
 })
