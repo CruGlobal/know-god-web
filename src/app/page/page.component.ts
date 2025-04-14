@@ -89,8 +89,10 @@ export class PageComponent implements OnInit, OnDestroy {
     private pullParserFactory: PullParserFactory
   ) {
     this._pageParams = {
-      langid: '',
-      bookid: ''
+      langId: '',
+      resourceType: '',
+      toolType: '',
+      bookId: ''
     };
     this._books = [];
     this.activePageOrder = 0;
@@ -99,9 +101,9 @@ export class PageComponent implements OnInit, OnDestroy {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'ArrowLeft') {
-      this.onPreviousPage();
+      this.onTractPreviousPage();
     } else if (event.key === 'ArrowRight') {
-      this.onNextPage();
+      this.onTractNextPage();
     }
   }
 
@@ -125,10 +127,12 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   selectLanguage(lang): void {
-    const tPageOrder = this._pageParams.pageid || 0;
+    const tPageOrder = this._pageParams.pageId || 0;
     this.router.navigate([
       lang.attributes.code,
-      this._pageParams.bookid,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
       tPageOrder
     ]);
     return;
@@ -138,24 +142,38 @@ export class PageComponent implements OnInit, OnDestroy {
     this.languagesVisible = !this.languagesVisible;
   }
 
-  private onPreviousPage(): void {
-    if (this._pageParams.pageid > 0) {
+  private onTractPreviousPage(): void {
+    if (this._pageParams.pageId > 0) {
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
-        this._pageParams.pageid - 1
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
+        this._pageParams.bookId,
+        this._pageParams.pageId - 1
       ]);
     }
   }
 
-  private onNextPage(): void {
-    if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
+  private onTractNextPage(): void {
+    if (this._pageParams.pageId + 1 < this._pageBookSubPagesManifest.length) {
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
-        this._pageParams.pageid + 1
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
+        this._pageParams.bookId,
+        this._pageParams.pageId + 1
       ]);
     }
+  }
+  private onNavigateToPage(pagePosition: number): void {
+    this.pageService.addToNavigationStack(pagePosition);
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      pagePosition
+    ]);
   }
 
   private getAnimation(resource): void {
@@ -221,11 +239,13 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private loadBookPage(page: TractPage): void {
-    const pageId = this._pageParams.pageid;
-    const showpage: boolean = pageId
+    const pageId = this._pageParams.pageId;
+    const showPage: boolean = pageId
       ? page.position === pageId
       : page.position === 0;
-    if (showpage) this.showPage(page);
+    if (showPage) {
+      this.showPage(page);
+    }
   }
 
   private loadBookManifestXML(): void {
@@ -377,8 +397,6 @@ export class PageComponent implements OnInit, OnDestroy {
 
         this.resourceType = jsonResource?.data?.attributes?.['resource-type'];
 
-        this.selectedBookName = jsonResource.data.attributes['name'];
-
         if (!jsonResource.data.attributes['manifest']) {
           this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
@@ -418,7 +436,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private loadPageBook(): void {
     this._pageBook =
       this._books.find((book) =>
-        book.attributes.abbreviation === this._pageParams.bookid ? book : false
+        book.attributes.abbreviation === this._pageParams.bookId ? book : false
       ) || {};
 
     if (!this._pageBook.id) {
@@ -457,7 +475,7 @@ export class PageComponent implements OnInit, OnDestroy {
         if (data && data.data) {
           this._allLanguages = data.data;
           this._allLanguagesLoaded = true;
-          if (this._pageParams && this._pageParams.langid) {
+          if (this._pageParams && this._pageParams.langId) {
             this.setSelectedLanguage();
           }
           this.getAllBooks();
@@ -472,7 +490,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
       const attributes = lang.attributes;
-      if (attributes?.code && attributes?.code === this._pageParams.langid) {
+      if (attributes?.code && attributes?.code === this._pageParams.langId) {
         this._selectedLanguage = lang;
         this.selectedLang = attributes.name;
         this.pageService.setDir(attributes.direction);
@@ -511,7 +529,7 @@ export class PageComponent implements OnInit, OnDestroy {
           if (this._pageBookManifestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
               const index = this._pageBookSubPages.findIndex(
-                (sPage) => sPage.position === this._pageParams.pageid
+                (sPage) => sPage.position === this._pageParams.pageId
               );
               if (index >= 0) {
                 const tTract = this._pageBookSubPages[index] as TractPage;
@@ -521,11 +539,10 @@ export class PageComponent implements OnInit, OnDestroy {
             }
 
             if (
-              this._pageBookSubPagesManifest &&
-              this._pageBookSubPagesManifest.length > this._pageParams.pageid
+              this._pageBookSubPagesManifest?.length > this._pageParams.pageId
             ) {
               const tSubPageManifest = this._pageBookManifest.pages[
-                this._pageParams.pageid
+                this._pageParams.pageId
               ] as TractPage;
               if (tSubPageManifest) {
                 this.pagesLoaded = false;
@@ -547,16 +564,18 @@ export class PageComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params) => {
-        const { langid, bookid } = this._pageParams;
+        const { langId, bookId } = this._pageParams;
         const bookChanged =
-          langid !== params['langid'] || bookid !== params['bookid'];
+          langId !== params['langId'] || bookId !== params['bookId'];
 
         if (!bookChanged) {
-          this._pageParams.pageid = Number(params['page']);
+          this._pageParams.pageId = Number(params['page']);
         } else {
-          this._pageParams.langid = params['langid'];
-          this._pageParams.bookid = params['bookid'];
-          this._pageParams.pageid = Number(params['page']);
+          this._pageParams.langId = params['langId'];
+          this._pageParams.resourceType = params['resourceType'];
+          this._pageParams.toolType = params['toolType'];
+          this._pageParams.bookId = params['bookId'];
+          this._pageParams.pageId = Number(params['page']);
           this.clearData();
           if (this._allLanguagesLoaded) {
             this.setSelectedLanguage();
@@ -567,7 +586,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private awaitPageNavigation(): void {
-    // Go to next page
+    // Navigate to the next page upon request
     this.pageService.nextPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -575,10 +594,10 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onNextPage();
+        this.onTractNextPage();
       });
 
-    // Go to previous page
+    // Navigate to the previous page upon request
     this.pageService.previousPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -586,7 +605,18 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onPreviousPage();
+        this.onTractPreviousPage();
+      });
+
+    // Navigate to specified page upon request
+    this.pageService.navigateToPage$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        takeUntil(this._pageChanged),
+        delay(0)
+      )
+      .subscribe((pagePosition) => {
+        this.onNavigateToPage(pagePosition);
       });
 
     // Go to any page on page event
@@ -640,16 +670,30 @@ export class PageComponent implements OnInit, OnDestroy {
     });
 
     if (isListener) {
+      this.pageService.addToNavigationStack(pageToNavigateTo.position);
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
+        this._pageParams.bookId,
         pageToNavigateTo.position
       ]);
     }
 
     if (isDismissListener) {
+      this.pageService.removeFromNavigationStack(pageToNavigateTo.position);
+      this.pageService.getNavigationStack().subscribe((stack) => {
+        const previousPage = stack[stack.length - 1];
+        this.router.navigate([
+          this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.resourceType,
+          this._pageParams.bookId,
+          previousPage
+        ]);
+      });
       // We want to hide the page, for now I've set this to go to the next page.
-      this.onNextPage();
+      this.onTractNextPage();
     }
   }
 
@@ -733,6 +777,9 @@ export class PageComponent implements OnInit, OnDestroy {
               .createUrlTree(
                 [
                   data.attributes.locale,
+                  // TODO - Add the following to the URL:
+                  // ResourceType
+                  // toolType
                   data.attributes.tool,
                   data.attributes.page
                 ],

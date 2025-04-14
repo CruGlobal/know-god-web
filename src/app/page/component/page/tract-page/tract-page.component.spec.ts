@@ -1,7 +1,7 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { mockTractPage } from '../../../_tests/mocks';
-import { PageService } from '../../service/page-service.service';
+import { mockTractPage } from '../../../../_tests/mocks';
+import { PageService } from '../../../service/page-service.service';
 import { TractPageComponent } from './tract-page.component';
 
 describe('TractPageComponent', () => {

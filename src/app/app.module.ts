@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LottieModule } from 'ngx-lottie';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { CalltoactionComponent } from './page/component/calltoaction/calltoaction.component';
 import { CardComponent } from './page/component/card/card.component';
 import { ContentAccordionComponent } from './page/component/content-accordion/content-accordion.component';
@@ -31,25 +31,44 @@ import { ContentTextComponent } from './page/component/content-text/content-text
 import { ContentVideoComponent } from './page/component/content-video/content-video.component';
 import { ModalComponent } from './page/component/modal/modal.component';
 import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
+import { TractPageComponent } from './page/component/page/tract-page/tract-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { PageHeroComponent } from './page/component/page-hero/page-hero.component';
-import { TractPageComponent } from './page/component/tract-page/tract-page.component';
 import { PageComponent } from './page/page.component';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 
+//============
+// Routes - The routes for the application
+//
+// :langId - The language ID
+// :toolType - The tool type 'tool' or 'lesson'
+// :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
+// :bookId - The book ID ('thefour', 'kgp', etc.)
+// :page - The page number
+//============
+
 const appRoutes: Routes = [
   {
-    path: ':langid/:bookid',
-    redirectTo: ':langid/:bookid/0',
+    path: ':langId/:bookId/:page',
+    // Redirecting old URL format to the new one
+    redirectTo: ':langId/tool/v1/:bookId/:page',
     pathMatch: 'full'
   },
-  { path: ':langid', component: HeaderComponent },
-  { path: '', component: HeaderComponent },
-  { path: ':langid/embed/:bookid', component: PageComponent },
   {
-    path: ':langid/:bookid/:page',
+    path: ':langId/:toolType/:resourceType/:bookId',
+    redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
+    pathMatch: 'full'
+  },
+  { path: ':langId', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
+  {
+    path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page',
     component: PageComponent
   }
 ];
@@ -63,7 +82,7 @@ export function playerFactory() {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
+    DashboardComponent,
     SharingModalComponent,
     LoaderComponent,
     PageComponent,

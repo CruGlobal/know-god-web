@@ -9,9 +9,9 @@ import {
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
+  CYOAPage,
   CYOAPageCard,
-  Content,
-  CyoaContentPage
+  Content
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../../service/page-service.service';
 
@@ -22,12 +22,12 @@ import { PageService } from '../../../service/page-service.service';
   encapsulation: ViewEncapsulation.None
 })
 export class CYOAComponent implements OnChanges, OnDestroy {
-  @Input() page: CyoaContentPage;
+  @Input() page: CYOAPage;
   @Input() order: number;
   @Input() totalPages: number;
 
   readonly _unsubscribeAll: Subject<void>;
-  private _page: CyoaContentPage;
+  private _page: CYOAPage;
   cards: CYOAPageCard[];
   content: Content[];
   ready: boolean;
@@ -38,6 +38,7 @@ export class CYOAComponent implements OnChanges, OnDestroy {
   isFirstPage$: Observable<boolean>;
   isLastPage$: Observable<boolean>;
   currentYear = new Date().getFullYear();
+  showBackButton: boolean;
 
   constructor(readonly pageService: PageService) {
     this._unsubscribeAll = new Subject<void>();
@@ -76,19 +77,22 @@ export class CYOAComponent implements OnChanges, OnDestroy {
     }
   }
 
-  // We go straight into content
-
-  // Do you have a parent page if so, we need to add that to the navigation stack.
-
   private init(): void {
-    console.log('CYOA Page:', this._page);
-    console.log('Order:', this.order);
-    console.log('Total Pages:', this.totalPages);
+    this.pageService
+      .getNavigationStack()
+      .subscribe((stack) => console.log('Nav stack', stack));
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
 
-    this.content = this._page.content;
+    this.pageService.ensureParentPageIsInNavigationStack(
+      this._page.parentPage?.position
+    );
+    this.pageService.ensurePageIsLatestInNavigationStack(this._page.position);
+
+    if ('content' in this._page) {
+      this.content = this._page.content;
+    }
 
     this.formAction$
       .pipe(takeUntil(this._unsubscribeAll))
@@ -97,6 +101,16 @@ export class CYOAComponent implements OnChanges, OnDestroy {
       });
 
     this.ready = true;
+
+    this.showBackButton = !!this._page.parentPage?.position;
+  }
+
+  navigateBack(): void {
+    if (!this.ready || !this.showBackButton) {
+      return;
+    }
+
+    this.pageService.navigateToPage(this._page.parentPage.position);
   }
 
   private onFormAction(inputFunctionName: string): void {

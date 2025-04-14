@@ -17,9 +17,11 @@ describe('PageComponent', () => {
   let fixture: ComponentFixture<PageComponent>;
   let pageService: PageService;
   let router: Router;
-  const bookid = 'fourlaws',
-    langid = 'en',
-    pageid = 0;
+  const bookId = 'fourlaws',
+    langId = 'en',
+    toolType = 'tool',
+    resourceType = 'v2',
+    pageId = 0;
   const tractPage = mockTractPage(
     false,
     '2',
@@ -62,9 +64,11 @@ describe('PageComponent', () => {
     spyOn(router, 'navigate');
 
     component._pageParams = {
-      langid,
-      bookid,
-      pageid
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId
     };
     component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
     component._pageBookIndex = mockPageComponent.pageBookIndex;
@@ -82,7 +86,13 @@ describe('PageComponent', () => {
 
   it('selectLanguage()', () => {
     component.selectLanguage({ attributes: { code: 'de' } });
-    expect(router.navigate).toHaveBeenCalledWith(['de', bookid, pageid]);
+    expect(router.navigate).toHaveBeenCalledWith([
+      'de',
+      toolType,
+      resourceType,
+      bookId,
+      pageId
+    ]);
   });
 
   it('onToggleLanguageSelect()', () => {
@@ -97,31 +107,47 @@ describe('PageComponent', () => {
     expect(component.languagesVisible).toBeTrue();
   });
 
-  it('onPreviousPage() on page 0', () => {
-    component.onPreviousPage();
+  it('onTractPreviousPage() on page 0', () => {
+    component.onTractPreviousPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
-  it('onPreviousPage() on page > 0', () => {
+  it('onTractPreviousPage() on page > 0', () => {
     component._pageParams = {
-      langid,
-      bookid,
-      pageid: 5
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 5
     };
-    component.onPreviousPage();
-    expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 4]);
+    component.onTractPreviousPage();
+    expect(router.navigate).toHaveBeenCalledWith([
+      langId,
+      toolType,
+      resourceType,
+      bookId,
+      4
+    ]);
   });
 
-  it('onNextPage() on page 0', () => {
-    component.onNextPage();
-    expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 1]);
+  it('onTractNextPage() on page 0', () => {
+    component.onTractNextPage();
+    expect(router.navigate).toHaveBeenCalledWith([
+      langId,
+      toolType,
+      resourceType,
+      bookId,
+      1
+    ]);
   });
-  it('onNextPage() on final page', () => {
+  it('onTractNextPage() on final page', () => {
     component._pageParams = {
-      langid,
-      bookid,
-      pageid: 6
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 6
     };
-    component.onNextPage();
+    component.onTractNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
@@ -172,7 +198,7 @@ describe('PageComponent', () => {
 
   it('loadPageBook() - page does not exist', () => {
     const loadPageBookIndexSpy = spyOn(component, 'loadPageBookIndex');
-    component._pageParams.bookid = 'connectingWithGod';
+    component._pageParams.bookId = 'connectingWithGod';
     component.loadPageBook();
     expect(component._pageBookLoaded).toBeFalse();
     expect(loadPageBookIndexSpy).toHaveBeenCalledTimes(0);
@@ -266,37 +292,87 @@ describe('PageComponent', () => {
       ],
       [createEventId('dismiss-event', null)]
     );
-    let onNextPageSpy;
+    let onTractNextPageSpy;
 
     beforeEach(() => {
       component._pageParams = {
-        langid,
-        bookid,
-        pageid: 1
+        langId,
+        bookId,
+        toolType,
+        resourceType,
+        pageId: 1
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
       component.awaitPageEvent();
-      onNextPageSpy = spyOn(component, 'onNextPage');
+      onTractNextPageSpy = spyOn(component, 'onTractNextPage');
     });
 
-    it('should navigate to page 8', () => {
+    it('should navigate to page 5', () => {
       pageService.formAction('another-page-event');
 
-      expect(router.navigate).toHaveBeenCalledWith(['en', bookid, 5]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        'en',
+        toolType,
+        resourceType,
+        bookId,
+        5
+      ]);
     });
 
     it('should not navigate to new page', () => {
       pageService.formAction('card-event');
 
       expect(router.navigate).not.toHaveBeenCalled();
-      expect(onNextPageSpy).not.toHaveBeenCalled();
+      expect(onTractNextPageSpy).not.toHaveBeenCalled();
     });
 
-    it('should navigate to the next page (2)', () => {
+    it('should navigate to the next page (1)', () => {
+      pageService.addToNavigationStack(1);
+      pageService.addToNavigationStack(5);
       pageService.formAction('dismiss-event');
 
-      expect(router.navigate).not.toHaveBeenCalled();
-      expect(onNextPageSpy).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith([
+        'en',
+        toolType,
+        resourceType,
+        bookId,
+        1
+      ]);
+
+      expect(onTractNextPageSpy).toHaveBeenCalled();
+    });
+  });
+
+  describe('awaitPageNavigation() - onNavigateToPage()', () => {
+    let addToNavigationStackSpy;
+
+    beforeEach(() => {
+      component._pageParams = {
+        langId,
+        bookId,
+        toolType,
+        resourceType,
+        pageId: 1
+      };
+      component._pageBookSubPages = [tractPageOne, tractPage];
+      component.awaitPageNavigation();
+      addToNavigationStackSpy = spyOn(pageService, 'addToNavigationStack');
+    });
+
+    it('should navigate to page 8', async () => {
+      pageService.navigateToPage(8);
+
+      waitForAsync(() => {
+        expect(addToNavigationStackSpy).toHaveBeenCalledWith(8);
+
+        expect(router.navigate).toHaveBeenCalledWith([
+          langId,
+          toolType,
+          resourceType,
+          bookId,
+          8
+        ]);
+      });
     });
   });
 });

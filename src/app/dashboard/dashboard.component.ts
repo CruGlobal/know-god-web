@@ -4,13 +4,22 @@ import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
+import { getUrlResourceType } from '../shared/getUrlResourceType';
 
+interface Resource {
+  imgUrl: string;
+  resourceName: string;
+  id: string;
+  abbreviation: string;
+  tagline: string;
+  resourceType: string;
+}
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class DashboardComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();
   private _languagesReady = new Subject<void>();
   private _languageChanged = new Subject<void>();
@@ -18,7 +27,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   private _booksData: any;
   private _languagesData: any;
 
-  Images = [];
+  resources: Resource[] = [];
   englishLangId = 1;
   englishLangCode = 'en';
   englishLangName = 'English';
@@ -43,7 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.awaitBooks();
 
     this.activatedRoute.paramMap.subscribe((params) => {
-      const _langId = params.get('langid');
+      const _langId = params.get('langId');
       if (!_langId || _langId == null || _langId.trim() === '') {
         this.dispLanguage = this.englishLangId;
         this.dispLanguageCode = this.englishLangCode;
@@ -162,7 +171,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
             (included) => included.type === 'attachment'
           );
 
-          const _translations = this._booksData.included.filter(
+          const translations = this._booksData.included.filter(
             (included) =>
               included.type === 'translation' &&
               Number(included.relationships.language.data.id) ===
@@ -176,35 +185,26 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 (o2.attributes['attr-default-order'] || 0)
             )
             .forEach((resource) => {
-              if (resource.attributes['attr-hidden']) {
+              const { id: resourceId, attributes, relationships } = resource;
+              const resourceType = attributes['resource-type'];
+
+              if (attributes['attr-hidden']) {
                 return;
               }
-              if (
-                !this.webContentTypes.includes(
-                  resource.attributes['resource-type']
-                )
-              ) {
+              if (!this.webContentTypes.includes(resourceType)) {
                 return;
               }
 
-              const resourceId = resource.id;
-              const bannerId = resource.attributes['attr-banner'];
-
-              if (
-                resource.relationships.metatool &&
-                resource.relationships.metatool.data
-              ) {
-                const metatoolId = resource.relationships.metatool.data.id;
-                const metatool =
-                  this._booksData.data.find((t) => t.id === metatoolId) ||
+              if (relationships?.metatool?.data) {
+                const metaToolId = relationships.metatool.data.id;
+                const metaTool =
+                  this._booksData.data.find((tool) => tool.id === metaToolId) ||
                   this._booksData.included.find(
-                    (t) => t.type === 'resource' && t.id === metatoolId
+                    (tool) => tool.type === 'resource' && tool.id === metaToolId
                   );
 
                 const defaultVariant =
-                  metatool != null
-                    ? metatool.relationships['default-variant']
-                    : null;
+                  metaTool?.relationships['default-variant'] || null;
                 if (
                   defaultVariant != null &&
                   defaultVariant.data.id !== resourceId
@@ -213,26 +213,30 @@ export class HeaderComponent implements OnInit, OnDestroy {
                 }
               }
 
-              const _tTranslation = _translations.find(
+              const translation = translations.find(
                 (x) => x.relationships.resource.data.id === resourceId
               );
 
-              if (_tTranslation && _tTranslation.attributes) {
-                const _tTranslatedName =
-                  _tTranslation.attributes['translated-name'];
-                const _tTranslatedTagLine =
-                  _tTranslation.attributes['translated-tagline'];
+              if (translation?.attributes) {
+                const resourceName = translation.attributes['translated-name'];
+                const tagline = translation.attributes['translated-tagline'];
+                const imgUrl = attachments.find(
+                  (x) => x.id === attributes['attr-banner']
+                )?.attributes.file;
 
-                this.Images.push({
-                  ImgUrl: attachments.find((x) => x.id === bannerId)?.attributes
-                    .file,
-                  resource: _tTranslatedName,
-                  id: resourceId,
-                  abbreviation: resource.attributes.abbreviation,
-                  tagline: _tTranslatedTagLine
-                });
+                this.resources = [
+                  ...this.resources,
+                  {
+                    imgUrl,
+                    resourceName,
+                    id: resourceId,
+                    abbreviation: attributes.abbreviation,
+                    tagline,
+                    resourceType
+                  }
+                ];
               } else {
-                console.log('MISSING TRANSLATION', resource, _tTranslation);
+                console.log('MISSING TRANSLATION', resource, translation);
               }
             });
 
@@ -241,8 +245,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
       });
   }
 
-  navigateToPage(abbreviation) {
-    this.route.navigateByUrl(this.dispLanguageCode + '/' + abbreviation);
+  navigateToPage(resource: Resource): void {
+    const abbreviation = resource.abbreviation;
+    const urlResourceType = getUrlResourceType(resource.resourceType);
+    const bookType = this.webContentTypes.includes(resource.resourceType)
+      ? 'tool'
+      : 'lesson';
+
+    const url = `${this.dispLanguageCode}/${bookType}/${urlResourceType}/${abbreviation}`;
+    this.route.navigateByUrl(url);
   }
 
   onSwitchLanguage(): void {
@@ -252,7 +263,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onSelectLanguage(pLangCode: string): void {
     this.sectionReady = false;
     this._languageChanged.next();
-    this.Images = [];
+    this.resources = [];
     this.langSwitchOn = !this.langSwitchOn;
     this.route.navigate(['/', pLangCode]);
   }

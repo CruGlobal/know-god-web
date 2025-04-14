@@ -18,12 +18,12 @@ import {
   TractPage,
   TractPageCard
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { PageService } from '../../service/page-service.service';
+import { PageService } from '../../../service/page-service.service';
 
 @Component({
   selector: 'app-tract-new-page',
   templateUrl: './tract-page.component.html',
-  styleUrls: ['../page/default-page.css'],
+  styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class TractPageComponent implements OnChanges, OnDestroy {
