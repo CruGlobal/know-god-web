@@ -9,7 +9,7 @@ import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-link',
+  selector: 'app-content-link',
   templateUrl: './content-link.component.html',
   styleUrls: ['./content-link.component.css']
 })

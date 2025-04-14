@@ -8,36 +8,33 @@
       hasPageHeader: hasPageHeader
     }"
   >
-    <app-page-new-header
+    <app-page-header
       *ngIf="header && (isModal$ | async) === false"
       [header]="header"
-    ></app-page-new-header>
-    <app-page-new-hero
+    ></app-page-header>
+    <app-page-hero
       *ngIf="hero && (isModal$ | async) === false"
       [hero]="hero"
-    ></app-page-new-hero>
-    <app-page-new-hero
+    ></app-page-hero>
+    <app-page-hero
       *ngIf="content && (isModal$ | async) === false"
       [hero]="{ content: content }"
     >
-    </app-page-new-hero>
+    </app-page-hero>
     <ng-container *ngIf="cards && cards.length && (isModal$ | async) === false">
-      <app-page-new-card
-        *ngFor="let card of cards"
-        [card]="card"
-      ></app-page-new-card>
+      <app-page-card *ngFor="let card of cards" [card]="card"></app-page-card>
     </ng-container>
-    <app-page-new-calltoaction
+    <app-page-calltoaction
       *ngIf="
         callToAction &&
         (isForm$ | async) === false &&
         (isModal$ | async) === false
       "
       [item]="callToAction"
-    ></app-page-new-calltoaction>
+    ></app-page-calltoaction>
 
     <ng-container *ngIf="modal && (isModal$ | async)">
-      <app-page-new-modal [modal]="modal"></app-page-new-modal>
+      <app-page-modal [modal]="modal"></app-page-modal>
     </ng-container>
 
     <div

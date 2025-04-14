@@ -8,7 +8,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-input',
+  selector: 'app-content-input',
   templateUrl: './content-input.component.html',
   styleUrls: ['./content-input.component.css']
 })

@@ -3,7 +3,7 @@ import { Flow } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-flow',
+  selector: 'app-content-flow',
   templateUrl: './content-flow.component.html',
   styleUrls: ['./content-flow.component.css']
 })

@@ -7,7 +7,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-new-calltoaction',
+  selector: 'app-page-calltoaction',
   templateUrl: './calltoaction.component.html',
   styleUrls: ['./calltoaction.component.css']
 })

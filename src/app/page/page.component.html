@@ -45,13 +45,13 @@
       >
       </app-cyoa-page>
 
-      <app-tract-new-page
+      <app-tract-page
         *ngIf="resourceType === 'tract'"
         [page]="activePage"
         [order]="activePageOrder"
         [totalPages]="totalPages"
       >
-      </app-tract-new-page>
+      </app-tract-page>
     </div>
 
     <ng-container *ngIf="bookNotAvailableInLanguage">
