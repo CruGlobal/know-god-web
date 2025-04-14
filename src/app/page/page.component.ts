@@ -41,7 +41,7 @@ interface LiveShareSubscriptionPayload {
 }
 
 @Component({
-  selector: 'app-page-new',
+  selector: 'app-page',
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -288,11 +288,11 @@ export class PageComponent implements OnInit, OnDestroy {
           ParserConfig.Companion.FEATURE_CONTENT_CARD
         ])
         .withParseTips(false);
-      const newParser = new ManifestParser(this.pullParserFactory, config);
+      const parser = new ManifestParser(this.pullParserFactory, config);
       const controller = new AbortController();
       const signal = controller.signal;
       try {
-        newParser.parseManifest(fileName, signal).then((data) => {
+        parser.parseManifest(fileName, signal).then((data) => {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 

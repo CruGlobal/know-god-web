@@ -9,7 +9,7 @@ import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-image',
+  selector: 'app-content-image',
   templateUrl: './content-image.component.html',
   styleUrls: ['./content-image.component.css']
 })
