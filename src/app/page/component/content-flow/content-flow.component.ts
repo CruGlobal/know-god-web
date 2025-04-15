@@ -1,5 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { Flow } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import {
+  DimensionParser,
+  Flow,
+  FlowItem,
+  Horizontal
+} from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -11,9 +16,10 @@ export class ContentFlowComponent implements OnChanges {
   @Input() item: Flow;
 
   flow: Flow;
-  items: any[];
+  items: (FlowItem & { itemWidth?: string | null })[];
   ready: boolean;
   state: any;
+  justifyContent: Horizontal;
 
   constructor(private pageService: PageService) {
     this.state = this.pageService.parserState();
@@ -43,7 +49,14 @@ export class ContentFlowComponent implements OnChanges {
   }
 
   private init(): void {
-    this.items = this.flow.items;
+    this.items = this.item.items;
+    this.items.forEach((flowItem) => {
+      const dimension = DimensionParser(flowItem.width);
+      flowItem.itemWidth = dimension?.value
+        ? dimension.value + dimension.symbol
+        : null;
+    });
+    this.justifyContent = this.item.rowGravity;
     this.ready = true;
   }
 }

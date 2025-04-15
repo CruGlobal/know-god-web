@@ -22,6 +22,15 @@ import {
   Video
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
+const createResource = (name: string, localName: string): Resource => {
+  return {
+    localName,
+    name,
+    equals: () => null,
+    hashCode: () => null
+  };
+};
+
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);
 export const text =
@@ -72,15 +81,6 @@ export const createEventId = (name: string, namespace?: string): EventId => {
     equals: () => null,
     hashCode: () => null,
     toString: () => null
-  };
-};
-
-const createResource = (name: string, localName: string): Resource => {
-  return {
-    localName,
-    name,
-    equals: () => null,
-    hashCode: () => null
   };
 };
 
@@ -227,7 +227,22 @@ export const mockContent = (): Content[] => {
 };
 
 export const mockText = (text: string): Text => {
-  return createText(text);
+  return {
+    ...standardTypeValues(),
+    text,
+    textStyles: [
+      { name: 'BOLD', ordinal: 0 },
+      { name: 'ITALIC', ordinal: 0 }
+    ],
+    textAlign: { name: 'CENTER', ordinal: 0 },
+    textScale: 1.5,
+    minimumLines: 3,
+    textColor: '#000000',
+    startImage: createResource('image.png', 'image.png'),
+    startImageSize: 200,
+    endImage: createResource('image.png', 'image.png'),
+    endImageSize: 200
+  };
 };
 
 export const mockVideo = (videoId): Video => {
@@ -317,7 +332,8 @@ export const mockFlowItem = (initialSelectedValue): FlowItem => {
     content: [mockImage('filename', 'url_to_path')],
     ...standardTypeValues(),
     isGone: () => initialSelectedValue,
-    watchIsGone: () => null
+    watchIsGone: () => null,
+    width: null
   };
 };
 
