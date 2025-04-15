@@ -1,5 +1,13 @@
 <ng-container *ngIf="ready">
   <div id="toolContent">
+    <a
+      (click)="navigateBack()"
+      href="javascript:void(0)"
+      *ngIf="showBackButton"
+      class="backwards-navigation"
+    >
+      <img src="assets/img/back-arrow.png" alt="navigate back" />
+    </a>
     <app-content-new-repeater
       [items]="content"
       *ngIf="content"
