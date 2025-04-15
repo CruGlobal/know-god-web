@@ -3,7 +3,6 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  OnInit,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -12,7 +11,6 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   CYOAPageCard,
-  Content,
   CyoaCardCollectionPage
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../../service/page-service.service';
@@ -23,9 +21,7 @@ import { PageService } from '../../../service/page-service.service';
   styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class CYOACardCollectionComponent
-  implements OnInit, OnChanges, OnDestroy
-{
+export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   @Input() page: CyoaCardCollectionPage;
   @Input() order: number;
   @Input() totalPages: number;
@@ -33,7 +29,6 @@ export class CYOACardCollectionComponent
   readonly _unsubscribeAll: Subject<void>;
   private _page: CyoaCardCollectionPage;
   cards: CYOAPageCard[];
-  content: Content[];
   ready: boolean;
   dir$: Observable<string>;
   formAction$: Observable<string>;
@@ -55,18 +50,6 @@ export class CYOACardCollectionComponent
     this.isForm$ = this.pageService.isForm$;
     this.isModal$ = this.pageService.isModal$;
     this.formAction$ = this.pageService.formAction$;
-  }
-
-  ngOnInit(): void {
-    this.route.paramMap
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((params: ParamMap) => {
-        const index = parseInt(params.get('cardPosition'), 10);
-        this.currentCardIndex =
-          !isNaN(index) && index >= 0 && index < this.cards?.length ? index : 0;
-
-        this.updateCardState();
-      });
   }
 
   ngOnDestroy() {
@@ -101,20 +84,24 @@ export class CYOACardCollectionComponent
     return this.cards?.[this.currentCardIndex];
   }
 
-  showPreviousCard(): void {
-    if (this.currentCardIndex > 0) {
-      this.currentCardIndex--;
+  goToCard(index: number): void {
+    if (!this.cards || this.cards.length === 0) return;
+
+    const safeIndex = Math.max(0, Math.min(index, this.cards.length - 1));
+
+    if (safeIndex !== this.currentCardIndex) {
+      this.currentCardIndex = safeIndex;
       this.updateUrl();
       this.updateCardState();
     }
   }
 
+  showPreviousCard(): void {
+    this.goToCard(this.currentCardIndex - 1);
+  }
+
   showNextCard(): void {
-    if (this.currentCardIndex < this.cards.length - 1) {
-      this.currentCardIndex++;
-      this.updateUrl();
-      this.updateCardState();
-    }
+    this.goToCard(this.currentCardIndex + 1);
   }
 
   private updateUrl(): void {
@@ -128,6 +115,24 @@ export class CYOACardCollectionComponent
     this.isLastCard = this.currentCardIndex === this.totalCards - 1;
   }
 
+  private subscribeToCardPosition(): void {
+    this.route.paramMap
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((params: ParamMap) => {
+        const param = params.get('cardPosition');
+        const index = parseInt(param, 10);
+
+        if (param === null || isNaN(index) || index < 0) {
+          this.router.navigate([0], {
+            relativeTo: this.route,
+            replaceUrl: true
+          });
+        } else {
+          this.goToCard(index);
+        }
+      });
+  }
+
   private init(): void {
     console.log('CYOA Card Collection Page:', this._page);
     console.log('Order:', this.order);
@@ -138,6 +143,7 @@ export class CYOACardCollectionComponent
     this.cards = this._page.cards;
     this.totalCards = this.cards.length || 0;
     this.showBackButton = !!this._page.parentPage?.position;
+    this.subscribeToCardPosition();
 
     this.ready = true;
   }
