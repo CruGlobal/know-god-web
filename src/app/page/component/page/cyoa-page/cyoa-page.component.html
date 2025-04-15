@@ -8,7 +8,7 @@
     >
       <img src="assets/img/back-arrow.png" alt="navigate back" />
     </a>
-    <app-content-new-repeater [items]="content"></app-content-new-repeater>
+    <app-content-repeater [items]="content"></app-content-repeater>
 
     <ng-container
       *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"

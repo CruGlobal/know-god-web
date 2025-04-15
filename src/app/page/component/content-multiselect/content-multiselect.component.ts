@@ -6,7 +6,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-multiselect',
+  selector: 'app-content-multiselect',
   templateUrl: './content-multiselect.component.html',
   styleUrls: ['./content-multiselect.component.css']
 })

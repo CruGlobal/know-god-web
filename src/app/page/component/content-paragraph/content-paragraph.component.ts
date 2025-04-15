@@ -5,7 +5,7 @@ import {
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 
 @Component({
-  selector: 'app-content-new-paragraph',
+  selector: 'app-content-paragraph',
   templateUrl: './content-paragraph.component.html',
   styleUrls: ['./content-paragraph.component.css']
 })
