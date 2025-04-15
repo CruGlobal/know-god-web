@@ -2,6 +2,7 @@ import { org } from '@cruglobal/godtools-shared';
 import {
   Animation,
   Button,
+  CYOAPageCard,
   CallToAction,
   Card,
   Content,
@@ -276,6 +277,16 @@ export const mockTractCard = (
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
+    content: mockContent(),
+    ...standardTypeValues()
+  };
+};
+
+export const mockCyoaCard = (position: number): CYOAPageCard => {
+  return {
+    page: null,
+    id: null,
+    position,
     content: mockContent(),
     ...standardTypeValues()
   };
