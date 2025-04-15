@@ -43,6 +43,7 @@ export class CYOACardCollectionComponent
   isLastCard: boolean;
   isFirstCard: boolean;
   totalCards: number;
+  showBackButton: boolean;
 
   constructor(
     readonly pageService: PageService,
@@ -136,7 +137,37 @@ export class CYOACardCollectionComponent
     this.pageService.formHidden();
     this.cards = this._page.cards;
     this.totalCards = this.cards.length || 0;
+    this.showBackButton = !!this._page.parentPage?.position;
 
     this.ready = true;
+  }
+
+  navigateBack(): void {
+    if (!this.ready || !this.showBackButton) {
+      return;
+    }
+
+    this.pageService.navigateToPage(this._page.parentPage.position);
+  }
+
+  private onFormAction(inputFunctionName: string): void {
+    let functionName = inputFunctionName;
+
+    if (functionName.indexOf(' ') > -1) {
+      const splitname = functionName.split(' ');
+      functionName =
+        splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
+    }
+
+    // Check if form submission
+    if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
+      this.pageService.emailSignumFormDataNeeded();
+      setTimeout(() => {
+        this.onFormAction(functionName);
+      }, 0);
+      return;
+    }
+
+    console.log('Function Name:', functionName);
   }
 }
