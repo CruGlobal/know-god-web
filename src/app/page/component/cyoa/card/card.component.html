@@ -1,6 +1,5 @@
 <div attr.id="card-{{ cardPosition }}" class="cardContent">
-  <h4 class="mw568 cardHeading ng-binding" dir="{{ dir$ }}"></h4>
-  <ng-container *ngIf="content && (isModal$ | async) === false">
+  <ng-container *ngIf="content">
     <app-content-new-repeater [items]="content"></app-content-new-repeater>
     <p class="cardPosition">{{ cardPosition + 1 }} / {{ totalCards }}</p>
   </ng-container>

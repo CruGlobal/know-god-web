@@ -13,10 +13,10 @@
       *ngIf="content"
     ></app-content-new-repeater>
     <ng-container *ngIf="currentCard && (isModal$ | async) === false">
-      <app-page-cyoa-card
+      <app-cyoa-card
         [card]="currentCard"
         [totalCards]="totalCards"
-      ></app-page-cyoa-card>
+      ></app-cyoa-card>
     </ng-container>
 
     <div
