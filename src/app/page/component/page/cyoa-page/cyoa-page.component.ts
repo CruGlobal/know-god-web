@@ -14,6 +14,7 @@ import {
   Content
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../../service/page-service.service';
+import { navigateBackIfPossible, shouldShowBackButton } from '../page-helpers';
 
 @Component({
   selector: 'app-cyoa-page',
@@ -102,15 +103,13 @@ export class CYOAComponent implements OnChanges, OnDestroy {
 
     this.ready = true;
 
-    this.showBackButton = !!this._page.parentPage?.position;
+    this.showBackButton = shouldShowBackButton(this._page);
   }
 
   navigateBack(): void {
-    if (!this.ready || !this.showBackButton) {
-      return;
-    }
-
-    this.pageService.navigateToPage(this._page.parentPage.position);
+    navigateBackIfPossible(this._page, this.ready, this.showBackButton, (pos) =>
+      this.pageService.navigateToPage(pos)
+    );
   }
 
   private onFormAction(inputFunctionName: string): void {
