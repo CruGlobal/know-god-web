@@ -1,11 +1,28 @@
 .flow-item {
-  width: 130px;
-  margin-left: 7.5px;
-  margin-right: 7.5px;
-  padding: 5px;
   margin-top: 0px;
+  height: 100%;
+  flex-grow: 0;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.flow-item app-content-repeater app-content-card > a {
+  height: 100%;
 }
 
 .flow-item app-content-repeater {
+  display: block;
+  height: 100%;
   margin-top: 0;
+}
+
+.flow-item p.textContent {
+  margin-top: 0 !important;
+  align-items: center;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+.flow-item app-content-text {
+  margin-top: 0 !important;
 }
