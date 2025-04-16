@@ -51,11 +51,7 @@ export class ContentTextComponent implements OnChanges {
 
   private init(): void {
     const styles = {
-      'font-weight': this.text.fontWeight
-        ? this.text.fontWeight
-        : this.text.textStyles?.some((style) => style.name === 'BOLD')
-          ? 'bold'
-          : '',
+      'font-weight': this.text.fontWeight ? this.text.fontWeight : '',
       'font-style': this.text.textStyles?.some(
         (style) => style.name === 'ITALIC'
       )
@@ -68,7 +64,9 @@ export class ContentTextComponent implements OnChanges {
         : '',
       'text-align': this.text.textAlign.name || '',
       'font-size': this.text.textScale ? `${this.text.textScale}rem` : '',
-      'line-height': this.text.textScale ? `${this.text.textScale}rem` : '',
+      'line-height': this.text.textScale
+        ? `${this.text.textScale * 1.25}rem`
+        : '',
       'min-height': this.text.minimumLines ? `${this.text.minimumLines}em` : ''
       // Do not use color for now since we don't want to support desktop and mobile colors
       // color: this.text.textColor || ''
