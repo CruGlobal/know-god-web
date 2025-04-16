@@ -1,13 +1,14 @@
 :host {
-    width: 100%;
-    display: block;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 p.textContent {
-    margin-top: 24px; 
+  margin-top: 24px;
 }
 
 :host:not(:first-child) > p.textContent {
-    margin-top: 12px;
+  margin-top: 12px;
 }
-

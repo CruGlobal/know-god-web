@@ -1,8 +1,17 @@
 <ng-container *ngIf="ready">
-  <div class="flow mw568">
+  <div
+    class="flow mw568"
+    [ngStyle]="{
+      justifyContent: justifyContent
+    }"
+  >
+    <!-- Subtract 17.5px from the percentage to account for the gap between flow-items  -->
     <app-content-flow-item
       *ngFor="let item of items; trackBy: trackByFn"
       [item]="item"
+      [ngStyle]="{
+        flexBasis: 'calc(' + item.itemWidth + ' - 17.5px)'
+      }"
     >
     </app-content-flow-item>
   </div>
