@@ -14,6 +14,7 @@ import {
   CyoaCardCollectionPage
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../../service/page-service.service';
+import { navigateBackIfPossible, shouldShowBackButton } from '../page-helpers';
 
 @Component({
   selector: 'app-cyoa-card-collection-page',
@@ -85,7 +86,9 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   }
 
   goToCard(index: number): void {
-    if (!this.cards || this.cards.length === 0) return;
+    if (!this.cards || this.cards.length === 0) {
+      return;
+    }
 
     const safeIndex = Math.max(0, Math.min(index, this.cards.length - 1));
 
@@ -115,7 +118,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.isLastCard = this.currentCardIndex === this.totalCards - 1;
   }
 
-  private subscribeToCardPosition(): void {
+  private onCardPositionChange(): void {
     this.route.paramMap
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params: ParamMap) => {
@@ -134,46 +137,41 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    console.log('CYOA Card Collection Page:', this._page);
-    console.log('Order:', this.order);
-    console.log('Total Pages:', this.totalPages);
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
     this.cards = this._page.cards;
     this.totalCards = this.cards.length || 0;
-    this.showBackButton = !!this._page.parentPage?.position;
-    this.subscribeToCardPosition();
+    this.showBackButton = shouldShowBackButton(this._page);
+    this.onCardPositionChange();
 
     this.ready = true;
   }
 
   navigateBack(): void {
-    if (!this.ready || !this.showBackButton) {
-      return;
-    }
-
-    this.pageService.navigateToPage(this._page.parentPage.position);
+    navigateBackIfPossible(this._page, this.ready, this.showBackButton, (pos) =>
+      this.pageService.navigateToPage(pos)
+    );
   }
 
-  private onFormAction(inputFunctionName: string): void {
-    let functionName = inputFunctionName;
+  // private onFormAction(inputFunctionName: string): void {
+  //   let functionName = inputFunctionName;
 
-    if (functionName.indexOf(' ') > -1) {
-      const splitname = functionName.split(' ');
-      functionName =
-        splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
-    }
+  //   if (functionName.indexOf(' ') > -1) {
+  //     const splitname = functionName.split(' ');
+  //     functionName =
+  //       splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
+  //   }
 
-    // Check if form submission
-    if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
-      this.pageService.emailSignumFormDataNeeded();
-      setTimeout(() => {
-        this.onFormAction(functionName);
-      }, 0);
-      return;
-    }
+  //   // Check if form submission
+  //   if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
+  //     this.pageService.emailSignumFormDataNeeded();
+  //     setTimeout(() => {
+  //       this.onFormAction(functionName);
+  //     }, 0);
+  //     return;
+  //   }
 
-    console.log('Function Name:', functionName);
-  }
+  //   console.log('Function Name:', functionName);
+  // }
 }
