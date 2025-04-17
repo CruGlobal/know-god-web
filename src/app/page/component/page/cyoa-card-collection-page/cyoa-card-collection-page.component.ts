@@ -40,6 +40,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   isFirstCard: boolean;
   totalCards: number;
   showBackButton: boolean;
+  currentCardIndex: number = 0;
 
   constructor(
     readonly pageService: PageService,
@@ -79,7 +80,6 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
       }
     }
   }
-  currentCardIndex = 0;
 
   get currentCard(): CYOAPageCard | undefined {
     return this.cards?.[this.currentCardIndex];
@@ -153,25 +153,4 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
       this.pageService.navigateToPage(pos)
     );
   }
-
-  // private onFormAction(inputFunctionName: string): void {
-  //   let functionName = inputFunctionName;
-
-  //   if (functionName.indexOf(' ') > -1) {
-  //     const splitname = functionName.split(' ');
-  //     functionName =
-  //       splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
-  //   }
-
-  //   // Check if form submission
-  //   if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
-  //     this.pageService.emailSignumFormDataNeeded();
-  //     setTimeout(() => {
-  //       this.onFormAction(functionName);
-  //     }, 0);
-  //     return;
-  //   }
-
-  //   console.log('Function Name:', functionName);
-  // }
 }

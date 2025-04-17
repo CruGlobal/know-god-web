@@ -38,7 +38,7 @@
 
     <div *ngIf="activePage && !bookNotAvailableInLanguage && !bookNotAvailable">
       <app-cyoa-page
-        *ngIf="resourceType === 'cyoa' && !activePage.hasOwnProperty('_cards')"
+        *ngIf="resourceType === 'cyoa' && activePageType === 'content'"
         [page]="activePage"
         [order]="activePageOrder"
         [totalPages]="totalPages"
@@ -46,7 +46,7 @@
       </app-cyoa-page>
 
       <app-cyoa-card-collection-page
-        *ngIf="resourceType === 'cyoa' && activePage.hasOwnProperty('_cards')"
+        *ngIf="resourceType === 'cyoa' && activePageType === 'card-collection'"
         [page]="activePage"
         [order]="activePageOrder"
         [totalPages]="totalPages"
