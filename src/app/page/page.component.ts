@@ -7,7 +7,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// import { org } from '@cruglobal/godtools-shared';
+import { org } from '@cruglobal/godtools-shared';
 import * as ActionCable from '@rails/actioncable';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
@@ -79,7 +79,7 @@ export class PageComponent implements OnInit, OnDestroy {
   bookNotAvailableInLanguage: boolean;
   bookNotAvailable: boolean;
   embedded: boolean;
-  // activePageType: string;
+  activePageType: string;
 
   constructor(
     private loaderService: LoaderService,
@@ -117,7 +117,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe((queryParam) => {
       this.embedded = queryParam.embedded === 'true';
     });
-    // this.setPageType(this.activePage);
+    this.setPageType();
   }
 
   ngOnDestroy() {
@@ -129,21 +129,21 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  // setPageType(page: any) {
-  //   if (
-  //     page instanceof org.cru.godtools.shared.tool.parser.model.page.ContentPage
-  //   ) {
-  //     this.activePageType = 'content';
-  //   } else if (
-  //     page instanceof
-  //     org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
-  //   ) {
-  //     this.activePageType = 'card-collection';
-  //   } else {
-  //     this.activePageType = '';
-  //   }
-  //   console.log('activePageType', this.activePageType);
-  // }
+  setPageType() {
+    if (
+      this.activePage instanceof
+      org.cru.godtools.shared.tool.parser.model.page.ContentPage
+    ) {
+      this.activePageType = 'content';
+    } else if (
+      this.activePage instanceof
+      org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+    ) {
+      this.activePageType = 'card-collection';
+    } else {
+      this.activePageType = '';
+    }
+  }
 
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageId || 0;
@@ -768,6 +768,8 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
+    this.setPageType();
+
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);
     setTimeout(() => {
