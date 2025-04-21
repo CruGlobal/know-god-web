@@ -117,7 +117,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe((queryParam) => {
       this.embedded = queryParam.embedded === 'true';
     });
-    this.setPageType();
+    this.activePageType = this.setPageType(this.activePage);
   }
 
   ngOnDestroy() {
@@ -129,19 +129,19 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  setPageType() {
+  setPageType(activePage): string {
     if (
-      this.activePage instanceof
+      activePage instanceof
       org.cru.godtools.shared.tool.parser.model.page.ContentPage
     ) {
-      this.activePageType = 'content';
+      return 'content';
     } else if (
-      this.activePage instanceof
+      activePage instanceof
       org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
     ) {
-      this.activePageType = 'card-collection';
+      return 'card-collection';
     } else {
-      this.activePageType = '';
+      return '';
     }
   }
 
@@ -768,7 +768,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
-    this.setPageType();
+    this.activePageType = this.setPageType(this.activePage);
 
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);
