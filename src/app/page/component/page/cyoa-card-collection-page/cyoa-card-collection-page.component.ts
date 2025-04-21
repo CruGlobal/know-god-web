@@ -36,8 +36,6 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   isForm$: Observable<boolean>;
   isModal$: Observable<boolean>;
   currentYear = new Date().getFullYear();
-  isLastCard: boolean;
-  isFirstCard: boolean;
   totalCards: number;
   showBackButton: boolean;
   currentCardIndex: number = 0;
@@ -86,7 +84,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   }
 
   goToCard(index: number): void {
-    if (!this.cards || this.cards.length === 0) {
+    if (!this.cards?.length) {
       return;
     }
 
@@ -95,7 +93,6 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     if (safeIndex !== this.currentCardIndex) {
       this.currentCardIndex = safeIndex;
       this.updateUrl();
-      this.updateCardState();
     }
   }
 
@@ -113,9 +110,11 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     });
   }
 
-  private updateCardState(): void {
-    this.isFirstCard = this.currentCardIndex === 0;
-    this.isLastCard = this.currentCardIndex === this.totalCards - 1;
+  isFirstCard(): boolean {
+    return this.currentCardIndex === 0;
+  }
+  isLastCard(): boolean {
+    return this.currentCardIndex === this.totalCards - 1;
   }
 
   private onCardPositionChange(): void {
@@ -125,7 +124,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
         const param = params.get('cardPosition');
         const index = parseInt(param, 10);
 
-        if (param === null || isNaN(index) || index < 0) {
+        if (isNaN(index) || index < 0) {
           this.router.navigate([0], {
             relativeTo: this.route,
             replaceUrl: true
@@ -141,7 +140,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.pageService.modalHidden();
     this.pageService.formHidden();
     this.cards = this._page.cards;
-    this.totalCards = this.cards.length || 0;
+    this.totalCards = this.cards.length;
     this.showBackButton = shouldShowBackButton(this._page);
     this.onCardPositionChange();
 

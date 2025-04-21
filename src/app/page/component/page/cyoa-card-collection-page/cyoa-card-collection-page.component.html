@@ -26,7 +26,7 @@
     >
       <ng-container *ngIf="(dir$ | async) === 'ltr'">
         <!-- If not first page -->
-        <ng-container *ngIf="!isFirstCard">
+        <ng-container *ngIf="!isFirstCard()">
           <a
             (click)="showPreviousCard()"
             href="javascript:void(0)"
@@ -36,7 +36,7 @@
         </ng-container>
 
         <!-- If not last page -->
-        <ng-container *ngIf="!isLastCard">
+        <ng-container *ngIf="!isLastCard()">
           <a
             (click)="showNextCard()"
             href="javascript:void(0)"
@@ -48,7 +48,7 @@
 
       <ng-container *ngIf="(dir$ | async) === 'rtl'">
         <!-- If not first page -->
-        <ng-container *ngIf="!isLastCard">
+        <ng-container *ngIf="!isLastCard()">
           <a
             (click)="showNextCard()"
             href="javascript:void(0)"
@@ -58,7 +58,7 @@
         </ng-container>
 
         <!-- If not last page -->
-        <ng-container *ngIf="!isFirstCard">
+        <ng-container *ngIf="!isFirstCard()">
           <a
             (click)="showPreviousCard()"
             href="javascript:void(0)"
