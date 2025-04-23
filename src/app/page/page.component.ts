@@ -117,7 +117,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.route.queryParams.subscribe((queryParam) => {
       this.embedded = queryParam.embedded === 'true';
     });
-    this.setPageType();
+    this.activePageType = this.setPageType(this.activePage);
   }
 
   ngOnDestroy() {
@@ -129,21 +129,39 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
-  setPageType() {
+  setPageType(activePage): string {
     if (
-      this.activePage instanceof
+      activePage instanceof
       org.cru.godtools.shared.tool.parser.model.page.ContentPage
     ) {
-      this.activePageType = 'content';
+      return 'content';
     } else if (
-      this.activePage instanceof
+      activePage instanceof
       org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
     ) {
-      this.activePageType = 'card-collection';
+      return 'card-collection';
     } else {
-      this.activePageType = '';
+      return '';
     }
   }
+
+  setCardUrl = (card: number) => {
+    if (!this._pageParams?.langId) {
+      console.warn(
+        'setCardUrl called before _pageParams are set.',
+        this._pageParams
+      );
+      return;
+    }
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      this._pageParams.pageId,
+      card
+    ]);
+  };
 
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageId || 0;
@@ -768,7 +786,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
-    this.setPageType();
+    this.activePageType = this.setPageType(this.activePage);
 
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);

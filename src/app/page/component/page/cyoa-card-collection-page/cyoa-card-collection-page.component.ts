@@ -26,6 +26,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   @Input() page: CyoaCardCollectionPage;
   @Input() order: number;
   @Input() totalPages: number;
+  @Input() setCardUrl: (card: number) => void;
 
   readonly _unsubscribeAll: Subject<void>;
   private _page: CyoaCardCollectionPage;
@@ -36,8 +37,6 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   isForm$: Observable<boolean>;
   isModal$: Observable<boolean>;
   currentYear = new Date().getFullYear();
-  isLastCard: boolean;
-  isFirstCard: boolean;
   totalCards: number;
   showBackButton: boolean;
   currentCardIndex: number = 0;
@@ -86,16 +85,14 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   }
 
   goToCard(index: number): void {
-    if (!this.cards || this.cards.length === 0) {
+    if (!this.cards?.length) {
       return;
     }
-
     const safeIndex = Math.max(0, Math.min(index, this.cards.length - 1));
 
     if (safeIndex !== this.currentCardIndex) {
       this.currentCardIndex = safeIndex;
-      this.updateUrl();
-      this.updateCardState();
+      this.setCardUrl(safeIndex);
     }
   }
 
@@ -107,15 +104,11 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.goToCard(this.currentCardIndex + 1);
   }
 
-  private updateUrl(): void {
-    this.router.navigate(['../', this.currentCardIndex], {
-      relativeTo: this.route
-    });
+  isFirstCard(): boolean {
+    return this.currentCardIndex === 0;
   }
-
-  private updateCardState(): void {
-    this.isFirstCard = this.currentCardIndex === 0;
-    this.isLastCard = this.currentCardIndex === this.totalCards - 1;
+  isLastCard(): boolean {
+    return this.currentCardIndex === this.totalCards - 1;
   }
 
   private onCardPositionChange(): void {
@@ -124,12 +117,8 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
       .subscribe((params: ParamMap) => {
         const param = params.get('cardPosition');
         const index = parseInt(param, 10);
-
-        if (param === null || isNaN(index) || index < 0) {
-          this.router.navigate([0], {
-            relativeTo: this.route,
-            replaceUrl: true
-          });
+        if (isNaN(index) || index < 0) {
+          this.setCardUrl(0);
         } else {
           this.goToCard(index);
         }
@@ -141,7 +130,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.pageService.modalHidden();
     this.pageService.formHidden();
     this.cards = this._page.cards;
-    this.totalCards = this.cards.length || 0;
+    this.totalCards = this.cards.length;
     this.showBackButton = shouldShowBackButton(this._page);
     this.onCardPositionChange();
 
