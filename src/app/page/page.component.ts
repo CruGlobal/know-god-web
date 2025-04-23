@@ -144,7 +144,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   setCardUrl = (card: number) => {
-    if (!this._pageParams?.langId) {
+    if (!this._pageParams.langId) {
       console.warn(
         'setCardUrl called before _pageParams are set.',
         this._pageParams
