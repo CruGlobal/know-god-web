@@ -34,7 +34,7 @@ describe('CYOACardCollectionComponent', () => {
     fixture = TestBed.createComponent(CYOACardCollectionComponent);
     component = fixture.componentInstance;
     component.setCardUrl = (card: number) => card;
-    setCardUrlSpy = spyOn(component, 'setCardUrl').and.callThrough();
+    setCardUrlSpy = spyOn(component, 'setCardUrl');
     fixture.detectChanges();
 
     // Simulate Input and ngOnChanges to trigger init()
@@ -73,6 +73,7 @@ describe('CYOACardCollectionComponent', () => {
   });
 
   it('should not go past last card', () => {
+    setCardUrlSpy.calls.reset();
     component.currentCardIndex = component.cards.length - 1;
 
     component.showNextCard();
@@ -82,6 +83,7 @@ describe('CYOACardCollectionComponent', () => {
   });
 
   it('should not go before first card', () => {
+    setCardUrlSpy.calls.reset();
     component.currentCardIndex = 0;
 
     component.showPreviousCard();
