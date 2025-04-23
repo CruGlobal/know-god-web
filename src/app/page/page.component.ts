@@ -145,6 +145,24 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  setCardUrl = (card: number) => {
+    if (!this._pageParams?.langId) {
+      console.warn(
+        'setCardUrl called before _pageParams are set.',
+        this._pageParams
+      );
+      return;
+    }
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      this._pageParams.pageId,
+      card
+    ]);
+  };
+
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageId || 0;
     this.router.navigate([

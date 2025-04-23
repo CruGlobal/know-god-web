@@ -26,6 +26,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   @Input() page: CyoaCardCollectionPage;
   @Input() order: number;
   @Input() totalPages: number;
+  @Input() setCardUrl: (card: number) => void;
 
   readonly _unsubscribeAll: Subject<void>;
   private _page: CyoaCardCollectionPage;
@@ -87,12 +88,11 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     if (!this.cards?.length) {
       return;
     }
-
     const safeIndex = Math.max(0, Math.min(index, this.cards.length - 1));
 
     if (safeIndex !== this.currentCardIndex) {
       this.currentCardIndex = safeIndex;
-      this.updateUrl();
+      this.setCardUrl(safeIndex);
     }
   }
 
@@ -102,12 +102,6 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
 
   showNextCard(): void {
     this.goToCard(this.currentCardIndex + 1);
-  }
-
-  private updateUrl(): void {
-    this.router.navigate(['../', this.currentCardIndex], {
-      relativeTo: this.route
-    });
   }
 
   isFirstCard(): boolean {
@@ -123,12 +117,8 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
       .subscribe((params: ParamMap) => {
         const param = params.get('cardPosition');
         const index = parseInt(param, 10);
-
         if (isNaN(index) || index < 0) {
-          this.router.navigate([0], {
-            relativeTo: this.route,
-            replaceUrl: true
-          });
+          this.setCardUrl(0);
         } else {
           this.goToCard(index);
         }
