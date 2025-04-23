@@ -242,7 +242,8 @@ export const mockText = (text: string): Text => {
     startImage: createResource('image.png', 'image.png'),
     startImageSize: 200,
     endImage: createResource('image.png', 'image.png'),
-    endImageSize: 200
+    endImageSize: 200,
+    fontWeight: 300
   };
 };
 

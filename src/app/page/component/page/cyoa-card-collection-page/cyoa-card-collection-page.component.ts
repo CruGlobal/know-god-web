@@ -14,6 +14,7 @@ import {
   CyoaCardCollectionPage
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
 import { PageService } from '../../../service/page-service.service';
+import { navigateBackIfPossible, shouldShowBackButton } from '../page-helpers';
 
 @Component({
   selector: 'app-cyoa-card-collection-page',
@@ -25,6 +26,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   @Input() page: CyoaCardCollectionPage;
   @Input() order: number;
   @Input() totalPages: number;
+  @Input() setCardUrl: (card: number) => void;
 
   readonly _unsubscribeAll: Subject<void>;
   private _page: CyoaCardCollectionPage;
@@ -35,10 +37,9 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   isForm$: Observable<boolean>;
   isModal$: Observable<boolean>;
   currentYear = new Date().getFullYear();
-  isLastCard: boolean;
-  isFirstCard: boolean;
   totalCards: number;
   showBackButton: boolean;
+  currentCardIndex: number = 0;
 
   constructor(
     readonly pageService: PageService,
@@ -78,21 +79,20 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
       }
     }
   }
-  currentCardIndex = 0;
 
   get currentCard(): CYOAPageCard | undefined {
     return this.cards?.[this.currentCardIndex];
   }
 
   goToCard(index: number): void {
-    if (!this.cards || this.cards.length === 0) return;
-
+    if (!this.cards?.length) {
+      return;
+    }
     const safeIndex = Math.max(0, Math.min(index, this.cards.length - 1));
 
     if (safeIndex !== this.currentCardIndex) {
       this.currentCardIndex = safeIndex;
-      this.updateUrl();
-      this.updateCardState();
+      this.setCardUrl(safeIndex);
     }
   }
 
@@ -104,29 +104,21 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.goToCard(this.currentCardIndex + 1);
   }
 
-  private updateUrl(): void {
-    this.router.navigate(['../', this.currentCardIndex], {
-      relativeTo: this.route
-    });
+  isFirstCard(): boolean {
+    return this.currentCardIndex === 0;
+  }
+  isLastCard(): boolean {
+    return this.currentCardIndex === this.totalCards - 1;
   }
 
-  private updateCardState(): void {
-    this.isFirstCard = this.currentCardIndex === 0;
-    this.isLastCard = this.currentCardIndex === this.totalCards - 1;
-  }
-
-  private subscribeToCardPosition(): void {
+  private onCardPositionChange(): void {
     this.route.paramMap
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params: ParamMap) => {
         const param = params.get('cardPosition');
         const index = parseInt(param, 10);
-
-        if (param === null || isNaN(index) || index < 0) {
-          this.router.navigate([0], {
-            relativeTo: this.route,
-            replaceUrl: true
-          });
+        if (isNaN(index) || index < 0) {
+          this.setCardUrl(0);
         } else {
           this.goToCard(index);
         }
@@ -134,46 +126,20 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    console.log('CYOA Card Collection Page:', this._page);
-    console.log('Order:', this.order);
-    console.log('Total Pages:', this.totalPages);
     this.pageService.setPageOrder(this.order, this.totalPages);
     this.pageService.modalHidden();
     this.pageService.formHidden();
     this.cards = this._page.cards;
-    this.totalCards = this.cards.length || 0;
-    this.showBackButton = !!this._page.parentPage?.position;
-    this.subscribeToCardPosition();
+    this.totalCards = this.cards.length;
+    this.showBackButton = shouldShowBackButton(this._page);
+    this.onCardPositionChange();
 
     this.ready = true;
   }
 
   navigateBack(): void {
-    if (!this.ready || !this.showBackButton) {
-      return;
-    }
-
-    this.pageService.navigateToPage(this._page.parentPage.position);
-  }
-
-  private onFormAction(inputFunctionName: string): void {
-    let functionName = inputFunctionName;
-
-    if (functionName.indexOf(' ') > -1) {
-      const splitname = functionName.split(' ');
-      functionName =
-        splitname[0].indexOf(':') > -1 ? splitname[1].trim() : splitname[0];
-    }
-
-    // Check if form submission
-    if (inputFunctionName.toLowerCase().indexOf('followup:send') !== -1) {
-      this.pageService.emailSignumFormDataNeeded();
-      setTimeout(() => {
-        this.onFormAction(functionName);
-      }, 0);
-      return;
-    }
-
-    console.log('Function Name:', functionName);
+    navigateBackIfPossible(this._page, this.ready, this.showBackButton, (pos) =>
+      this.pageService.navigateToPage(pos)
+    );
   }
 }
