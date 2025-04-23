@@ -8,10 +8,10 @@
     >
       <img src="assets/img/back-arrow.png" alt="navigate back" />
     </a>
-    <app-content-new-repeater
+    <app-content-repeater
       [items]="content"
       *ngIf="content"
-    ></app-content-new-repeater>
+    ></app-content-repeater>
     <ng-container *ngIf="currentCard && (isModal$ | async) === false">
       <app-cyoa-card
         [card]="currentCard"
