@@ -25,18 +25,15 @@ export class CyoaCardComponent implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    for (const propName in changes) {
-      if (changes.hasOwnProperty(propName)) {
-        if (
-          propName === 'card' &&
-          (!changes['card'].previousValue ||
-            changes['card'].currentValue !== changes['card'].previousValue)
-        ) {
-          this.ready = false;
-          this.cardPosition = 0;
-          this.content = [];
-          this.init();
-        }
+    if (changes.hasOwnProperty('card')) {
+      if (
+        !changes.card.previousValue ||
+        changes.card.currentValue !== changes.card.previousValue
+      ) {
+        this.ready = false;
+        this.cardPosition = 0;
+        this.content = [];
+        this.init();
       }
     }
   }
