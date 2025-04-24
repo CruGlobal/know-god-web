@@ -169,7 +169,6 @@ export class PageComponent implements OnInit, OnDestroy {
       this._pageParams.bookId,
       this.getPageIdForRouting(this.activePage)
     ]);
-    return;
   }
 
   onToggleLanguageSelect(): void {
