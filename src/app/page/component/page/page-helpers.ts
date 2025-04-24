@@ -10,7 +10,9 @@ export function navigateBackIfPossible(
   showBackButton: boolean,
   navigateFn: (position: string | number) => void
 ): void {
-  if (!ready || !showBackButton) return;
+  if (!ready || !showBackButton) {
+    return;
+  }
   if (page.parentPage?.position !== undefined) {
     navigateFn(page.parentPage.position);
   }
