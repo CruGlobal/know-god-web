@@ -29,7 +29,9 @@ import { ContentSpacerComponent } from './page/component/content-spacer/content-
 import { ContentTabsComponent } from './page/component/content-tabs/content-tabs.component';
 import { ContentTextComponent } from './page/component/content-text/content-text.component';
 import { ContentVideoComponent } from './page/component/content-video/content-video.component';
+import { CyoaCardComponent } from './page/component/cyoa/card/card.component';
 import { ModalComponent } from './page/component/modal/modal.component';
+import { CYOACardCollectionComponent } from './page/component/page/cyoa-card-collection-page/cyoa-card-collection-page.component';
 import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
 import { TractPageComponent } from './page/component/page/tract-page/tract-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
@@ -47,6 +49,7 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 // :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
 // :bookId - The book ID ('thefour', 'kgp', etc.)
 // :page - The page number
+// :cardPosition - The card position in the card collection
 //============
 
 const appRoutes: Routes = [
@@ -69,6 +72,10 @@ const appRoutes: Routes = [
   },
   {
     path: ':langId/:toolType/:resourceType/:bookId/:page',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page/:cardPosition',
     component: PageComponent
   }
 ];
@@ -110,7 +117,9 @@ export function playerFactory() {
     ContentFlowComponent,
     ContentFlowItemComponent,
     ContentCardComponent,
-    CYOAComponent
+    CyoaCardComponent,
+    CYOAComponent,
+    CYOACardCollectionComponent
   ],
   imports: [
     BrowserModule,

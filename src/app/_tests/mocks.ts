@@ -2,6 +2,7 @@ import { org } from '@cruglobal/godtools-shared';
 import {
   Animation,
   Button,
+  CYOAPageCard,
   CallToAction,
   Card,
   Content,
@@ -241,7 +242,8 @@ export const mockText = (text: string): Text => {
     startImage: createResource('image.png', 'image.png'),
     startImageSize: 200,
     endImage: createResource('image.png', 'image.png'),
-    endImageSize: 200
+    endImageSize: 200,
+    fontWeight: 300
   };
 };
 
@@ -276,6 +278,16 @@ export const mockTractCard = (
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
+    content: mockContent(),
+    ...standardTypeValues()
+  };
+};
+
+export const mockCyoaCard = (position: number): CYOAPageCard => {
+  return {
+    page: null,
+    id: null,
+    position,
     content: mockContent(),
     ...standardTypeValues()
   };
@@ -332,8 +344,7 @@ export const mockFlowItem = (initialSelectedValue): FlowItem => {
     content: [mockImage('filename', 'url_to_path')],
     ...standardTypeValues(),
     isGone: () => initialSelectedValue,
-    watchIsGone: () => null,
-    width: null
+    watchIsGone: () => null
   };
 };
 

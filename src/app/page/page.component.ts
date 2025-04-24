@@ -7,6 +7,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { org } from '@cruglobal/godtools-shared';
 import * as ActionCable from '@rails/actioncable';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
@@ -125,6 +126,40 @@ export class PageComponent implements OnInit, OnDestroy {
       this.liveShareSubscription.unsubscribe();
     }
   }
+
+  getPageType(): string {
+    if (
+      this.activePage instanceof
+      org.cru.godtools.shared.tool.parser.model.page.ContentPage
+    ) {
+      return 'content';
+    } else if (
+      this.activePage instanceof
+      org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+    ) {
+      return 'card-collection';
+    } else {
+      return '';
+    }
+  }
+
+  setCardUrl = (card: number) => {
+    if (!this._pageParams.langId) {
+      console.warn(
+        'setCardUrl called before _pageParams are set.',
+        this._pageParams
+      );
+      return;
+    }
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      this._pageParams.pageId,
+      card
+    ]);
+  };
 
   selectLanguage(lang): void {
     const tPageOrder = this._pageParams.pageId || 0;
@@ -749,6 +784,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
+
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);
     setTimeout(() => {
