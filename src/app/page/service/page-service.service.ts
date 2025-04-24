@@ -8,7 +8,7 @@ import { State } from '../../services/xml-parser-service/xmp-parser.service';
 export class PageService {
   private _nextPage = new Subject<void>();
   private _previousPage = new Subject<void>();
-  private _navigateToPage = new Subject<number>();
+  private _navigateToPage = new Subject<string | number>();
   private _formAction = new Subject<string>();
   private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
@@ -23,7 +23,7 @@ export class PageService {
   private _imageUrlsDict = new BehaviorSubject<string[]>([]);
   private _animationUrlsDict = new BehaviorSubject<string[]>([]);
   private _allAttachmentResources = new Map<string, string>();
-  private _navigationStack = new BehaviorSubject<number[]>([]);
+  private _navigationStack = new BehaviorSubject<string[]>([]);
   private XmlParserState = State.createState();
 
   formAction$: Observable<string> = this._formAction.asObservable();
@@ -35,7 +35,8 @@ export class PageService {
     this._emailSignupFormData.asObservable();
   nextPage$: Observable<any> = this._nextPage.asObservable();
   previousPage$: Observable<any> = this._previousPage.asObservable();
-  navigateToPage$: Observable<number> = this._navigateToPage.asObservable();
+  navigateToPage$: Observable<string | number> =
+    this._navigateToPage.asObservable();
   pageDir$: Observable<string> = this._dir.asObservable();
   isFirstPage$: Observable<boolean> = this._isFirstPage.asObservable();
   isLastPage$: Observable<boolean> = this._isLastPage.asObservable();
@@ -70,7 +71,7 @@ export class PageService {
     this._previousPage.next();
   }
 
-  navigateToPage(pagePosition: number): void {
+  navigateToPage(pagePosition: string | number): void {
     this._navigateToPage.next(pagePosition);
   }
 
@@ -190,11 +191,11 @@ export class PageService {
   // ensureParentPageIsInNavigationStack - Ensure the parent page is in the navigation stack
   // ensurePageIsLatestInNavigationStack - Ensure the page is the last item in the navigation stack
 
-  getNavigationStack(): Observable<number[]> {
+  getNavigationStack(): Observable<string[]> {
     return this._navigationStack.asObservable();
   }
 
-  addToNavigationStack(pagePosition: number): void {
+  addToNavigationStack(pagePosition: string): void {
     const currentStack = this._navigationStack.getValue();
     if (currentStack.includes(pagePosition)) {
       return;
@@ -202,7 +203,7 @@ export class PageService {
     this._navigationStack.next([...currentStack, pagePosition]);
   }
 
-  removeFromNavigationStack(pagePosition?: number): void {
+  removeFromNavigationStack(pagePosition?: string): void {
     const currentStack = this._navigationStack.getValue();
     // if empty, we need to get the original page.
     if (!pagePosition) {
@@ -231,7 +232,7 @@ export class PageService {
     this._navigationStack.next([]);
   }
 
-  ensureParentPageIsInNavigationStack(parentPagePosition?: number): void {
+  ensureParentPageIsInNavigationStack(parentPagePosition?: string): void {
     if (!parentPagePosition) {
       return;
     }
@@ -244,7 +245,7 @@ export class PageService {
     }
   }
 
-  ensurePageIsLatestInNavigationStack(pagePosition: number): void {
+  ensurePageIsLatestInNavigationStack(pagePosition: string): void {
     const currentStack = this._navigationStack.getValue();
     const isLatest = currentStack[currentStack.length - 1] === pagePosition;
 
