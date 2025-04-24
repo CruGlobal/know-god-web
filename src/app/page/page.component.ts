@@ -204,14 +204,14 @@ export class PageComponent implements OnInit, OnDestroy {
       ]);
     }
   }
-  private onNavigateToPage(pagePosition: number | string): void {
-    this.pageService.addToNavigationStack(String(pagePosition));
+  private onNavigateToPage(page: number | string): void {
+    this.pageService.addToNavigationStack(String(page));
     this.router.navigate([
       this._pageParams.langId,
       this._pageParams.toolType,
       this._pageParams.resourceType,
       this._pageParams.bookId,
-      pagePosition
+      page
     ]);
   }
 
