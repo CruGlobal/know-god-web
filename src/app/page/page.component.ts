@@ -176,9 +176,9 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private onTractPreviousPage(): void {
-    const pageId = Number(this._pageParams.pageId);
+    const pageId = this.cleanPageId();
 
-    if (Number.isInteger(pageId) && pageId > 0) {
+    if (typeof pageId === 'number' && pageId > 0) {
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.toolType,
@@ -190,9 +190,9 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private onTractNextPage(): void {
-    const pageId = Number(this._pageParams.pageId);
+    const pageId = this.cleanPageId();
     if (
-      Number.isInteger(pageId) &&
+      typeof pageId === 'number' &&
       pageId + 1 < this._pageBookSubPagesManifest.length
     ) {
       this.router.navigate([
@@ -585,9 +585,9 @@ export class PageComponent implements OnInit, OnDestroy {
               }
             }
 
-            const fallbackId = Number(this._pageParams.pageId);
+            const fallbackId = this.cleanPageId();
             if (
-              Number.isInteger(fallbackId) &&
+              typeof fallbackId === 'number' &&
               this._pageBookSubPagesManifest?.length > fallbackId
             ) {
               const fallbackPage = this._pageBookManifest.pages[
