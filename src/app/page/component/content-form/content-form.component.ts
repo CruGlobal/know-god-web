@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
 import { ContentRepeaterComponent } from '../content-repeater/content-repeater.component';
 
 @Component({
-  selector: 'app-content-new-form',
+  selector: 'app-content-form',
   templateUrl: './content-form.component.html',
   styleUrls: ['./content-form.component.css']
 })

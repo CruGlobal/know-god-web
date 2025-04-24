@@ -2,6 +2,7 @@ import { org } from '@cruglobal/godtools-shared';
 import {
   Animation,
   Button,
+  CYOAPageCard,
   CallToAction,
   Card,
   Content,
@@ -21,6 +22,15 @@ import {
   TractPageCard,
   Video
 } from 'src/app/services/xml-parser-service/xmp-parser.service';
+
+const createResource = (name: string, localName: string): Resource => {
+  return {
+    localName,
+    name,
+    equals: () => null,
+    hashCode: () => null
+  };
+};
 
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);
@@ -75,15 +85,6 @@ export const createEventId = (name: string, namespace?: string): EventId => {
   };
 };
 
-const createResource = (name: string, localName: string): Resource => {
-  return {
-    localName,
-    name,
-    equals: () => null,
-    hashCode: () => null
-  };
-};
-
 const createButton = (text: string, url: string, event: string): Button => {
   return {
     url: url || null,
@@ -126,14 +127,18 @@ export const mockButton = (
   return createButton(text, url, event);
 };
 
-export const mockImage = (name: string, url: string): Image => {
+export const mockImage = (
+  name: string,
+  url: string,
+  event: string = ''
+): Image => {
   return {
     url,
     resource: createResource(name, url),
     gravity: null,
     width: null,
     isClickable: null,
-    events: null,
+    events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
 };
@@ -223,7 +228,23 @@ export const mockContent = (): Content[] => {
 };
 
 export const mockText = (text: string): Text => {
-  return createText(text);
+  return {
+    ...standardTypeValues(),
+    text,
+    textStyles: [
+      { name: 'BOLD', ordinal: 0 },
+      { name: 'ITALIC', ordinal: 0 }
+    ],
+    textAlign: { name: 'CENTER', ordinal: 0 },
+    textScale: 1.5,
+    minimumLines: 3,
+    textColor: '#000000',
+    startImage: createResource('image.png', 'image.png'),
+    startImageSize: 200,
+    endImage: createResource('image.png', 'image.png'),
+    endImageSize: 200,
+    fontWeight: 300
+  };
 };
 
 export const mockVideo = (videoId): Video => {
@@ -257,6 +278,16 @@ export const mockTractCard = (
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
+    content: mockContent(),
+    ...standardTypeValues()
+  };
+};
+
+export const mockCyoaCard = (position: number): CYOAPageCard => {
+  return {
+    page: null,
+    id: null,
+    position,
     content: mockContent(),
     ...standardTypeValues()
   };
@@ -309,6 +340,7 @@ export const mockMultiselect = (): Multiselect => {
 export const mockFlowItem = (initialSelectedValue): FlowItem => {
   return {
     flow: null,
+    width: null,
     content: [mockImage('filename', 'url_to_path')],
     ...standardTypeValues(),
     isGone: () => initialSelectedValue,
@@ -325,6 +357,7 @@ export const mockFlow = (): Flow => {
       mockFlowItem(true),
       mockFlowItem(false)
     ],
+    rowGravity: null,
     ...standardTypeValues()
   };
 };

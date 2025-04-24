@@ -13,7 +13,7 @@ interface TabWithContent {
 }
 
 @Component({
-  selector: 'app-content-new-tabs',
+  selector: 'app-content-tabs',
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })
