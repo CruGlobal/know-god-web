@@ -85,11 +85,11 @@
   margin-left: 12px;
 }
 
-#toolContent.hasPageHeader > app-page-new-hero > .stepHeading {
+#toolContent.hasPageHeader > app-page-hero > .stepHeading {
   padding: 0;
 }
 
-#toolContent.hasPageHeader > app-page-new-hero > .stepHeading > h1 {
+#toolContent.hasPageHeader > app-page-hero > .stepHeading > h1 {
   display: none;
 }
 
@@ -247,17 +247,17 @@ div.cardContent:not(.hasHading) {
   margin-top: 48px !important;
 }
 
-app-content-new-repeater > app-content-new-text {
+app-content-repeater > app-content-text {
   margin-top: 24px;
 }
 @media screen and (min-width: 616px) {
-  div.cardContent.hasHeading app-content-new-text > p.textContent,
-  div.tabContent app-content-new-text > p.textContent {
+  div.cardContent.hasHeading app-content-text > p.textContent,
+  div.tabContent app-content-text > p.textContent {
     padding-left: 44px;
     padding-right: 44px;
   }
 
-  .modal-paragraph > app-content-new-text > p.textContent {
+  .modal-paragraph > app-content-text > p.textContent {
     padding-left: 44px;
     padding-right: 44px;
   }

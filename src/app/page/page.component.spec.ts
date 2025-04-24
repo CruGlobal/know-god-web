@@ -276,6 +276,29 @@ describe('PageComponent', () => {
     }, 0);
   });
 
+  describe('setCardUrl()', () => {
+    it('should navigate with correct params', () => {
+      component.setCardUrl(2);
+
+      expect(router.navigate).toHaveBeenCalledWith([
+        langId,
+        toolType,
+        resourceType,
+        bookId,
+        pageId,
+        2
+      ]);
+    });
+
+    it('should not navigate if _pageParams.langId is missing', () => {
+      component._pageParams.langId = null;
+
+      component.setCardUrl(2);
+
+      expect(router.navigate).not.toHaveBeenCalled();
+    });
+  });
+
   describe('awaitPageEvent()', () => {
     const tractPageWithListeners = mockTractPage(
       false,

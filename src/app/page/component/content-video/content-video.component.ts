@@ -5,7 +5,7 @@ import { Video } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-video',
+  selector: 'app-content-video',
   templateUrl: './content-video.component.html',
   styleUrls: ['./content-video.component.css']
 })

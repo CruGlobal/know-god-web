@@ -2,6 +2,7 @@ import { org } from '@cruglobal/godtools-shared';
 import {
   Animation,
   Button,
+  CYOAPageCard,
   CallToAction,
   Card,
   Content,
@@ -21,6 +22,15 @@ import {
   TractPageCard,
   Video
 } from 'src/app/services/xml-parser-service/xml-parser.service';
+
+const createResource = (name: string, localName: string): Resource => {
+  return {
+    localName,
+    name,
+    equals: () => null,
+    hashCode: () => null
+  };
+};
 
 export const paragraph =
   org.cru.godtools.shared.tool.parser.model.Paragraph.createTestParagraph(null);
@@ -72,15 +82,6 @@ export const createEventId = (name: string, namespace?: string): EventId => {
     equals: () => null,
     hashCode: () => null,
     toString: () => null
-  };
-};
-
-const createResource = (name: string, localName: string): Resource => {
-  return {
-    localName,
-    name,
-    equals: () => null,
-    hashCode: () => null
   };
 };
 
@@ -227,7 +228,23 @@ export const mockContent = (): Content[] => {
 };
 
 export const mockText = (text: string): Text => {
-  return createText(text);
+  return {
+    ...standardTypeValues(),
+    text,
+    textStyles: [
+      { name: 'BOLD', ordinal: 0 },
+      { name: 'ITALIC', ordinal: 0 }
+    ],
+    textAlign: { name: 'CENTER', ordinal: 0 },
+    textScale: 1.5,
+    minimumLines: 3,
+    textColor: '#000000',
+    startImage: createResource('image.png', 'image.png'),
+    startImageSize: 200,
+    endImage: createResource('image.png', 'image.png'),
+    endImageSize: 200,
+    fontWeight: 300
+  };
 };
 
 export const mockVideo = (videoId): Video => {
@@ -261,6 +278,16 @@ export const mockTractCard = (
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
     listeners: [createEventId(listeners)],
+    content: mockContent(),
+    ...standardTypeValues()
+  };
+};
+
+export const mockCyoaCard = (position: number): CYOAPageCard => {
+  return {
+    page: null,
+    id: null,
+    position,
     content: mockContent(),
     ...standardTypeValues()
   };

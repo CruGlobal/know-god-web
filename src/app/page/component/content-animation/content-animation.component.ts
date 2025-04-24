@@ -13,7 +13,7 @@ import { Animation } from 'src/app/services/xml-parser-service/xml-parser.servic
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-animation',
+  selector: 'app-content-animation',
   templateUrl: './content-animation.component.html',
   styleUrls: ['./content-animation.component.css']
 })

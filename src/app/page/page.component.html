@@ -38,20 +38,29 @@
 
     <div *ngIf="activePage && !bookNotAvailableInLanguage && !bookNotAvailable">
       <app-cyoa-page
-        *ngIf="resourceType === 'cyoa'"
+        *ngIf="resourceType === 'cyoa' && getPageType() === 'content'"
         [page]="activePage"
         [order]="activePageOrder"
         [totalPages]="totalPages"
       >
       </app-cyoa-page>
 
-      <app-tract-new-page
+      <app-cyoa-card-collection-page
+        *ngIf="resourceType === 'cyoa' && getPageType() === 'card-collection'"
+        [page]="activePage"
+        [order]="activePageOrder"
+        [totalPages]="totalPages"
+        [setCardUrl]="setCardUrl"
+      >
+      </app-cyoa-card-collection-page>
+
+      <app-tract-page
         *ngIf="resourceType === 'tract'"
         [page]="activePage"
         [order]="activePageOrder"
         [totalPages]="totalPages"
       >
-      </app-tract-new-page>
+      </app-tract-page>
     </div>
 
     <ng-container *ngIf="bookNotAvailableInLanguage">

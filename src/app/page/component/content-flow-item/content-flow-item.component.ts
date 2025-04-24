@@ -3,7 +3,8 @@ import {
   Input,
   OnChanges,
   OnDestroy,
-  SimpleChanges
+  SimpleChanges,
+  ViewEncapsulation
 } from '@angular/core';
 import {
   Content,
@@ -13,9 +14,10 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-flow-item',
+  selector: 'app-content-flow-item',
   templateUrl: './content-flow-item.component.html',
-  styleUrls: ['./content-flow-item.component.css']
+  styleUrls: ['./content-flow-item.component.css'],
+  encapsulation: ViewEncapsulation.None
 })
 export class ContentFlowItemComponent implements OnChanges, OnDestroy {
   @Input() item: FlowItem;

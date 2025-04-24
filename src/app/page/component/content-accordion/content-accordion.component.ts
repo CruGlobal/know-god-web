@@ -7,7 +7,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-accordion',
+  selector: 'app-content-accordion',
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })

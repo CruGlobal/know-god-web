@@ -8,7 +8,7 @@ import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-button',
+  selector: 'app-content-button',
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })

@@ -1,40 +1,22 @@
 <ng-container *ngIf="ready">
-  <div
-    id="toolContent"
-    [ngClass]="{
-      tc: isLastPage$ | async,
-      firstPage: isFirstPage$ | async,
-      lastPage: isLastPage$ | async,
-      hasPageHeader: hasPageHeader
-    }"
-  >
-    <app-page-header
-      *ngIf="header && (isModal$ | async) === false"
-      [header]="header"
-    ></app-page-header>
-    <app-page-hero
-      *ngIf="hero && (isModal$ | async) === false"
-      [hero]="hero"
-    ></app-page-hero>
-    <app-page-hero
-      *ngIf="content && (isModal$ | async) === false"
-      [hero]="{ content: content }"
+  <div id="toolContent">
+    <a
+      (click)="navigateBack()"
+      href="javascript:void(0)"
+      *ngIf="showBackButton"
+      class="backwards-navigation"
     >
-    </app-page-hero>
-    <ng-container *ngIf="cards && cards.length && (isModal$ | async) === false">
-      <app-page-card *ngFor="let card of cards" [card]="card"></app-page-card>
-    </ng-container>
-    <app-page-calltoaction
-      *ngIf="
-        callToAction &&
-        (isForm$ | async) === false &&
-        (isModal$ | async) === false
-      "
-      [item]="callToAction"
-    ></app-page-calltoaction>
-
-    <ng-container *ngIf="modal && (isModal$ | async)">
-      <app-page-modal [modal]="modal"></app-page-modal>
+      <img src="assets/img/back-arrow.png" alt="navigate back" />
+    </a>
+    <app-content-repeater
+      [items]="content"
+      *ngIf="content"
+    ></app-content-repeater>
+    <ng-container *ngIf="currentCard && (isModal$ | async) === false">
+      <app-cyoa-card
+        [card]="currentCard"
+        [totalCards]="totalCards"
+      ></app-cyoa-card>
     </ng-container>
 
     <div
@@ -44,9 +26,9 @@
     >
       <ng-container *ngIf="(dir$ | async) === 'ltr'">
         <!-- If not first page -->
-        <ng-container *ngIf="(isFirstPage$ | async) === false">
+        <ng-container *ngIf="!isFirstCard()">
           <a
-            (click)="previous()"
+            (click)="showPreviousCard()"
             href="javascript:void(0)"
             class="button button-white far fa-arrow-left"
             ><span class="hide"></span
@@ -54,9 +36,9 @@
         </ng-container>
 
         <!-- If not last page -->
-        <ng-container *ngIf="(isLastPage$ | async) === false">
+        <ng-container *ngIf="!isLastCard()">
           <a
-            (click)="next()"
+            (click)="showNextCard()"
             href="javascript:void(0)"
             class="button far fa-arrow-right"
             ><span class="hide"></span
@@ -66,9 +48,9 @@
 
       <ng-container *ngIf="(dir$ | async) === 'rtl'">
         <!-- If not first page -->
-        <ng-container *ngIf="(isLastPage$ | async) === false">
+        <ng-container *ngIf="!isLastCard()">
           <a
-            (click)="next()"
+            (click)="showNextCard()"
             href="javascript:void(0)"
             class="button far fa-arrow-left"
             ><span class="hide"></span
@@ -76,9 +58,9 @@
         </ng-container>
 
         <!-- If not last page -->
-        <ng-container *ngIf="(isFirstPage$ | async) === false">
+        <ng-container *ngIf="!isFirstCard()">
           <a
-            (click)="previous()"
+            (click)="showPreviousCard()"
             href="javascript:void(0)"
             class="button button-white far fa-arrow-right"
             ><span class="hide"></span
@@ -87,9 +69,7 @@
       </ng-container>
     </div>
 
-    <ng-container
-      *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"
-    >
+    <ng-container *ngIf="(isModal$ | async) === false">
       <footer id="toolFooter">
         <span
           ><a href="https://godtoolsapp.com" target="_blank"
