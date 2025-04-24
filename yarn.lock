@@ -1778,7 +1778,7 @@ __metadata:
   resolution: "@cruglobal/godtools-shared@npm:1.1.2"
   dependencies:
     sax: "npm:1.2.4"
-  checksum: 10c0/93c51ca80a48dc37e7b17ce1508ee4ee787b13faa32c8e02327a4689d841a5d430fff1b6edd50adda4c25e3a47b2f73ddf1f9d0ca7cd46d97563b7debe3f7289
+  checksum: 10c0/5b4870d02119aa2077ebb67066986fa1dbc4af83483dd15bec861035a83293b4c637ea57cf828236e473d4d3af812c7b6a2ba2494b1ac845ef7566800951fda6
   languageName: node
   linkType: hard
 
