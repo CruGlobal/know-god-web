@@ -344,8 +344,7 @@ export const mockFlowItem = (initialSelectedValue): FlowItem => {
     content: [mockImage('filename', 'url_to_path')],
     ...standardTypeValues(),
     isGone: () => initialSelectedValue,
-    watchIsGone: () => null,
-    width: null
+    watchIsGone: () => null
   };
 };
 
