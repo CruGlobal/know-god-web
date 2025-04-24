@@ -716,7 +716,7 @@ export class PageComponent implements OnInit, OnDestroy {
     ];
 
     return cyoaPageTypes.some(
-      (PageType) => this.activePage instanceof PageType
+      (pageType) => this.activePage instanceof pageType
     );
   }
 
