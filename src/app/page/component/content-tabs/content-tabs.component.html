@@ -3,9 +3,7 @@
     <ng-container *ngIf="tab.tab && tab.contents">
       <div class="tabContent">
         <p>{{ tab.tab.label.text }}</p>
-        <app-content-new-repeater
-          [items]="tab.contents"
-        ></app-content-new-repeater>
+        <app-content-repeater [items]="tab.contents"></app-content-repeater>
       </div>
     </ng-container>
   </ng-container>

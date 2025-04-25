@@ -1,4 +1,4 @@
-import { EventId } from '../services/xml-parser-service/xmp-parser.service';
+import { EventId } from '../services/xml-parser-service/xml-parser.service';
 
 export const formatEvents = (events: EventId[]): string => {
   let action = '';
