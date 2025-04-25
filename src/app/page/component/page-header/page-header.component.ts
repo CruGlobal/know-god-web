@@ -4,7 +4,7 @@ import { takeUntil } from 'rxjs/operators';
 import {
   Header,
   parseTextAddBrTags
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
