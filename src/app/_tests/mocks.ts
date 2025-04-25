@@ -21,7 +21,7 @@ import {
   Text,
   TractPageCard,
   Video
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 
 const createResource = (name: string, localName: string): Resource => {
   return {

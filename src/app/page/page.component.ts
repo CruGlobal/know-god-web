@@ -24,7 +24,7 @@ import {
   PullParserFactory,
   TractPage,
   XmlParserData
-} from '../services/xml-parser-service/xmp-parser.service';
+} from '../services/xml-parser-service/xml-parser.service';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
 

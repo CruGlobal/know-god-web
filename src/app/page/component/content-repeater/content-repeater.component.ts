@@ -11,7 +11,7 @@ import {
   ContentItems,
   ContentItemsType,
   ContentParser
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { ContentInputComponent } from '../content-input/content-input.component';
 
 @Component({
