@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { State } from '../../services/xml-parser-service/xmp-parser.service';
+import { State } from '../../services/xml-parser-service/xml-parser.service';
 
 @Injectable({
   providedIn: 'root'

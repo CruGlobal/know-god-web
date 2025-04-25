@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Content } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Content } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 import { ContentRepeaterComponent } from '../content-repeater/content-repeater.component';
 
