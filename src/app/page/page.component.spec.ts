@@ -9,7 +9,7 @@ import {
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { PageComponent } from './page.component';
+import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
 describe('PageComponent', () => {
@@ -151,17 +151,29 @@ describe('PageComponent', () => {
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
-  it('getImage()', async () => {
-    await component.getImage('file-name-2.png');
-    expect(pageService.getAllImages()['file-name-2.png']).toEqual(
-      'https://cru.org/assets/file-name-2.png'
-    );
-  });
+  describe('getResource()', () => {
+    it('should fetch an image', async () => {
+      await component.getResource(getResourceTypeEnum.image, 'file-name-2.png');
+      expect(pageService.getAllImages()['file-name-2.png']).toEqual(
+        'https://cru.org/assets/file-name-2.png'
+      );
+    });
 
-  it('getImage() resource not downloaded', async () => {
-    spyOn(pageService, 'getAllImages');
-    await component.getImage('file-name-3.png');
-    expect(pageService.getAllImages).toHaveBeenCalledTimes(0);
+    it('should fetch an animation', async () => {
+      await component.getResource(
+        getResourceTypeEnum.animation,
+        'file-name-2.png'
+      );
+      expect(pageService.getAllImages()['file-name-2.png']).toEqual(
+        'https://cru.org/assets/file-name-2.png'
+      );
+    });
+
+    it('should not download resource', async () => {
+      spyOn(pageService, 'getAllImages');
+      await component.getResource(getResourceTypeEnum.image, 'file-name-3.png');
+      expect(pageService.getAllImages).toHaveBeenCalledTimes(0);
+    });
   });
 
   it('loadBookPage() - wrong page', async () => {

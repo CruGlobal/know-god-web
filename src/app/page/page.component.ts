@@ -41,6 +41,11 @@ interface LiveShareSubscriptionPayload {
   };
 }
 
+export enum getResourceTypeEnum {
+  animation = 'animation',
+  image = 'image'
+}
+
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
@@ -215,36 +220,11 @@ export class PageComponent implements OnInit, OnDestroy {
     ]);
   }
 
-  private getAnimation(resource): void {
-    if (resource === undefined || resource === '' || resource === null) {
-      return;
-    }
-
-    if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter((row) => {
-        if (
-          row.type.toLowerCase() === 'attachment' &&
-          row.attributes['file-file-name'].toLowerCase() ===
-            resource.toLowerCase()
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      if (attachments.length === 0) {
-        return;
-      }
-
-      const filename = attachments[0].attributes.file;
-      this.pageService.addToAnimationsDict(resource, filename);
-      return filename;
-    }
-  }
-
-  private getImage(resource): string {
-    if (resource === undefined || resource === '' || resource === null) {
+  private getResource(
+    resourceType: getResourceTypeEnum,
+    resourceName: string
+  ): string {
+    if (!resourceName) {
       return '';
     }
 
@@ -253,7 +233,7 @@ export class PageComponent implements OnInit, OnDestroy {
         if (
           row.type.toLowerCase() === 'attachment' &&
           row.attributes['file-file-name'].toLowerCase() ===
-            resource.toLowerCase()
+            resourceName.toLowerCase()
         ) {
           return true;
         } else {
@@ -261,19 +241,22 @@ export class PageComponent implements OnInit, OnDestroy {
         }
       });
 
-      if (attachments.length === 0) {
+      if (!attachments.length) {
         return '';
       }
 
       const filename = attachments[0].attributes.file;
-
-      const link = document.createElement('link');
-      link.href = filename;
-      link.rel = 'prefetch';
-      document.getElementsByTagName('head')[0].appendChild(link);
-
-      this.pageService.addToImagesDict(resource, filename);
-      return filename;
+      if (resourceType === getResourceTypeEnum.animation) {
+        this.pageService.addToAnimationsDict(resourceName, filename);
+        return filename;
+      } else if (resourceType === getResourceTypeEnum.image) {
+        const link = document.createElement('link');
+        link.href = filename;
+        link.rel = 'prefetch';
+        document.getElementsByTagName('head')[0].appendChild(link);
+        this.pageService.addToImagesDict(resourceName, filename);
+        return filename;
+      }
     }
   }
 
@@ -346,15 +329,16 @@ export class PageComponent implements OnInit, OnDestroy {
                 attributes['file-file-name'],
                 attributes.file
               );
-              if (
-                /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                  attributes['file-file-name']
-                )
-              ) {
-                this.getImage(attributes['file-file-name']);
-              } else {
-                this.getAnimation(attributes['file-file-name']);
-              }
+              const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
+                attributes['file-file-name']
+              );
+
+              this.getResource(
+                isImage
+                  ? getResourceTypeEnum.image
+                  : getResourceTypeEnum.animation,
+                attributes['file-file-name']
+              );
             }
           });
 
