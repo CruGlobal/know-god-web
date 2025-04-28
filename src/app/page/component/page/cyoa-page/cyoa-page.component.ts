@@ -19,7 +19,7 @@ import { navigateBackIfPossible, shouldShowBackButton } from '../page-helpers';
 @Component({
   selector: 'app-cyoa-page',
   templateUrl: './cyoa-page.component.html',
-  styleUrls: ['../default-page.css'],
+  styleUrls: ['./cyoa-page.component.css', '../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class CYOAComponent implements OnChanges, OnDestroy {
