@@ -12,14 +12,14 @@ import { takeUntil } from 'rxjs/operators';
 import {
   CYOAPageCard,
   CyoaCardCollectionPage
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../../service/page-service.service';
 import { navigateBackIfPossible, shouldShowBackButton } from '../page-helpers';
 
 @Component({
   selector: 'app-cyoa-card-collection-page',
   templateUrl: './cyoa-card-collection-page.component.html',
-  styleUrls: ['../default-page.css'],
+  styleUrls: ['../default-page.css', '../cyoa-page/cyoa-page.component.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
