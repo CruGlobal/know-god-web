@@ -4,7 +4,7 @@ import { PageService } from 'src/app/page/service/page-service.service';
 import {
   CYOAPageCard,
   Content
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 
 @Component({
   selector: 'app-cyoa-card',
