@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  HostBinding,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Text,
@@ -23,6 +29,8 @@ export class ContentTextComponent implements OnChanges {
   styles: any;
   startImgResource: string | null;
   startImgWidth: string | null;
+
+  @HostBinding('style.justify-content') justifyContent: string;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
@@ -85,6 +93,11 @@ export class ContentTextComponent implements OnChanges {
     }
     this.startImgWidth = this.item.startImageSize
       ? this.item.startImageSize + 'px'
+      : null;
+
+    // If there is a start image, apply the alignment to the host justify content
+    this.justifyContent = this.item.startImage
+      ? this.text.textAlign.name
       : null;
 
     this.textColor = this.text?.textColor || null;
