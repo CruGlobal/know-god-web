@@ -12,3 +12,8 @@ p.textContent {
 :host:not(:first-child) > p.textContent {
   margin-top: 12px;
 }
+
+:host > p.hasStartImage {
+  margin: 0px;
+  width: auto;
+}
