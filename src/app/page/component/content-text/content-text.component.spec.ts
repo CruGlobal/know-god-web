@@ -40,12 +40,7 @@ describe('ContentInputComponent', () => {
     } as any;
 
     component.ngOnChanges({
-      item: {
-        currentValue: component.item,
-        previousValue: null,
-        firstChange: true,
-        isFirstChange: () => true
-      }
+      item: new SimpleChange(null, component.item, true)
     });
 
     expect(component.justifyContent).toBe('center');
