@@ -1,19 +1,15 @@
 :host {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
+  display: block;
 }
 
 p.textContent {
+  display: flex;
   margin-top: 24px;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 :host:not(:first-child) > p.textContent {
   margin-top: 12px;
-}
-
-:host > p.hasStartImage {
-  margin: 0px;
-  width: auto;
 }

@@ -31,18 +31,4 @@ describe('ContentInputComponent', () => {
     expect(component.text).toEqual(text);
     expect(component.textValue).toEqual('text cru text <br/>dps.');
   });
-
-  it('should set justifyContent to textAlign.name when startImage is present', () => {
-    component.item = {
-      text: 'Hello world',
-      textAlign: { name: 'center' },
-      startImage: { name: 'example.png' }
-    } as any;
-
-    component.ngOnChanges({
-      item: new SimpleChange(null, component.item, true)
-    });
-
-    expect(component.justifyContent).toBe('center');
-  });
 });
