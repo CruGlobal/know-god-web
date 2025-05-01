@@ -8,6 +8,11 @@
     >
       <img src="assets/img/back-arrow.png" alt="navigate back" />
     </a>
+
+    <ng-container *ngIf="headerContent">
+      <app-content-repeater [items]="headerContent"></app-content-repeater>
+    </ng-container>
+
     <app-content-repeater
       [items]="content"
       *ngIf="content"

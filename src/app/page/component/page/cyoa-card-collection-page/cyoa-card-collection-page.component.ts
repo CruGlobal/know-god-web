@@ -11,6 +11,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   CYOAPageCard,
+  CardCollectionHeader,
   CyoaCardCollectionPage
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../../service/page-service.service';
@@ -30,6 +31,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
 
   readonly _unsubscribeAll: Subject<void>;
   private _page: CyoaCardCollectionPage;
+  headerContent: CardCollectionHeader['content'] | null;
   cards: CYOAPageCard[];
   ready: boolean;
   dir$: Observable<string>;
@@ -70,6 +72,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
               this.ready = false;
               this._page = this.page;
               this.cards = [];
+              this.headerContent = null;
               this.init();
             }
             break;
@@ -132,6 +135,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.cards = this._page.cards;
     this.totalCards = this.cards.length;
     this.showBackButton = shouldShowBackButton(this._page);
+    this.headerContent = this._page.header?.content || null;
     this.onCardPositionChange();
 
     this.ready = true;

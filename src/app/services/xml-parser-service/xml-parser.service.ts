@@ -35,6 +35,8 @@ export type CYOAPage =
   | CyoaPageCollectionPage;
 export type CYOAPageCard =
   org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card;
+export type CardCollectionHeader =
+  org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Header;
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
 export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph;
 export type Resource = org.cru.godtools.shared.tool.parser.model.Resource;
