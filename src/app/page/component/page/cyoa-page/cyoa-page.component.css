@@ -1,4 +1,8 @@
 .backwards-navigation {
   padding: 10px 20px;
   display: inline-block;
+  position: absolute;
+}
+#toolContent {
+  position: relative;
 }
