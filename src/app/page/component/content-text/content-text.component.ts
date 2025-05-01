@@ -62,7 +62,6 @@ export class ContentTextComponent implements OnChanges {
       )
         ? 'underline'
         : '',
-      'text-align': this.text.textAlign.name || '',
       'justify-content': this.text.textAlign.name || '',
       'font-size': this.text.textScale ? `${this.text.textScale}rem` : '',
       'line-height': this.text.textScale
