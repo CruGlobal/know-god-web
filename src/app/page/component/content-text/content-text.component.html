@@ -1,18 +1,17 @@
 <ng-container *ngIf="ready">
   <!-- Add back whe text is formatted [ngStyle]="{ color: textColor }" -->
-  <img
-    *ngIf="startImgResource"
-    [src]="startImgResource"
-    [ngStyle]="{ width: startImgWidth }"
-  />
   <p
     class="mw568 textContent"
     [ngClass]="{
-      firstContent: isFirstPage$ | async,
-      hasStartImage: startImgResource
+      firstContent: isFirstPage$ | async
     }"
     [ngStyle]="styles"
-    [innerHTML]="textValue"
     dir="{{ dir$ | async }}"
-  ></p>
+  >
+    <img
+      *ngIf="startImgResource"
+      [src]="startImgResource"
+      [ngStyle]="{ width: startImgWidth }"
+    /><span [innerHTML]="textValue"></span>
+  </p>
 </ng-container>
