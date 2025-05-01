@@ -23,16 +23,16 @@
       <a
         href="javascript:void(0)"
         class="bs-card"
-        (click)="navigateToPage(banner.abbreviation)"
-        *ngFor="let banner of Images; let i = index; let isFirstRow = last"
+        (click)="navigateToPage(resource)"
+        *ngFor="let resource of resources; let i = index; let isFirstRow = last"
       >
-        <img class="bs-card-img-top" [src]="banner.ImgUrl" />
+        <img class="bs-card-img-top" [src]="resource.imgUrl" />
         <div class="bs-card-body">
           <h5 class="bs-card-title" dir="{{ dispLanguageDirection }}">
-            {{ banner.resource }}
+            {{ resource.resourceName }}
           </h5>
           <p class="bs-card-text" dir="{{ dispLanguageDirection }}">
-            {{ banner.tagline }}
+            {{ resource.tagline }}
           </p>
         </div>
       </a>
