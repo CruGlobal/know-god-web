@@ -48,7 +48,7 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 // :toolType - The tool type 'tool' or 'lesson'
 // :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
 // :bookId - The book ID ('thefour', 'kgp', etc.)
-// :page - The page number
+// :page - The page number or name
 // :cardPosition - The card position in the card collection
 //============
 
