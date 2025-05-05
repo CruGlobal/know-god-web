@@ -1,65 +1,65 @@
 <ng-container *ngIf="ready && content && content.length">
   <ng-container *ngFor="let item of content; let order = index">
-    <app-content-new-accordion
+    <app-content-accordion
       *ngIf="item.type === 'accordion'"
       [item]="item.content"
-    ></app-content-new-accordion>
-    <app-content-new-animation
+    ></app-content-accordion>
+    <app-content-animation
       *ngIf="item.type === 'animation'"
       [item]="item.content"
-    ></app-content-new-animation>
-    <app-content-new-button
+    ></app-content-animation>
+    <app-content-button
       *ngIf="item.type === 'button'"
       [item]="item.content"
-    ></app-content-new-button>
-    <app-content-new-form
+    ></app-content-button>
+    <app-content-form
       *ngIf="item.type === 'form'"
       [item]="item.content"
-    ></app-content-new-form>
-    <app-content-new-image
+    ></app-content-form>
+    <app-content-image
       *ngIf="item.type === 'image'"
       [item]="item.content"
-    ></app-content-new-image>
-    <app-content-new-input
+    ></app-content-image>
+    <app-content-input
       *ngIf="item.type === 'input'"
       [item]="item.content"
-    ></app-content-new-input>
-    <app-content-new-link
+    ></app-content-input>
+    <app-content-link
       *ngIf="item.type === 'link'"
       [item]="item.content"
-    ></app-content-new-link>
-    <app-content-new-paragraph
+    ></app-content-link>
+    <app-content-paragraph
       *ngIf="item.type === 'paragraph'"
       [item]="item.content"
-    ></app-content-new-paragraph>
-    <app-content-new-tabs
+    ></app-content-paragraph>
+    <app-content-tabs
       *ngIf="item.type === 'tabs'"
       [item]="item.content"
-    ></app-content-new-tabs>
-    <app-content-new-text
+    ></app-content-tabs>
+    <app-content-text
       *ngIf="item.type === 'text'"
       [item]="item.content"
-    ></app-content-new-text>
-    <app-content-new-video
+    ></app-content-text>
+    <app-content-video
       *ngIf="item.type === 'video'"
       [item]="item.content"
-    ></app-content-new-video>
-    <app-content-new-spacer
+    ></app-content-video>
+    <app-content-spacer
       *ngIf="item.type === 'spacer'"
       [item]="item.content"
-    ></app-content-new-spacer>
-    <app-content-new-multiselect
+    ></app-content-spacer>
+    <app-content-multiselect
       *ngIf="item.type === 'multiselect'"
       [item]="item.content"
-    ></app-content-new-multiselect>
-    <app-content-new-flow
+    ></app-content-multiselect>
+    <app-content-flow
       *ngIf="item.type === 'flow'"
       [item]="item.content"
-    ></app-content-new-flow>
-    <app-content-new-card
+    ></app-content-flow>
+    <app-content-card
       *ngIf="item.type === 'card'"
       [item]="item.content"
-    ></app-content-new-card>
+    ></app-content-card>
     <app-training-tip
       *ngIf="item.type === 'tip'"
       [item]="item.content"
