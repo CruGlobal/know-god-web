@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { org } from '@cruglobal/godtools-shared';
 import {
   createEventId,
   mockCyoaCard,
@@ -365,7 +366,7 @@ describe('PageComponent', () => {
         bookId,
         toolType,
         resourceType,
-        pageId: 1
+        pageId: '1'
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
       component.awaitPageEvent();
@@ -392,8 +393,8 @@ describe('PageComponent', () => {
     });
 
     it('should navigate to the next page (1)', () => {
-      pageService.addToNavigationStack(1);
-      pageService.addToNavigationStack(5);
+      pageService.addToNavigationStack('1');
+      pageService.addToNavigationStack('5');
       pageService.formAction('dismiss-event');
 
       expect(router.navigate).toHaveBeenCalledWith([
@@ -401,7 +402,7 @@ describe('PageComponent', () => {
         toolType,
         resourceType,
         bookId,
-        1
+        '1'
       ]);
 
       expect(onTractNextPageSpy).toHaveBeenCalled();
@@ -438,6 +439,56 @@ describe('PageComponent', () => {
           8
         ]);
       });
+    });
+  });
+
+  describe('getPageIdForRouting() — CYOA handling', () => {
+    it('returns page.id if activePage is CYOA and page.position is 0 and route pageId is "0"', () => {
+      component._pageParams.pageId = '0';
+
+      // Simulate a CYOA activePage instance
+      const cyoaInstance = Object.create(
+        org.cru.godtools.shared.tool.parser.model.page.ContentPage.prototype
+      );
+      component.activePage = cyoaInstance;
+
+      const result = component.getPageIdForRouting({
+        id: 'cyoa-real-id',
+        position: 0
+      });
+
+      expect(result).toBe('cyoa-real-id');
+    });
+
+    it('returns page.position if activePage is NOT CYOA even if pageId is "0"', () => {
+      component._pageParams.pageId = '0';
+
+      // Not a CYOA instance
+      component.activePage = {};
+
+      const result = component.getPageIdForRouting({
+        id: 'some-id',
+        position: 0
+      });
+
+      expect(result).toBe(0);
+    });
+  });
+
+  describe('cleanPageId()', () => {
+    it('should return number if pageId is numeric string', () => {
+      component._pageParams.pageId = '3';
+      expect(component['cleanPageId']()).toBe(3);
+    });
+
+    it('should return string if pageId is non-numeric', () => {
+      component._pageParams.pageId = 'abc';
+      expect(component['cleanPageId']()).toBe('abc');
+    });
+
+    it('should return number if pageId is already a number', () => {
+      component._pageParams.pageId = 5;
+      expect(component['cleanPageId']()).toBe(5);
     });
   });
 });

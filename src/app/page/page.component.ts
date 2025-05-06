@@ -704,6 +704,9 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private getPageIdForRouting(page: Page): string | number {
+    if (!page) {
+      return 0;
+    }
     return this.isCYOAPage() ? page.id : page.position;
   }
 

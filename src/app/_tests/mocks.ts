@@ -62,6 +62,7 @@ const standardTypeValues = () => {
     _events: null,
     _getAnalyticsEvents: null,
     getAnalyticsEvents: null,
+    controlColor: null,
     equals: () => null,
     hashCode: () => null
   };
