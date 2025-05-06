@@ -270,6 +270,26 @@ export class PageComponent implements OnInit, OnDestroy {
 
     if (showPage) {
       this.showPage(page);
+
+      // If the pageId is not set in the URL (or set to 0), we need to set
+      // it using getPageIdForRouting in case it's a CYOA page and should use
+      // the page.id instead of the page.position
+      if (pageId === undefined || pageId === '0' || Number(pageId) === 0) {
+        const pageIdForUrl = this.getPageIdForRouting(page);
+
+        // Only replace URL if it's not already using the real page.id
+        if (String(pageIdForUrl) !== String(pageId)) {
+          const urlTree = this.router.createUrlTree([
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.resourceType,
+            this._pageParams.bookId,
+            pageIdForUrl
+          ]);
+
+          this.router.navigateByUrl(urlTree, { replaceUrl: true });
+        }
+      }
     }
   }
 

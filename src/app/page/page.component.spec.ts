@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   createEventId,
+  mockCyoaCard,
   mockPageComponent,
   mockTractPage
 } from '../_tests/mocks';
@@ -42,6 +43,7 @@ describe('PageComponent', () => {
     'modalTitle',
     0
   );
+  const cyoaPage = mockCyoaCard(0);
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
@@ -186,6 +188,34 @@ describe('PageComponent', () => {
     const showPageSpy = spyOn(component, 'showPage');
     component.loadBookPage(tractPageOne);
     expect(showPageSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('loadBookPage() - replaces URL if CYOA pageId is "0"', () => {
+    const navigateByUrlSpy = spyOn(router, 'navigateByUrl');
+    const realPageId = 'page-id-123';
+
+    component._pageParams.pageId = '0';
+
+    const pageWithRealId = {
+      ...cyoaPage,
+      id: realPageId,
+      position: 0
+    };
+
+    spyOn(component, 'getPageIdForRouting').and.returnValue(realPageId);
+
+    component.loadBookPage(pageWithRealId);
+
+    expect(navigateByUrlSpy).toHaveBeenCalledWith(
+      router.createUrlTree([
+        langId,
+        toolType,
+        resourceType,
+        bookId,
+        realPageId
+      ]),
+      { replaceUrl: true }
+    );
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {
