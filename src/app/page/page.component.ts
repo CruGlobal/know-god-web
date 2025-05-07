@@ -233,33 +233,30 @@ export class PageComponent implements OnInit, OnDestroy {
     }
 
     if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter((row) => {
-        if (
+      const attachments = this._pageBookIndex.included.filter(
+        (row) =>
           row.type.toLowerCase() === 'attachment' &&
           row.attributes['file-file-name'].toLowerCase() ===
             resourceName.toLowerCase()
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+      );
 
       if (!attachments.length) {
         return '';
       }
 
-      const filename = attachments[0].attributes.file;
+      console.log('attachments', JSON.stringify(attachments));
+
+      const fileUrl = attachments[0].attributes.file;
       if (resourceType === getResourceTypeEnum.animation) {
-        this.pageService.addToAnimationsDict(resourceName, filename);
-        return filename;
+        this.pageService.addToAnimationsDict(resourceName, fileUrl);
+        return fileUrl;
       } else if (resourceType === getResourceTypeEnum.image) {
         const link = document.createElement('link');
-        link.href = filename;
+        link.href = fileUrl;
         link.rel = 'prefetch';
         document.getElementsByTagName('head')[0].appendChild(link);
-        this.pageService.addToImagesDict(resourceName, filename);
-        return filename;
+        this.pageService.addToImagesDict(resourceName, fileUrl);
+        return fileUrl;
       }
     }
   }

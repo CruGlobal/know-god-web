@@ -180,21 +180,21 @@ describe('PageComponent', () => {
   });
 
   describe('getResource()', () => {
+    const file2Name = 'file-name-2.png';
+    const file2Url = 'https://cru.org/assets/file-name-2.png';
     it('should fetch an image', async () => {
-      await component.getResource(getResourceTypeEnum.image, 'file-name-2.png');
-      expect(pageService.getAllImages()['file-name-2.png']).toEqual(
-        'https://cru.org/assets/file-name-2.png'
-      );
+      await component.getResource(getResourceTypeEnum.image, file2Name);
+      expect(pageService.getAllImages()[file2Name]).toEqual(file2Url);
     });
 
     it('should fetch an animation', async () => {
-      await component.getResource(
+      const addToAnimationsDictSpy = spyOn(pageService, 'addToAnimationsDict');
+      const fileUrl = await component.getResource(
         getResourceTypeEnum.animation,
-        'file-name-2.png'
+        file2Name
       );
-      expect(pageService.getAllImages()['file-name-2.png']).toEqual(
-        'https://cru.org/assets/file-name-2.png'
-      );
+      expect(addToAnimationsDictSpy).toHaveBeenCalledWith(file2Name, file2Url);
+      expect(fileUrl).toEqual(file2Url);
     });
 
     it('should not download resource', async () => {
