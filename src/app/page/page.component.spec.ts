@@ -5,7 +5,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { org } from '@cruglobal/godtools-shared';
 import {
   createEventId,
-  mockCyoaCard,
   mockPageComponent,
   mockTractPage
 } from '../_tests/mocks';
@@ -44,7 +43,9 @@ describe('PageComponent', () => {
     'modalTitle',
     0
   );
-  const cyoaPage = mockCyoaCard(0);
+  const cyoaPage = Object.create(
+    org.cru.godtools.shared.tool.parser.model.page.ContentPage.prototype
+  );
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
@@ -114,6 +115,17 @@ describe('PageComponent', () => {
     component.onTractPreviousPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
+  it('should not navigate onTractPreviousPage() on CYOA page', () => {
+    component._pageParams = {
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 'end'
+    };
+    component?.onTractPreviousPage();
+    expect(router.navigate).toHaveBeenCalledTimes(0);
+  });
   it('onTractPreviousPage() on page > 0', () => {
     component._pageParams = {
       langId,
@@ -151,6 +163,19 @@ describe('PageComponent', () => {
       pageId: 6
     };
     component.onTractNextPage();
+    expect(router.navigate).toHaveBeenCalledTimes(0);
+  });
+  it('should not navigate onTractNextPage() on CYOA page', () => {
+    component.activePage = cyoaPage;
+
+    component._pageParams = {
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 0
+    };
+    component?.onTractNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
@@ -445,12 +470,7 @@ describe('PageComponent', () => {
   describe('getPageIdForRouting() — CYOA handling', () => {
     it('returns page.id if activePage is CYOA and page.position is 0 and route pageId is "0"', () => {
       component._pageParams.pageId = '0';
-
-      // Simulate a CYOA activePage instance
-      const cyoaInstance = Object.create(
-        org.cru.godtools.shared.tool.parser.model.page.ContentPage.prototype
-      );
-      component.activePage = cyoaInstance;
+      component.activePage = cyoaPage;
 
       const result = component.getPageIdForRouting({
         id: 'cyoa-real-id',

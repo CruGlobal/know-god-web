@@ -106,6 +106,9 @@ export class PageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.isCYOAPage()) {
+      return;
+    }
     if (event.key === 'ArrowLeft') {
       this.onTractPreviousPage();
     } else if (event.key === 'ArrowRight') {
@@ -183,7 +186,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private onTractPreviousPage(): void {
     const pageId = this.cleanPageId();
 
-    if (typeof pageId === 'number' && pageId > 0) {
+    if (!this.isCYOAPage() && typeof pageId === 'number' && pageId > 0) {
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.toolType,
@@ -197,6 +200,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private onTractNextPage(): void {
     const pageId = this.cleanPageId();
     if (
+      !this.isCYOAPage() &&
       typeof pageId === 'number' &&
       pageId + 1 < this._pageBookSubPagesManifest.length
     ) {
