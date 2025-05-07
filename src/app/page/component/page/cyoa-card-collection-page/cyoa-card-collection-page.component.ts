@@ -1,5 +1,6 @@
 import {
   Component,
+  HostListener,
   Input,
   OnChanges,
   OnDestroy,
@@ -93,6 +94,15 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     if (safeIndex !== this.currentCardIndex) {
       this.currentCardIndex = safeIndex;
       this.setCardUrl(safeIndex);
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    if (event.key === 'ArrowLeft' && !this.isFirstCard()) {
+      this.showPreviousCard();
+    } else if (event.key === 'ArrowRight' && !this.isLastCard()) {
+      this.showNextCard();
     }
   }
 
