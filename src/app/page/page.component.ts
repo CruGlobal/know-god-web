@@ -244,8 +244,6 @@ export class PageComponent implements OnInit, OnDestroy {
         return '';
       }
 
-      console.log('attachments', JSON.stringify(attachments));
-
       const fileUrl = attachments[0].attributes.file;
       if (resourceType === getResourceTypeEnum.animation) {
         this.pageService.addToAnimationsDict(resourceName, fileUrl);
