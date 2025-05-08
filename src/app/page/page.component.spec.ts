@@ -204,44 +204,72 @@ describe('PageComponent', () => {
     });
   });
 
-  it('loadBookPage() - wrong page', async () => {
-    component.loadBookPage(tractPage);
-    const showPageSpy = spyOn(component, 'showPage');
-    expect(showPageSpy).toHaveBeenCalledTimes(0);
-  });
+  describe('loadBookPage()', () => {
+    it('does not call showPage', async () => {
+      component.loadBookPage(tractPage);
+      const showPageSpy = spyOn(component, 'showPage');
+      expect(showPageSpy).toHaveBeenCalledTimes(0);
+    });
 
-  it('loadBookPage() - correct page', async () => {
-    const showPageSpy = spyOn(component, 'showPage');
-    component.loadBookPage(tractPageOne);
-    expect(showPageSpy).toHaveBeenCalledTimes(1);
-  });
+    it('calls showPage', async () => {
+      const showPageSpy = spyOn(component, 'showPage');
+      component.loadBookPage(tractPageOne);
+      expect(showPageSpy).toHaveBeenCalledTimes(1);
+    });
 
-  it('loadBookPage() - replaces URL if CYOA pageId is "0"', () => {
-    const navigateByUrlSpy = spyOn(router, 'navigateByUrl');
-    const realPageId = 'page-id-123';
+    interface TestProps {
+      testName: string;
+      pageId: string;
+      initialPageId: string | null;
+      page: any;
+    }
+    const tests: TestProps[] = [
+      {
+        testName: 'pageId,',
+        pageId: '0',
+        initialPageId: null,
+        page: tractPage
+      },
+      {
+        testName: 'pageId',
+        pageId: 'intro',
+        initialPageId: null,
+        page: tractPage
+      },
+      {
+        testName: 'pageId',
+        pageId: 'page-id-123',
+        initialPageId: '0',
+        page: cyoaPage
+      }
+    ];
 
-    component._pageParams.pageId = '0';
+    tests.forEach(({ testName, pageId, initialPageId, page }) => {
+      it(testName, async () => {
+        const navigateByUrlSpy = spyOn(router, 'navigateByUrl');
+        const pageWithRealId = {
+          ...page,
+          id: pageId,
+          position: 0
+        };
+        component._pageParams.pageId = initialPageId;
 
-    const pageWithRealId = {
-      ...cyoaPage,
-      id: realPageId,
-      position: 0
-    };
+        spyOn(component, 'getPageIdForRouting').and.returnValue(pageId);
 
-    spyOn(component, 'getPageIdForRouting').and.returnValue(realPageId);
+        component.loadBookPage(pageWithRealId);
 
-    component.loadBookPage(pageWithRealId);
-
-    expect(navigateByUrlSpy).toHaveBeenCalledWith(
-      router.createUrlTree([
-        langId,
-        toolType,
-        resourceType,
-        bookId,
-        realPageId
-      ]),
-      { replaceUrl: true }
-    );
+        expect(navigateByUrlSpy).toHaveBeenCalledWith(
+          router.createUrlTree([
+            langId,
+            toolType,
+            resourceType,
+            bookId,
+            pageId
+          ]),
+          { replaceUrl: true }
+        );
+      });
+    });
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {
