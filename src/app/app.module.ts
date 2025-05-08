@@ -59,15 +59,14 @@ const appRoutes: Routes = [
     redirectTo: ':langId/tool/v1/:bookId/:page',
     pathMatch: 'full'
   },
-  {
-    path: ':langId/:toolType/:resourceType/:bookId',
-    redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
-    pathMatch: 'full'
-  },
   { path: ':langId', component: DashboardComponent },
   { path: '', component: DashboardComponent },
   {
     path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId',
     component: PageComponent
   },
   {
