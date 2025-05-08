@@ -41,6 +41,11 @@ interface LiveShareSubscriptionPayload {
   };
 }
 
+export enum getResourceTypeEnum {
+  animation = 'animation',
+  image = 'image'
+}
+
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
@@ -101,6 +106,9 @@ export class PageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.isCYOAPage()) {
+      return;
+    }
     if (event.key === 'ArrowLeft') {
       this.onTractPreviousPage();
     } else if (event.key === 'ArrowRight') {
@@ -156,21 +164,19 @@ export class PageComponent implements OnInit, OnDestroy {
       this._pageParams.toolType,
       this._pageParams.resourceType,
       this._pageParams.bookId,
-      this._pageParams.pageId,
+      this.getPageIdForRouting(this.activePage),
       card
     ]);
   };
 
   selectLanguage(lang): void {
-    const tPageOrder = this._pageParams.pageId || 0;
     this.router.navigate([
       lang.attributes.code,
       this._pageParams.toolType,
       this._pageParams.resourceType,
       this._pageParams.bookId,
-      tPageOrder
+      this.getPageIdForRouting(this.activePage)
     ]);
-    return;
   }
 
   onToggleLanguageSelect(): void {
@@ -178,108 +184,111 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private onTractPreviousPage(): void {
-    if (this._pageParams.pageId > 0) {
+    const pageId = this.cleanPageId();
+
+    if (!this.isCYOAPage() && typeof pageId === 'number' && pageId > 0) {
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.toolType,
         this._pageParams.resourceType,
         this._pageParams.bookId,
-        this._pageParams.pageId - 1
+        pageId - 1
       ]);
     }
   }
 
   private onTractNextPage(): void {
-    if (this._pageParams.pageId + 1 < this._pageBookSubPagesManifest.length) {
+    const pageId = this.cleanPageId();
+    if (
+      !this.isCYOAPage() &&
+      typeof pageId === 'number' &&
+      pageId + 1 < this._pageBookSubPagesManifest.length
+    ) {
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.toolType,
         this._pageParams.resourceType,
         this._pageParams.bookId,
-        this._pageParams.pageId + 1
+        pageId + 1
       ]);
     }
   }
-  private onNavigateToPage(pagePosition: number): void {
-    this.pageService.addToNavigationStack(pagePosition);
+  private onNavigateToPage(page: number | string): void {
+    this.pageService.addToNavigationStack(String(page));
     this.router.navigate([
       this._pageParams.langId,
       this._pageParams.toolType,
       this._pageParams.resourceType,
       this._pageParams.bookId,
-      pagePosition
+      page
     ]);
   }
 
-  private getAnimation(resource): void {
-    if (resource === undefined || resource === '' || resource === null) {
-      return;
-    }
-
-    if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter((row) => {
-        if (
-          row.type.toLowerCase() === 'attachment' &&
-          row.attributes['file-file-name'].toLowerCase() ===
-            resource.toLowerCase()
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      if (attachments.length === 0) {
-        return;
-      }
-
-      const filename = attachments[0].attributes.file;
-      this.pageService.addToAnimationsDict(resource, filename);
-      return filename;
-    }
-  }
-
-  private getImage(resource): string {
-    if (resource === undefined || resource === '' || resource === null) {
+  private getResource(
+    resourceType: getResourceTypeEnum,
+    resourceName: string
+  ): string {
+    if (!resourceName) {
       return '';
     }
 
     if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter((row) => {
-        if (
+      const attachments = this._pageBookIndex.included.filter(
+        (row) =>
           row.type.toLowerCase() === 'attachment' &&
           row.attributes['file-file-name'].toLowerCase() ===
-            resource.toLowerCase()
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+            resourceName.toLowerCase()
+      );
 
-      if (attachments.length === 0) {
+      if (!attachments.length) {
         return '';
       }
 
-      const filename = attachments[0].attributes.file;
-
-      const link = document.createElement('link');
-      link.href = filename;
-      link.rel = 'prefetch';
-      document.getElementsByTagName('head')[0].appendChild(link);
-
-      this.pageService.addToImagesDict(resource, filename);
-      return filename;
+      const fileUrl = attachments[0].attributes.file;
+      if (resourceType === getResourceTypeEnum.animation) {
+        this.pageService.addToAnimationsDict(resourceName, fileUrl);
+        return fileUrl;
+      } else if (resourceType === getResourceTypeEnum.image) {
+        const link = document.createElement('link');
+        link.href = fileUrl;
+        link.rel = 'prefetch';
+        document.getElementsByTagName('head')[0].appendChild(link);
+        this.pageService.addToImagesDict(resourceName, fileUrl);
+        return fileUrl;
+      }
     }
   }
 
   private loadBookPage(page: TractPage): void {
     const pageId = this._pageParams.pageId;
-    const showPage: boolean = pageId
-      ? page.position === pageId
-      : page.position === 0;
+
+    const showPage: boolean =
+      pageId !== undefined
+        ? page.position === Number(pageId) || page.id === pageId
+        : page.position === 0;
+
     if (showPage) {
       this.showPage(page);
+
+      // If the pageId is not set in the URL (or set to 0), we need to set
+      // it using getPageIdForRouting in case it's a CYOA page and should use
+      // the page.id instead of the page.position
+      if (!pageId || pageId === '0') {
+        const pageIdForUrl = this.getPageIdForRouting(page);
+
+        // Only replace URL if it's not already using the real page.id
+        if (String(pageIdForUrl) !== String(pageId)) {
+          const urlTree = this.router.createUrlTree([
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.resourceType,
+            this._pageParams.bookId,
+            pageIdForUrl
+          ]);
+
+          this.router.navigateByUrl(urlTree, { replaceUrl: true });
+        }
+      }
     }
   }
 
@@ -339,15 +348,16 @@ export class PageComponent implements OnInit, OnDestroy {
                 attributes['file-file-name'],
                 attributes.file
               );
-              if (
-                /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                  attributes['file-file-name']
-                )
-              ) {
-                this.getImage(attributes['file-file-name']);
-              } else {
-                this.getAnimation(attributes['file-file-name']);
-              }
+              const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
+                attributes['file-file-name']
+              );
+
+              this.getResource(
+                isImage
+                  ? getResourceTypeEnum.image
+                  : getResourceTypeEnum.animation,
+                attributes['file-file-name']
+              );
             }
           });
 
@@ -563,26 +573,34 @@ export class PageComponent implements OnInit, OnDestroy {
         } else {
           if (this._pageBookManifestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
-              const index = this._pageBookSubPages.findIndex(
-                (sPage) => sPage.position === this._pageParams.pageId
-              );
-              if (index >= 0) {
-                const tTract = this._pageBookSubPages[index] as TractPage;
-                this.showPage(tTract);
+              const pageId = this._pageParams.pageId;
+              const matchedPage = this._pageBookSubPages.find((page) => {
+                if (this.isCYOAPage()) {
+                  return page.id === pageId;
+                } else {
+                  return page.position === Number(pageId);
+                }
+              });
+
+              if (matchedPage) {
+                this.showPage(matchedPage as TractPage);
                 return;
               }
             }
-
+            // If we can't find the page in the sub pages
+            // We try to find the page in the manifest
+            const fallbackId = this.cleanPageId();
             if (
-              this._pageBookSubPagesManifest?.length > this._pageParams.pageId
+              typeof fallbackId === 'number' &&
+              this._pageBookSubPagesManifest?.length > fallbackId
             ) {
-              const tSubPageManifest = this._pageBookManifest.pages[
-                this._pageParams.pageId
+              const fallbackPage = this._pageBookManifest.pages[
+                fallbackId
               ] as TractPage;
-              if (tSubPageManifest) {
+              if (fallbackPage) {
                 this.pagesLoaded = false;
                 this.loaderService.display(true);
-                this.loadBookPage(tSubPageManifest);
+                this.loadBookPage(fallbackPage);
                 return;
               }
             }
@@ -604,13 +622,13 @@ export class PageComponent implements OnInit, OnDestroy {
           langId !== params['langId'] || bookId !== params['bookId'];
 
         if (!bookChanged) {
-          this._pageParams.pageId = Number(params['page']);
+          this._pageParams.pageId = params['page'];
         } else {
           this._pageParams.langId = params['langId'];
           this._pageParams.resourceType = params['resourceType'];
           this._pageParams.toolType = params['toolType'];
           this._pageParams.bookId = params['bookId'];
-          this._pageParams.pageId = Number(params['page']);
+          this._pageParams.pageId = params['page'];
           this.clearData();
           if (this._allLanguagesLoaded) {
             this.setSelectedLanguage();
@@ -685,6 +703,30 @@ export class PageComponent implements OnInit, OnDestroy {
       });
   }
 
+  private getPageIdForRouting(page: Page): string | number {
+    if (!page) {
+      return 0;
+    }
+    return this.isCYOAPage() ? page.id : page.position;
+  }
+
+  private cleanPageId(): number | string {
+    const id = Number(this._pageParams.pageId);
+    return Number.isInteger(id) ? id : this._pageParams.pageId;
+  }
+
+  private isCYOAPage(): boolean {
+    const cyoaPageTypes = [
+      org.cru.godtools.shared.tool.parser.model.page.ContentPage,
+      org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage,
+      org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage
+    ];
+
+    return cyoaPageTypes.some(
+      (pageType) => this.activePage instanceof pageType
+    );
+  }
+
   private navigateToPageOnEvent(event: string): void {
     let isListener = false;
     let isDismissListener = false;
@@ -704,19 +746,25 @@ export class PageComponent implements OnInit, OnDestroy {
       }
     });
 
+    if (!pageToNavigateTo) {
+      return;
+    }
+
+    const pageIdForRouting = this.getPageIdForRouting(pageToNavigateTo);
+
     if (isListener) {
-      this.pageService.addToNavigationStack(pageToNavigateTo.position);
+      this.pageService.addToNavigationStack(String(pageIdForRouting));
       this.router.navigate([
         this._pageParams.langId,
         this._pageParams.toolType,
         this._pageParams.resourceType,
         this._pageParams.bookId,
-        pageToNavigateTo.position
+        pageIdForRouting
       ]);
     }
 
     if (isDismissListener) {
-      this.pageService.removeFromNavigationStack(pageToNavigateTo.position);
+      this.pageService.removeFromNavigationStack(String(pageIdForRouting));
       this.pageService.getNavigationStack().subscribe((stack) => {
         const previousPage = stack[stack.length - 1];
         this.router.navigate([

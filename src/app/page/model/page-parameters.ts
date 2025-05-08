@@ -3,5 +3,5 @@ export interface IPageParameters {
   toolType: string;
   resourceType: string;
   bookId: string;
-  pageId?: number;
+  pageId?: number | string;
 }
