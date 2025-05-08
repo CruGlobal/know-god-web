@@ -273,7 +273,7 @@ export class PageComponent implements OnInit, OnDestroy {
       // If the pageId is not set in the URL (or set to 0), we need to set
       // it using getPageIdForRouting in case it's a CYOA page and should use
       // the page.id instead of the page.position
-      if (pageId === undefined || pageId === '0' || Number(pageId) === 0) {
+      if (!pageId || pageId === '0') {
         const pageIdForUrl = this.getPageIdForRouting(page);
 
         // Only replace URL if it's not already using the real page.id
@@ -587,7 +587,8 @@ export class PageComponent implements OnInit, OnDestroy {
                 return;
               }
             }
-
+            // If we can't find the page in the sub pages
+            // We try to find the page in the manifest
             const fallbackId = this.cleanPageId();
             if (
               typeof fallbackId === 'number' &&
@@ -745,7 +746,9 @@ export class PageComponent implements OnInit, OnDestroy {
       }
     });
 
-    if (!pageToNavigateTo) return;
+    if (!pageToNavigateTo) {
+      return;
+    }
 
     const pageIdForRouting = this.getPageIdForRouting(pageToNavigateTo);
 
