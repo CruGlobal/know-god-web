@@ -690,16 +690,20 @@ export class PageComponent implements OnInit, OnDestroy {
     );
 
     this.pageService.contentEvent$
-      .pipe(
-        filter((event) =>
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe((event) => {
+        if (event === 'close-tool') {
+          this.router.navigate(['/']);
+          return;
+        }
+
+        if (
           allListenersOnAllPages.some((allListenersOnPage) =>
             allListenersOnPage.includes(event)
           )
-        )
-      )
-      .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((event) => {
-        this.navigateToPageOnEvent(event);
+        ) {
+          this.navigateToPageOnEvent(event);
+        }
       });
   }
 
