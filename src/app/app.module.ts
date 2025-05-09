@@ -48,7 +48,7 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 // :toolType - The tool type 'tool' or 'lesson'
 // :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
 // :bookId - The book ID ('thefour', 'kgp', etc.)
-// :page - The page number
+// :page - The page number or name
 // :cardPosition - The card position in the card collection
 //============
 
@@ -59,15 +59,14 @@ const appRoutes: Routes = [
     redirectTo: ':langId/tool/v1/:bookId/:page',
     pathMatch: 'full'
   },
-  {
-    path: ':langId/:toolType/:resourceType/:bookId',
-    redirectTo: ':langId/:toolType/:resourceType/:bookId/0',
-    pathMatch: 'full'
-  },
   { path: ':langId', component: DashboardComponent },
   { path: '', component: DashboardComponent },
   {
     path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId',
     component: PageComponent
   },
   {

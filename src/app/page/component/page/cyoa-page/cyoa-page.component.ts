@@ -87,9 +87,9 @@ export class CYOAComponent implements OnChanges, OnDestroy {
     this.pageService.formHidden();
 
     this.pageService.ensureParentPageIsInNavigationStack(
-      this._page.parentPage?.position
+      this._page.parentPage?.id
     );
-    this.pageService.ensurePageIsLatestInNavigationStack(this._page.position);
+    this.pageService.ensurePageIsLatestInNavigationStack(this._page.id);
 
     if ('content' in this._page) {
       this.content = this._page.content;
