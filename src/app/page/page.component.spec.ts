@@ -460,6 +460,14 @@ describe('PageComponent', () => {
 
       expect(onTractNextPageSpy).toHaveBeenCalled();
     });
+
+    it('should navigate to home page on close-tool event', () => {
+      component.awaitPageEvent();
+
+      pageService.formAction('close-tool');
+
+      expect(router.navigate).toHaveBeenCalledWith(['/']);
+    });
   });
 
   describe('awaitPageNavigation() - onNavigateToPage()', () => {
