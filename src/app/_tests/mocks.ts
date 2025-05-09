@@ -384,7 +384,6 @@ export const mockTractPage = (
     header: mockHeader(headerNumber, headerText),
     hero: mockHero(heroHeading),
     callToAction: mockCallToAction(callToActionText),
-    cardTextColor: '#000000',
     controlColor: '#000000',
     cards: cardLabel
       ? [
