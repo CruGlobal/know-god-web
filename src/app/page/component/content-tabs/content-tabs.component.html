@@ -2,7 +2,8 @@
   <ng-container *ngFor="let tab of content; trackBy: trackByFn">
     <ng-container *ngIf="tab.tab && tab.contents">
       <div class="tabContent">
-        <p>{{ tab.tab.label.text }}</p>
+        <!-- Remove tab label text until tabs are implemented on web -->
+        <!-- <p>{{ tab.tab.label.text }}</p> -->
         <app-content-repeater [items]="tab.contents"></app-content-repeater>
       </div>
     </ng-container>
