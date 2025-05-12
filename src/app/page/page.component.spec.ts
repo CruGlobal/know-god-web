@@ -461,7 +461,11 @@ describe('PageComponent', () => {
       expect(onTractNextPageSpy).toHaveBeenCalled();
     });
 
-    it('should navigate to home page on close-tool event', () => {
+    it('should navigate to "/" on manifest-level dismiss event', () => {
+      component._pageBookSubPages = [tractPage];
+      component._pageBookManifest = {
+        dismissListeners: [{ name: 'close-tool' }]
+      };
       component.awaitPageEvent();
 
       pageService.formAction('close-tool');
