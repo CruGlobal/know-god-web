@@ -761,7 +761,7 @@ export class PageComponent implements OnInit, OnDestroy {
       (listener) => listener.name === event
     );
 
-    if (!pageToNavigateTo && isManifestDismissListener) {
+    if (isManifestDismissListener) {
       this.router.navigate(['/']);
       return;
     }
