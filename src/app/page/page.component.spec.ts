@@ -460,6 +460,20 @@ describe('PageComponent', () => {
 
       expect(onTractNextPageSpy).toHaveBeenCalled();
     });
+
+    it('should navigate to the dashboard on manifest-level dismiss event', () => {
+      component._pageBookSubPages = [tractPage];
+      component._pageBookManifest = {
+        dismissListeners: [{ name: 'close-tool' }]
+      };
+      component.awaitPageEvent();
+
+      pageService.formAction('close-tool');
+
+      expect(router.navigate).toHaveBeenCalledWith([
+        component._pageParams.langId
+      ]);
+    });
   });
 
   describe('awaitPageNavigation() - onNavigateToPage()', () => {

@@ -689,10 +689,19 @@ export class PageComponent implements OnInit, OnDestroy {
       []
     );
 
+    const manifestDismissListeners =
+      this._pageBookManifest?.dismissListeners?.map(
+        (listener) => listener.name
+      ) || [];
+
+    const allKnownListeners = allListenersOnAllPages.concat(
+      manifestDismissListeners
+    );
+
     this.pageService.contentEvent$
       .pipe(
         filter((event) =>
-          allListenersOnAllPages.some((allListenersOnPage) =>
+          allKnownListeners.some((allListenersOnPage) =>
             allListenersOnPage.includes(event)
           )
         )
@@ -745,6 +754,17 @@ export class PageComponent implements OnInit, OnDestroy {
         isDismissListener = foundDismissListener;
       }
     });
+
+    const manifestDismissListeners =
+      this._pageBookManifest?.dismissListeners || [];
+    const isManifestDismissListener = manifestDismissListeners.some(
+      (listener) => listener.name === event
+    );
+
+    if (isManifestDismissListener) {
+      this.router.navigate([this._pageParams.langId]);
+      return;
+    }
 
     if (!pageToNavigateTo) {
       return;
