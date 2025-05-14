@@ -461,7 +461,7 @@ describe('PageComponent', () => {
       expect(onTractNextPageSpy).toHaveBeenCalled();
     });
 
-    it('should navigate to "/" on manifest-level dismiss event', () => {
+    it('should navigate to the dashboard on manifest-level dismiss event', () => {
       component._pageBookSubPages = [tractPage];
       component._pageBookManifest = {
         dismissListeners: [{ name: 'close-tool' }]
@@ -470,7 +470,9 @@ describe('PageComponent', () => {
 
       pageService.formAction('close-tool');
 
-      expect(router.navigate).toHaveBeenCalledWith(['/']);
+      expect(router.navigate).toHaveBeenCalledWith([
+        component._pageParams.langId
+      ]);
     });
   });
 
