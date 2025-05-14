@@ -145,7 +145,7 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
     this.cards = this._page.cards;
     this.totalCards = this.cards.length;
     this.showBackButton = shouldShowBackButton(this._page);
-    this.headerContent = this._page.header?.content || null;
+    this.headerContent = this._page.header?.content ?? null;
     this.onCardPositionChange();
 
     this.ready = true;
