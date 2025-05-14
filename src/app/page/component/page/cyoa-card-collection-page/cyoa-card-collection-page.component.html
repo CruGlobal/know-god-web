@@ -1,14 +1,21 @@
 <ng-container *ngIf="ready">
   <div id="toolContent">
-    <a
-      (click)="navigateBack()"
-      href="javascript:void(0)"
-      *ngIf="showBackButton"
-      class="backwards-navigation"
+    <div
+      class="back-arrow-container"
+      [ngClass]="{
+        rtl: (dir$ | async) === 'rtl',
+        ltr: (dir$ | async) === 'ltr'
+      }"
     >
-      <img src="assets/img/back-arrow.png" alt="navigate back" />
-    </a>
-
+      <a
+        (click)="navigateBack()"
+        href="javascript:void(0)"
+        *ngIf="showBackButton"
+        class="backwards-navigation"
+      >
+        <img src="assets/img/back-arrow.png" alt="navigate back" />
+      </a>
+    </div>
     <ng-container *ngIf="headerContent">
       <app-content-repeater [items]="headerContent"></app-content-repeater>
     </ng-container>
