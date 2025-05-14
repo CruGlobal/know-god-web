@@ -762,7 +762,7 @@ export class PageComponent implements OnInit, OnDestroy {
     );
 
     if (isManifestDismissListener) {
-      this.router.navigate(['/']);
+      this.router.navigate([this._pageParams.langId]);
       return;
     }
 
