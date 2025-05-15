@@ -10,7 +10,6 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
   CallToAction,
-  Content,
   EventId,
   Header,
   Hero,
@@ -32,13 +31,12 @@ export class TractPageComponent implements OnChanges, OnDestroy {
   @Input() totalPages: number;
 
   private _unsubscribeAll: Subject<void>;
-  private _page: TractPage & { content?: Content };
+  private _page: TractPage;
   private _cardShownOnFormAction = -1;
   private _cardsHiddenOnFormAction: number[] = [];
 
   header: Header;
   hero: Hero;
-  content: Content;
   cards: TractPageCard[];
   modal: Modal;
   callToAction: CallToAction;
@@ -95,7 +93,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
               this._page = this.page;
               this.header = null;
               this.hero = null;
-              this.content = null;
               this.cards = [];
               this.modal = null;
               this.callToAction = null;
@@ -250,7 +247,6 @@ export class TractPageComponent implements OnChanges, OnDestroy {
     this.header = this._page.header || null;
     this.hasPageHeader = !!this._page.header?.title?.text;
     this.hero = this._page.hero || null;
-    this.content = this._page.content || null;
     this.cards = this._page.cards || [];
     this.modal = this._page.modals ? this._page.modals[0] : null;
     this.callToAction = this._page.callToAction?.label?.text
