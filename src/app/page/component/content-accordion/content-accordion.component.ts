@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import {
   Accordion,
   Content
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-accordion',
+  selector: 'app-content-accordion',
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })

@@ -2,11 +2,11 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import {
   Multiselect,
   MultiselectOption
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-multiselect',
+  selector: 'app-content-multiselect',
   templateUrl: './content-multiselect.component.html',
   styleUrls: ['./content-multiselect.component.css']
 })
