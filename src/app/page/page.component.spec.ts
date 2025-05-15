@@ -2,7 +2,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
-import { org } from '@cruglobal/godtools-shared';
 import {
   createEventId,
   mockPageComponent,
@@ -10,6 +9,7 @@ import {
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
+import { godToolsParser } from '../services/xml-parser-service/xml-parser.service';
 import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
@@ -44,7 +44,7 @@ describe('PageComponent', () => {
     0
   );
   const cyoaPage = Object.create(
-    org.cru.godtools.shared.tool.parser.model.page.ContentPage.prototype
+    godToolsParser.model.page.ContentPage.prototype
   );
 
   beforeEach(waitForAsync(() => {
