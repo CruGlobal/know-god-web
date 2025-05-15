@@ -7,7 +7,6 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { org } from '@cruglobal/godtools-shared';
 import * as ActionCable from '@rails/actioncable';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
@@ -23,7 +22,8 @@ import {
   ParserConfig,
   PullParserFactory,
   TractPage,
-  XmlParserData
+  XmlParserData,
+  godToolsParser
 } from '../services/xml-parser-service/xml-parser.service';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
@@ -136,14 +136,10 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   getPageType(): string {
-    if (
-      this.activePage instanceof
-      org.cru.godtools.shared.tool.parser.model.page.ContentPage
-    ) {
+    if (this.activePage instanceof godToolsParser.model.page.ContentPage) {
       return 'content';
     } else if (
-      this.activePage instanceof
-      org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage
+      this.activePage instanceof godToolsParser.model.page.CardCollectionPage
     ) {
       return 'card-collection';
     } else {
@@ -726,9 +722,9 @@ export class PageComponent implements OnInit, OnDestroy {
 
   private isCYOAPage(): boolean {
     const cyoaPageTypes = [
-      org.cru.godtools.shared.tool.parser.model.page.ContentPage,
-      org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage,
-      org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage
+      godToolsParser.model.page.ContentPage,
+      godToolsParser.model.page.CardCollectionPage,
+      godToolsParser.model.page.PageCollectionPage
     ];
 
     return cyoaPageTypes.some(

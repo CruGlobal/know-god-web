@@ -5,6 +5,7 @@ import {
   org
 } from '@cruglobal/godtools-shared';
 
+export const godToolsParser = org.cru.godtools.shared.tool.parser;
 export type Text = org.cru.godtools.shared.tool.parser.model.Text;
 export type Content = org.cru.godtools.shared.tool.parser.model.Content;
 export type Image = org.cru.godtools.shared.tool.parser.model.Image;
