@@ -1,11 +1,13 @@
-export function shouldShowBackButton(page: {
+interface Page {
   parentPage?: { position?: string | number };
-}): boolean {
+}
+
+export function shouldShowBackButton(page: Page): boolean {
   return page.parentPage?.position !== undefined;
 }
 
 export function navigateBackIfPossible(
-  page: { parentPage?: { position?: string | number } },
+  page: Page,
   ready: boolean,
   showBackButton: boolean,
   navigateFn: (position: string | number) => void
