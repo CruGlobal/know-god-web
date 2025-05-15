@@ -40,9 +40,7 @@ export class CyoaCardComponent implements OnChanges {
 
   private init(): void {
     this.cardPosition = this.card.position || 0;
-
     this.content = this.card.content;
-
     this.ready = true;
   }
 }
