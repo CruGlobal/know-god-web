@@ -4,6 +4,10 @@ import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
+import {
+  ResourceType,
+  ToolType
+} from '../services/xml-parser-service/xml-parser.service';
 import { getUrlResourceType } from '../shared/getUrlResourceType';
 
 interface Resource {
@@ -12,7 +16,7 @@ interface Resource {
   id: string;
   abbreviation: string;
   tagline: string;
-  resourceType: string;
+  resourceType: ResourceType;
 }
 @Component({
   selector: 'app-dashboard',
@@ -40,7 +44,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageDirection: string;
   langSwitchOn: boolean;
   availableLangs: [];
-  webContentTypes = ['tract', 'cyoa'];
+  resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
 
   constructor(
     public route: Router,
@@ -186,12 +190,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
             )
             .forEach((resource) => {
               const { id: resourceId, attributes, relationships } = resource;
-              const resourceType = attributes['resource-type'];
+              const resourceType = attributes['resource-type'] as ResourceType;
 
               if (attributes['attr-hidden']) {
                 return;
               }
-              if (!this.webContentTypes.includes(resourceType)) {
+              if (!this.resourceTypes.includes(resourceType)) {
                 return;
               }
 
@@ -248,9 +252,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   navigateToPage(resource: Resource): void {
     const abbreviation = resource.abbreviation;
     const urlResourceType = getUrlResourceType(resource.resourceType);
-    const bookType = this.webContentTypes.includes(resource.resourceType)
-      ? 'tool'
-      : 'lesson';
+    const bookType = this.resourceTypes.includes(resource.resourceType)
+      ? ToolType.Tool
+      : ToolType.Lesson;
 
     const url = `${this.dispLanguageCode}/${bookType}/${urlResourceType}/${abbreviation}`;
     this.route.navigateByUrl(url);

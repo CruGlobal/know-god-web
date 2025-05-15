@@ -7,7 +7,7 @@ import {
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import {
@@ -46,7 +46,6 @@ export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
 
   constructor(
     readonly pageService: PageService,
-    private router: Router,
     private route: ActivatedRoute
   ) {
     this._unsubscribeAll = new Subject<void>();
