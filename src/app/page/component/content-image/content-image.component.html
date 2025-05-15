@@ -5,6 +5,7 @@
       [ngClass]="{ firstImage: isFirstPage$ | async }"
       [src]="imgResource"
       [ngStyle]="{ width: width }"
+      alt=""
     />
   </a>
   <img
@@ -13,5 +14,6 @@
     [ngClass]="{ firstImage: isFirstPage$ | async }"
     [src]="imgResource"
     [ngStyle]="{ width: width }"
+    alt=""
   />
 </ng-container>

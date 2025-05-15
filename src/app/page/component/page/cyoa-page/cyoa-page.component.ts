@@ -129,7 +129,5 @@ export class CYOAComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     }
-
-    console.log('Function Name:', functionName);
   }
 }
