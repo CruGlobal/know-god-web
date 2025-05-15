@@ -18,9 +18,9 @@ import {
   Manifest,
   ManifestParser,
   Page,
-  PageType,
   ParserConfig,
   PullParserFactory,
+  ResourceType,
   TractPage,
   XmlParserData,
   godToolsParser
@@ -76,7 +76,7 @@ export class PageComponent implements OnInit, OnDestroy {
   selectedLang: string;
   availableLanguages: Array<any>;
   languagesVisible: boolean;
-  resourceType: PageType;
+  resourceType: ResourceType;
   selectedBookName: string;
   activePage: any;
   activePageOrder: number;
@@ -423,10 +423,10 @@ export class PageComponent implements OnInit, OnDestroy {
         const result = enc.decode(arr);
         const jsonResource = JSON.parse(result);
         this._pageBookIndex = jsonResource;
-        const webContentTypes = ['tract', 'cyoa'];
+        const resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
 
         if (
-          !webContentTypes.includes(
+          !resourceTypes.includes(
             jsonResource?.data?.attributes?.['resource-type']
           )
         ) {

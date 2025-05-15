@@ -252,7 +252,12 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
   }
 }
 
-export enum PageType {
+export enum ResourceType {
   Tract = 'tract',
   CYOA = 'cyoa'
+}
+
+export enum ToolType {
+  Tool = 'tool',
+  Lesson = 'lesson'
 }
