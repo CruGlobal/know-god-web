@@ -11,6 +11,7 @@ describe('ContentImageComponent', () => {
   const filePath = `/some-folder/${fileName}`;
   const imageEvent = 'page3';
   const image = mockImage(fileName, filePath, imageEvent);
+  const imageWithoutEvents = mockImage(fileName, filePath);
   const fileNameNotAdded = 'name-of-file-not-added.png';
   const filePathNotAdded = `/some-folder/${fileName}`;
   const imageNoNameNotAdded = mockImage(fileNameNotAdded, filePathNotAdded);
@@ -46,11 +47,13 @@ describe('ContentImageComponent', () => {
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
   });
 
-  it('Test events', () => {
+  it('correctly calls events', () => {
     component.item = image;
     component.ngOnChanges({
       item: new SimpleChange(null, image, true)
     });
+
+    expect(component.isEventType).toBeTrue();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
@@ -58,5 +61,14 @@ describe('ContentImageComponent', () => {
     component.formAction();
 
     expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
+  });
+
+  it('isEventType should be false when no events are provided', () => {
+    component.item = imageWithoutEvents;
+    component.ngOnChanges({
+      item: new SimpleChange(null, imageWithoutEvents, true)
+    });
+
+    expect(component.isEventType).toBeFalse();
   });
 });
