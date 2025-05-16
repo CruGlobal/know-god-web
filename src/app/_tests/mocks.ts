@@ -6,6 +6,7 @@ import {
   CallToAction,
   Card,
   Content,
+  CyoaContentPage,
   EventId,
   Flow,
   FlowItem,
@@ -289,6 +290,23 @@ export const mockCyoaCard = (position: number): CYOAPageCard => {
     page: null,
     id: null,
     position,
+    content: mockContent(),
+    ...standardTypeValues()
+  };
+};
+
+export const mockCyoa = (): CyoaContentPage => {
+  return {
+    id: null,
+    position: null,
+    parentPage: null,
+    parentPageParams: null,
+    nextPage: null,
+    backgroundImage: null,
+    isHidden: false,
+    dismissListeners: null,
+    listeners: null,
+    previousPage: null,
     content: mockContent(),
     ...standardTypeValues()
   };
