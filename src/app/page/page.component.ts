@@ -149,10 +149,6 @@ export class PageComponent implements OnInit, OnDestroy {
 
   setCardUrl = (card: number) => {
     if (!this._pageParams.langId) {
-      console.warn(
-        'setCardUrl called before _pageParams are set.',
-        this._pageParams
-      );
       return;
     }
     this.router.navigate([
@@ -848,7 +844,6 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
-
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);
     setTimeout(() => {
@@ -877,9 +872,8 @@ export class PageComponent implements OnInit, OnDestroy {
               .createUrlTree(
                 [
                   data.attributes.locale,
-                  // TODO - Add the following to the URL:
-                  // ResourceType
-                  // toolType
+                  this._pageParams.toolType,
+                  this._pageParams.resourceType,
                   data.attributes.tool,
                   data.attributes.page
                 ],
