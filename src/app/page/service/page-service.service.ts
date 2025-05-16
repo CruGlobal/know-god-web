@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { State } from '../../services/xml-parser-service/xmp-parser.service';
+import { State } from '../../services/xml-parser-service/xml-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +8,7 @@ import { State } from '../../services/xml-parser-service/xmp-parser.service';
 export class PageService {
   private _nextPage = new Subject<void>();
   private _previousPage = new Subject<void>();
+  private _navigateToPage = new Subject<string | number>();
   private _formAction = new Subject<string>();
   private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
@@ -22,6 +23,7 @@ export class PageService {
   private _imageUrlsDict = new BehaviorSubject<string[]>([]);
   private _animationUrlsDict = new BehaviorSubject<string[]>([]);
   private _allAttachmentResources = new Map<string, string>();
+  private _navigationStack = new BehaviorSubject<string[]>([]);
   private XmlParserState = State.createState();
 
   formAction$: Observable<string> = this._formAction.asObservable();
@@ -33,6 +35,8 @@ export class PageService {
     this._emailSignupFormData.asObservable();
   nextPage$: Observable<any> = this._nextPage.asObservable();
   previousPage$: Observable<any> = this._previousPage.asObservable();
+  navigateToPage$: Observable<string | number> =
+    this._navigateToPage.asObservable();
   pageDir$: Observable<string> = this._dir.asObservable();
   isFirstPage$: Observable<boolean> = this._isFirstPage.asObservable();
   isLastPage$: Observable<boolean> = this._isLastPage.asObservable();
@@ -65,6 +69,10 @@ export class PageService {
 
   previousPage(): void {
     this._previousPage.next();
+  }
+
+  navigateToPage(pagePosition: string | number): void {
+    this._navigateToPage.next(pagePosition);
   }
 
   formAction(action: string): void {
@@ -170,5 +178,90 @@ export class PageService {
 
   parserState(): any {
     return this.XmlParserState;
+  }
+
+  // CYOA Navigation Stack/Array
+  // We need to keep track of the navigation stack to ensure the user can navigate back to previous pages.
+  // This is since CYOA can jump from page position 0 to 14 to 5.
+
+  // getNavigationStack - Get the current navigation stack
+  // addToNavigationStack - Add a page to the end of the navigation stack
+  // removeFromNavigationStack - Remove a page and any page until that page from the navigation stack. If the page is not provided, remove the last page.
+  // clearNavigationStack - Clears the navigation stack
+  // ensureParentPageIsInNavigationStack - Ensure the parent page is in the navigation stack
+  // ensurePageIsLatestInNavigationStack - Ensure the page is the last item in the navigation stack
+
+  getNavigationStack(): Observable<string[]> {
+    return this._navigationStack.asObservable();
+  }
+
+  addToNavigationStack(pagePosition: string): void {
+    const currentStack = this._navigationStack.getValue();
+    if (currentStack.includes(pagePosition)) {
+      return;
+    }
+    this._navigationStack.next([...currentStack, pagePosition]);
+  }
+
+  removeFromNavigationStack(pagePosition?: string): void {
+    const currentStack = this._navigationStack.getValue();
+    // if empty, we need to get the original page.
+    if (!pagePosition) {
+      this._navigationStack.next(currentStack.slice(0, -1));
+    } else {
+      // We want to remove all pages that are after the pagePosition and the pagePosition itself.
+      // We need to reverse the stack to remove the pages in the correct order.
+      // For example, if the stack is [1, 2, 3, 4, 5] and the pagePosition is 3, we want to remove 4 and 5 as well.
+      // So we reverse the stack to [5, 4, 3, 2, 1] and remove all pages from currentStack variable.
+      // Which results in the stack being: 1, 2, 3
+      const reverseStack = currentStack.slice().reverse();
+      for (let i = reverseStack.length - 1; i >= 0; i--) {
+        if (reverseStack[i] === pagePosition) {
+          if (currentStack.includes(pagePosition)) {
+            currentStack.pop();
+          }
+          break;
+        }
+        currentStack.pop();
+      }
+      this._navigationStack.next(currentStack);
+    }
+  }
+
+  clearNavigationStack(): void {
+    this._navigationStack.next([]);
+  }
+
+  ensureParentPageIsInNavigationStack(parentPagePosition?: string): void {
+    if (!parentPagePosition) {
+      return;
+    }
+    const currentStack = this._navigationStack.getValue();
+    if (currentStack.includes(parentPagePosition)) {
+      return;
+    } else {
+      // If not in stack, add it
+      this._navigationStack.next([parentPagePosition, ...currentStack]);
+    }
+  }
+
+  ensurePageIsLatestInNavigationStack(pagePosition: string): void {
+    const currentStack = this._navigationStack.getValue();
+    const isLatest = currentStack[currentStack.length - 1] === pagePosition;
+
+    if (isLatest) {
+      // If already latest, do nothing
+      return;
+    }
+
+    if (currentStack.includes(pagePosition)) {
+      // If in stack, remove all pages after it and it. And re-add it
+      this.removeFromNavigationStack(pagePosition);
+      this.addToNavigationStack(pagePosition);
+      return;
+    } else {
+      // If not in stack, add it
+      this.addToNavigationStack(pagePosition);
+    }
   }
 }
