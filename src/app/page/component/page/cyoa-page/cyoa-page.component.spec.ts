@@ -67,4 +67,47 @@ describe('CYOAComponent', () => {
       expect(pageService.emailSignumFormDataNeeded).toHaveBeenCalled();
     });
   });
+
+  describe('navigateBack', () => {
+    beforeEach(() => {
+      spyOn(pageService, 'navigateToPage');
+      component.page = page;
+    });
+
+    it('should navigate back to page 1', async () => {
+      (component.page as any).parentPage = { position: '1' };
+      component.ready = true;
+      component.showBackButton = true;
+
+      component.navigateBack();
+      expect(pageService.navigateToPage).toHaveBeenCalledWith('1');
+    });
+
+    it('should not navigate back', async () => {
+      (component.page as any).parentPage = { position: undefined };
+      component.ready = true;
+      component.showBackButton = true;
+
+      component.navigateBack();
+      expect(pageService.navigateToPage).not.toHaveBeenCalled();
+    });
+
+    it('should not navigate back when back button is not shown', async () => {
+      (component.page as any).parentPage = { position: '1' };
+      component.ready = true;
+      component.showBackButton = false;
+
+      component.navigateBack();
+      expect(pageService.navigateToPage).not.toHaveBeenCalled();
+    });
+
+    it('should not navigate back when component is not ready', async () => {
+      (component.page as any).parentPage = { position: '1' };
+      component.ready = false;
+      component.showBackButton = true;
+
+      component.navigateBack();
+      expect(pageService.navigateToPage).not.toHaveBeenCalled();
+    });
+  });
 });

@@ -63,12 +63,14 @@ describe('ContentImageComponent', () => {
     expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
   });
 
-  it('isEventType should be false when no events are provided', () => {
-    component.item = imageWithoutEvents;
-    component.ngOnChanges({
-      item: new SimpleChange(null, imageWithoutEvents, true)
-    });
+  describe('isEventType', () => {
+    it('should be false when no events are provided', () => {
+      component.item = imageWithoutEvents;
+      component.ngOnChanges({
+        item: new SimpleChange(null, imageWithoutEvents, true)
+      });
 
-    expect(component.isEventType).toBeFalse();
+      expect(component.isEventType).toBeFalse();
+    });
   });
 });
