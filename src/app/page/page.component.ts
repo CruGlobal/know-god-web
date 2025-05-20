@@ -872,8 +872,8 @@ export class PageComponent implements OnInit, OnDestroy {
               .createUrlTree(
                 [
                   data.attributes.locale,
-                  this._pageParams.toolType,
-                  this._pageParams.resourceType,
+                  'tool',
+                  'v1',
                   data.attributes.tool,
                   data.attributes.page
                 ],
