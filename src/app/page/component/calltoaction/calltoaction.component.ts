@@ -3,11 +3,11 @@ import { Observable } from 'rxjs';
 import {
   CallToAction,
   Text
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-page-new-calltoaction',
+  selector: 'app-page-calltoaction',
   templateUrl: './calltoaction.component.html',
   styleUrls: ['./calltoaction.component.css']
 })

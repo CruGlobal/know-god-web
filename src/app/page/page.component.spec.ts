@@ -9,7 +9,8 @@ import {
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { PageComponent } from './page.component';
+import { godToolsParser } from '../services/xml-parser-service/xml-parser.service';
+import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
 describe('PageComponent', () => {
@@ -17,9 +18,11 @@ describe('PageComponent', () => {
   let fixture: ComponentFixture<PageComponent>;
   let pageService: PageService;
   let router: Router;
-  const bookid = 'fourlaws',
-    langid = 'en',
-    pageid = 0;
+  const bookId = 'fourlaws',
+    langId = 'en',
+    toolType = 'tool',
+    resourceType = 'v2',
+    pageId = 0;
   const tractPage = mockTractPage(
     false,
     '2',
@@ -39,6 +42,9 @@ describe('PageComponent', () => {
     'cardLabel',
     'modalTitle',
     0
+  );
+  const cyoaPage = Object.create(
+    godToolsParser.model.page.ContentPage.prototype
   );
 
   beforeEach(waitForAsync(() => {
@@ -62,9 +68,11 @@ describe('PageComponent', () => {
     spyOn(router, 'navigate');
 
     component._pageParams = {
-      langid,
-      bookid,
-      pageid
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId
     };
     component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
     component._pageBookIndex = mockPageComponent.pageBookIndex;
@@ -82,7 +90,13 @@ describe('PageComponent', () => {
 
   it('selectLanguage()', () => {
     component.selectLanguage({ attributes: { code: 'de' } });
-    expect(router.navigate).toHaveBeenCalledWith(['de', bookid, pageid]);
+    expect(router.navigate).toHaveBeenCalledWith([
+      'de',
+      toolType,
+      resourceType,
+      bookId,
+      pageId
+    ]);
   });
 
   it('onToggleLanguageSelect()', () => {
@@ -97,57 +111,165 @@ describe('PageComponent', () => {
     expect(component.languagesVisible).toBeTrue();
   });
 
-  it('onPreviousPage() on page 0', () => {
-    component.onPreviousPage();
+  it('onTractPreviousPage() on page 0', () => {
+    component.onTractPreviousPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
-  it('onPreviousPage() on page > 0', () => {
+  it('should not navigate onTractPreviousPage() on CYOA page', () => {
     component._pageParams = {
-      langid,
-      bookid,
-      pageid: 5
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 'end'
     };
-    component.onPreviousPage();
-    expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 4]);
+    component?.onTractPreviousPage();
+    expect(router.navigate).toHaveBeenCalledTimes(0);
+  });
+  it('onTractPreviousPage() on page > 0', () => {
+    component._pageParams = {
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 5
+    };
+    component.onTractPreviousPage();
+    expect(router.navigate).toHaveBeenCalledWith([
+      langId,
+      toolType,
+      resourceType,
+      bookId,
+      4
+    ]);
   });
 
-  it('onNextPage() on page 0', () => {
-    component.onNextPage();
-    expect(router.navigate).toHaveBeenCalledWith([langid, bookid, 1]);
+  it('onTractNextPage() on page 0', () => {
+    component.onTractNextPage();
+    expect(router.navigate).toHaveBeenCalledWith([
+      langId,
+      toolType,
+      resourceType,
+      bookId,
+      1
+    ]);
   });
-  it('onNextPage() on final page', () => {
+  it('onTractNextPage() on final page', () => {
     component._pageParams = {
-      langid,
-      bookid,
-      pageid: 6
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 6
     };
-    component.onNextPage();
+    component.onTractNextPage();
+    expect(router.navigate).toHaveBeenCalledTimes(0);
+  });
+  it('should not navigate onTractNextPage() on CYOA page', () => {
+    component.activePage = cyoaPage;
+
+    component._pageParams = {
+      langId,
+      bookId,
+      toolType,
+      resourceType,
+      pageId: 0
+    };
+    component?.onTractNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
-  it('getImage()', async () => {
-    await component.getImage('file-name-2.png');
-    expect(pageService.getAllImages()['file-name-2.png']).toEqual(
-      'https://cru.org/assets/file-name-2.png'
-    );
+  describe('getResource()', () => {
+    const file2Name = 'file-name-2.png';
+    const file2Url = 'https://cru.org/assets/file-name-2.png';
+    it('should fetch an image', async () => {
+      await component.getResource(getResourceTypeEnum.image, file2Name);
+      expect(pageService.getAllImages()[file2Name]).toEqual(file2Url);
+    });
+
+    it('should fetch an animation', async () => {
+      const addToAnimationsDictSpy = spyOn(pageService, 'addToAnimationsDict');
+      const fileUrl = await component.getResource(
+        getResourceTypeEnum.animation,
+        file2Name
+      );
+      expect(addToAnimationsDictSpy).toHaveBeenCalledWith(file2Name, file2Url);
+      expect(fileUrl).toEqual(file2Url);
+    });
+
+    it('should not download resource', async () => {
+      spyOn(pageService, 'getAllImages');
+      await component.getResource(getResourceTypeEnum.image, 'file-name-3.png');
+      expect(pageService.getAllImages).toHaveBeenCalledTimes(0);
+    });
   });
 
-  it('getImage() resource not downloaded', async () => {
-    spyOn(pageService, 'getAllImages');
-    await component.getImage('file-name-3.png');
-    expect(pageService.getAllImages).toHaveBeenCalledTimes(0);
-  });
+  describe('loadBookPage()', () => {
+    it('does not call showPage', async () => {
+      component.loadBookPage(tractPage);
+      const showPageSpy = spyOn(component, 'showPage');
+      expect(showPageSpy).toHaveBeenCalledTimes(0);
+    });
 
-  it('loadBookPage() - wrong page', async () => {
-    component.loadBookPage(tractPage);
-    const showPageSpy = spyOn(component, 'showPage');
-    expect(showPageSpy).toHaveBeenCalledTimes(0);
-  });
+    it('calls showPage', async () => {
+      const showPageSpy = spyOn(component, 'showPage');
+      component.loadBookPage(tractPageOne);
+      expect(showPageSpy).toHaveBeenCalledTimes(1);
+    });
 
-  it('loadBookPage() - correct page', async () => {
-    const showPageSpy = spyOn(component, 'showPage');
-    component.loadBookPage(tractPageOne);
-    expect(showPageSpy).toHaveBeenCalledTimes(1);
+    interface TestProps {
+      testName: string;
+      pageId: string;
+      initialPageId: string | null;
+      page: any;
+    }
+    const tests: TestProps[] = [
+      {
+        testName: 'pageId,',
+        pageId: '0',
+        initialPageId: null,
+        page: tractPage
+      },
+      {
+        testName: 'pageId',
+        pageId: 'intro',
+        initialPageId: null,
+        page: tractPage
+      },
+      {
+        testName: 'pageId',
+        pageId: 'page-id-123',
+        initialPageId: '0',
+        page: cyoaPage
+      }
+    ];
+
+    tests.forEach(({ testName, pageId, initialPageId, page }) => {
+      it(testName, async () => {
+        const navigateByUrlSpy = spyOn(router, 'navigateByUrl');
+        const pageWithRealId = {
+          ...page,
+          id: pageId,
+          position: 0
+        };
+        component._pageParams.pageId = initialPageId;
+
+        spyOn(component, 'getPageIdForRouting').and.returnValue(pageId);
+
+        component.loadBookPage(pageWithRealId);
+
+        expect(navigateByUrlSpy).toHaveBeenCalledWith(
+          router.createUrlTree([
+            langId,
+            toolType,
+            resourceType,
+            bookId,
+            pageId
+          ]),
+          { replaceUrl: true }
+        );
+      });
+    });
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {
@@ -172,7 +294,7 @@ describe('PageComponent', () => {
 
   it('loadPageBook() - page does not exist', () => {
     const loadPageBookIndexSpy = spyOn(component, 'loadPageBookIndex');
-    component._pageParams.bookid = 'connectingWithGod';
+    component._pageParams.bookId = 'connectingWithGod';
     component.loadPageBook();
     expect(component._pageBookLoaded).toBeFalse();
     expect(loadPageBookIndexSpy).toHaveBeenCalledTimes(0);
@@ -250,6 +372,29 @@ describe('PageComponent', () => {
     }, 0);
   });
 
+  describe('setCardUrl()', () => {
+    it('should navigate with correct params', () => {
+      component.setCardUrl(2);
+
+      expect(router.navigate).toHaveBeenCalledWith([
+        langId,
+        toolType,
+        resourceType,
+        bookId,
+        pageId,
+        2
+      ]);
+    });
+
+    it('should not navigate if _pageParams.langId is missing', () => {
+      component._pageParams.langId = null;
+
+      component.setCardUrl(2);
+
+      expect(router.navigate).not.toHaveBeenCalled();
+    });
+  });
+
   describe('awaitPageEvent()', () => {
     const tractPageWithListeners = mockTractPage(
       false,
@@ -266,37 +411,146 @@ describe('PageComponent', () => {
       ],
       [createEventId('dismiss-event', null)]
     );
-    let onNextPageSpy;
+    let onTractNextPageSpy;
 
     beforeEach(() => {
       component._pageParams = {
-        langid,
-        bookid,
-        pageid: 1
+        langId,
+        bookId,
+        toolType,
+        resourceType,
+        pageId: '1'
       };
       component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
       component.awaitPageEvent();
-      onNextPageSpy = spyOn(component, 'onNextPage');
+      onTractNextPageSpy = spyOn(component, 'onTractNextPage');
     });
 
-    it('should navigate to page 8', () => {
+    it('should navigate to page 5', () => {
       pageService.formAction('another-page-event');
 
-      expect(router.navigate).toHaveBeenCalledWith(['en', bookid, 5]);
+      expect(router.navigate).toHaveBeenCalledWith([
+        'en',
+        toolType,
+        resourceType,
+        bookId,
+        5
+      ]);
     });
 
     it('should not navigate to new page', () => {
       pageService.formAction('card-event');
 
       expect(router.navigate).not.toHaveBeenCalled();
-      expect(onNextPageSpy).not.toHaveBeenCalled();
+      expect(onTractNextPageSpy).not.toHaveBeenCalled();
     });
 
-    it('should navigate to the next page (2)', () => {
+    it('should navigate to the next page (1)', () => {
+      pageService.addToNavigationStack('1');
+      pageService.addToNavigationStack('5');
       pageService.formAction('dismiss-event');
 
-      expect(router.navigate).not.toHaveBeenCalled();
-      expect(onNextPageSpy).toHaveBeenCalled();
+      expect(router.navigate).toHaveBeenCalledWith([
+        'en',
+        toolType,
+        resourceType,
+        bookId,
+        '1'
+      ]);
+
+      expect(onTractNextPageSpy).toHaveBeenCalled();
+    });
+
+    it('should navigate to the dashboard on manifest-level dismiss event', () => {
+      component._pageBookSubPages = [tractPage];
+      component._pageBookManifest = {
+        dismissListeners: [{ name: 'close-tool' }]
+      };
+      component.awaitPageEvent();
+
+      pageService.formAction('close-tool');
+
+      expect(router.navigate).toHaveBeenCalledWith([
+        component._pageParams.langId
+      ]);
+    });
+  });
+
+  describe('awaitPageNavigation() - onNavigateToPage()', () => {
+    let addToNavigationStackSpy;
+
+    beforeEach(() => {
+      component._pageParams = {
+        langId,
+        bookId,
+        toolType,
+        resourceType,
+        pageId: 1
+      };
+      component._pageBookSubPages = [tractPageOne, tractPage];
+      component.awaitPageNavigation();
+      addToNavigationStackSpy = spyOn(pageService, 'addToNavigationStack');
+    });
+
+    it('should navigate to page 8', async () => {
+      pageService.navigateToPage(8);
+
+      waitForAsync(() => {
+        expect(addToNavigationStackSpy).toHaveBeenCalledWith(8);
+
+        expect(router.navigate).toHaveBeenCalledWith([
+          langId,
+          toolType,
+          resourceType,
+          bookId,
+          8
+        ]);
+      });
+    });
+  });
+
+  describe('getPageIdForRouting() — CYOA handling', () => {
+    it('returns page.id if activePage is CYOA and page.position is 0 and route pageId is "0"', () => {
+      component._pageParams.pageId = '0';
+      component.activePage = cyoaPage;
+
+      const result = component.getPageIdForRouting({
+        id: 'cyoa-real-id',
+        position: 0
+      });
+
+      expect(result).toBe('cyoa-real-id');
+    });
+
+    it('returns page.position if activePage is NOT CYOA even if pageId is "0"', () => {
+      component._pageParams.pageId = '0';
+
+      // Not a CYOA instance
+      component.activePage = {};
+
+      const result = component.getPageIdForRouting({
+        id: 'some-id',
+        position: 0
+      });
+
+      expect(result).toBe(0);
+    });
+  });
+
+  describe('cleanPageId()', () => {
+    it('should return number if pageId is numeric string', () => {
+      component._pageParams.pageId = '3';
+      expect(component['cleanPageId']()).toBe(3);
+    });
+
+    it('should return string if pageId is non-numeric', () => {
+      component._pageParams.pageId = 'abc';
+      expect(component['cleanPageId']()).toBe('abc');
+    });
+
+    it('should return number if pageId is already a number', () => {
+      component._pageParams.pageId = 5;
+      expect(component['cleanPageId']()).toBe(5);
     });
   });
 });

@@ -1,9 +1,14 @@
 .flow {
   margin-top: 25px;
   text-align: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px 17.5px;
+  min-width: 300px;
 }
 
-.flow app-content-new-flow-item {
+.flow app-content-flow-item {
   margin: 0;
-  display: inline-block;
+  flex-grow: 0;
+  flex-shrink: 0;
 }

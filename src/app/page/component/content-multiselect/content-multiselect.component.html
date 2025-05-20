@@ -1,9 +1,9 @@
 <ng-container *ngIf="ready">
   <div class="multiselect mw568" attr.data-columns="{{ columns }}">
-    <app-content-new-multiselect-option
+    <app-content-multiselect-option
       *ngFor="let option of options; trackBy: trackByFn"
       [item]="option"
     >
-    </app-content-new-multiselect-option>
+    </app-content-multiselect-option>
   </div>
 </ng-container>

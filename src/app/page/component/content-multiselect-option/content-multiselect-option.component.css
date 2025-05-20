@@ -2,8 +2,8 @@
   padding: 20px;
 }
 
-.multiselect-option app-content-new-repeater {
-  margin: 0
+.multiselect-option app-content-repeater {
+  margin: 0;
 }
 
 @media (max-width: 600px) {

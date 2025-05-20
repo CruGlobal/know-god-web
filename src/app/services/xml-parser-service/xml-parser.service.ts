@@ -5,6 +5,7 @@ import {
   org
 } from '@cruglobal/godtools-shared';
 
+export const godToolsParser = org.cru.godtools.shared.tool.parser;
 export type Text = org.cru.godtools.shared.tool.parser.model.Text;
 export type Content = org.cru.godtools.shared.tool.parser.model.Content;
 export type Image = org.cru.godtools.shared.tool.parser.model.Image;
@@ -22,6 +23,21 @@ export type TractPageCard =
     // isTemporarilyHidden is a new property that can be edited to prevent us from type casting.
     isTemporarilyHidden?: boolean;
   };
+export type CyoaContentPage =
+  org.cru.godtools.shared.tool.parser.model.page.ContentPage;
+export type CyoaCardCollectionPage =
+  org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage;
+export type CyoaPageCollectionPage =
+  org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage;
+
+export type CYOAPage =
+  | CyoaContentPage
+  | CyoaCardCollectionPage
+  | CyoaPageCollectionPage;
+export type CYOAPageCard =
+  org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card;
+export type CardCollectionHeader =
+  org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Header;
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
 export type Paragraph = org.cru.godtools.shared.tool.parser.model.Paragraph;
 export type Resource = org.cru.godtools.shared.tool.parser.model.Resource;
@@ -50,6 +66,8 @@ export type MultiselectOption =
 export type Flow = org.cru.godtools.shared.tool.parser.model.Flow;
 export type FlowItem = org.cru.godtools.shared.tool.parser.model.Flow.Item;
 export type Dimension = org.cru.godtools.shared.tool.parser.model.Dimension;
+export type Horizontal =
+  org.cru.godtools.shared.tool.parser.model.Gravity.Horizontal;
 export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
 export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
 export const ManifestParser = manifestParser;
@@ -232,4 +250,14 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
         });
     });
   }
+}
+
+export enum ResourceType {
+  Tract = 'tract',
+  CYOA = 'cyoa'
+}
+
+export enum ToolType {
+  Tool = 'tool',
+  Lesson = 'lesson'
 }

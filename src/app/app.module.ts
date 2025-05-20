@@ -8,7 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LottieModule } from 'ngx-lottie';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
-import { HeaderComponent } from './header/header.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 import { CalltoactionComponent } from './page/component/calltoaction/calltoaction.component';
 import { CardComponent } from './page/component/card/card.component';
 import { ContentAccordionComponent } from './page/component/content-accordion/content-accordion.component';
@@ -29,26 +29,52 @@ import { ContentSpacerComponent } from './page/component/content-spacer/content-
 import { ContentTabsComponent } from './page/component/content-tabs/content-tabs.component';
 import { ContentTextComponent } from './page/component/content-text/content-text.component';
 import { ContentVideoComponent } from './page/component/content-video/content-video.component';
+import { CyoaCardComponent } from './page/component/cyoa/card/card.component';
 import { ModalComponent } from './page/component/modal/modal.component';
+import { CYOACardCollectionComponent } from './page/component/page/cyoa-card-collection-page/cyoa-card-collection-page.component';
+import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
+import { TractPageComponent } from './page/component/page/tract-page/tract-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { PageHeroComponent } from './page/component/page-hero/page-hero.component';
-import { TractPageComponent } from './page/component/tract-page/tract-page.component';
 import { PageComponent } from './page/page.component';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
 import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.component';
 
+//============
+// Routes - The routes for the application
+//
+// :langId - The language ID
+// :toolType - The tool type 'tool' or 'lesson'
+// :resourceType - The resource type 'v1' for tract or 'v2' for cyoa
+// :bookId - The book ID ('thefour', 'kgp', etc.)
+// :page - The page number or name
+// :cardPosition - The card position in the card collection
+//============
+
 const appRoutes: Routes = [
   {
-    path: ':langid/:bookid',
-    redirectTo: ':langid/:bookid/0',
+    path: ':langId/:bookId/:page',
+    // Redirecting old URL format to the new one
+    redirectTo: ':langId/tool/v1/:bookId/:page',
     pathMatch: 'full'
   },
-  { path: ':langid', component: HeaderComponent },
-  { path: '', component: HeaderComponent },
-  { path: ':langid/embed/:bookid', component: PageComponent },
+  { path: ':langId', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   {
-    path: ':langid/:bookid/:page',
+    path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page/:cardPosition',
     component: PageComponent
   }
 ];
@@ -62,7 +88,7 @@ export function playerFactory() {
 @NgModule({
   declarations: [
     AppComponent,
-    HeaderComponent,
+    DashboardComponent,
     SharingModalComponent,
     LoaderComponent,
     PageComponent,
@@ -89,7 +115,10 @@ export function playerFactory() {
     ContentMultiselectOptionComponent,
     ContentFlowComponent,
     ContentFlowItemComponent,
-    ContentCardComponent
+    ContentCardComponent,
+    CyoaCardComponent,
+    CYOAComponent,
+    CYOACardCollectionComponent
   ],
   imports: [
     BrowserModule,

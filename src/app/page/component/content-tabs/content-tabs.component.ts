@@ -4,7 +4,7 @@ import {
   Content,
   Tab,
   Tabs
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 interface TabWithContent {
@@ -13,7 +13,7 @@ interface TabWithContent {
 }
 
 @Component({
-  selector: 'app-content-new-tabs',
+  selector: 'app-content-tabs',
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })

@@ -1,10 +1,10 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Spacer } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Spacer } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-spacer',
+  selector: 'app-content-spacer',
   templateUrl: './content-spacer.component.html',
   styleUrls: ['./content-spacer.component.css']
 })

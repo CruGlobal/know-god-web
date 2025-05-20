@@ -1,0 +1,6 @@
+<div attr.id="card-{{ cardPosition }}" class="cardContent">
+  <ng-container *ngIf="content">
+    <app-content-repeater [items]="content"></app-content-repeater>
+    <p class="cardPosition">{{ cardPosition + 1 }} / {{ totalCards }}</p>
+  </ng-container>
+</div>

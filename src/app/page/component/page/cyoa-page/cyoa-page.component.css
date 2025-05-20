@@ -1,0 +1,16 @@
+.backwards-navigation {
+  padding: 10px 20px 0;
+  display: inline-block;
+}
+.back-arrow-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.back-arrow-container.rtl {
+  justify-content: flex-end;
+}
+
+.back-arrow-container.rtl img {
+  transform: rotate(180deg);
+}

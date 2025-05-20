@@ -20,9 +20,11 @@ import {
   Page,
   ParserConfig,
   PullParserFactory,
+  ResourceType,
   TractPage,
-  XmlParserData
-} from '../services/xml-parser-service/xmp-parser.service';
+  XmlParserData,
+  godToolsParser
+} from '../services/xml-parser-service/xml-parser.service';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
 
@@ -39,8 +41,13 @@ interface LiveShareSubscriptionPayload {
   };
 }
 
+export enum getResourceTypeEnum {
+  animation = 'animation',
+  image = 'image'
+}
+
 @Component({
-  selector: 'app-page-new',
+  selector: 'app-page',
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.css'],
   encapsulation: ViewEncapsulation.None
@@ -69,6 +76,7 @@ export class PageComponent implements OnInit, OnDestroy {
   selectedLang: string;
   availableLanguages: Array<any>;
   languagesVisible: boolean;
+  resourceType: ResourceType;
   selectedBookName: string;
   activePage: any;
   activePageOrder: number;
@@ -87,8 +95,10 @@ export class PageComponent implements OnInit, OnDestroy {
     private pullParserFactory: PullParserFactory
   ) {
     this._pageParams = {
-      langid: '',
-      bookid: ''
+      langId: '',
+      resourceType: '',
+      toolType: '',
+      bookId: ''
     };
     this._books = [];
     this.activePageOrder = 0;
@@ -96,10 +106,13 @@ export class PageComponent implements OnInit, OnDestroy {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.isCYOAPage()) {
+      return;
+    }
     if (event.key === 'ArrowLeft') {
-      this.onPreviousPage();
+      this.onTractPreviousPage();
     } else if (event.key === 'ArrowRight') {
-      this.onNextPage();
+      this.onTractNextPage();
     }
   }
 
@@ -122,108 +135,153 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  getPageType(): string {
+    if (this.activePage instanceof godToolsParser.model.page.ContentPage) {
+      return 'content';
+    } else if (
+      this.activePage instanceof godToolsParser.model.page.CardCollectionPage
+    ) {
+      return 'card-collection';
+    } else {
+      return '';
+    }
+  }
+
+  setCardUrl = (card: number) => {
+    if (!this._pageParams.langId) {
+      return;
+    }
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      this.getPageIdForRouting(this.activePage),
+      card
+    ]);
+  };
+
   selectLanguage(lang): void {
-    const tPageOrder = this._pageParams.pageid || 0;
     this.router.navigate([
       lang.attributes.code,
-      this._pageParams.bookid,
-      tPageOrder
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      this.getPageIdForRouting(this.activePage)
     ]);
-    return;
   }
 
   onToggleLanguageSelect(): void {
     this.languagesVisible = !this.languagesVisible;
   }
 
-  private onPreviousPage(): void {
-    if (this._pageParams.pageid > 0) {
+  private onTractPreviousPage(): void {
+    const pageId = this.cleanPageId();
+
+    if (!this.isCYOAPage() && typeof pageId === 'number' && pageId > 0) {
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
-        this._pageParams.pageid - 1
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
+        this._pageParams.bookId,
+        pageId - 1
       ]);
     }
   }
 
-  private onNextPage(): void {
-    if (this._pageParams.pageid + 1 < this._pageBookSubPagesManifest.length) {
+  private onTractNextPage(): void {
+    const pageId = this.cleanPageId();
+    if (
+      !this.isCYOAPage() &&
+      typeof pageId === 'number' &&
+      pageId + 1 < this._pageBookSubPagesManifest.length
+    ) {
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
-        this._pageParams.pageid + 1
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
+        this._pageParams.bookId,
+        pageId + 1
       ]);
     }
   }
-
-  private getAnimation(resource): void {
-    if (resource === undefined || resource === '' || resource === null) {
-      return;
-    }
-
-    if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter((row) => {
-        if (
-          row.type.toLowerCase() === 'attachment' &&
-          row.attributes['file-file-name'].toLowerCase() ===
-            resource.toLowerCase()
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-
-      if (attachments.length === 0) {
-        return;
-      }
-
-      const filename = attachments[0].attributes.file;
-      this.pageService.addToAnimationsDict(resource, filename);
-      return filename;
-    }
+  private onNavigateToPage(page: number | string): void {
+    this.pageService.addToNavigationStack(String(page));
+    this.router.navigate([
+      this._pageParams.langId,
+      this._pageParams.toolType,
+      this._pageParams.resourceType,
+      this._pageParams.bookId,
+      page
+    ]);
   }
 
-  private getImage(resource): string {
-    if (resource === undefined || resource === '' || resource === null) {
+  private getResource(
+    resourceType: getResourceTypeEnum,
+    resourceName: string
+  ): string {
+    if (!resourceName) {
       return '';
     }
 
     if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter((row) => {
-        if (
+      const attachments = this._pageBookIndex.included.filter(
+        (row) =>
           row.type.toLowerCase() === 'attachment' &&
           row.attributes['file-file-name'].toLowerCase() ===
-            resource.toLowerCase()
-        ) {
-          return true;
-        } else {
-          return false;
-        }
-      });
+            resourceName.toLowerCase()
+      );
 
-      if (attachments.length === 0) {
+      if (!attachments.length) {
         return '';
       }
 
-      const filename = attachments[0].attributes.file;
-
-      const link = document.createElement('link');
-      link.href = filename;
-      link.rel = 'prefetch';
-      document.getElementsByTagName('head')[0].appendChild(link);
-
-      this.pageService.addToImagesDict(resource, filename);
-      return filename;
+      const fileUrl = attachments[0].attributes.file;
+      if (resourceType === getResourceTypeEnum.animation) {
+        this.pageService.addToAnimationsDict(resourceName, fileUrl);
+        return fileUrl;
+      } else if (resourceType === getResourceTypeEnum.image) {
+        const link = document.createElement('link');
+        link.href = fileUrl;
+        link.rel = 'prefetch';
+        document.getElementsByTagName('head')[0].appendChild(link);
+        this.pageService.addToImagesDict(resourceName, fileUrl);
+        return fileUrl;
+      }
     }
   }
 
   private loadBookPage(page: TractPage): void {
-    const pageId = this._pageParams.pageid;
-    const showpage: boolean = pageId
-      ? page.position === pageId
-      : page.position === 0;
-    if (showpage) this.showPage(page);
+    const pageId = this._pageParams.pageId;
+
+    const showPage: boolean =
+      pageId !== undefined
+        ? page.position === Number(pageId) || page.id === pageId
+        : page.position === 0;
+
+    if (showPage) {
+      this.showPage(page);
+
+      // If the pageId is not set in the URL (or set to 0), we need to set
+      // it using getPageIdForRouting in case it's a CYOA page and should use
+      // the page.id instead of the page.position
+      if (!pageId || pageId === '0') {
+        const pageIdForUrl = this.getPageIdForRouting(page);
+
+        // Only replace URL if it's not already using the real page.id
+        if (String(pageIdForUrl) !== String(pageId)) {
+          const urlTree = this.router.createUrlTree([
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.resourceType,
+            this._pageParams.bookId,
+            pageIdForUrl
+          ]);
+
+          this.router.navigateByUrl(urlTree, { replaceUrl: true });
+        }
+      }
+    }
   }
 
   private loadBookManifestXML(): void {
@@ -266,11 +324,11 @@ export class PageComponent implements OnInit, OnDestroy {
           ParserConfig.Companion.FEATURE_CONTENT_CARD
         ])
         .withParseTips(false);
-      const newParser = new ManifestParser(this.pullParserFactory, config);
+      const parser = new ManifestParser(this.pullParserFactory, config);
       const controller = new AbortController();
       const signal = controller.signal;
       try {
-        newParser.parseManifest(fileName, signal).then((data) => {
+        parser.parseManifest(fileName, signal).then((data) => {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
@@ -282,15 +340,16 @@ export class PageComponent implements OnInit, OnDestroy {
                 attributes['file-file-name'],
                 attributes.file
               );
-              if (
-                /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                  attributes['file-file-name']
-                )
-              ) {
-                this.getImage(attributes['file-file-name']);
-              } else {
-                this.getAnimation(attributes['file-file-name']);
-              }
+              const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
+                attributes['file-file-name']
+              );
+
+              this.getResource(
+                isImage
+                  ? getResourceTypeEnum.image
+                  : getResourceTypeEnum.animation,
+                attributes['file-file-name']
+              );
             }
           });
 
@@ -360,72 +419,61 @@ export class PageComponent implements OnInit, OnDestroy {
         const result = enc.decode(arr);
         const jsonResource = JSON.parse(result);
         this._pageBookIndex = jsonResource;
+        const resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
 
         if (
-          jsonResource &&
-          jsonResource.data &&
-          jsonResource.data.attributes &&
-          jsonResource.data.attributes['resource-type'] &&
-          jsonResource.data.attributes['resource-type'] === 'tract'
+          !resourceTypes.includes(
+            jsonResource?.data?.attributes?.['resource-type']
+          )
         ) {
-          if (!jsonResource.data.attributes['manifest']) {
-            this.pageService.setDir('ltr');
-            this.bookNotAvailable = true;
-            this.loaderService.display(false);
-            return;
-          }
-
-          if (
-            jsonResource.data.relationships &&
-            jsonResource.data.relationships['latest-translations'] &&
-            jsonResource.data.relationships['latest-translations'].data
-          ) {
-            const tPageBookRequiredTranslations =
-              jsonResource.data.relationships['latest-translations'].data;
-            if (
-              tPageBookRequiredTranslations &&
-              tPageBookRequiredTranslations.length > 0 &&
-              jsonResource.included &&
-              jsonResource.included.length > 0
-            ) {
-              const tIncluded = jsonResource.included;
-              tPageBookRequiredTranslations.forEach(
-                (pageBookTranslationItem) => {
-                  const translations = tIncluded.filter((row) => {
-                    if (
-                      row.type === 'translation' &&
-                      row.id === pageBookTranslationItem.id
-                    ) {
-                      return true;
-                    } else {
-                      return false;
-                    }
-                  });
-                  if (translations && translations.length > 0) {
-                    translations.forEach((item) => {
-                      this._pageBookTranslations.push(item);
-                    });
-                  }
-                }
-              );
-            }
-          }
-
-          this.selectedBookName = jsonResource.data.attributes['name'];
-
-          this.getAvailableLanguagesForSelectedBook();
-        } else {
           this.pageService.setDir('ltr');
           this.bookNotAvailable = true;
           this.loaderService.display(false);
+          return;
         }
+
+        this.resourceType = jsonResource?.data?.attributes?.['resource-type'];
+
+        if (!jsonResource.data.attributes['manifest']) {
+          this.pageService.setDir('ltr');
+          this.bookNotAvailable = true;
+          this.loaderService.display(false);
+          return;
+        }
+        const latestTranslations =
+          jsonResource.data.relationships?.['latest-translations']?.data;
+
+        if (latestTranslations?.length) {
+          if (jsonResource.included?.length) {
+            const includedTranslations = jsonResource.included;
+            latestTranslations.forEach((pageBookTranslationItem) => {
+              const translations = includedTranslations.filter((row) => {
+                if (
+                  row.type === 'translation' &&
+                  row.id === pageBookTranslationItem.id
+                ) {
+                  return true;
+                }
+
+                return false;
+              });
+              translations?.forEach((item) => {
+                this._pageBookTranslations.push(item);
+              });
+            });
+          }
+        }
+
+        this.selectedBookName = jsonResource.data.attributes['name'];
+
+        this.getAvailableLanguagesForSelectedBook();
       });
   }
 
   private loadPageBook(): void {
     this._pageBook =
       this._books.find((book) =>
-        book.attributes.abbreviation === this._pageParams.bookid ? book : false
+        book.attributes.abbreviation === this._pageParams.bookId ? book : false
       ) || {};
 
     if (!this._pageBook.id) {
@@ -464,7 +512,7 @@ export class PageComponent implements OnInit, OnDestroy {
         if (data && data.data) {
           this._allLanguages = data.data;
           this._allLanguagesLoaded = true;
-          if (this._pageParams && this._pageParams.langid) {
+          if (this._pageParams && this._pageParams.langId) {
             this.setSelectedLanguage();
           }
           this.getAllBooks();
@@ -479,7 +527,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
       const attributes = lang.attributes;
-      if (attributes?.code && attributes?.code === this._pageParams.langid) {
+      if (attributes?.code && attributes?.code === this._pageParams.langId) {
         this._selectedLanguage = lang;
         this.selectedLang = attributes.name;
         this.pageService.setDir(attributes.direction);
@@ -517,27 +565,34 @@ export class PageComponent implements OnInit, OnDestroy {
         } else {
           if (this._pageBookManifestLoaded) {
             if (this._pageBookSubPages && this._pageBookSubPages.length) {
-              const index = this._pageBookSubPages.findIndex(
-                (sPage) => sPage.position === this._pageParams.pageid
-              );
-              if (index >= 0) {
-                const tTract = this._pageBookSubPages[index] as TractPage;
-                this.showPage(tTract);
+              const pageId = this._pageParams.pageId;
+              const matchedPage = this._pageBookSubPages.find((page) => {
+                if (this.isCYOAPage()) {
+                  return page.id === pageId;
+                } else {
+                  return page.position === Number(pageId);
+                }
+              });
+
+              if (matchedPage) {
+                this.showPage(matchedPage as TractPage);
                 return;
               }
             }
-
+            // If we can't find the page in the sub pages
+            // We try to find the page in the manifest
+            const fallbackId = this.cleanPageId();
             if (
-              this._pageBookSubPagesManifest &&
-              this._pageBookSubPagesManifest.length > this._pageParams.pageid
+              typeof fallbackId === 'number' &&
+              this._pageBookSubPagesManifest?.length > fallbackId
             ) {
-              const tSubPageManifest = this._pageBookManifest.pages[
-                this._pageParams.pageid
+              const fallbackPage = this._pageBookManifest.pages[
+                fallbackId
               ] as TractPage;
-              if (tSubPageManifest) {
+              if (fallbackPage) {
                 this.pagesLoaded = false;
                 this.loaderService.display(true);
-                this.loadBookPage(tSubPageManifest);
+                this.loadBookPage(fallbackPage);
                 return;
               }
             }
@@ -554,16 +609,18 @@ export class PageComponent implements OnInit, OnDestroy {
     this.route.params
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((params) => {
-        const { langid, bookid } = this._pageParams;
+        const { langId, bookId } = this._pageParams;
         const bookChanged =
-          langid !== params['langid'] || bookid !== params['bookid'];
+          langId !== params['langId'] || bookId !== params['bookId'];
 
         if (!bookChanged) {
-          this._pageParams.pageid = Number(params['page']);
+          this._pageParams.pageId = params['page'];
         } else {
-          this._pageParams.langid = params['langid'];
-          this._pageParams.bookid = params['bookid'];
-          this._pageParams.pageid = Number(params['page']);
+          this._pageParams.langId = params['langId'];
+          this._pageParams.resourceType = params['resourceType'];
+          this._pageParams.toolType = params['toolType'];
+          this._pageParams.bookId = params['bookId'];
+          this._pageParams.pageId = params['page'];
           this.clearData();
           if (this._allLanguagesLoaded) {
             this.setSelectedLanguage();
@@ -574,7 +631,7 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private awaitPageNavigation(): void {
-    // Go to next page
+    // Navigate to the next page upon request
     this.pageService.nextPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -582,10 +639,10 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onNextPage();
+        this.onTractNextPage();
       });
 
-    // Go to previous page
+    // Navigate to the previous page upon request
     this.pageService.previousPage$
       .pipe(
         takeUntil(this._unsubscribeAll),
@@ -593,7 +650,18 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onPreviousPage();
+        this.onTractPreviousPage();
+      });
+
+    // Navigate to specified page upon request
+    this.pageService.navigateToPage$
+      .pipe(
+        takeUntil(this._unsubscribeAll),
+        takeUntil(this._pageChanged),
+        delay(0)
+      )
+      .subscribe((pagePosition) => {
+        this.onNavigateToPage(pagePosition);
       });
 
     // Go to any page on page event
@@ -613,10 +681,19 @@ export class PageComponent implements OnInit, OnDestroy {
       []
     );
 
+    const manifestDismissListeners =
+      this._pageBookManifest?.dismissListeners?.map(
+        (listener) => listener.name
+      ) || [];
+
+    const allKnownListeners = allListenersOnAllPages.concat(
+      manifestDismissListeners
+    );
+
     this.pageService.contentEvent$
       .pipe(
         filter((event) =>
-          allListenersOnAllPages.some((allListenersOnPage) =>
+          allKnownListeners.some((allListenersOnPage) =>
             allListenersOnPage.includes(event)
           )
         )
@@ -625,6 +702,30 @@ export class PageComponent implements OnInit, OnDestroy {
       .subscribe((event) => {
         this.navigateToPageOnEvent(event);
       });
+  }
+
+  private getPageIdForRouting(page: Page): string | number {
+    if (!page) {
+      return 0;
+    }
+    return this.isCYOAPage() ? page.id : page.position;
+  }
+
+  private cleanPageId(): number | string {
+    const id = Number(this._pageParams.pageId);
+    return Number.isInteger(id) ? id : this._pageParams.pageId;
+  }
+
+  private isCYOAPage(): boolean {
+    const cyoaPageTypes = [
+      godToolsParser.model.page.ContentPage,
+      godToolsParser.model.page.CardCollectionPage,
+      godToolsParser.model.page.PageCollectionPage
+    ];
+
+    return cyoaPageTypes.some(
+      (pageType) => this.activePage instanceof pageType
+    );
   }
 
   private navigateToPageOnEvent(event: string): void {
@@ -646,17 +747,48 @@ export class PageComponent implements OnInit, OnDestroy {
       }
     });
 
+    const manifestDismissListeners =
+      this._pageBookManifest?.dismissListeners || [];
+    const isManifestDismissListener = manifestDismissListeners.some(
+      (listener) => listener.name === event
+    );
+
+    if (isManifestDismissListener) {
+      this.router.navigate([this._pageParams.langId]);
+      return;
+    }
+
+    if (!pageToNavigateTo) {
+      return;
+    }
+
+    const pageIdForRouting = this.getPageIdForRouting(pageToNavigateTo);
+
     if (isListener) {
+      this.pageService.addToNavigationStack(String(pageIdForRouting));
       this.router.navigate([
-        this._pageParams.langid,
-        this._pageParams.bookid,
-        pageToNavigateTo.position
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.resourceType,
+        this._pageParams.bookId,
+        pageIdForRouting
       ]);
     }
 
     if (isDismissListener) {
+      this.pageService.removeFromNavigationStack(String(pageIdForRouting));
+      this.pageService.getNavigationStack().subscribe((stack) => {
+        const previousPage = stack[stack.length - 1];
+        this.router.navigate([
+          this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.resourceType,
+          this._pageParams.bookId,
+          previousPage
+        ]);
+      });
       // We want to hide the page, for now I've set this to go to the next page.
-      this.onNextPage();
+      this.onTractNextPage();
     }
   }
 
@@ -740,6 +872,8 @@ export class PageComponent implements OnInit, OnDestroy {
               .createUrlTree(
                 [
                   data.attributes.locale,
+                  this._pageParams.toolType,
+                  this._pageParams.resourceType,
                   data.attributes.tool,
                   data.attributes.page
                 ],

@@ -11,11 +11,11 @@ import {
   ContentItems,
   ContentItemsType,
   ContentParser
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { ContentInputComponent } from '../content-input/content-input.component';
 
 @Component({
-  selector: 'app-content-new-repeater',
+  selector: 'app-content-repeater',
   templateUrl: './content-repeater.component.html',
   styleUrls: ['./content-repeater.component.css']
 })

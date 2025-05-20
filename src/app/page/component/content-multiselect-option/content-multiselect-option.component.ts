@@ -9,11 +9,11 @@ import {
   Content,
   FlowWatcher,
   MultiselectOption
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-multiselect-option',
+  selector: 'app-content-multiselect-option',
   templateUrl: './content-multiselect-option.component.html',
   styleUrls: ['./content-multiselect-option.component.css']
 })

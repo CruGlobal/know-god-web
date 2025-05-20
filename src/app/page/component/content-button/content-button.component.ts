@@ -3,12 +3,12 @@ import { Observable } from 'rxjs';
 import {
   Button,
   EventId
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-button',
+  selector: 'app-content-button',
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })
