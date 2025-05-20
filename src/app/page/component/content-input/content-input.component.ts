@@ -4,11 +4,11 @@ import {
   Text,
   parseTextRemoveBrTags,
   Input as xmlInput
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-input',
+  selector: 'app-content-input',
   templateUrl: './content-input.component.html',
   styleUrls: ['./content-input.component.css']
 })

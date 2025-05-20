@@ -16,13 +16,13 @@ import {
   Modal,
   TractPage,
   TractPageCard
-} from 'src/app/services/xml-parser-service/xmp-parser.service';
-import { PageService } from '../../service/page-service.service';
+} from 'src/app/services/xml-parser-service/xml-parser.service';
+import { PageService } from '../../../service/page-service.service';
 
 @Component({
-  selector: 'app-tract-new-page',
+  selector: 'app-tract-page',
   templateUrl: './tract-page.component.html',
-  styleUrls: ['./tract-page.component.css'],
+  styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class TractPageComponent implements OnChanges, OnDestroy {
