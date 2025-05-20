@@ -9,11 +9,11 @@ import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Animation } from 'src/app/services/xml-parser-service/xmp-parser.service';
+import { Animation } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
-  selector: 'app-content-new-animation',
+  selector: 'app-content-animation',
   templateUrl: './content-animation.component.html',
   styleUrls: ['./content-animation.component.css']
 })

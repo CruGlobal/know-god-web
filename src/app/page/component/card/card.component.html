@@ -13,6 +13,6 @@
     [innerHTML]="labelText"
   ></h4>
   <ng-container *ngIf="content && (isModal$ | async) === false">
-    <app-content-new-repeater [items]="content"></app-content-new-repeater>
+    <app-content-repeater [items]="content"></app-content-repeater>
   </ng-container>
 </div>

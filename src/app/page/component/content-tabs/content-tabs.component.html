@@ -4,9 +4,7 @@
       <div class="tabContent">
         <!-- Remove tab label text until tabs are implemented on web -->
         <!-- <p>{{ tab.tab.label.text }}</p> -->
-        <app-content-new-repeater
-          [items]="tab.contents"
-        ></app-content-new-repeater>
+        <app-content-repeater [items]="tab.contents"></app-content-repeater>
       </div>
     </ng-container>
   </ng-container>

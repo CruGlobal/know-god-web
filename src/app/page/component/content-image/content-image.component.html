@@ -1,8 +1,19 @@
 <ng-container *ngIf="ready">
+  <a *ngIf="isEventType" (click)="formAction()" href="javascript:void(0)">
+    <img
+      class="imageContent ng-binding"
+      [ngClass]="{ firstImage: isFirstPage$ | async }"
+      [src]="imgResource"
+      [ngStyle]="{ width: width }"
+      alt=""
+    />
+  </a>
   <img
+    *ngIf="!isEventType"
     class="imageContent ng-binding"
     [ngClass]="{ firstImage: isFirstPage$ | async }"
     [src]="imgResource"
     [ngStyle]="{ width: width }"
+    alt=""
   />
 </ng-container>
