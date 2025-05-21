@@ -2927,12 +2927,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:20.17.24":
-  version: 20.17.24
-  resolution: "@types/node@npm:20.17.24"
+"@types/node@npm:20.17.50":
+  version: 20.17.50
+  resolution: "@types/node@npm:20.17.50"
   dependencies:
     undici-types: "npm:~6.19.2"
-  checksum: 10c0/2a39ce4c4cd4588a05b2a485cc0a1407cbea608dd1ab03e36add59d61712718d95c84b492ca5190753f0be2bce748aeeb0f2a1412e712775462befe3820b3ff9
+  checksum: 10c0/98a4f394c22b93e1bb37b3cfdfa5df7b79fcab19dafe80fe19e94126f897a8d2b3d58a4b680dc15591c5660bdd2f1ae49d6c59e7cbe7fc0c7cf433b0b984b389
   languageName: node
   linkType: hard
 
@@ -7271,7 +7271,7 @@ __metadata:
     "@cruglobal/godtools-shared": "npm:^1.1.3"
     "@rails/actioncable": "npm:~8.0.0"
     "@types/jasmine": "npm:^5.1.4"
-    "@types/node": "npm:20.17.24"
+    "@types/node": "npm:20.17.50"
     "@typescript-eslint/eslint-plugin": "npm:^8.15.0"
     "@typescript-eslint/parser": "npm:^8.15.0"
     core-js: "npm:^3.39.0"
