@@ -71,7 +71,7 @@ export type Horizontal =
 export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
 export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
 export const ManifestParser = manifestParser;
-export const State = org.cru.godtools.shared.tool.state.State;
+export const State = org.cru.godtools.shared.renderer.state.State;
 
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {

@@ -77,14 +77,7 @@ const createText = (text: string): Text => {
 };
 
 export const createEventId = (name: string, namespace?: string): EventId => {
-  return {
-    namespace,
-    name,
-    resolve: () => null,
-    equals: () => null,
-    hashCode: () => null,
-    toString: () => null
-  };
+  return new org.cru.godtools.shared.tool.parser.model.EventId(namespace, name);
 };
 
 const createButton = (text: string, url: string, event: string): Button => {
@@ -434,7 +427,6 @@ export const mockTractPage = (
     header: mockHeader(headerNumber, headerText),
     hero: mockHero(heroHeading),
     callToAction: mockCallToAction(callToActionText),
-    cardTextColor: '#000000',
     controlColor: '#000000',
     cards: cardLabel
       ? [
