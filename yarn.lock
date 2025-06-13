@@ -1774,11 +1774,11 @@ __metadata:
   linkType: hard
 
 "@cruglobal/godtools-shared@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "@cruglobal/godtools-shared@npm:1.1.3"
+  version: 1.2.0
+  resolution: "@cruglobal/godtools-shared@npm:1.2.0"
   dependencies:
     sax: "npm:1.2.4"
-  checksum: 10c0/c61968c6c019b186d7ac5ac52b9d2da058db6efcbb709fd9039d540c63afa84d3b343dc1d5486d295a61058d672be13f313275f691a5f87d957fe6f39f3f91c0
+  checksum: 10c0/309185ddbffe2c3d1097abd4e7e481b9bd9c28314ae49b6045ca87aa7cacad2891760a347056c408a0931ae8728ba5a41a4caa53637efe48efc8d8491166fa84
   languageName: node
   linkType: hard
 
@@ -2522,9 +2522,9 @@ __metadata:
   linkType: hard
 
 "@rails/actioncable@npm:~8.0.0":
-  version: 8.0.0
-  resolution: "@rails/actioncable@npm:8.0.0"
-  checksum: 10c0/07cf13277594e530cdeff85b0416d0872b09ebfe40f9bfb5bbe612c74d7439c401981f8b29971e914af502bfafbf95ab661199a648da8dfa46058c1fbd40d658
+  version: 8.0.200
+  resolution: "@rails/actioncable@npm:8.0.200"
+  checksum: 10c0/42c861f3b43131ab523d37125e30e802bd5bab98bf8150a780531f82f05177cd0071a75a7f1341eac9de772732625194ac16205a40b82dc567cc05c21c56e412
   languageName: node
   linkType: hard
 
@@ -9556,11 +9556,11 @@ __metadata:
   linkType: hard
 
 "serialize-javascript@npm:^6.0.0, serialize-javascript@npm:^6.0.1":
-  version: 6.0.1
-  resolution: "serialize-javascript@npm:6.0.1"
+  version: 6.0.2
+  resolution: "serialize-javascript@npm:6.0.2"
   dependencies:
     randombytes: "npm:^2.1.0"
-  checksum: 10c0/1af427f4fee3fee051f54ffe15f77068cff78a3c96d20f5c1178d20630d3ab122d8350e639d5e13cde8111ef9db9439b871305ffb185e24be0a2149cec230988
+  checksum: 10c0/2dd09ef4b65a1289ba24a788b1423a035581bef60817bea1f01eda8e3bda623f86357665fe7ac1b50f6d4f583f97db9615b3f07b2a2e8cbcb75033965f771dd2
   languageName: node
   linkType: hard
 
