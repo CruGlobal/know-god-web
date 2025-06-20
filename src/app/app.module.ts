@@ -56,7 +56,8 @@ const appRoutes: Routes = [
   {
     path: ':langId/:bookId',
     // Redirecting old URL format to the new one
-    redirectTo: ':langId/tool/v1/:bookId'
+    redirectTo: ':langId/tool/v1/:bookId',
+    pathMatch: 'full'
   },
   {
     path: ':langId/:bookId/:page',
