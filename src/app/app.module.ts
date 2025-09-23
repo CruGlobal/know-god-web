@@ -30,6 +30,7 @@ import { ContentTabsComponent } from './page/component/content-tabs/content-tabs
 import { ContentTextComponent } from './page/component/content-text/content-text.component';
 import { ContentVideoComponent } from './page/component/content-video/content-video.component';
 import { CyoaCardComponent } from './page/component/cyoa/card/card.component';
+import { DashboardListComponent } from './page/component/dashboard-list/dashboard-list.component';
 import { ModalComponent } from './page/component/modal/modal.component';
 import { CYOACardCollectionComponent } from './page/component/page/cyoa-card-collection-page/cyoa-card-collection-page.component';
 import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
@@ -95,6 +96,7 @@ export function playerFactory() {
   declarations: [
     AppComponent,
     DashboardComponent,
+    DashboardListComponent,
     SharingModalComponent,
     LoaderComponent,
     PageComponent,

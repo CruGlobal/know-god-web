@@ -1,0 +1,90 @@
+.bs-container {
+  max-width: 900px;
+}
+
+/* Resource header */
+.resource-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-direction: column;
+  text-align: center;
+  gap: 15px;
+}
+
+.list-header {
+  font-size: 32px;
+  font-weight: 600;
+  color: #212b48;
+}
+
+.view-all-link {
+  font-size: 14px;
+  color: #3ba3da;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.view-all-link > *:last-child {
+  margin-left: 8px;
+}
+
+/* Card deck container */
+.bs-card-deck {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+}
+
+/* Card styles */
+.bs-card {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
+  transition: box-shadow 0.2s;
+  text-decoration: none;
+  width: 100%;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.bs-card:hover {
+  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
+}
+
+.bs-card-body {
+  padding: 20px;
+}
+
+.bs-card-title {
+  font-size: 1rem;
+  color: #3ba3da;
+  margin-bottom: 4px;
+  letter-spacing: unset;
+  line-height: 1.2;
+}
+
+.bs-card-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #323c5a;
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+  .resource-header {
+    flex-direction: row;
+    text-align: left;
+  }
+
+  .bs-card-deck {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 25px;
+  }
+}
+
+@media (min-width: 992px) {
+  .bs-card-deck {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+  }
+}

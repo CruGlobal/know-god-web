@@ -1,0 +1,36 @@
+<div class="bs-container">
+  <div class="resource-header">
+    <h2 class="list-header">{{ title }}</h2>
+    <a
+      href="javascript:void(0)"
+      class="view-all-link"
+      (click)="onViewResourceClick()"
+    >
+      <span class="view-all-text">{{ viewAllText }} {{ title }}</span>
+      <em class="fas fa-arrow-right"></em>
+    </a>
+  </div>
+
+  <div class="bs-card-deck">
+    <a
+      href="javascript:void(0)"
+      class="bs-card"
+      (click)="onResourceClick(resource)"
+      *ngFor="let resource of resources | slice: 0 : 3; let i = index"
+    >
+      <img
+        class="bs-card-img-top"
+        [src]="resource.imgUrl"
+        [alt]="resource.resourceName"
+      />
+      <div class="bs-card-body">
+        <h5 class="bs-card-title" dir="{{ dispLanguageDirection }}">
+          {{ resource.resourceName }}
+        </h5>
+        <p class="bs-card-text" dir="{{ dispLanguageDirection }}">
+          {{ resource.tagline }}
+        </p>
+      </div>
+    </a>
+  </div>
+</div>
