@@ -31,7 +31,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _booksData: any;
   private _languagesData: any;
 
-  resources: Resource[] = [];
+  tools: Resource[] = [];
+  lessons: Resource[] = [];
   englishLangId = 1;
   englishLangCode = 'en';
   englishLangName = 'English';
@@ -44,7 +45,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageDirection: string;
   langSwitchOn: boolean;
   availableLangs: [];
-  resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
+  resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
     public route: Router,
@@ -228,17 +229,25 @@ export class DashboardComponent implements OnInit, OnDestroy {
                   (x) => x.id === attributes['attr-banner']
                 )?.attributes.file;
 
-                this.resources = [
-                  ...this.resources,
-                  {
-                    imgUrl,
-                    resourceName,
-                    id: resourceId,
-                    abbreviation: attributes.abbreviation,
-                    tagline,
-                    resourceType
-                  }
-                ];
+                const resourceData = {
+                  imgUrl,
+                  resourceName,
+                  id: resourceId,
+                  abbreviation: attributes.abbreviation,
+                  tagline,
+                  resourceType
+                };
+
+                if (
+                  resourceType === ResourceType.CYOA ||
+                  resourceType === ResourceType.Tract
+                ) {
+                  this.tools = [...this.tools, resourceData];
+                } else if (resourceType === ResourceType.Lesson) {
+                  // Lessons do not have meaningful taglines
+                  const lessonData = { ...resourceData, tagline: null };
+                  this.lessons = [...this.lessons, lessonData];
+                }
               } else {
                 console.log('MISSING TRANSLATION', resource, translation);
               }
@@ -267,7 +276,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onSelectLanguage(pLangCode: string): void {
     this.sectionReady = false;
     this._languageChanged.next();
-    this.resources = [];
+    this.tools = [];
+    this.lessons = [];
     this.langSwitchOn = !this.langSwitchOn;
     this.route.navigate(['/', pLangCode]);
   }

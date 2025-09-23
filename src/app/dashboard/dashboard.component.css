@@ -46,41 +46,6 @@
   font-size: 12px;
 }
 
-/***** Tools *****/
-#homeTools {
-  padding-top: 30px;
-}
-
-#homeTools .bs-card {
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.2s;
-  text-decoration: none;
-  margin-bottom: 30px;
-  flex-grow: 0;
-}
-
-#homeTools .bs-card:hover {
-  box-shadow: 0 4px 12px 0 rgba(0, 0, 0, 0.5);
-}
-
-#homeTools .bs-card-body {
-  padding: 20px;
-}
-
-#homeTools .bs-card-title {
-  font-size: 1rem;
-  color: #3ba3da;
-  margin-bottom: 4px;
-  letter-spacing: unset;
-  line-height: 1.2;
-}
-
-#homeTools .bs-card-text {
-  font-size: 14px;
-  line-height: 1.5;
-  color: #323c5a;
-}
-
 /***** Footer *****/
 #homeFooter {
   font-size: 14px;
@@ -180,12 +145,16 @@
   opacity: 0.5;
 }
 
-/***** Responsive *****/
-@media (min-width: 576px) {
-  #homeTools .bs-card {
-    flex-basis: calc(50% - 30px);
-  }
+#homeTools app-dashboard-list {
+  display: block;
+  margin-bottom: 40px;
 }
+
+#homeTools {
+  padding-block: 45px;
+}
+
+/***** Responsive *****/
 @media screen and (max-width: 767px) {
   #homeHeader .language-switcher {
     width: 100%;
@@ -210,12 +179,6 @@
   #homeHeader img {
     height: 25px;
   }
-  #homeTools {
-    padding-top: 45px;
-  }
-  #homeTools .bs-card {
-    margin-bottom: 45px;
-  }
 
   #homeHeader .bs-container {
     position: relative;
@@ -227,22 +190,5 @@
     top: 0;
     bottom: 0;
     font-size: 14px;
-  }
-}
-@media screen and (min-width: 992px) {
-  #homeTools {
-    padding-top: 60px;
-    padding-bottom: 15px;
-  }
-  #homeTools .bs-card {
-    flex-basis: calc(33.3333% - 30px);
-  }
-}
-@media screen and (min-width: 1200px) {
-  #homeTools {
-    padding-top: 75px;
-  }
-  #homeTools .bs-card {
-    margin-bottom: 60px;
   }
 }
