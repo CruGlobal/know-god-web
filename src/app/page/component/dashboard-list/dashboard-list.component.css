@@ -1,16 +1,11 @@
-.bs-container {
-  max-width: 900px;
-}
-
 /* Resource header */
 .resource-header {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
-  flex-direction: column;
   text-align: center;
-  gap: 15px;
 }
 
 .list-header {
@@ -32,9 +27,13 @@
 
 /* Card deck container */
 .bs-card-deck {
+  max-width: 100%;
   display: grid;
   grid-template-columns: 1fr;
-  gap: 20px;
+  justify-items: center;
+  gap: 25px;
+  margin-left: 0;
+  padding-right: 0;
 }
 
 /* Card styles */
@@ -44,7 +43,6 @@
   text-decoration: none;
   width: 100%;
   max-width: 300px;
-  margin: 0 auto;
 }
 
 .bs-card:hover {
@@ -72,19 +70,17 @@
 /* Responsive */
 @media (min-width: 768px) {
   .resource-header {
-    flex-direction: row;
+    grid-template-columns: 1fr auto;
     text-align: left;
   }
 
   .bs-card-deck {
     grid-template-columns: repeat(2, 1fr);
-    gap: 25px;
   }
 }
 
 @media (min-width: 992px) {
   .bs-card-deck {
     grid-template-columns: repeat(3, 1fr);
-    gap: 30px;
   }
 }

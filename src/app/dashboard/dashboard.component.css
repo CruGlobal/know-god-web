@@ -46,6 +46,10 @@
   font-size: 12px;
 }
 
+.bs-container {
+  max-width: 900px;
+}
+
 /***** Footer *****/
 #homeFooter {
   font-size: 14px;

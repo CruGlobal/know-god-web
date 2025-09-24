@@ -18,21 +18,23 @@
 </header>
 
 <section id="homeTools">
-  <app-dashboard-list
-    title="Tools"
-    [resources]="tools"
-    [dispLanguageDirection]="dispLanguageDirection"
-    (resourceClick)="navigateToPage($event)"
-  >
-  </app-dashboard-list>
+  <div class="bs-container">
+    <app-dashboard-list
+      title="Tools"
+      [resources]="tools"
+      [dispLanguageDirection]="dispLanguageDirection"
+      (resourceClick)="navigateToPage($event)"
+    >
+    </app-dashboard-list>
 
-  <app-dashboard-list
-    title="Lessons"
-    [resources]="lessons"
-    [dispLanguageDirection]="dispLanguageDirection"
-    (resourceClick)="navigateToPage($event)"
-  >
-  </app-dashboard-list>
+    <app-dashboard-list
+      title="Lessons"
+      [resources]="lessons"
+      [dispLanguageDirection]="dispLanguageDirection"
+      (resourceClick)="navigateToPage($event)"
+    >
+    </app-dashboard-list>
+  </div>
 </section>
 
 <footer
