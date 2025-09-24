@@ -56,15 +56,7 @@
     <div class="modal-close">
       <i class="fas fa-times" (click)="onSwitchLanguage()"></i>
     </div>
-    <input
-      type="text"
-      ng-model="searchQuery"
-      placeholder="Search languages..."
-    />
-    <ul
-      class="languages-grid"
-      ng-repeat="lang in availableLanguages | filter:searchQuery"
-    >
+    <ul class="languages-grid">
       <li
         class="language"
         *ngFor="let lang of availableLangs"
