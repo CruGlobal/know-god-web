@@ -43,7 +43,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public route: Router,
     public activatedRoute: ActivatedRoute,
     public commonService: CommonService,
-    private resourceService: ResourceService
+    readonly resourceService: ResourceService
   ) {}
 
   ngOnInit(): void {
