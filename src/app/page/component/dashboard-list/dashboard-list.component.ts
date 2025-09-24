@@ -5,16 +5,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
-import { ResourceType } from '../../../services/xml-parser-service/xml-parser.service';
-
-interface Resource {
-  imgUrl: string;
-  resourceName: string;
-  id: string;
-  abbreviation: string;
-  tagline: string;
-  resourceType: ResourceType;
-}
+import { Resource } from '../../../services/resource.service';
 
 @Component({
   selector: 'app-dashboard-list',
