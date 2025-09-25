@@ -19,24 +19,21 @@
 
 <section id="homeTools">
   <div class="bs-container">
-    <div class="bs-card-deck">
-      <a
-        href="javascript:void(0)"
-        class="bs-card"
-        (click)="navigateToPage(resource)"
-        *ngFor="let resource of resources; let i = index; let isFirstRow = last"
-      >
-        <img class="bs-card-img-top" [src]="resource.imgUrl" />
-        <div class="bs-card-body">
-          <h5 class="bs-card-title" dir="{{ dispLanguageDirection }}">
-            {{ resource.resourceName }}
-          </h5>
-          <p class="bs-card-text" dir="{{ dispLanguageDirection }}">
-            {{ resource.tagline }}
-          </p>
-        </div>
-      </a>
-    </div>
+    <app-dashboard-list
+      title="Tools"
+      [resources]="tools"
+      [dispLanguageDirection]="dispLanguageDirection"
+      (resourceClick)="navigateToPage($event)"
+    >
+    </app-dashboard-list>
+
+    <app-dashboard-list
+      title="Lessons"
+      [resources]="lessons"
+      [dispLanguageDirection]="dispLanguageDirection"
+      (resourceClick)="navigateToPage($event)"
+    >
+    </app-dashboard-list>
   </div>
 </section>
 
