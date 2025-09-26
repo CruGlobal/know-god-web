@@ -189,4 +189,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.langSwitchOn = !this.langSwitchOn;
     this.route.navigate(['/', pLangCode]);
   }
+
+  isToolsPage(): boolean {
+    return this.route.url.includes(`/${this.toolsRoute}`);
+  }
+
+  isLessonsPage(): boolean {
+    return this.route.url.includes(`/${this.lessonsRoute}`);
+  }
+
+  isMainDashboard(): boolean {
+    return !this.isToolsPage() && !this.isLessonsPage();
+  }
 }

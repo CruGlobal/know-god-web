@@ -17,7 +17,7 @@
       href="javascript:void(0)"
       class="bs-card"
       (click)="onResourceClick(resource)"
-      *ngFor="let resource of resources | slice: 0 : 3; let i = index"
+      *ngFor="let resource of resources; let i = index"
     >
       <img
         class="bs-card-img-top"
