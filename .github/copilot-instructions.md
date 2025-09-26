@@ -10,4 +10,4 @@ When reviewing pull requests:
 - Suggest specific improvements, including code examples where helpful.
 - Keep feedback clear, concise, and professional.
 - Where possible, introduce safe, relevant sources or references to support suggestions.
-- Tag your comments with the type of feedback: `bug`, `style`, `performance`, `security`, `maintainability`, `readability`, `best practice`, or `other`.
+- Tag your comments with the type of feedback: `bug`, `performance`, `security`, `maintainability`, `documentation`, `naming`, `test_coverage`, or `other`.
