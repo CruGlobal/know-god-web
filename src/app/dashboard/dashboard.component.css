@@ -179,7 +179,7 @@
   padding-block: 45px;
 }
 
-#homeTools > app-dashboard-list {
+#homeTools > .bs-container > app-dashboard-list {
   display: block;
   margin-bottom: 40px;
 }
