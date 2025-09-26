@@ -2,9 +2,10 @@
   <div class="resource-header">
     <h2 class="list-header">{{ title }}</h2>
     <a
+      *ngIf="!routeSelected()"
       href="javascript:void(0)"
       class="view-all-link"
-      (click)="onViewResourceClick()"
+      (click)="onViewAllClick()"
     >
       <span class="view-all-text">{{ viewAllText }} {{ title }}</span>
       <em class="far fa-arrow-right"></em>

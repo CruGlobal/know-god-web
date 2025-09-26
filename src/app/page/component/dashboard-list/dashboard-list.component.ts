@@ -5,6 +5,7 @@ import {
   Output,
   ViewEncapsulation
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Resource } from '../../../services/resource.service';
 
 @Component({
@@ -19,12 +20,25 @@ export class DashboardListComponent {
   @Input() dispLanguageDirection: string = 'ltr';
   @Input() viewAllText: string = 'View All';
   @Output() resourceClick = new EventEmitter<Resource>();
+  @Output() viewAllClick = new EventEmitter<string>();
 
+  currentRouteUrl: string = '';
+
+  constructor(readonly router: Router) {
+    this.currentRouteUrl = this.router.url;
+  }
   onResourceClick(resource: Resource): void {
     this.resourceClick.emit(resource);
   }
 
-  onViewResourceClick(): void {
-    // Add route to related page
+  onViewAllClick(): void {
+    this.viewAllClick.emit();
+  }
+
+  routeSelected(): boolean {
+    const isSelected =
+      this.currentRouteUrl.includes('/tools') ||
+      this.currentRouteUrl.includes('/lessons');
+    return isSelected;
   }
 }

@@ -23,6 +23,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _prepareDataForLanguage = new Subject<void>();
   private _languagesData: any;
 
+  toolsRoute = 'tools';
+  lessonsRoute = 'lessons';
   tools: Resource[] = [];
   lessons: Resource[] = [];
   englishLangId = 1;
@@ -159,7 +161,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
   }
 
-  navigateToPage(resource: Resource): void {
+  navigateToResourcePage(resource: Resource): void {
     const abbreviation = resource.abbreviation;
     const urlResourceType = getUrlResourceType(resource.resourceType);
     const bookType = this.resourceTypes.includes(resource.resourceType)
@@ -167,6 +169,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
       : ToolType.Lesson;
 
     const url = `${this.dispLanguageCode}/${bookType}/${urlResourceType}/${abbreviation}`;
+    this.route.navigateByUrl(url);
+  }
+
+  navigateToListPage(type: string): void {
+    const url = `/${this.dispLanguageCode}/${type}`;
     this.route.navigateByUrl(url);
   }
 
