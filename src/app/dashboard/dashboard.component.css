@@ -18,6 +18,32 @@
   font-size: 0;
 }
 
+#homeHeader > .bs-container {
+  display: flex;
+  align-items: center;
+}
+
+#homeHeader > .bs-container > .navigation {
+  display: flex;
+  gap: 20px;
+  margin-left: 20px;
+}
+
+#homeHeader > .bs-container > .navigation > a {
+  font-size: 14px;
+  color: var(--kg-gray);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+#homeHeader > .bs-container > .navigation > a.active {
+  color: var(--kg-white);
+}
+
+#homeHeader > .bs-container > .navigation > a:hover {
+  text-decoration: underline;
+}
+
 #homeHeader > .bs-container > img {
   display: inline-block;
   height: 24px;
@@ -149,13 +175,13 @@
   opacity: 0.5;
 }
 
-#homeTools app-dashboard-list {
-  display: block;
-  margin-bottom: 40px;
-}
-
 #homeTools {
   padding-block: 45px;
+}
+
+#homeTools > app-dashboard-list {
+  display: block;
+  margin-bottom: 40px;
 }
 
 /***** Responsive *****/
