@@ -3,7 +3,7 @@
     <h2 class="list-header">{{ title }}</h2>
     <a
       *ngIf="!routeSelected()"
-      href="javascript:void(0)"
+      [routerLink]="['/', dispLanguageCode, viewAllRoute]"
       class="view-all-link"
       (click)="onViewAllClick()"
     >

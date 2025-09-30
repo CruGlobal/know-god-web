@@ -172,11 +172,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.route.navigateByUrl(url);
   }
 
-  navigateToListPage(type: string): void {
-    const url = `/${this.dispLanguageCode}/${type}`;
-    this.route.navigateByUrl(url);
-  }
-
   onSwitchLanguage(): void {
     this.langSwitchOn = !this.langSwitchOn;
   }

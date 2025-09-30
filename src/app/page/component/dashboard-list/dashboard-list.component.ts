@@ -20,17 +20,14 @@ export class DashboardListComponent {
   @Input() resources: Resource[] = [];
   @Input() dispLanguageDirection: string = 'ltr';
   @Input() viewAllText: string = 'View All';
+  @Input() viewAllRoute: string = '';
+  @Input() dispLanguageCode: string = '';
   @Output() resourceClick = new EventEmitter<Resource>();
-  @Output() viewAllClick = new EventEmitter<string>();
 
   readonly router = inject(Router);
 
   onResourceClick(resource: Resource): void {
     this.resourceClick.emit(resource);
-  }
-
-  onViewAllClick(): void {
-    this.viewAllClick.emit();
   }
 
   routeSelected(): boolean {

@@ -34,8 +34,9 @@
       title="Tools"
       [resources]="isToolsPage() ? tools : (tools | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
+      [dispLanguageCode]="dispLanguageCode"
+      [viewAllRoute]="toolsRoute"
       (resourceClick)="navigateToResourcePage($event)"
-      (viewAllClick)="navigateToListPage(toolsRoute)"
     >
     </app-dashboard-list>
 
@@ -44,8 +45,9 @@
       title="Lessons"
       [resources]="isLessonsPage() ? lessons : (lessons | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
+      [dispLanguageCode]="dispLanguageCode"
+      [viewAllRoute]="lessonsRoute"
       (resourceClick)="navigateToResourcePage($event)"
-      (viewAllClick)="navigateToListPage(lessonsRoute)"
     >
     </app-dashboard-list>
   </div>
