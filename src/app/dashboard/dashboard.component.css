@@ -31,8 +31,6 @@
 
 #homeHeader > .bs-container > .navigation > a {
   font-size: 14px;
-  color: var(--kg-gray);
-  text-decoration: none;
   font-weight: 800;
 }
 
@@ -52,7 +50,6 @@
 #homeHeader > .bs-container > .language-switcher > div.selector {
   display: flex;
   flex-direction: row;
-  height: 100%;
   align-items: center;
   justify-content: center;
   cursor: pointer;
@@ -144,7 +141,7 @@
   padding: 0 8px;
   align-items: center;
   font-size: 13px;
-  color: #666;
+  color: #555;
   align-items: center;
   white-space: nowrap;
   overflow: hidden;
