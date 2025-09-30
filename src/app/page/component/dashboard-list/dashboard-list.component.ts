@@ -3,7 +3,8 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Resource } from '../../../services/resource.service';
@@ -22,11 +23,8 @@ export class DashboardListComponent {
   @Output() resourceClick = new EventEmitter<Resource>();
   @Output() viewAllClick = new EventEmitter<string>();
 
-  currentRouteUrl: string = '';
+  readonly router = inject(Router);
 
-  constructor(readonly router: Router) {
-    this.currentRouteUrl = this.router.url;
-  }
   onResourceClick(resource: Resource): void {
     this.resourceClick.emit(resource);
   }
@@ -37,8 +35,8 @@ export class DashboardListComponent {
 
   routeSelected(): boolean {
     const isSelected =
-      this.currentRouteUrl.includes('/tools') ||
-      this.currentRouteUrl.includes('/lessons');
+      this.router.url.includes('/tools') ||
+      this.router.url.includes('/lessons');
     return isSelected;
   }
 }
