@@ -5,7 +5,6 @@
       *ngIf="!routeSelected()"
       [routerLink]="['/', dispLanguageCode, viewAllRoute]"
       class="view-all-link"
-      (click)="onViewAllClick()"
     >
       <span class="view-all-text">{{ viewAllText }} {{ title }}</span>
       <em class="far fa-arrow-right"></em>
@@ -17,7 +16,7 @@
       href="javascript:void(0)"
       class="bs-card"
       (click)="onResourceClick(resource)"
-      *ngFor="let resource of resources; let i = index"
+      *ngFor="let resource of resources"
     >
       <img
         class="bs-card-img-top"
