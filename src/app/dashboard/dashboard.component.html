@@ -35,7 +35,7 @@
       [resources]="isToolsPage() ? tools : (tools | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
       [dispLanguageCode]="dispLanguageCode"
-      [viewAllRoute]="toolsRoute"
+      [viewAllRoute]="isToolsPage() ? null : toolsRoute"
       (resourceClick)="navigateToResourcePage($event)"
     >
     </app-dashboard-list>
@@ -46,7 +46,7 @@
       [resources]="isLessonsPage() ? lessons : (lessons | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
       [dispLanguageCode]="dispLanguageCode"
-      [viewAllRoute]="lessonsRoute"
+      [viewAllRoute]="isLessonsPage() ? null : lessonsRoute"
       (resourceClick)="navigateToResourcePage($event)"
     >
     </app-dashboard-list>

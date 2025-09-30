@@ -1,11 +1,7 @@
 <div>
   <div class="resource-header">
     <h2 class="list-header">{{ title }}</h2>
-    <a
-      *ngIf="!routeSelected()"
-      [routerLink]="['/', dispLanguageCode, viewAllRoute]"
-      class="view-all-link"
-    >
+    <a *ngIf="viewAllRoute" [routerLink]="[viewAllRoute]" class="view-all-link">
       <span class="view-all-text">{{ viewAllText }} {{ title }}</span>
       <em class="far fa-arrow-right"></em>
     </a>

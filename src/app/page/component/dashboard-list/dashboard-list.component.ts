@@ -29,11 +29,4 @@ export class DashboardListComponent {
   onResourceClick(resource: Resource): void {
     this.resourceClick.emit(resource);
   }
-
-  routeSelected(): boolean {
-    const isSelected =
-      this.router.url.includes('/tools') ||
-      this.router.url.includes('/lessons');
-    return isSelected;
-  }
 }
