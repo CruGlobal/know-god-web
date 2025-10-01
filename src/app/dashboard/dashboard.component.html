@@ -1,6 +1,16 @@
 <header id="homeHeader" class="homeHeaderFooter">
   <div class="bs-container">
-    <img src="assets/img/kg-logo.png" />
+    <a routerLink="/{{ dispLanguageCode }}" routerLinkActive="active">
+      <img src="assets/img/kg-logo.png" />
+    </a>
+    <div class="navigation">
+      <a routerLink="/{{ dispLanguageCode }}/tools" routerLinkActive="active">
+        Tools
+      </a>
+      <a routerLink="/{{ dispLanguageCode }}/lessons" routerLinkActive="active">
+        Lessons
+      </a>
+    </div>
     <div class="language-switcher">
       <div
         class="selector"

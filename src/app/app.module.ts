@@ -54,6 +54,10 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 //============
 
 const appRoutes: Routes = [
+  { path: '', component: DashboardComponent },
+  { path: ':langId', component: DashboardComponent },
+  { path: ':langId/tools', component: DashboardComponent },
+  { path: ':langId/lessons', component: DashboardComponent },
   {
     path: ':langId/:bookId',
     // Redirecting old URL format to the new one
@@ -66,8 +70,6 @@ const appRoutes: Routes = [
     redirectTo: ':langId/tool/v1/:bookId/:page',
     pathMatch: 'full'
   },
-  { path: ':langId', component: DashboardComponent },
-  { path: '', component: DashboardComponent },
   {
     path: ':langId/embed/:toolType/:resourceType/:bookId',
     component: PageComponent
