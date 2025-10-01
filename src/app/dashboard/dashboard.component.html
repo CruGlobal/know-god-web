@@ -30,18 +30,24 @@
 <section id="homeTools">
   <div class="bs-container">
     <app-dashboard-list
+      *ngIf="isMainDashboard() || isToolsPage()"
       title="Tools"
-      [resources]="tools"
+      [resources]="isToolsPage() ? tools : (tools | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
-      (resourceClick)="navigateToPage($event)"
+      [dispLanguageCode]="dispLanguageCode"
+      [viewAllRoute]="isToolsPage() ? null : toolsRoute"
+      (resourceClick)="navigateToResourcePage($event)"
     >
     </app-dashboard-list>
 
     <app-dashboard-list
+      *ngIf="isMainDashboard() || isLessonsPage()"
       title="Lessons"
-      [resources]="lessons"
+      [resources]="isLessonsPage() ? lessons : (lessons | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
-      (resourceClick)="navigateToPage($event)"
+      [dispLanguageCode]="dispLanguageCode"
+      [viewAllRoute]="isLessonsPage() ? null : lessonsRoute"
+      (resourceClick)="navigateToResourcePage($event)"
     >
     </app-dashboard-list>
   </div>

@@ -3,8 +3,10 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewEncapsulation
+  ViewEncapsulation,
+  inject
 } from '@angular/core';
+import { Router } from '@angular/router';
 import { Resource } from '../../../services/resource.service';
 
 @Component({
@@ -18,13 +20,13 @@ export class DashboardListComponent {
   @Input() resources: Resource[] = [];
   @Input() dispLanguageDirection: string = 'ltr';
   @Input() viewAllText: string = 'View All';
+  @Input() viewAllRoute: string = '';
+  @Input() dispLanguageCode: string = '';
   @Output() resourceClick = new EventEmitter<Resource>();
+
+  readonly router = inject(Router);
 
   onResourceClick(resource: Resource): void {
     this.resourceClick.emit(resource);
-  }
-
-  onViewResourceClick(): void {
-    // Add route to related page
   }
 }
