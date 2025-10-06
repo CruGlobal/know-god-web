@@ -176,6 +176,13 @@
   padding-block: 45px;
 }
 
+#homeTools > .section-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
 #homeTools > .bs-container > app-dashboard-list {
   display: block;
   margin-bottom: 40px;

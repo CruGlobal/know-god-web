@@ -28,7 +28,11 @@
 </header>
 
 <section id="homeTools">
-  <div class="bs-container">
+  <em
+    class="section-loading fas fa-spinner fa-spin fa-3x"
+    *ngIf="!sectionReady"
+  ></em>
+  <div class="bs-container" *ngIf="sectionReady">
     <app-dashboard-list
       *ngIf="isMainDashboard() || isToolsPage()"
       title="Tools"
