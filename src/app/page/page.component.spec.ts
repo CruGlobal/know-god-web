@@ -74,7 +74,14 @@ describe('PageComponent', () => {
       resourceType,
       pageId
     };
-    component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6];
+    // Create proper page objects for the manifest
+    component._pageBookSubPagesManifest = [0, 1, 2, 3, 4, 5, 6].map((pos) => ({
+      position: pos,
+      isHidden: false,
+      id: String(pos),
+      listeners: [],
+      dismissListeners: []
+    }));
     component._pageBookIndex = mockPageComponent.pageBookIndex;
     component._pageBookTranslations = mockPageComponent.pageBookTranslations;
     component._allLanguages = [
@@ -111,11 +118,11 @@ describe('PageComponent', () => {
     expect(component.languagesVisible).toBeTrue();
   });
 
-  it('onTractPreviousPage() on page 0', () => {
-    component.onTractPreviousPage();
+  it('onPreviousPage() on page 0', () => {
+    component.onPreviousPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
-  it('should not navigate onTractPreviousPage() on CYOA page', () => {
+  it('should not navigate onPreviousPage() on CYOA page', () => {
     component._pageParams = {
       langId,
       bookId,
@@ -123,10 +130,10 @@ describe('PageComponent', () => {
       resourceType,
       pageId: 'end'
     };
-    component?.onTractPreviousPage();
+    component?.onPreviousPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
-  it('onTractPreviousPage() on page > 0', () => {
+  it('onPreviousPage() on page > 0', () => {
     component._pageParams = {
       langId,
       bookId,
@@ -134,7 +141,7 @@ describe('PageComponent', () => {
       resourceType,
       pageId: 5
     };
-    component.onTractPreviousPage();
+    component.onPreviousPage();
     expect(router.navigate).toHaveBeenCalledWith([
       langId,
       toolType,
@@ -144,8 +151,8 @@ describe('PageComponent', () => {
     ]);
   });
 
-  it('onTractNextPage() on page 0', () => {
-    component.onTractNextPage();
+  it('onNextPage() on page 0', () => {
+    component.onNextPage();
     expect(router.navigate).toHaveBeenCalledWith([
       langId,
       toolType,
@@ -154,7 +161,7 @@ describe('PageComponent', () => {
       1
     ]);
   });
-  it('onTractNextPage() on final page', () => {
+  it('onNextPage() on final page', () => {
     component._pageParams = {
       langId,
       bookId,
@@ -162,10 +169,10 @@ describe('PageComponent', () => {
       resourceType,
       pageId: 6
     };
-    component.onTractNextPage();
+    component.onNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
-  it('should not navigate onTractNextPage() on CYOA page', () => {
+  it('should not navigate onNextPage() on CYOA page', () => {
     component.activePage = cyoaPage;
 
     component._pageParams = {
@@ -175,7 +182,7 @@ describe('PageComponent', () => {
       resourceType,
       pageId: 0
     };
-    component?.onTractNextPage();
+    component?.onNextPage();
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
@@ -411,7 +418,7 @@ describe('PageComponent', () => {
       ],
       [createEventId('dismiss-event', null)]
     );
-    let onTractNextPageSpy;
+    let onNextPageSpy;
 
     beforeEach(() => {
       component._pageParams = {
@@ -421,13 +428,16 @@ describe('PageComponent', () => {
         resourceType,
         pageId: '1'
       };
-      component._pageBookSubPages = [tractPageOne, tractPageWithListeners];
+      component._pageBookSubPagesManifest = [
+        tractPageOne,
+        tractPageWithListeners
+      ];
       component.awaitPageEvent();
-      onTractNextPageSpy = spyOn(component, 'onTractNextPage');
+      onNextPageSpy = spyOn(component, 'onNextPage');
     });
 
     it('should navigate to page 5', () => {
-      pageService.formAction('another-page-event');
+      pageService.contentEvent('another-page-event');
 
       expect(router.navigate).toHaveBeenCalledWith([
         'en',
@@ -442,13 +452,13 @@ describe('PageComponent', () => {
       pageService.formAction('card-event');
 
       expect(router.navigate).not.toHaveBeenCalled();
-      expect(onTractNextPageSpy).not.toHaveBeenCalled();
+      expect(onNextPageSpy).not.toHaveBeenCalled();
     });
 
     it('should navigate to the next page (1)', () => {
       pageService.addToNavigationStack('1');
       pageService.addToNavigationStack('5');
-      pageService.formAction('dismiss-event');
+      pageService.contentEvent('dismiss-event');
 
       expect(router.navigate).toHaveBeenCalledWith([
         'en',
@@ -458,17 +468,18 @@ describe('PageComponent', () => {
         '1'
       ]);
 
-      expect(onTractNextPageSpy).toHaveBeenCalled();
+      expect(onNextPageSpy).toHaveBeenCalled();
     });
 
     it('should navigate to the dashboard on manifest-level dismiss event', () => {
       component._pageBookSubPages = [tractPage];
+      component._pageBookSubPagesManifest = [tractPage];
       component._pageBookManifest = {
         dismissListeners: [{ name: 'close-tool' }]
       };
       component.awaitPageEvent();
 
-      pageService.formAction('close-tool');
+      pageService.contentEvent('close-tool');
 
       expect(router.navigate).toHaveBeenCalledWith([
         component._pageParams.langId

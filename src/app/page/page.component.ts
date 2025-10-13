@@ -69,6 +69,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
   private _pageBookSubPages: Page[];
+  private _visibleHiddenPageIds: Set<string>; // Track temporarily visible hidden pages
   private _selectedLanguage: any;
   private liveShareSubscription: ActionCable.Channel;
 
@@ -102,6 +103,7 @@ export class PageComponent implements OnInit, OnDestroy {
     };
     this._books = [];
     this.activePageOrder = 0;
+    this._visibleHiddenPageIds = new Set<string>();
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -110,9 +112,9 @@ export class PageComponent implements OnInit, OnDestroy {
       return;
     }
     if (event.key === 'ArrowLeft') {
-      this.onTractPreviousPage();
+      this.onPreviousPage();
     } else if (event.key === 'ArrowRight') {
-      this.onTractNextPage();
+      this.onNextPage();
     }
   }
 
@@ -175,34 +177,51 @@ export class PageComponent implements OnInit, OnDestroy {
     this.languagesVisible = !this.languagesVisible;
   }
 
-  private onTractPreviousPage(): void {
+  private onPreviousPage(): void {
     const pageId = this.cleanPageId();
 
-    if (!this.isCYOAPage() && typeof pageId === 'number' && pageId > 0) {
-      this.router.navigate([
-        this._pageParams.langId,
-        this._pageParams.toolType,
-        this._pageParams.resourceType,
-        this._pageParams.bookId,
-        pageId - 1
-      ]);
+    if (!this.isCYOAPage() && typeof pageId === 'number') {
+      const previousPagesInManifest = this._pageBookSubPagesManifest.filter(
+        (page) => page.position < pageId
+      );
+      const previousVisiblePages = previousPagesInManifest.filter(
+        (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+      );
+
+      if (previousVisiblePages.length > 0) {
+        const previousPage =
+          previousVisiblePages[previousVisiblePages.length - 1];
+        this.router.navigate([
+          this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.resourceType,
+          this._pageParams.bookId,
+          previousPage.position
+        ]);
+      }
     }
   }
 
-  private onTractNextPage(): void {
+  private onNextPage(): void {
     const pageId = this.cleanPageId();
-    if (
-      !this.isCYOAPage() &&
-      typeof pageId === 'number' &&
-      pageId + 1 < this._pageBookSubPagesManifest.length
-    ) {
-      this.router.navigate([
-        this._pageParams.langId,
-        this._pageParams.toolType,
-        this._pageParams.resourceType,
-        this._pageParams.bookId,
-        pageId + 1
-      ]);
+    if (!this.isCYOAPage() && typeof pageId === 'number') {
+      // Find all pages in the manifest after the current position
+      const nextPagesInManifest = this._pageBookSubPagesManifest.filter(
+        (page) => page.position > pageId
+      );
+      const nextVisiblePage = nextPagesInManifest.find(
+        (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+      );
+
+      if (nextVisiblePage) {
+        this.router.navigate([
+          this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.resourceType,
+          this._pageParams.bookId,
+          nextVisiblePage.position
+        ]);
+      }
     }
   }
   private onNavigateToPage(page: number | string): void {
@@ -290,12 +309,8 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
       if (
-        translation &&
-        translation.relationships &&
-        translation.relationships.language &&
-        translation.relationships.language.data &&
-        translation.relationships.language.data.id &&
-        translation.relationships.language.data.id === this._selectedLanguage.id
+        translation?.relationships?.language?.data?.id ===
+        this._selectedLanguage.id
       ) {
         item = translation;
         return;
@@ -355,8 +370,13 @@ export class PageComponent implements OnInit, OnDestroy {
 
           if (manifest?.pages?.length) {
             this._pageBookSubPagesManifest = manifest.pages;
-            this._pageBookSubPages = manifest.pages;
-            this.totalPages = manifest.pages.length;
+            this._visibleHiddenPageIds.clear();
+            this._pageBookSubPages = manifest.pages.filter(
+              (page) =>
+                this._visibleHiddenPageIds.has(page.id) || !page.isHidden
+            );
+
+            this.totalPages = this._pageBookSubPages.length;
             this._pageBookManifestLoaded = true;
             manifest.pages.forEach((page) => {
               this.loadBookPage(page as TractPage);
@@ -419,7 +439,11 @@ export class PageComponent implements OnInit, OnDestroy {
         const result = enc.decode(arr);
         const jsonResource = JSON.parse(result);
         this._pageBookIndex = jsonResource;
-        const resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
+        const resourceTypes = [
+          ResourceType.Tract,
+          ResourceType.CYOA,
+          ResourceType.Lesson
+        ];
 
         if (
           !resourceTypes.includes(
@@ -639,7 +663,7 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onTractNextPage();
+        this.onNextPage();
       });
 
     // Navigate to the previous page upon request
@@ -650,7 +674,7 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onTractPreviousPage();
+        this.onPreviousPage();
       });
 
     // Navigate to specified page upon request
@@ -671,12 +695,18 @@ export class PageComponent implements OnInit, OnDestroy {
   private awaitPageEvent(): void {
     // We listen for page events and dismiss events
     // We then navigate to the page that has the event
-    const allListenersOnAllPages = this._pageBookSubPages.reduce(
+    // Use _pageBookSubPagesManifest (ALL pages including hidden) to get all listeners
+    const allListenersOnAllPages = this._pageBookSubPagesManifest.reduce(
       (allListeners, page) => {
-        return allListeners.concat(
-          page.listeners.map((listener) => listener.name),
-          page.dismissListeners.map((listener) => listener.name)
-        );
+        // Add null checks for listeners and dismissListeners
+        const pageListeners = page.listeners
+          ? page.listeners.map((listener) => listener.name)
+          : [];
+        const pageDismissListeners = page.dismissListeners
+          ? page.dismissListeners.map((listener) => listener.name)
+          : [];
+
+        return allListeners.concat(pageListeners, pageDismissListeners);
       },
       []
     );
@@ -732,7 +762,8 @@ export class PageComponent implements OnInit, OnDestroy {
     let isListener = false;
     let isDismissListener = false;
     let pageToNavigateTo = null;
-    this._pageBookSubPages.forEach((page) => {
+
+    this._pageBookSubPagesManifest.forEach((page) => {
       const foundListener = page.listeners.some(
         (listener) => listener.name === event
       );
@@ -765,6 +796,13 @@ export class PageComponent implements OnInit, OnDestroy {
     const pageIdForRouting = this.getPageIdForRouting(pageToNavigateTo);
 
     if (isListener) {
+      if (pageToNavigateTo.isHidden) {
+        // Add page ID to visible set
+        this._visibleHiddenPageIds.add(pageToNavigateTo.id);
+        // Rebuild visible pages list
+        this.updateVisiblePages();
+      }
+
       this.pageService.addToNavigationStack(String(pageIdForRouting));
       this.router.navigate([
         this._pageParams.langId,
@@ -788,7 +826,35 @@ export class PageComponent implements OnInit, OnDestroy {
         ]);
       });
       // We want to hide the page, for now I've set this to go to the next page.
-      this.onTractNextPage();
+      this.onNextPage();
+    }
+  }
+
+  private updateVisiblePages(): void {
+    this._pageBookSubPages = this._pageBookSubPagesManifest.filter(
+      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+    );
+    this.totalPages = this._pageBookSubPages.length;
+  }
+
+  private cleanupHiddenPages(currentPageId: string): void {
+    const currentPage = this._pageBookSubPagesManifest.find(
+      (page) => page.id === currentPageId
+    );
+
+    const hiddenPagesToRemove: string[] = [];
+    this._visibleHiddenPageIds.forEach((pageId) => {
+      if (pageId !== currentPageId || !currentPage.isHidden) {
+        hiddenPagesToRemove.push(pageId);
+      }
+    });
+
+    hiddenPagesToRemove.forEach((pageId) => {
+      this._visibleHiddenPageIds.delete(pageId);
+    });
+
+    if (hiddenPagesToRemove.length) {
+      this.updateVisiblePages();
     }
   }
 
@@ -831,6 +897,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBookTranslationId = 0;
     this._pageBookSubPagesManifest = [];
     this._pageBookSubPages = [];
+    this._visibleHiddenPageIds.clear();
     this.availableLanguages = [];
     this.selectedBookName = '';
     this.languagesVisible = false;
@@ -844,12 +911,38 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
+
+    this.cleanupHiddenPages(page.id);
+
+    const hasNextPage = this.hasNextVisiblePage(page.position);
+    const hasPreviousPage = this.hasPreviousVisiblePage(page.position);
+
+    this.pageService.setPageNavigationState(hasPreviousPage, hasNextPage);
+
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);
     setTimeout(() => {
       this.pagesLoaded = true;
       this.loaderService.display(false);
     }, 0);
+  }
+
+  private hasNextVisiblePage(currentPosition: number): boolean {
+    const nextPagesInManifest = this._pageBookSubPagesManifest.filter(
+      (page) => page.position > currentPosition
+    );
+    return nextPagesInManifest.some(
+      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+    );
+  }
+
+  private hasPreviousVisiblePage(currentPosition: number): boolean {
+    const previousPagesInManifest = this._pageBookSubPagesManifest.filter(
+      (page) => page.position < currentPosition
+    );
+    return previousPagesInManifest.some(
+      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+    );
   }
 
   private awaitLiveShareStream(): void {

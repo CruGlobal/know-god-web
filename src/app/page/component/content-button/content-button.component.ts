@@ -58,7 +58,14 @@ export class ContentButtonComponent implements OnChanges {
 
   formAction(): void {
     if (this.events && this.type === 'event') {
-      this.pageService.formAction(formatEvents(this.events));
+      // necessary for complex form actions with 'state' in the EventId
+      const resolvedEvents = [].concat(
+        ...this.events.map((event) =>
+          event.resolve(this.pageService.parserState()).asJsReadonlyArrayView()
+        )
+      );
+
+      this.pageService.formAction(formatEvents(resolvedEvents));
     }
   }
 
