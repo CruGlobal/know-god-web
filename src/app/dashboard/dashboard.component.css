@@ -38,6 +38,10 @@
   color: var(--kg-white);
 }
 
+#homeHeader > .bs-container > .navigation.main-dashboard > a {
+  color: var(--kg-white);
+}
+
 #homeHeader > .bs-container > .navigation > a:hover {
   text-decoration: underline;
 }
