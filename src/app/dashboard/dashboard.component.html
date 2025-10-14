@@ -28,7 +28,8 @@
 </header>
 
 <section id="homeTools">
-  <div class="bs-container">
+  <app-loader *ngIf="!sectionReady"></app-loader>
+  <div class="bs-container" *ngIf="sectionReady">
     <app-dashboard-list
       *ngIf="isMainDashboard() || isToolsPage()"
       title="Tools"
