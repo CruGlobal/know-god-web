@@ -187,6 +187,18 @@
 
 /***** Responsive *****/
 @media screen and (max-width: 767px) {
+  #homeHeader > .bs-container {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  #homeHeader > .bs-container > .navigation {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin: 10px 0 0 0;
+  }
+
   #homeHeader .language-switcher {
     width: 100%;
     margin: 10px 0px -10px;

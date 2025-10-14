@@ -77,9 +77,33 @@ p {
   position: relative;
   z-index: 1;
 }
+
 #toolHeader .logo img {
   height: 24px;
   margin: 20px 0 0 0;
+}
+
+#toolHeader .page-navigation {
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  right: 80px;
+  top: 0;
+  bottom: 0;
+  align-items: center;
+}
+
+#toolHeader .page-navigation a {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+#toolHeader .page-navigation .active-tool {
+  color: #000;
+}
+
+#toolHeader .page-navigation a:hover {
+  text-decoration: underline;
 }
 
 #languageList {
@@ -108,6 +132,60 @@ p {
 @media screen and (min-width: 550px) {
   #languageList ul {
     columns: 3;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  #toolHeader .header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #toolHeader .logo {
+    order: 1;
+    width: 100%;
+    text-align: center;
+  }
+
+  .language-selector-toggle {
+    order: 2;
+    position: static;
+    text-align: center;
+    padding: 0 20px;
+    line-height: normal;
+  }
+
+  #toolHeader .page-navigation {
+    order: 3;
+    position: static;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+  }
+
+  .language-selector-toggle > .langicon {
+    float: none;
+    display: inline-block;
+    vertical-align: middle;
+    margin-top: 0;
+  }
+}
+
+@media screen and (max-width: 470px) {
+  #toolHeader {
+    padding-bottom: 40px;
+  }
+
+  #toolHeader .page-navigation {
+    width: 100%;
+  }
+
+  .language-selector-toggle {
+    width: 100%;
+    padding: 12px 0;
   }
 }
 
