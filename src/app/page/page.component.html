@@ -12,6 +12,22 @@
         >
           <img src="assets/img/kg-logo-blue.png"
         /></a>
+        <div class="page-navigation">
+          <a
+            [ngClass]="{ 'active-tool': _pageParams.toolType === 'tool' }"
+            [routerLink]="['/', _pageParams.langId, 'tools']"
+            routerLinkActive="active"
+          >
+            Tools
+          </a>
+          <a
+            [ngClass]="{ 'active-tool': _pageParams.toolType === 'lesson' }"
+            [routerLink]="['/', _pageParams.langId, 'lessons']"
+            routerLinkActive="active"
+          >
+            Lessons
+          </a>
+        </div>
         <span
           class="kg-gray-dark ng-binding language-selector-toggle"
           (click)="onToggleLanguageSelect()"
