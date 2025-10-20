@@ -97,7 +97,6 @@ export class PageComponent implements OnInit, OnDestroy {
   ) {
     this._pageParams = {
       langId: '',
-      resourceType: '',
       toolType: '',
       bookId: ''
     };
@@ -149,28 +148,50 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  private buildRouteParams(
+    ...segments: (string | number)[]
+  ): (string | number)[] {
+    // For lessons (no resourceType), use: langId, 'lesson', bookId, ...rest
+    // For tools (with resourceType), use: langId, 'tool', resourceType, bookId, ...rest
+    const langId = segments[0];
+    const toolTypeParam = segments[1];
+    const rest = segments.slice(2);
+
+    // If resourceType exists, insert it after toolType
+    if (this._pageParams.resourceType) {
+      // Tools: langId, 'tool', resourceType, bookId, ...
+      const toolType = toolTypeParam || 'tool';
+      return [langId, toolType, this._pageParams.resourceType, ...rest];
+    }
+    // Lessons: langId, 'lesson', bookId, ...
+    const toolType = toolTypeParam || 'lesson';
+    return [langId, toolType, ...rest];
+  }
+
   setCardUrl = (card: number) => {
     if (!this._pageParams.langId) {
       return;
     }
-    this.router.navigate([
-      this._pageParams.langId,
-      this._pageParams.toolType,
-      this._pageParams.resourceType,
-      this._pageParams.bookId,
-      this.getPageIdForRouting(this.activePage),
-      card
-    ]);
+    this.router.navigate(
+      this.buildRouteParams(
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.bookId,
+        this.getPageIdForRouting(this.activePage),
+        card
+      )
+    );
   };
 
   selectLanguage(lang): void {
-    this.router.navigate([
-      lang.attributes.code,
-      this._pageParams.toolType,
-      this._pageParams.resourceType,
-      this._pageParams.bookId,
-      this.getPageIdForRouting(this.activePage)
-    ]);
+    this.router.navigate(
+      this.buildRouteParams(
+        lang.attributes.code,
+        this._pageParams.toolType,
+        this._pageParams.bookId,
+        this.getPageIdForRouting(this.activePage)
+      )
+    );
   }
 
   onToggleLanguageSelect(): void {
@@ -191,13 +212,14 @@ export class PageComponent implements OnInit, OnDestroy {
       if (previousVisiblePages.length > 0) {
         const previousPage =
           previousVisiblePages[previousVisiblePages.length - 1];
-        this.router.navigate([
-          this._pageParams.langId,
-          this._pageParams.toolType,
-          this._pageParams.resourceType,
-          this._pageParams.bookId,
-          previousPage.position
-        ]);
+        this.router.navigate(
+          this.buildRouteParams(
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.bookId,
+            previousPage.position
+          )
+        );
       }
     }
   }
@@ -214,25 +236,27 @@ export class PageComponent implements OnInit, OnDestroy {
       );
 
       if (nextVisiblePage) {
-        this.router.navigate([
-          this._pageParams.langId,
-          this._pageParams.toolType,
-          this._pageParams.resourceType,
-          this._pageParams.bookId,
-          nextVisiblePage.position
-        ]);
+        this.router.navigate(
+          this.buildRouteParams(
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.bookId,
+            nextVisiblePage.position
+          )
+        );
       }
     }
   }
   private onNavigateToPage(page: number | string): void {
     this.pageService.addToNavigationStack(String(page));
-    this.router.navigate([
-      this._pageParams.langId,
-      this._pageParams.toolType,
-      this._pageParams.resourceType,
-      this._pageParams.bookId,
-      page
-    ]);
+    this.router.navigate(
+      this.buildRouteParams(
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.bookId,
+        page
+      )
+    );
   }
 
   private getResource(
@@ -289,13 +313,14 @@ export class PageComponent implements OnInit, OnDestroy {
 
         // Only replace URL if it's not already using the real page.id
         if (String(pageIdForUrl) !== String(pageId)) {
-          const urlTree = this.router.createUrlTree([
-            this._pageParams.langId,
-            this._pageParams.toolType,
-            this._pageParams.resourceType,
-            this._pageParams.bookId,
-            pageIdForUrl
-          ]);
+          const urlTree = this.router.createUrlTree(
+            this.buildRouteParams(
+              this._pageParams.langId,
+              this._pageParams.toolType,
+              this._pageParams.bookId,
+              pageIdForUrl
+            )
+          );
 
           this.router.navigateByUrl(urlTree, { replaceUrl: true });
         }
@@ -804,26 +829,28 @@ export class PageComponent implements OnInit, OnDestroy {
       }
 
       this.pageService.addToNavigationStack(String(pageIdForRouting));
-      this.router.navigate([
-        this._pageParams.langId,
-        this._pageParams.toolType,
-        this._pageParams.resourceType,
-        this._pageParams.bookId,
-        pageIdForRouting
-      ]);
+      this.router.navigate(
+        this.buildRouteParams(
+          this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.bookId,
+          pageIdForRouting
+        )
+      );
     }
 
     if (isDismissListener) {
       this.pageService.removeFromNavigationStack(String(pageIdForRouting));
       this.pageService.getNavigationStack().subscribe((stack) => {
         const previousPage = stack[stack.length - 1];
-        this.router.navigate([
-          this._pageParams.langId,
-          this._pageParams.toolType,
-          this._pageParams.resourceType,
-          this._pageParams.bookId,
-          previousPage
-        ]);
+        this.router.navigate(
+          this.buildRouteParams(
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.bookId,
+            previousPage
+          )
+        );
       });
       // We want to hide the page, for now I've set this to go to the next page.
       this.onNextPage();
@@ -963,13 +990,12 @@ export class PageComponent implements OnInit, OnDestroy {
 
             const Url = this.router
               .createUrlTree(
-                [
+                this.buildRouteParams(
                   data.attributes.locale,
                   this._pageParams.toolType,
-                  this._pageParams.resourceType,
                   data.attributes.tool,
                   data.attributes.page
-                ],
+                ),
                 {
                   queryParams: this.route.snapshot.queryParams,
 
