@@ -26,9 +26,16 @@ This Web Application (know-god-web)
 
 - **NPM Package**: `@cruglobal/godtools-shared`
 - **Source Repository**: [kotlin-mpp-godtools-tool-parser](https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser)
-- **XML API/Schema**: [mobile-content-admin](https://github.com/CruGlobal/mobile-content-admin)
+- **XML Schema**: [mobile-content-api](https://github.com/CruGlobal/mobile-content-api)
 
 ## XML Structure
+
+### XML Schema Definitions
+
+The official XML schema definitions (XSD files) are located in **mobile-content-api/public/xmlns/**. These schemas define the structure and validation rules for all GodTools XML content:
+
+- **manifest.xsd** - Root manifest structure, tool types, and resource definitions
+- **content.xsd** - All content elements (text, image, button, etc.) and common types
 
 ### Manifest Root Element
 
@@ -45,7 +52,7 @@ Every GodTools tool starts with a `<manifest>` root element that defines the too
 
 ```xml
 <manifest
-  xmlns="https://godtoolsapp.com"
+  xmlns="https://mobile-content-api.cru.org/xmlns/manifest"
   tool="knowgod"
   locale="en"
   type="tract"
@@ -63,26 +70,29 @@ Pages are the main navigational units in a tool. Each tool type supports may dif
 
 ### Content Elements
 
-Content elements are the building blocks within pages. The parser supports many different content types:
+Content elements are the building blocks within pages. All content elements are defined in `content.xsd`.
 
-| Content Type    | Description                               | XML Element     |
-| --------------- | ----------------------------------------- | --------------- |
-| **Text**        | Styled text with formatting               | `<text>`        |
-| **Paragraph**   | Text container with spacing               | `<paragraph>`   |
-| **Image**       | Images with scaling options               | `<image>`       |
-| **Video**       | Embedded video players                    | `<video>`       |
-| **Button**      | Interactive buttons                       | `<button>`      |
-| **Link**        | Clickable links                           | `<link>`        |
-| **Card**        | Content card container                    | `<card>`        |
-| **Accordion**   | Expandable/collapsible sections           | `<accordion>`   |
-| **Tabs**        | Tabbed content interface                  | `<tabs>`        |
-| **Form**        | Input forms with fields                   | `<form>`        |
-| **Input**       | Form input fields                         | `<input>`       |
-| **Spacer**      | Vertical spacing                          | `<spacer>`      |
-| **Animation**   | Lottie animations                         | `<animation>`   |
-| **Multiselect** | Multiple choice selection                 | `<multiselect>` |
-| **Flow**        | Flowing content layout                    | `<flow>`        |
-| **Fallback**    | Fallback content for unsupported features | `<fallback>`    |
+The parser supports many different content types:
+
+| Content Type    | Description                     | XML Element     |
+| --------------- | ------------------------------- | --------------- |
+| **Text**        | Styled text with formatting     | `<text>`        |
+| **Paragraph**   | Text container with spacing     | `<paragraph>`   |
+| **Image**       | Images with scaling options     | `<image>`       |
+| **Video**       | Embedded video players          | `<video>`       |
+| **Button**      | Interactive buttons             | `<button>`      |
+| **Link**        | Clickable links                 | `<link>`        |
+| **Card**        | Content card container          | `<card>`        |
+| **Accordion**   | Expandable/collapsible sections | `<accordion>`   |
+| **Tabs**        | Tabbed content interface        | `<tabs>`        |
+| **Form**        | Input forms with fields         | `<form>`        |
+| **Input**       | Form input fields               | `<input>`       |
+| **Spacer**      | Vertical spacing                | `<spacer>`      |
+| **Animation**   | Lottie animations               | `<animation>`   |
+| **Multiselect** | Multiple choice selection       | `<multiselect>` |
+| **Flow**        | Flowing content layout          | `<flow>`        |
+
+**Example**: The button element is defined in content.xsd as `<xs:element name="button">` with attributes for type, events, and url.
 
 ## Parser Usage in This Application
 
@@ -242,7 +252,7 @@ eventId.resolve(state);
 
 This allows content to trigger different navigation based on user choices stored in State.
 
-**Kotlin Implementation**: `kotlin-mpp-godtools-tool-parser/module/renderer-state/src/commonMain/kotlin/org/cru/godtools/shared/tool/parser/model/EventId+State.kt`
+**Kotlin Implementation**: `kotlin-mpp-godtools-tool-parser/module/parser/src/commonMain/kotlin/org/cru/godtools/shared/tool/parser/model/EventId.kt`
 
 #### `followup:` Namespace
 
@@ -304,6 +314,36 @@ When an event matching a page's `dismissListeners` is triggered, the app navigat
 ```
 
 **Kotlin Definition**: `kotlin-mpp-godtools-tool-parser/module/parser/src/commonMain/kotlin/org/cru/godtools/shared/tool/parser/model/page/Page.kt`
+
+### Animations
+
+Animations (Lottie JSON files) can be controlled via the event system using listeners that respond to events fired elsewhere in the tool.
+
+#### `playListeners` - Start the Animation
+
+When an event matching an animation's `playListeners` is triggered, the animation begins playing:
+
+```xml
+<animation resource="loading.json" play-listeners="start-animation">
+  <!-- This animation plays when "start-animation" event fires -->
+</animation>
+```
+
+#### `stopListeners` - Pause the Animation
+
+When an event matching an animation's `stopListeners` is triggered, the animation pauses:
+
+```xml
+<animation resource="celebration.json"
+  play-listeners="show-celebration"
+  stop-listeners="hide-celebration">
+  <!-- Animation plays on "show-celebration" and pauses on "hide-celebration" -->
+</animation>
+```
+
+The `ContentAnimationComponent` subscribes to the `PageService.contentEvent$` observable and calls `anmViewItem.play()` or `anmViewItem.pause()` when matching events are emitted.
+
+**Implementation**: [content-animation.component.ts](src/app/page/component/content-animation/content-animation.component.ts)
 
 ### Manifest Dismiss Listeners
 
@@ -461,6 +501,8 @@ Expressions are evaluated using the parser State and support:
 - Boolean operators: `!`, `&&`, `||`
 - Comparisons: `==`, `!=`, `>`, `<`, `>=`, `<=`
 
+**Expression Grammar**: The syntax for visibility expressions is defined by the ANTLR4 grammar located at: `kotlin-mpp-godtools-tool-parser/module/parser-expressions/src/commonMain/antlr/org/cru/godtools/shared/tool/parser/expressions/grammar/generated/StateExpression.g4`
+
 **Kotlin Implementation**: `kotlin-mpp-godtools-tool-parser/module/parser-expressions/`
 
 ### Resource Resolution
@@ -497,6 +539,6 @@ const url = pageService.getImageUrl('hero-image');
 ## Additional Resources
 
 - **Kotlin Parser Source**: [kotlin-mpp-godtools-tool-parser](https://github.com/CruGlobal/kotlin-mpp-godtools-tool-parser)
-- **XML Content Admin**: [mobile-content-admin](https://github.com/CruGlobal/mobile-content-admin)
+- **XML Schema Definitions**: [`mobile-content-api/public/xmlns/`](https://github.com/CruGlobal/mobile-content-api/tree/master/public/xmlns) - XML schema definitions
 - **Page Component**: `src/app/page/page.component.ts`
 - **Content Repeater**: `src/app/page/component/content-repeater/content-repeater.component.ts`
