@@ -64,3 +64,7 @@ Open [`http://localhost:4200`](http://localhost:4200) with your browser to view 
 
 - Push to `staging` to auto-deploy to stage.knowgod.com
 - Push to `main` to auto-deploy to knowgod.com
+
+## Documentation
+
+Additional documentation can be found in the `docs/` directory.
