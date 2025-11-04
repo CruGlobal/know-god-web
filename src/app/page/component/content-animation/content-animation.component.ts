@@ -70,22 +70,24 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
     }
   }
 
-  onAnimationCreated(anim: any) {
-    this.anmViewItem = anim as AnimationItem;
+  onAnimationCreated(anim: AnimationItem): void {
+    this.anmViewItem = anim;
   }
 
   private init(): void {
-    // TODO
-    // Need to update to e31_1 when we release a new Shared Parser.
-    const resource = {
-      name: (this.animation as any).e31_1 || ''
-    };
-    this.anmResource = this.pageService.getAnimationUrl(resource.name || '');
+    if (!this.animation?.resource?.name) {
+      return;
+    }
+    this.anmResource = this.pageService.getAnimationUrl(
+      this.animation.resource.name
+    );
     if (
-      this.anmResource === resource.name &&
+      this.anmResource === this.animation.resource.name &&
       !this.anmResource.includes('http')
     ) {
-      this.anmResource = this.pageService.findAttachment(resource.name) || '';
+      this.anmResource = this.pageService.findAttachment(
+        this.animation.resource.name
+      );
     }
 
     if (this.anmResource) {
