@@ -102,7 +102,7 @@ export class LessonComponent implements OnChanges, OnDestroy {
     );
     this.pageService.ensurePageIsLatestInNavigationStack(this._page.id);
 
-    if ('content' in this._page && this._page.content) {
+    if (this._page.content) {
       this.content = this._page.content;
     }
 
@@ -116,19 +116,8 @@ export class LessonComponent implements OnChanges, OnDestroy {
   }
 
   private onFormAction(inputFunctionName: string): void {
-    let functionName = inputFunctionName;
+    const functionName = inputFunctionName.split(' ')[0];
 
-    if (functionName.indexOf(' ') > -1) {
-      functionName = functionName.split(' ')[0];
-    }
-
-    // Checks for next commands that don't require page listeners
-    if (inputFunctionName.includes('multchoice1')) {
-      // Instead of skipping, just go to the next sequential page
-      this.next();
-      return;
-    }
-
-    this.pageService.contentEvent(inputFunctionName);
+    this.pageService.contentEvent(functionName);
   }
 }

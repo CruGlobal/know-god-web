@@ -1,0 +1,39 @@
+<div
+  id="page-navigation"
+  class="mw568 tc"
+  *ngIf="(isForm$ | async) === false && (isModal$ | async) === false"
+>
+  <ng-container *ngIf="(direction$ | async) === 'ltr'">
+    <ng-container *ngIf="(isFirstPage$ | async) === false">
+      <button
+        (click)="previous()"
+        class="button button-white far fa-arrow-left"
+      >
+        <span class="hide"></span>
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="(isLastPage$ | async) === false">
+      <button (click)="next()" class="button far fa-arrow-right">
+        <span class="hide"></span>
+      </button>
+    </ng-container>
+  </ng-container>
+
+  <ng-container *ngIf="(direction$ | async) === 'rtl'">
+    <ng-container *ngIf="(isLastPage$ | async) === false">
+      <button (click)="next()" class="button far fa-arrow-left">
+        <span class="hide"></span>
+      </button>
+    </ng-container>
+
+    <ng-container *ngIf="(isFirstPage$ | async) === false">
+      <button
+        (click)="previous()"
+        class="button button-white far fa-arrow-right"
+      >
+        <span class="hide"></span>
+      </button>
+    </ng-container>
+  </ng-container>
+</div>

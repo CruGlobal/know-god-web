@@ -22,35 +22,35 @@
 }
 
 /***** Tool Navigation *****/
-#tool-navigation .button {
+#page-navigation .button {
   width: 120px;
   font-size: 14.4px;
   margin-top: 48px !important;
 }
 
-#tool-navigation .button:first-child:not(:last-child) {
+#page-navigation .button:first-child:not(:last-child) {
   border-right-width: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
 }
 
-#tool-navigation .button:last-child:not(:first-child) {
+#page-navigation .button:last-child:not(:first-child) {
   border-left-width: 0;
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-#tool-navigation .button:first-child:last-child {
+#page-navigation .button:first-child:last-child {
   border-width: 1px;
 }
 
-.firstPage #tool-navigation .button,
-.lastPage #tool-navigation .button {
+.firstPage #page-navigation .button,
+.lastPage #page-navigation .button {
   width: 240px;
 }
 
 @media screen and (max-width: 319px) {
-  #tool-navigation .button {
+  #page-navigation .button {
     width: 100px;
   }
 }
