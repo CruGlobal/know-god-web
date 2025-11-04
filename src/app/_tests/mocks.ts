@@ -139,8 +139,6 @@ export const mockImage = (
   };
 };
 
-// TODO
-// Once we get resource returning correctly, remove e31_1.
 export const mockAnimation = (
   name: string,
   url: string,
@@ -148,7 +146,6 @@ export const mockAnimation = (
 ): Animation | any => {
   return {
     url,
-    e31_1: name,
     resource: createResource(name, url),
     loop: true,
     autoPlay: true,
