@@ -56,24 +56,9 @@ import { SharingModalComponent } from './shared/sharing-modal/sharing-modal.comp
 //============
 
 const appRoutes: Routes = [
-  { path: '', component: DashboardComponent },
-  { path: ':langId', component: DashboardComponent },
-  { path: ':langId/tools', component: DashboardComponent },
-  { path: ':langId/lessons', component: DashboardComponent },
+  // Lesson routes must come before redirects to avoid being caught by the generic redirects
   {
-    path: ':langId/embed/:toolType/:resourceType/:bookId',
-    component: PageComponent
-  },
-  {
-    path: ':langId/tool/:resourceType/:bookId/:page/:cardPosition',
-    component: PageComponent
-  },
-  {
-    path: ':langId/tool/:resourceType/:bookId/:page',
-    component: PageComponent
-  },
-  {
-    path: ':langId/tool/:resourceType/:bookId',
+    path: ':langId/lesson/:bookId',
     component: PageComponent
   },
   {
@@ -81,8 +66,10 @@ const appRoutes: Routes = [
     component: PageComponent
   },
   {
-    path: ':langId/lesson/:bookId',
-    component: PageComponent
+    path: ':langId/:bookId',
+    // Redirecting old URL format to the new one
+    redirectTo: ':langId/tool/v1/:bookId',
+    pathMatch: 'full'
   },
   {
     path: ':langId/:bookId/:page',
@@ -90,11 +77,23 @@ const appRoutes: Routes = [
     redirectTo: ':langId/tool/v1/:bookId/:page',
     pathMatch: 'full'
   },
+  { path: ':langId', component: DashboardComponent },
+  { path: '', component: DashboardComponent },
   {
-    path: ':langId/:bookId',
-    // Redirecting old URL format to the new one
-    redirectTo: ':langId/tool/v1/:bookId',
-    pathMatch: 'full'
+    path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page',
+    component: PageComponent
+  },
+  {
+    path: ':langId/:toolType/:resourceType/:bookId/:page/:cardPosition',
+    component: PageComponent
   }
 ];
 
