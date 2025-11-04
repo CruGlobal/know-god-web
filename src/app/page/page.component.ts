@@ -153,17 +153,12 @@ export class PageComponent implements OnInit, OnDestroy {
   ): (string | number)[] {
     // For lessons (no resourceType), use: langId, 'lesson', bookId, ...rest
     // For tools (with resourceType), use: langId, 'tool', resourceType, bookId, ...rest
-    const langId = segments[0];
-    const toolTypeParam = segments[1];
-    const rest = segments.slice(2);
+    const [langId, toolTypeParam, ...rest] = segments;
 
-    // If resourceType exists, insert it after toolType
     if (this._pageParams.resourceType) {
-      // Tools: langId, 'tool', resourceType, bookId, ...
       const toolType = toolTypeParam || 'tool';
       return [langId, toolType, this._pageParams.resourceType, ...rest];
     }
-    // Lessons: langId, 'lesson', bookId, ...
     const toolType = toolTypeParam || 'lesson';
     return [langId, toolType, ...rest];
   }
@@ -198,16 +193,25 @@ export class PageComponent implements OnInit, OnDestroy {
     this.languagesVisible = !this.languagesVisible;
   }
 
+  private getVisiblePages(
+    currentPosition: number,
+    direction: 'next' | 'previous'
+  ): Page[] {
+    const pagesInDirection = this._pageBookSubPagesManifest.filter((page) =>
+      direction === 'next'
+        ? page.position > currentPosition
+        : page.position < currentPosition
+    );
+    return pagesInDirection.filter(
+      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+    );
+  }
+
   private onPreviousPage(): void {
     const pageId = this.cleanPageId();
 
     if (!this.isCYOAPage() && typeof pageId === 'number') {
-      const previousPagesInManifest = this._pageBookSubPagesManifest.filter(
-        (page) => page.position < pageId
-      );
-      const previousVisiblePages = previousPagesInManifest.filter(
-        (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
-      );
+      const previousVisiblePages = this.getVisiblePages(pageId, 'previous');
 
       if (previousVisiblePages.length > 0) {
         const previousPage =
@@ -227,13 +231,8 @@ export class PageComponent implements OnInit, OnDestroy {
   private onNextPage(): void {
     const pageId = this.cleanPageId();
     if (!this.isCYOAPage() && typeof pageId === 'number') {
-      // Find all pages in the manifest after the current position
-      const nextPagesInManifest = this._pageBookSubPagesManifest.filter(
-        (page) => page.position > pageId
-      );
-      const nextVisiblePage = nextPagesInManifest.find(
-        (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
-      );
+      const nextVisiblePages = this.getVisiblePages(pageId, 'next');
+      const nextVisiblePage = nextVisiblePages[0];
 
       if (nextVisiblePage) {
         this.router.navigate(
@@ -397,8 +396,7 @@ export class PageComponent implements OnInit, OnDestroy {
             this._pageBookSubPagesManifest = manifest.pages;
             this._visibleHiddenPageIds.clear();
             this._pageBookSubPages = manifest.pages.filter(
-              (page) =>
-                this._visibleHiddenPageIds.has(page.id) || !page.isHidden
+              (page) => !page.isHidden
             );
 
             this.totalPages = this._pageBookSubPages.length;
@@ -822,7 +820,7 @@ export class PageComponent implements OnInit, OnDestroy {
 
     if (isListener) {
       if (pageToNavigateTo.isHidden) {
-        // Add page ID to visible set
+        // Mark page as temporarily visible so that we can navigate to it.
         this._visibleHiddenPageIds.add(pageToNavigateTo.id);
         // Rebuild visible pages list
         this.updateVisiblePages();
@@ -955,21 +953,11 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private hasNextVisiblePage(currentPosition: number): boolean {
-    const nextPagesInManifest = this._pageBookSubPagesManifest.filter(
-      (page) => page.position > currentPosition
-    );
-    return nextPagesInManifest.some(
-      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
-    );
+    return this.getVisiblePages(currentPosition, 'next').length > 0;
   }
 
   private hasPreviousVisiblePage(currentPosition: number): boolean {
-    const previousPagesInManifest = this._pageBookSubPagesManifest.filter(
-      (page) => page.position < currentPosition
-    );
-    return previousPagesInManifest.some(
-      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
-    );
+    return this.getVisiblePages(currentPosition, 'previous').length > 0;
   }
 
   private awaitLiveShareStream(): void {

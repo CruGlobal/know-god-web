@@ -71,7 +71,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   onAnimationCreated(anim: AnimationItem): void {
-    this.anmViewItem = anim as AnimationItem;
+    this.anmViewItem = anim;
   }
 
   private init(): void {
