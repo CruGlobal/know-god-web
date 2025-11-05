@@ -12,6 +12,7 @@ import {
   FlowItem,
   Image,
   Input,
+  LessonPage,
   Link,
   Modal,
   Multiselect,
@@ -138,8 +139,6 @@ export const mockImage = (
   };
 };
 
-// TODO
-// Once we get resource returning correctly, remove e31_1.
 export const mockAnimation = (
   name: string,
   url: string,
@@ -147,7 +146,6 @@ export const mockAnimation = (
 ): Animation | any => {
   return {
     url,
-    e31_1: name,
     resource: createResource(name, url),
     loop: true,
     autoPlay: true,
@@ -301,6 +299,29 @@ export const mockCyoa = (): CyoaContentPage => {
     listeners: null,
     previousPage: null,
     content: mockContent(),
+    backgroundColor: undefined,
+    backgroundImageGravity: undefined,
+    backgroundImageScaleType: undefined,
+    ...standardTypeValues()
+  };
+};
+
+export const mockLesson = (): LessonPage => {
+  return {
+    id: null,
+    position: null,
+    parentPage: null,
+    parentPageParams: null,
+    nextPage: null,
+    backgroundImage: null,
+    isHidden: false,
+    dismissListeners: null,
+    listeners: null,
+    previousPage: null,
+    content: mockContent(),
+    backgroundColor: undefined,
+    backgroundImageGravity: undefined,
+    backgroundImageScaleType: undefined,
     ...standardTypeValues()
   };
 };
@@ -446,7 +467,9 @@ export const mockTractPage = (
     findModal: null,
     visibleCards: null,
     backgroundImage: null,
-    getAnalyticsEvents: null,
+    backgroundColor: undefined,
+    backgroundImageGravity: undefined,
+    backgroundImageScaleType: undefined,
     dismissListeners: dismissListeners,
     listeners: listeners,
     ...standardTypeValues()

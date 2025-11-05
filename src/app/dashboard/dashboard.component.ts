@@ -164,11 +164,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   navigateToResourcePage(resource: Resource): void {
     const abbreviation = resource.abbreviation;
     const urlResourceType = getUrlResourceType(resource.resourceType);
-    const bookType = this.resourceTypes.includes(resource.resourceType)
-      ? ToolType.Tool
-      : ToolType.Lesson;
-
-    const url = `${this.dispLanguageCode}/${bookType}/${urlResourceType}/${abbreviation}`;
+    const isLesson = resource.resourceType === ResourceType.Lesson;
+    const url = isLesson
+      ? `${this.dispLanguageCode}/${ToolType.Lesson}/${abbreviation}`
+      : `${this.dispLanguageCode}/${ToolType.Tool}/${urlResourceType}/${abbreviation}`;
     this.route.navigateByUrl(url);
   }
 
