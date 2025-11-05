@@ -14,16 +14,14 @@
         /></a>
         <div class="page-navigation">
           <a
-            [ngClass]="{ 'active-tool': _pageParams.toolType === 'tool' }"
+            [ngClass]="{ 'active-tool': router.url.includes('/tool/') }"
             [routerLink]="['/', _pageParams.langId, 'tools']"
-            routerLinkActive="active"
           >
             Tools
           </a>
           <a
-            [ngClass]="{ 'active-tool': _pageParams.toolType === 'lesson' }"
+            [ngClass]="{ 'active-tool': router.url.includes('/lesson/') }"
             [routerLink]="['/', _pageParams.langId, 'lessons']"
-            routerLinkActive="active"
           >
             Lessons
           </a>
