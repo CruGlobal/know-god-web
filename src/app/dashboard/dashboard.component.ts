@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _prepareDataForLanguage = new Subject<void>();
   private _languagesData: any;
 
-  toolsRoute = 'tools';
-  lessonsRoute = 'lessons';
+  private readonly _toolsRoute = 'tools';
+  private readonly _lessonsRoute = 'lessons';
   tools: Resource[] = [];
   lessons: Resource[] = [];
   englishLangId = 1;
@@ -184,12 +184,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.route.navigate(['/', pLangCode]);
   }
 
+  get toolsRoute(): string {
+    return `/${this.dispLanguageCode}/${this._toolsRoute}`;
+  }
+
+  get lessonsRoute(): string {
+    return `/${this.dispLanguageCode}/${this._lessonsRoute}`;
+  }
+
   isToolsPage(): boolean {
-    return this.route.url.includes(`/${this.toolsRoute}`);
+    return this.route.url === this.toolsRoute;
   }
 
   isLessonsPage(): boolean {
-    return this.route.url.includes(`/${this.lessonsRoute}`);
+    return this.route.url === this.lessonsRoute;
   }
 
   isMainDashboard(): boolean {
