@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 
-/* This component is shared between lesson-page
- * and tract-page but is not used in cyoa-page
+/* Shared navigation component for lesson-page and tract-page.
+ * Not used in cyoa-page since it navigates via content interactions, not buttons.
+ * Also not used in cyoa-card-collection-page since it navigates between cards, not pages.
  */
 
 @Component({
