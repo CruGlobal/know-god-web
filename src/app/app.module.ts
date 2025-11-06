@@ -34,9 +34,11 @@ import { DashboardListComponent } from './page/component/dashboard-list/dashboar
 import { ModalComponent } from './page/component/modal/modal.component';
 import { CYOACardCollectionComponent } from './page/component/page/cyoa-card-collection-page/cyoa-card-collection-page.component';
 import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.component';
+import { LessonComponent } from './page/component/page/lesson-page/lesson-page.component';
 import { TractPageComponent } from './page/component/page/tract-page/tract-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { PageHeroComponent } from './page/component/page-hero/page-hero.component';
+import { PageNavigationComponent } from './page/component/page-navigation/page-navigation.component';
 import { PageComponent } from './page/page.component';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
@@ -59,10 +61,28 @@ const appRoutes: Routes = [
   { path: ':langId/tools', component: DashboardComponent },
   { path: ':langId/lessons', component: DashboardComponent },
   {
-    path: ':langId/:bookId',
-    // Redirecting old URL format to the new one
-    redirectTo: ':langId/tool/v1/:bookId',
-    pathMatch: 'full'
+    path: ':langId/embed/:toolType/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/tool/:resourceType/:bookId/:page/:cardPosition',
+    component: PageComponent
+  },
+  {
+    path: ':langId/tool/:resourceType/:bookId/:page',
+    component: PageComponent
+  },
+  {
+    path: ':langId/tool/:resourceType/:bookId',
+    component: PageComponent
+  },
+  {
+    path: ':langId/lesson/:bookId/:page',
+    component: PageComponent
+  },
+  {
+    path: ':langId/lesson/:bookId',
+    component: PageComponent
   },
   {
     path: ':langId/:bookId/:page',
@@ -71,20 +91,10 @@ const appRoutes: Routes = [
     pathMatch: 'full'
   },
   {
-    path: ':langId/embed/:toolType/:resourceType/:bookId',
-    component: PageComponent
-  },
-  {
-    path: ':langId/:toolType/:resourceType/:bookId',
-    component: PageComponent
-  },
-  {
-    path: ':langId/:toolType/:resourceType/:bookId/:page',
-    component: PageComponent
-  },
-  {
-    path: ':langId/:toolType/:resourceType/:bookId/:page/:cardPosition',
-    component: PageComponent
+    path: ':langId/:bookId',
+    // Redirecting old URL format to the new one
+    redirectTo: ':langId/tool/v1/:bookId',
+    pathMatch: 'full'
   }
 ];
 
@@ -103,6 +113,7 @@ export function playerFactory() {
     LoaderComponent,
     PageComponent,
     PageHeaderComponent,
+    PageNavigationComponent,
     TractPageComponent,
     PageHeroComponent,
     ContentImageComponent,
@@ -128,7 +139,8 @@ export function playerFactory() {
     ContentCardComponent,
     CyoaCardComponent,
     CYOAComponent,
-    CYOACardCollectionComponent
+    CYOACardCollectionComponent,
+    LessonComponent
   ],
   imports: [
     BrowserModule,
