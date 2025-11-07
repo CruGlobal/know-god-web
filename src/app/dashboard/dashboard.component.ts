@@ -23,8 +23,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _prepareDataForLanguage = new Subject<void>();
   private _languagesData: any;
 
-  toolsRoute = 'tools';
-  lessonsRoute = 'lessons';
+  private readonly _toolsRoute = 'tools';
+  private readonly _lessonsRoute = 'lessons';
   tools: Resource[] = [];
   lessons: Resource[] = [];
   englishLangId = 1;
@@ -164,11 +164,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   navigateToResourcePage(resource: Resource): void {
     const abbreviation = resource.abbreviation;
     const urlResourceType = getUrlResourceType(resource.resourceType);
-    const bookType = this.resourceTypes.includes(resource.resourceType)
-      ? ToolType.Tool
-      : ToolType.Lesson;
-
-    const url = `${this.dispLanguageCode}/${bookType}/${urlResourceType}/${abbreviation}`;
+    const isLesson = resource.resourceType === ResourceType.Lesson;
+    const url = isLesson
+      ? `${this.dispLanguageCode}/${ToolType.Lesson}/${abbreviation}`
+      : `${this.dispLanguageCode}/${ToolType.Tool}/${urlResourceType}/${abbreviation}`;
     this.route.navigateByUrl(url);
   }
 
@@ -185,12 +184,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.route.navigate(['/', pLangCode]);
   }
 
+  get toolsRoute(): string {
+    return `/${this.dispLanguageCode}/${this._toolsRoute}`;
+  }
+
+  get lessonsRoute(): string {
+    return `/${this.dispLanguageCode}/${this._lessonsRoute}`;
+  }
+
   isToolsPage(): boolean {
-    return this.route.url.includes(`/${this.toolsRoute}`);
+    return this.route.url === this.toolsRoute;
   }
 
   isLessonsPage(): boolean {
-    return this.route.url.includes(`/${this.lessonsRoute}`);
+    return this.route.url === this.lessonsRoute;
   }
 
   isMainDashboard(): boolean {
