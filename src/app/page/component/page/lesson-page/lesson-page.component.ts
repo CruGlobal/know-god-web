@@ -17,7 +17,7 @@ import { PageService } from '../../../service/page-service.service';
 @Component({
   selector: 'app-lesson-page',
   templateUrl: './lesson-page.component.html',
-  styleUrls: ['./lesson-page.component.css', '../default-page.css'],
+  styleUrls: ['../default-page.css'],
   encapsulation: ViewEncapsulation.None
 })
 export class LessonComponent implements OnChanges, OnDestroy {
