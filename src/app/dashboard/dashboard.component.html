@@ -1,6 +1,16 @@
 <header id="homeHeader" class="homeHeaderFooter">
   <div class="bs-container">
-    <img src="assets/img/kg-logo.png" />
+    <a routerLink="/{{ dispLanguageCode }}" routerLinkActive="active">
+      <img src="assets/img/kg-logo.png" />
+    </a>
+    <div class="navigation" [class.main-dashboard]="isMainDashboard()">
+      <a routerLink="/{{ dispLanguageCode }}/tools" routerLinkActive="active">
+        Tools
+      </a>
+      <a routerLink="/{{ dispLanguageCode }}/lessons" routerLinkActive="active">
+        Lessons
+      </a>
+    </div>
     <div class="language-switcher">
       <div
         class="selector"
@@ -18,25 +28,29 @@
 </header>
 
 <section id="homeTools">
-  <div class="bs-container">
-    <div class="bs-card-deck">
-      <a
-        href="javascript:void(0)"
-        class="bs-card"
-        (click)="navigateToPage(resource)"
-        *ngFor="let resource of resources; let i = index; let isFirstRow = last"
-      >
-        <img class="bs-card-img-top" [src]="resource.imgUrl" />
-        <div class="bs-card-body">
-          <h5 class="bs-card-title" dir="{{ dispLanguageDirection }}">
-            {{ resource.resourceName }}
-          </h5>
-          <p class="bs-card-text" dir="{{ dispLanguageDirection }}">
-            {{ resource.tagline }}
-          </p>
-        </div>
-      </a>
-    </div>
+  <app-loader *ngIf="!sectionReady"></app-loader>
+  <div class="bs-container" *ngIf="sectionReady">
+    <app-dashboard-list
+      *ngIf="isMainDashboard() || isToolsPage()"
+      title="Tools"
+      [resources]="isToolsPage() ? tools : (tools | slice: 0 : 3)"
+      [dispLanguageDirection]="dispLanguageDirection"
+      [dispLanguageCode]="dispLanguageCode"
+      [viewAllRoute]="isToolsPage() ? null : toolsRoute"
+      (resourceClick)="navigateToResourcePage($event)"
+    >
+    </app-dashboard-list>
+
+    <app-dashboard-list
+      *ngIf="isMainDashboard() || isLessonsPage()"
+      title="Lessons"
+      [resources]="isLessonsPage() ? lessons : (lessons | slice: 0 : 3)"
+      [dispLanguageDirection]="dispLanguageDirection"
+      [dispLanguageCode]="dispLanguageCode"
+      [viewAllRoute]="isLessonsPage() ? null : lessonsRoute"
+      (resourceClick)="navigateToResourcePage($event)"
+    >
+    </app-dashboard-list>
   </div>
 </section>
 

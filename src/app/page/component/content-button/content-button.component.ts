@@ -58,7 +58,16 @@ export class ContentButtonComponent implements OnChanges {
 
   formAction(): void {
     if (this.events && this.type === 'event') {
-      this.pageService.formAction(formatEvents(this.events));
+      // Each event can resolve into an array of events, so combine them into a single array.
+      // This is necessary to support complex form actions with 'state' in the EventId.
+      // (`Array.flatMap` isn't supported yet, so we use `[].concat(...arrays)`)
+      const resolvedEvents = [].concat(
+        ...this.events.map((event) =>
+          event.resolve(this.pageService.parserState()).asJsReadonlyArrayView()
+        )
+      );
+
+      this.pageService.formAction(formatEvents(resolvedEvents));
     }
   }
 
