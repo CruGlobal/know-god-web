@@ -37,6 +37,7 @@ import { CYOAComponent } from './page/component/page/cyoa-page/cyoa-page.compone
 import { TractPageComponent } from './page/component/page/tract-page/tract-page.component';
 import { PageHeaderComponent } from './page/component/page-header/page-header.component';
 import { PageHeroComponent } from './page/component/page-hero/page-hero.component';
+import { PageNavigationComponent } from './page/component/page-navigation/page-navigation.component';
 import { PageComponent } from './page/page.component';
 import { LoaderService } from './services/loader-service/loader.service';
 import { LoaderComponent } from './shared/loader/loader.component';
@@ -103,6 +104,7 @@ export function playerFactory() {
     LoaderComponent,
     PageComponent,
     PageHeaderComponent,
+    PageNavigationComponent,
     TractPageComponent,
     PageHeroComponent,
     ContentImageComponent,
