@@ -75,6 +75,14 @@
         [totalPages]="totalPages"
       >
       </app-tract-page>
+
+      <app-lesson-page
+        *ngIf="resourceType === 'lesson'"
+        [page]="activePage"
+        [order]="activePageOrder"
+        [totalPages]="totalPages"
+      >
+      </app-lesson-page>
     </div>
 
     <ng-container *ngIf="bookNotAvailableInLanguage">
