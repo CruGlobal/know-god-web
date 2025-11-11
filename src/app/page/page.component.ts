@@ -328,7 +328,7 @@ export class PageComponent implements OnInit, OnDestroy {
       const controller = new AbortController();
       const signal = controller.signal;
       try {
-        parser.parseManifest(fileName, signal).then((data) => {
+        parser.parseManifest(manifestName, signal).then((data) => {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
