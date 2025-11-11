@@ -226,7 +226,7 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
     this._fileOrigin = '';
   }
   setOrigin(file: string) {
-    this._fileOrigin = file.match(/^.*[\\\/]/)[0] || '';
+    this._fileOrigin = file;
   }
   getOrigin() {
     return this._fileOrigin;

@@ -310,11 +310,7 @@ export class PageComponent implements OnInit, OnDestroy {
       item.attributes['manifest-name']
     ) {
       const manifestName = item.attributes['manifest-name'];
-      const translationid = item.id;
-      const fileName = environment.production
-        ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
-        : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName;
-      this.pullParserFactory.setOrigin(fileName);
+      this.pullParserFactory.setOrigin(APIURL.GET_TRANSLATION_FILES);
       const config = ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
         .withSupportedFeatures([
