@@ -36,6 +36,10 @@ export type CYOAPage =
   | CyoaPageCollectionPage;
 export type CYOAPageCard =
   org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card;
+
+export type LessonPage =
+  org.cru.godtools.shared.tool.parser.model.lesson.LessonPage;
+
 export type CardCollectionHeader =
   org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Header;
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
@@ -254,7 +258,8 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
 
 export enum ResourceType {
   Tract = 'tract',
-  CYOA = 'cyoa'
+  CYOA = 'cyoa',
+  Lesson = 'lesson'
 }
 
 export enum ToolType {
