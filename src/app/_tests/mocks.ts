@@ -167,10 +167,8 @@ export const mockInput = (
   placeholder: string
 ): Input => {
   return {
-    type: {
-      name: 'TEXT',
-      ordinal: 0
-    },
+    id: null,
+    type: org.cru.godtools.shared.tool.parser.model.Input.Type.TEXT,
     name: name,
     value: value,
     isRequired: true,
@@ -267,6 +265,7 @@ export const mockTractCard = (
     visiblePosition: null,
     isLastVisibleCard: null,
     isHidden,
+    background: null,
     backgroundImage: null,
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
@@ -293,7 +292,10 @@ export const mockCyoa = (): CyoaContentPage => {
     parentPage: null,
     parentPageParams: null,
     nextPage: null,
+    background: null,
     backgroundImage: null,
+    isFirstPage: false,
+    isLastPage: false,
     isHidden: false,
     dismissListeners: null,
     listeners: null,
@@ -313,6 +315,9 @@ export const mockLesson = (): LessonPage => {
     parentPage: null,
     parentPageParams: null,
     nextPage: null,
+    isFirstPage: false,
+    isLastPage: false,
+    background: null,
     backgroundImage: null,
     isHidden: false,
     dismissListeners: null,
@@ -343,14 +348,15 @@ export const mockMultiselectOption = (
 ): MultiselectOption => {
   let selectedValue = initialSelectedValue;
   return {
-    style: {
-      name: 'CARD',
-      ordinal: 0
-    },
+    id: null,
+    style:
+      org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.CARD,
     backgroundColor: '#000000',
     selectedColor: '#ffffff',
     multiselect: null,
     content: [],
+    isClickable: null,
+    isClickableFlow: null,
     isSelected: () => selectedValue,
     isSelectedFlow: null,
     watchIsSelected: () => null,
@@ -364,6 +370,7 @@ export const mockMultiselectOption = (
 
 export const mockMultiselect = (): Multiselect => {
   return {
+    id: null,
     columns: 4,
     options: [mockMultiselectOption(false), mockMultiselectOption(true)],
     ...standardTypeValues()
@@ -444,6 +451,7 @@ export const mockTractPage = (
   dismissListeners: EventId[] = []
 ): org.cru.godtools.shared.tool.parser.model.tract.TractPage => {
   return {
+    isFirstPage: false,
     isLastPage,
     header: mockHeader(headerNumber, headerText),
     hero: mockHero(heroHeading),
@@ -466,6 +474,7 @@ export const mockTractPage = (
     isHidden: false,
     findModal: null,
     visibleCards: null,
+    background: null,
     backgroundImage: null,
     backgroundColor: undefined,
     backgroundImageGravity: undefined,
