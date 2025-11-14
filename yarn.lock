@@ -1773,12 +1773,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@cruglobal/godtools-shared@npm:^1.3.0-SNAPSHOT.2152":
-  version: 1.3.0-SNAPSHOT.2152
-  resolution: "@cruglobal/godtools-shared@npm:1.3.0-SNAPSHOT.2152"
+"@cruglobal/godtools-shared@npm:^1.3.0":
+  version: 1.3.0
+  resolution: "@cruglobal/godtools-shared@npm:1.3.0"
   dependencies:
     sax: "npm:1.2.4"
-  checksum: 10c0/d2a0b2a71eda4c0ea3cc8ca380f6f185c58fd58d7ea4c59dee50674a1344f32442e6b4adb71f36d5cd3e57007fc8d5a63039a331fecec2223fdb8c399bb44956
+  checksum: 10c0/b575e3dfe74cbe3a4faba8fd03feea32015fc42e407e9526e61c77e86bee8401c44fc2724852343d60ef4c5bd21cfe9c24b70debf338cf1b88174f6e438eca99
   languageName: node
   linkType: hard
 
@@ -7268,7 +7268,7 @@ __metadata:
     "@angular/platform-browser": "npm:^17.3.12"
     "@angular/platform-browser-dynamic": "npm:^17.3.12"
     "@angular/router": "npm:^17.3.12"
-    "@cruglobal/godtools-shared": "npm:^1.3.0-SNAPSHOT.2152"
+    "@cruglobal/godtools-shared": "npm:^1.3.0"
     "@rails/actioncable": "npm:~8.0.0"
     "@types/jasmine": "npm:^5.1.4"
     "@types/node": "npm:20.17.24"
