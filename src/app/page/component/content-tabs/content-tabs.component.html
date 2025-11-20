@@ -1,11 +1,13 @@
 <ng-container *ngIf="ready && !isHidden && content && (isModal$ | async) === false">
-  <ng-container *ngFor="let tab of content; trackBy: trackByFn">
-    <ng-container *ngIf="tab.tab && tab.contents">
-      <div class="tabContent">
+  <div [style.visibility]="isInvisible ? 'hidden' : 'visible'">
+    <ng-container *ngFor="let tab of content; trackBy: trackByFn">
+      <ng-container *ngIf="tab.tab && tab.contents">
+        <div class="tabContent">
         <!-- Remove tab label text until tabs are implemented on web -->
         <!-- <p>{{ tab.tab.label.text }}</p> -->
         <app-content-repeater [items]="tab.contents"></app-content-repeater>
       </div>
     </ng-container>
   </ng-container>
+  </div>
 </ng-container>

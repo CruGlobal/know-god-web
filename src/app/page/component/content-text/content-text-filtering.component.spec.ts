@@ -96,4 +96,41 @@ describe('ContentTextComponent - Content Filtering', () => {
 
     expect(component.isHidden).toBe(true);
   });
+
+  it('should handle invisible-if expressions correctly', async () => {
+    const testText = mockText('Test content') as Text;
+    // Override watchIsInvisible to simulate invisible state
+    testText.watchIsInvisible = (state: any, callback: (value: boolean) => void) => {
+      callback(true); // Should be invisible
+      return { close: () => {} };
+    };
+
+    component.item = testText;
+    component.ngOnChanges({
+      item: new SimpleChange(null, testText, true)
+    });
+
+    expect(component.isInvisible).toBe(true);
+    expect(component.isHidden).toBe(false); // Still in DOM, just invisible
+    expect(component.ready).toBe(true);
+  });
+
+  it('should properly close both watchers on component destroy', async () => {
+    const closeSpy1 = jasmine.createSpy('closeGone');
+    const closeSpy2 = jasmine.createSpy('closeInvisible');
+    const testText = mockText('Test content') as Text;
+
+    testText.watchIsGone = () => ({ close: closeSpy1 });
+    testText.watchIsInvisible = () => ({ close: closeSpy2 });
+
+    component.item = testText;
+    component.ngOnChanges({
+      item: new SimpleChange(null, testText, true)
+    });
+
+    component.ngOnDestroy();
+
+    expect(closeSpy1).toHaveBeenCalled();
+    expect(closeSpy2).toHaveBeenCalled();
+  });
 });

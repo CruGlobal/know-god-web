@@ -6,6 +6,7 @@
       firstContent: isFirstPage$ | async
     }"
     [ngStyle]="styles"
+    [style.visibility]="isInvisible ? 'hidden' : 'visible'"
     dir="{{ dir$ | async }}"
   >
     <img

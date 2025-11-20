@@ -1,6 +1,7 @@
 <ng-container *ngIf="ready && !isHidden && sections">
-  <ng-container *ngFor="let section of sections; trackBy: trackByFn">
-    <div class="accordion mw568">
+  <div [style.visibility]="isInvisible ? 'hidden' : 'visible'">
+    <ng-container *ngFor="let section of sections; trackBy: trackByFn">
+      <div class="accordion mw568">
       <button class="accordion-header" (click)="onClick($event)">
         {{ section.section.header.text }}
         <i class="far fa-chevron-down"></i>
@@ -8,6 +9,7 @@
       <div class="accordion-content">
         <app-content-repeater [items]="section.contents"></app-content-repeater>
       </div>
-    </div>
-  </ng-container>
+      </div>
+    </ng-container>
+  </div>
 </ng-container>

@@ -1,6 +1,7 @@
 <ng-container *ngIf="ready && !isHidden">
   <!-- YouTube Video Embed -->
-  <div class="video-embed">
+  <div class="video-embed"
+       [style.visibility]="isInvisible ? 'hidden' : 'visible'">
     <iframe [src]="videoUrl" frameborder="0" allowfullscreen></iframe>
   </div>
   <!-- YouTube Video Embed -->

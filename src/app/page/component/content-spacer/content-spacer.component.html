@@ -3,5 +3,6 @@
 <div
   class="spacer"
   *ngIf="mode === 'FIXED' && !isHidden"
+  [style.visibility]="isInvisible ? 'hidden' : 'visible'"
   [ngStyle]="{ 'height.px': height }"
 ></div>
