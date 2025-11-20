@@ -4,33 +4,13 @@
     [ngClass]="{
       tc: isLastPage$ | async,
       firstPage: isFirstPage$ | async,
-      lastPage: isLastPage$ | async,
-      hasPageHeader: hasPageHeader
+      lastPage: isLastPage$ | async
     }"
   >
-    <app-page-header
-      *ngIf="header && (isModal$ | async) === false"
-      [header]="header"
-    ></app-page-header>
-    <app-page-hero
-      *ngIf="hero && (isModal$ | async) === false"
-      [hero]="hero"
-    ></app-page-hero>
-    <ng-container *ngIf="cards && cards.length && (isModal$ | async) === false">
-      <app-page-card *ngFor="let card of cards" [card]="card"></app-page-card>
-    </ng-container>
-    <app-page-calltoaction
-      *ngIf="
-        callToAction &&
-        (isForm$ | async) === false &&
-        (isModal$ | async) === false
-      "
-      [item]="callToAction"
-    ></app-page-calltoaction>
-
-    <ng-container *ngIf="modal && (isModal$ | async)">
-      <app-page-modal [modal]="modal"></app-page-modal>
-    </ng-container>
+    <app-content-repeater
+      *ngIf="content && content.length && (isModal$ | async) === false"
+      [items]="content"
+    ></app-content-repeater>
 
     <app-page-navigation
       [direction$]="dir$"
