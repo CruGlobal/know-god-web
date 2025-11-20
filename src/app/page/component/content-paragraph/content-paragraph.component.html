@@ -1,3 +1,3 @@
-<ng-container *ngIf="ready && items && items.length">
+<ng-container *ngIf="ready && !isHidden && items && items.length">
   <app-content-repeater [items]="items"></app-content-repeater>
 </ng-container>

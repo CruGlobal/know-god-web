@@ -1,7 +1,8 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Content,
+  FlowWatcher,
   Tab,
   Tabs
 } from 'src/app/services/xml-parser-service/xml-parser.service';
@@ -17,7 +18,7 @@ interface TabWithContent {
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })
-export class ContentTabsComponent implements OnChanges {
+export class ContentTabsComponent implements OnChanges, OnDestroy {
   @Input() item: Tabs;
 
   tabs: Tabs;
@@ -26,10 +27,18 @@ export class ContentTabsComponent implements OnChanges {
   ready: boolean;
   dir$: Observable<string>;
   isModal$: Observable<boolean>;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
     this.isModal$ = this.pageService.isModal$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -58,6 +67,14 @@ export class ContentTabsComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     this.tabs.tabs.forEach((tab) => {
       const contents: Content[] = [];
       if (tab.content)

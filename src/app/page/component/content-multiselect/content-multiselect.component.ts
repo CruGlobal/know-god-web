@@ -1,5 +1,6 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import {
+  FlowWatcher,
   Multiselect,
   MultiselectOption
 } from 'src/app/services/xml-parser-service/xml-parser.service';
@@ -10,7 +11,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-multiselect.component.html',
   styleUrls: ['./content-multiselect.component.css']
 })
-export class ContentMultiselectComponent implements OnChanges {
+export class ContentMultiselectComponent implements OnChanges, OnDestroy {
   @Input() item: Multiselect;
 
   multiselect: Multiselect;
@@ -18,9 +19,15 @@ export class ContentMultiselectComponent implements OnChanges {
   columns: number;
   ready: boolean;
   state: any;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
 
   constructor(private pageService: PageService) {
     this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -49,6 +56,14 @@ export class ContentMultiselectComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     this.columns = this.multiselect.columns || null;
     this.options = this.multiselect.options;
     this.ready = true;

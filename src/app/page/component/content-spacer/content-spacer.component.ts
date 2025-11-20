@@ -1,6 +1,6 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Spacer } from 'src/app/services/xml-parser-service/xml-parser.service';
+import { Spacer, FlowWatcher } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -8,7 +8,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-spacer.component.html',
   styleUrls: ['./content-spacer.component.css']
 })
-export class ContentSpacerComponent implements OnChanges {
+export class ContentSpacerComponent implements OnChanges, OnDestroy {
   @Input() item: Spacer;
 
   spacer: Spacer;
@@ -16,9 +16,17 @@ export class ContentSpacerComponent implements OnChanges {
   mode: string;
   height: number;
   dir$: Observable<string>;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -43,6 +51,14 @@ export class ContentSpacerComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     this.mode = this.spacer.mode.name;
     this.height = this.spacer.height;
     this.ready = true;

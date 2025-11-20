@@ -2,6 +2,6 @@
 <!-- Content Spacer Goes Here -->
 <div
   class="spacer"
-  *ngIf="mode === 'FIXED'"
+  *ngIf="mode === 'FIXED' && !isHidden"
   [ngStyle]="{ 'height.px': height }"
 ></div>

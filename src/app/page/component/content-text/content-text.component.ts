@@ -1,7 +1,8 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Text,
+  FlowWatcher,
   parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
@@ -11,7 +12,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-text.component.html',
   styleUrls: ['./content-text.component.css']
 })
-export class ContentTextComponent implements OnChanges {
+export class ContentTextComponent implements OnChanges, OnDestroy {
   @Input() item: Text;
 
   text: Text;
@@ -23,10 +24,18 @@ export class ContentTextComponent implements OnChanges {
   styles: any;
   startImgResource: string | null;
   startImgWidth: string | null;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,6 +59,14 @@ export class ContentTextComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     const styles = {
       'font-weight': this.text.fontWeight ? this.text.fontWeight : '',
       'font-style': this.text.textStyles?.some(

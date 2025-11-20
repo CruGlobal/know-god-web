@@ -9,7 +9,7 @@ import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Animation } from 'src/app/services/xml-parser-service/xml-parser.service';
+import { Animation, FlowWatcher } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -28,14 +28,19 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   hasEvents: boolean;
   dir$: Observable<string>;
   lottieOptions: AnimationOptions;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
   }
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -75,6 +80,14 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     if (!this.animation?.resource?.name) {
       return;
     }

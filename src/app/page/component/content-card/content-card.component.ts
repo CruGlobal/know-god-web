@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import {
   Card,
   Content,
-  EventId
+  EventId,
+  FlowWatcher
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
@@ -12,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-card.component.html',
   styleUrls: ['./content-card.component.css']
 })
-export class ContentCardComponent implements OnChanges {
+export class ContentCardComponent implements OnChanges, OnDestroy {
   @Input() item: Card;
   card: Card;
   contents: Content[];
@@ -21,9 +22,15 @@ export class ContentCardComponent implements OnChanges {
   events: EventId[];
   ready: boolean;
   state: any;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
 
   constructor(private pageService: PageService) {
     this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -52,6 +59,14 @@ export class ContentCardComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     this.background = this.card.backgroundColor;
     this.events = this.card.events;
     this.url = this.card.url;

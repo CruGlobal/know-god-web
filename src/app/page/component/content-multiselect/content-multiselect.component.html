@@ -1,4 +1,4 @@
-<ng-container *ngIf="ready">
+<ng-container *ngIf="ready && !isHidden">
   <div class="multiselect mw568" attr.data-columns="{{ columns }}">
     <app-content-multiselect-option
       *ngFor="let option of options; trackBy: trackByFn"
