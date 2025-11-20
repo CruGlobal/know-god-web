@@ -62,7 +62,14 @@ const standardTypeValues = () => {
         close: () => {}
       };
     },
-    watchIsInvisible: null,
+    watchIsInvisible: (state: any, callback: (value: boolean) => void) => {
+      // Mock watcher that immediately calls callback with false (not invisible)
+      callback(false);
+      // Return a mock watcher object with close method
+      return {
+        close: () => {}
+      };
+    },
     watchVisibility: null,
     invisibleIf: null,
     goneIf: null,

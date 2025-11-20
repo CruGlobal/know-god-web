@@ -1,5 +1,6 @@
 <ng-container *ngIf="ready && !isHidden && anmResource">
-  <div class="animation-container">
+  <div class="animation-container"
+       [style.visibility]="isInvisible ? 'hidden' : 'visible'">
     <ng-lottie
       (click)="onAnimationClick()"
       [options]="lottieOptions"

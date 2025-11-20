@@ -20,7 +20,9 @@ export class ContentMultiselectComponent implements OnChanges, OnDestroy {
   ready: boolean;
   state: any;
   isHidden: boolean;
+  isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
 
   constructor(private pageService: PageService) {
     this.state = this.pageService.parserState();
@@ -28,6 +30,7 @@ export class ContentMultiselectComponent implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -56,12 +59,20 @@ export class ContentMultiselectComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    // Initialize visibility watcher
+    // Initialize visibility watchers
     if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
 
+    // Watch for gone-if expressions (removes from DOM)
     this.isHiddenWatcher = this.item.watchIsGone(
       this.state,
       (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
     );
 
     this.columns = this.multiselect.columns || null;

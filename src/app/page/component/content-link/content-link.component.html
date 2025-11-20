@@ -1,5 +1,6 @@
 <ng-container *ngIf="ready && !isHidden">
-  <div class="linkContent indent">
+  <div class="linkContent indent"
+       [style.visibility]="isInvisible ? 'hidden' : 'visible'">
     <a (click)="formAction(events)" href="javascript:void(0)">{{ linkText }}</a>
   </div>
 </ng-container>

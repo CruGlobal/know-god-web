@@ -1,9 +1,10 @@
 <ng-container *ngIf="ready && !isHidden">
-  <div
-    *ngIf="!card.isClickable"
-    class="card"
-    [ngStyle]="{ 'background-color': background }"
-  >
+  <div [style.visibility]="isInvisible ? 'hidden' : 'visible'">
+    <div
+      *ngIf="!card.isClickable"
+      class="card"
+      [ngStyle]="{ 'background-color': background }"
+    >
     <app-content-repeater [items]="contents"></app-content-repeater>
   </div>
   <a
@@ -14,4 +15,5 @@
   >
     <app-content-repeater [items]="contents"></app-content-repeater>
   </a>
+  </div>
 </ng-container>
