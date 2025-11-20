@@ -54,7 +54,14 @@ const standardTypeValues = () => {
     isInvisibleFlow: null,
     isGone: null,
     isGoneFlow: null,
-    watchIsGone: null,
+    watchIsGone: (state: any, callback: (value: boolean) => void) => {
+      // Mock watcher that immediately calls callback with false (not hidden)
+      callback(false);
+      // Return a mock watcher object with close method
+      return {
+        close: () => {}
+      };
+    },
     watchIsInvisible: null,
     watchVisibility: null,
     invisibleIf: null,
