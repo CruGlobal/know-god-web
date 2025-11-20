@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Button,
-  EventId
+  EventId,
+  FlowWatcher
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
@@ -12,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })
-export class ContentButtonComponent implements OnChanges {
+export class ContentButtonComponent implements OnChanges, OnDestroy {
   @Input() item: Button;
 
   button: Button;
@@ -25,9 +26,17 @@ export class ContentButtonComponent implements OnChanges {
   buttonTextColor: string;
   buttonBgColor: string;
   dir$: Observable<string>;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -72,6 +81,14 @@ export class ContentButtonComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     // TODO Allow Button styles when Books are ready
     // this.buttonTextColor = this.button.buttonColor || ''
     // this.buttonBgColor = this.button.backgroundColor || ''

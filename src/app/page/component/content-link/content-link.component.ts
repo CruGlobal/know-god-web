@@ -1,7 +1,8 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   EventId,
+  FlowWatcher,
   Link,
   Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
@@ -13,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-link.component.html',
   styleUrls: ['./content-link.component.css']
 })
-export class ContentLinkComponent implements OnChanges {
+export class ContentLinkComponent implements OnChanges, OnDestroy {
   @Input() item: Link;
 
   link: Link;
@@ -22,9 +23,17 @@ export class ContentLinkComponent implements OnChanges {
   linkText: string;
   events: EventId[];
   dir$: Observable<string>;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -56,6 +65,14 @@ export class ContentLinkComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     this.text = this.link.text || null;
     this.linkText = this.link.text?.text || '';
     this.events = this.link.events;

@@ -1,4 +1,4 @@
-<ng-container *ngIf="ready">
+<ng-container *ngIf="ready && !isHidden">
   <div class="mw568 buttonContent tc" dir="{{ dir$ | async }}">
     <a
       *ngIf="type === 'url'"

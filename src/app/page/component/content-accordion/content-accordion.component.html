@@ -1,4 +1,4 @@
-<ng-container *ngIf="ready && sections">
+<ng-container *ngIf="ready && !isHidden && sections">
   <ng-container *ngFor="let section of sections; trackBy: trackByFn">
     <div class="accordion mw568">
       <button class="accordion-header" (click)="onClick($event)">

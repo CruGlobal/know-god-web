@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Accordion,
-  Content
+  Content,
+  FlowWatcher
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -11,16 +12,24 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })
-export class ContentAccordionComponent implements OnChanges {
+export class ContentAccordionComponent implements OnChanges, OnDestroy {
   @Input() item: Accordion;
 
   accordion: Accordion;
   sections: any[];
   ready: boolean;
   dir$: Observable<string>;
+  isHidden: boolean;
+  isHiddenWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -56,6 +65,14 @@ export class ContentAccordionComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watcher
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
     this.item.sections.forEach((section) => {
       const contents: Content[] = [];
       if (section.content) {

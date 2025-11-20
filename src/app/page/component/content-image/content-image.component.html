@@ -1,4 +1,4 @@
-<ng-container *ngIf="ready">
+<ng-container *ngIf="ready && !isHidden">
   <a *ngIf="isEventType" (click)="formAction()" href="javascript:void(0)">
     <img
       class="imageContent ng-binding"
