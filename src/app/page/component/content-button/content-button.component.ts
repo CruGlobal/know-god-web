@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Button,
-  EventId
+  EventId,
+  FlowWatcher
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
@@ -12,7 +13,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })
-export class ContentButtonComponent implements OnChanges {
+export class ContentButtonComponent implements OnChanges, OnDestroy {
   @Input() item: Button;
 
   button: Button;
@@ -25,9 +26,20 @@ export class ContentButtonComponent implements OnChanges {
   buttonTextColor: string;
   buttonBgColor: string;
   dir$: Observable<string>;
+  isHidden: boolean;
+  isInvisible: boolean;
+  isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -72,6 +84,22 @@ export class ContentButtonComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watchers
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+
+    // Watch for gone-if expressions (removes from DOM)
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
+    );
+
     // TODO Allow Button styles when Books are ready
     // this.buttonTextColor = this.button.buttonColor || ''
     // this.buttonBgColor = this.button.backgroundColor || ''

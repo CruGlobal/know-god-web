@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   DimensionParser,
   EventId,
+  FlowWatcher,
   Image
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
@@ -13,7 +14,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-image.component.html',
   styleUrls: ['./content-image.component.css']
 })
-export class ContentImageComponent implements OnChanges {
+export class ContentImageComponent implements OnChanges, OnDestroy {
   @Input() item: Image;
 
   image: Image;
@@ -23,9 +24,20 @@ export class ContentImageComponent implements OnChanges {
   width: string;
   events: EventId[];
   isEventType: boolean;
+  isHidden: boolean;
+  isInvisible: boolean;
+  isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -55,6 +67,22 @@ export class ContentImageComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watchers
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+
+    // Watch for gone-if expressions (removes from DOM)
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
+    );
+
     this.imgResource = this.pageService.getImageUrl(
       this.image.resource.name || ''
     );

@@ -21,10 +21,13 @@ describe('ContentInputComponent', () => {
     component.ngOnChanges({
       items: new SimpleChange(null, content, true)
     });
-    expect(component.content.length).toEqual(3);
+    // After our changes: content = [text, paragraph, text, image] = 4 items
+    // The paragraph is now preserved as a paragraph component instead of being broken down
+    expect(component.content.length).toEqual(4);
     expect(component.content[0].type).toBe('text');
-    expect(component.content[1].type).toBe('text');
-    expect(component.content[2].type).toBe('image');
+    expect(component.content[1].type).toBe('paragraph'); // Now preserved as paragraph
+    expect(component.content[2].type).toBe('text');
+    expect(component.content[3].type).toBe('image');
     expect(component.ready).toBeTrue();
   });
 });

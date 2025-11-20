@@ -1,8 +1,9 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Accordion,
-  Content
+  Content,
+  FlowWatcher
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -11,16 +12,27 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })
-export class ContentAccordionComponent implements OnChanges {
+export class ContentAccordionComponent implements OnChanges, OnDestroy {
   @Input() item: Accordion;
 
   accordion: Accordion;
   sections: any[];
   ready: boolean;
   dir$: Observable<string>;
+  isHidden: boolean;
+  isInvisible: boolean;
+  isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
+  state: any;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -56,6 +68,22 @@ export class ContentAccordionComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watchers
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+
+    // Watch for gone-if expressions (removes from DOM)
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
+    );
+
     this.item.sections.forEach((section) => {
       const contents: Content[] = [];
       if (section.content) {
