@@ -4,20 +4,13 @@ import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
+import { Resource, ResourceService } from '../services/resource.service';
 import {
   ResourceType,
   ToolType
 } from '../services/xml-parser-service/xml-parser.service';
 import { getUrlResourceType } from '../shared/getUrlResourceType';
 
-interface Resource {
-  imgUrl: string;
-  resourceName: string;
-  id: string;
-  abbreviation: string;
-  tagline: string;
-  resourceType: ResourceType;
-}
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -28,10 +21,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _languagesReady = new Subject<void>();
   private _languageChanged = new Subject<void>();
   private _prepareDataForLanguage = new Subject<void>();
-  private _booksData: any;
   private _languagesData: any;
 
-  resources: Resource[] = [];
+  private readonly _toolsRoute = 'tools';
+  private readonly _lessonsRoute = 'lessons';
+  tools: Resource[] = [];
+  lessons: Resource[] = [];
   englishLangId = 1;
   englishLangCode = 'en';
   englishLangName = 'English';
@@ -44,12 +39,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageDirection: string;
   langSwitchOn: boolean;
   availableLangs: [];
-  resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
+  resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
     public route: Router,
     public activatedRoute: ActivatedRoute,
-    public commonService: CommonService
+    public commonService: CommonService,
+    readonly resourceService: ResourceService
   ) {}
 
   ngOnInit(): void {
@@ -150,113 +146,28 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this._prepareDataForLanguage.next();
   }
 
-  private fetchBooks(): void {
-    const url =
-      APIURL.GET_ALL_BOOKS +
-      '?include=attachments,latest-translations,metatool';
-
-    this.commonService
-      .getBooks(url)
-      .pipe(takeUntil(this._unsubscribeAll), take(1))
-      .subscribe((data: any) => {
-        this._booksData = data;
-        this._prepareDataForLanguage.next();
-      });
-  }
-
   private awaitBooks(): void {
     this._prepareDataForLanguage
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe(() => {
-        if (!this._booksData) {
-          this.fetchBooks();
-        } else {
-          const attachments = this._booksData.included.filter(
-            (included) => included.type === 'attachment'
-          );
-
-          const translations = this._booksData.included.filter(
-            (included) =>
-              included.type === 'translation' &&
-              Number(included.relationships.language.data.id) ===
-                this.dispLanguage
-          );
-
-          this._booksData.data
-            .sort(
-              (o1, o2) =>
-                (o1.attributes['attr-default-order'] || 0) -
-                (o2.attributes['attr-default-order'] || 0)
-            )
-            .forEach((resource) => {
-              const { id: resourceId, attributes, relationships } = resource;
-              const resourceType = attributes['resource-type'] as ResourceType;
-
-              if (attributes['attr-hidden']) {
-                return;
-              }
-              if (!this.resourceTypes.includes(resourceType)) {
-                return;
-              }
-
-              if (relationships?.metatool?.data) {
-                const metaToolId = relationships.metatool.data.id;
-                const metaTool =
-                  this._booksData.data.find((tool) => tool.id === metaToolId) ||
-                  this._booksData.included.find(
-                    (tool) => tool.type === 'resource' && tool.id === metaToolId
-                  );
-
-                const defaultVariant =
-                  metaTool?.relationships['default-variant'] || null;
-                if (
-                  defaultVariant != null &&
-                  defaultVariant.data.id !== resourceId
-                ) {
-                  return;
-                }
-              }
-
-              const translation = translations.find(
-                (x) => x.relationships.resource.data.id === resourceId
-              );
-
-              if (translation?.attributes) {
-                const resourceName = translation.attributes['translated-name'];
-                const tagline = translation.attributes['translated-tagline'];
-                const imgUrl = attachments.find(
-                  (x) => x.id === attributes['attr-banner']
-                )?.attributes.file;
-
-                this.resources = [
-                  ...this.resources,
-                  {
-                    imgUrl,
-                    resourceName,
-                    id: resourceId,
-                    abbreviation: attributes.abbreviation,
-                    tagline,
-                    resourceType
-                  }
-                ];
-              } else {
-                console.log('MISSING TRANSLATION', resource, translation);
-              }
-            });
-
-          this.sectionReady = true;
-        }
+        this.resourceService
+          .getDashboardData(this.dispLanguage)
+          .pipe(takeUntil(this._unsubscribeAll), take(1))
+          .subscribe((data) => {
+            this.tools = data.tools;
+            this.lessons = data.lessons;
+            this.sectionReady = true;
+          });
       });
   }
 
-  navigateToPage(resource: Resource): void {
+  navigateToResourcePage(resource: Resource): void {
     const abbreviation = resource.abbreviation;
     const urlResourceType = getUrlResourceType(resource.resourceType);
-    const bookType = this.resourceTypes.includes(resource.resourceType)
-      ? ToolType.Tool
-      : ToolType.Lesson;
-
-    const url = `${this.dispLanguageCode}/${bookType}/${urlResourceType}/${abbreviation}`;
+    const isLesson = resource.resourceType === ResourceType.Lesson;
+    const url = isLesson
+      ? `${this.dispLanguageCode}/${ToolType.Lesson}/${abbreviation}`
+      : `${this.dispLanguageCode}/${ToolType.Tool}/${urlResourceType}/${abbreviation}`;
     this.route.navigateByUrl(url);
   }
 
@@ -267,8 +178,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
   onSelectLanguage(pLangCode: string): void {
     this.sectionReady = false;
     this._languageChanged.next();
-    this.resources = [];
+    this.tools = [];
+    this.lessons = [];
     this.langSwitchOn = !this.langSwitchOn;
     this.route.navigate(['/', pLangCode]);
+  }
+
+  get toolsRoute(): string {
+    return `/${this.dispLanguageCode}/${this._toolsRoute}`;
+  }
+
+  get lessonsRoute(): string {
+    return `/${this.dispLanguageCode}/${this._lessonsRoute}`;
+  }
+
+  isToolsPage(): boolean {
+    return this.route.url === this.toolsRoute;
+  }
+
+  isLessonsPage(): boolean {
+    return this.route.url === this.lessonsRoute;
+  }
+
+  isMainDashboard(): boolean {
+    return !this.isToolsPage() && !this.isLessonsPage();
   }
 }
