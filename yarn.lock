@@ -310,15 +310,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@angular/common@npm:^17.3.12":
-  version: 17.3.12
-  resolution: "@angular/common@npm:17.3.12"
+"@angular/common@npm:^19.0.0":
+  version: 19.2.18
+  resolution: "@angular/common@npm:19.2.18"
   dependencies:
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": 17.3.12
+    "@angular/core": 19.2.18
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10c0/f40d76081b04bacb3efd4389b0aa4dcfa742a4954e38a76a434dab1ae226b3192241077be5d0032cb011cc1625cb04043449cd5956f8ba44da99f8f7a3bbe83a
+  checksum: 10c0/52468b5fe60c1ce9674ba80ba64b9fb857700bfd0e5630a88d3df7195fabeb8b551a4716984b2221eca21807e703d3f3cf7392d2bd23c8594c7624e1f26cba3e
   languageName: node
   linkType: hard
 
@@ -7259,7 +7259,7 @@ __metadata:
     "@angular-eslint/utils": "npm:^17.5.3"
     "@angular/animations": "npm:^17.3.12"
     "@angular/cli": "npm:^17.3.11"
-    "@angular/common": "npm:^17.3.12"
+    "@angular/common": "npm:^19.0.0"
     "@angular/compiler": "npm:^17.3.12"
     "@angular/compiler-cli": "npm:^17.3.12"
     "@angular/core": "npm:^17.3.12"
