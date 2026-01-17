@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { State } from '../../services/xml-parser-service/xml-parser.service';
+import {
+  ParserState,
+  State
+} from '../../services/xml-parser-service/xml-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -181,7 +184,7 @@ export class PageService {
     return false;
   }
 
-  parserState(): any {
+  parserState(): ParserState {
     return this.XmlParserState;
   }
 

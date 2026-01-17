@@ -3,7 +3,10 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { mockText } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentTextComponent } from './content-text.component';
-import { Text } from 'src/app/services/xml-parser-service/xml-parser.service';
+import {
+  ParserState,
+  Text
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 
 describe('ContentTextComponent - Content Filtering', () => {
   let component: ContentTextComponent;
@@ -24,7 +27,7 @@ describe('ContentTextComponent - Content Filtering', () => {
   it('should hide content when gone-if expression evaluates to true', async () => {
     const testText = mockText('Test content') as Text;
     // Override the watchIsGone method to simulate hiding
-    testText.watchIsGone = (state: any, callback: (value: boolean) => void) => {
+    testText.watchIsGone = (_state: ParserState, callback: (value: boolean) => void) => {
       callback(true); // Should hide
       return { close: () => {} };
     };
@@ -41,7 +44,7 @@ describe('ContentTextComponent - Content Filtering', () => {
   it('should show content when gone-if expression evaluates to false', async () => {
     const testText = mockText('Test content') as Text;
     // Override the watchIsGone method to simulate showing
-    testText.watchIsGone = (state: any, callback: (value: boolean) => void) => {
+    testText.watchIsGone = (_state: ParserState, callback: (value: boolean) => void) => {
       callback(false); // Should show
       return { close: () => {} };
     };
@@ -59,7 +62,7 @@ describe('ContentTextComponent - Content Filtering', () => {
     const closeSpy = jasmine.createSpy('close');
     const testText = mockText('Test content') as Text;
     // Override watchIsGone to return a spy for the close method
-    testText.watchIsGone = (state: any, callback: (value: boolean) => void) => {
+    testText.watchIsGone = (_state: ParserState, callback: (value: boolean) => void) => {
       callback(false);
       return { close: closeSpy };
     };
@@ -78,7 +81,7 @@ describe('ContentTextComponent - Content Filtering', () => {
     let mockCallback: (value: boolean) => void;
     const testText = mockText('Test content') as Text;
     // Override watchIsGone to capture the callback for later use
-    testText.watchIsGone = (state: any, callback: (value: boolean) => void) => {
+    testText.watchIsGone = (_state: ParserState, callback: (value: boolean) => void) => {
       mockCallback = callback;
       callback(false); // Initially visible
       return { close: () => {} };
@@ -100,7 +103,7 @@ describe('ContentTextComponent - Content Filtering', () => {
   it('should handle invisible-if expressions correctly', async () => {
     const testText = mockText('Test content') as Text;
     // Override watchIsInvisible to simulate invisible state
-    testText.watchIsInvisible = (state: any, callback: (value: boolean) => void) => {
+    testText.watchIsInvisible = (_state: ParserState, callback: (value: boolean) => void) => {
       callback(true); // Should be invisible
       return { close: () => {} };
     };

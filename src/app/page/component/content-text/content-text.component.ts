@@ -3,7 +3,8 @@ import { Observable } from 'rxjs';
 import {
   Text,
   FlowWatcher,
-  parseTextAddBrTags
+  parseTextAddBrTags,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -28,7 +29,7 @@ export class ContentTextComponent implements OnChanges, OnDestroy {
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
   isInvisibleWatcher: FlowWatcher;
-  state: any;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
