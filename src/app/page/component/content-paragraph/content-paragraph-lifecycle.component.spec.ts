@@ -3,7 +3,10 @@ import { SimpleChange } from '@angular/core';
 import { ContentParagraphComponent } from './content-paragraph.component';
 import { PageService } from '../../service/page-service.service';
 import { mockParagraph } from '../../../_tests/mocks';
-import { Paragraph } from 'src/app/services/xml-parser-service/xml-parser.service';
+import {
+  Paragraph,
+  ParserState
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 
 describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   let component: ContentParagraphComponent;
@@ -87,7 +90,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
     let visibilityCallback: (value: boolean) => void;
     const mockPara = mockParagraph() as Paragraph;
     
-    mockPara.watchIsGone = (state: any, callback: (value: boolean) => void) => {
+    mockPara.watchIsGone = (_state: ParserState, callback: (value: boolean) => void) => {
       visibilityCallback = callback;
       callback(false); // Initially visible
       return { close: () => {} };
