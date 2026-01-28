@@ -1,6 +1,7 @@
-import { SimpleChange } from '@angular/core';
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { ParserState } from 'src/app/services/xml-parser-service/xml-parser.service';
+import {
+  MultiselectOption,
+  ParserState
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { mockMultiselectOption } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentMultiselectOptionComponent } from './content-multiselect-option.component';
@@ -30,11 +31,13 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
   }));
 
   interface TestSetup {
-    mockOption: any; // Should be MultiselectOption
+    mockOption: MultiselectOption;
     toggleSelectedSpy: jasmine.Spy;
   }
 
-  const setupComponentWithMockOption = (initialSelectedValue: boolean): TestSetup => {
+  const setupComponentWithMockOption = (
+    initialSelectedValue: boolean
+  ): TestSetup => {
     const mockOption = mockMultiselectOption(initialSelectedValue);
     const toggleSelectedSpy = spyOn(mockOption, 'toggleSelected');
 
