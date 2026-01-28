@@ -9,7 +9,8 @@ import {
 import {
   Content,
   FlowItem,
-  FlowWatcher
+  FlowWatcher,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -23,7 +24,7 @@ export class ContentFlowItemComponent implements OnChanges, OnDestroy {
   @Input() item: FlowItem;
   contents: Content[];
   ready: boolean;
-  state: any;
+  state: ParserState;
   isHidden: boolean;
   isHiddenWatcher: FlowWatcher;
 

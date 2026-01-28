@@ -18,6 +18,25 @@ export interface DashboardData {
   lessons: Resource[];
 }
 
+interface JsonApiResource {
+  type: string;
+  id: string;
+  attributes: { [key: string]: unknown };
+  relationships: {
+    [key: string]: {
+      data:
+        | { type: string; id: string }
+        | { type: string; id: string }[]
+        | null;
+    };
+  };
+}
+
+interface JsonApiResponse {
+  data: JsonApiResource[];
+  included: JsonApiResource[];
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -37,18 +56,26 @@ export class ResourceService {
 
     return this.commonService
       .getBooks(booksUrl)
-      .pipe(map((booksData) => this.processBookData(booksData, languageId)));
+      .pipe(
+        map((booksData: JsonApiResponse) =>
+          this.processBookData(booksData, languageId)
+        )
+      );
   }
 
-  private processBookData(booksData: any, languageId: number): DashboardData {
+  private processBookData(
+    booksData: JsonApiResponse,
+    languageId: number
+  ): DashboardData {
     const attachments = booksData.included.filter(
-      (included: any) => included.type === 'attachment'
+      (included: JsonApiResource) => included.type === 'attachment'
     );
 
     const translations = booksData.included.filter(
-      (included: any) =>
+      (included: JsonApiResource) =>
         included.type === 'translation' &&
-        Number(included.relationships.language.data.id) === languageId
+        Number((included.relationships.language.data as { id: string }).id) ===
+          languageId
     );
 
     const tools: Resource[] = [];
@@ -56,11 +83,11 @@ export class ResourceService {
 
     booksData.data
       .sort(
-        (o1: any, o2: any) =>
-          (o1.attributes['attr-default-order'] || 0) -
-          (o2.attributes['attr-default-order'] || 0)
+        (o1: JsonApiResource, o2: JsonApiResource) =>
+          (o1.attributes['attr-default-order'] as number) -
+          (o2.attributes['attr-default-order'] as number)
       )
-      .forEach((resource: any) => {
+      .forEach((resource: JsonApiResource) => {
         const { id: resourceId, attributes, relationships } = resource;
         const resourceType = attributes['resource-type'] as ResourceType;
 
@@ -72,36 +99,48 @@ export class ResourceService {
         }
 
         if (relationships?.metatool?.data) {
-          const metaToolId = relationships.metatool.data.id;
+          const metaToolId = (relationships.metatool.data as { id: string }).id;
           const metaTool =
-            booksData.data.find((tool: any) => tool.id === metaToolId) ||
+            booksData.data.find(
+              (tool: JsonApiResource) => tool.id === metaToolId
+            ) ||
             booksData.included.find(
-              (tool: any) => tool.type === 'resource' && tool.id === metaToolId
+              (tool: JsonApiResource) =>
+                tool.type === 'resource' && tool.id === metaToolId
             );
 
           const defaultVariant =
             metaTool?.relationships['default-variant'] || null;
-          if (defaultVariant != null && defaultVariant.data.id !== resourceId) {
+          if (
+            defaultVariant != null &&
+            (defaultVariant.data as { id: string }).id !== resourceId
+          ) {
             return;
           }
         }
 
         const translation = translations.find(
-          (x: any) => x.relationships.resource.data.id === resourceId
+          (x: JsonApiResource) =>
+            (x.relationships.resource.data as { id: string }).id === resourceId
         );
 
         if (translation?.attributes) {
-          const resourceName = translation.attributes['translated-name'];
-          const tagline = translation.attributes['translated-tagline'];
+          const resourceName = translation.attributes[
+            'translated-name'
+          ] as string;
+          const tagline = translation.attributes[
+            'translated-tagline'
+          ] as string;
           const imgUrl = attachments.find(
-            (x: any) => x.id === attributes['attr-banner']
-          )?.attributes.file;
+            (x: JsonApiResource) =>
+              x.id === (attributes['attr-banner'] as string)
+          )?.attributes.file as string;
 
           const resourceData: Resource = {
             imgUrl,
             resourceName,
             id: resourceId,
-            abbreviation: attributes.abbreviation,
+            abbreviation: attributes.abbreviation as string,
             tagline,
             resourceType
           };

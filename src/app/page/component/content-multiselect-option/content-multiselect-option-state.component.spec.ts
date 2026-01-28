@@ -1,29 +1,30 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
-import { ContentMultiselectOptionComponent } from './content-multiselect-option.component';
-import { PageService } from '../../service/page-service.service';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { ParserState } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { mockMultiselectOption } from '../../../_tests/mocks';
+import { PageService } from '../../service/page-service.service';
+import { ContentMultiselectOptionComponent } from './content-multiselect-option.component';
 
 describe('ContentMultiselectOptionComponent - State Management', () => {
   let component: ContentMultiselectOptionComponent;
   let fixture: ComponentFixture<ContentMultiselectOptionComponent>;
   let pageService: PageService;
-  let mockState: any;
+  let mockState: Partial<ParserState>;
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
     mockState = {
       testKey: 'testValue',
       familylessonqz: null
-    };
-    
+    } as Partial<ParserState>;
+
     spyOn(pageService, 'parserState').and.returnValue(mockState);
 
     TestBed.configureTestingModule({
       declarations: [ContentMultiselectOptionComponent],
       providers: [{ provide: PageService, useValue: pageService }]
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(ContentMultiselectOptionComponent);
     component = fixture.componentInstance;
   }));
@@ -82,9 +83,11 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
 
     component.onClick();
 
-    expect(toggleSelectedSpy).toHaveBeenCalledWith(jasmine.objectContaining({
-      familylessonqz: 'quiz_talkingtofamily_differences'
-    }));
+    expect(toggleSelectedSpy).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        familylessonqz: 'quiz_talkingtofamily_differences'
+      })
+    );
   });
 
   it('should handle multiple clicks on same option', () => {

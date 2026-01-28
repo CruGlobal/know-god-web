@@ -18,6 +18,7 @@ import {
   Multiselect,
   MultiselectOption,
   Paragraph,
+  ParserState,
   Resource,
   Spacer,
   Text,
@@ -54,7 +55,7 @@ const standardTypeValues = () => {
     isInvisibleFlow: null,
     isGone: null,
     isGoneFlow: null,
-    watchIsGone: (state: any, callback: (value: boolean) => void) => {
+    watchIsGone: (state: ParserState, callback: (value: boolean) => void) => {
       // Mock watcher that immediately calls callback with false (not hidden)
       callback(false);
       // Return a mock watcher object with close method
@@ -62,7 +63,10 @@ const standardTypeValues = () => {
         close: () => {}
       };
     },
-    watchIsInvisible: (state: any, callback: (value: boolean) => void) => {
+    watchIsInvisible: (
+      state: ParserState,
+      callback: (value: boolean) => void
+    ) => {
       // Mock watcher that immediately calls callback with false (not invisible)
       callback(false);
       // Return a mock watcher object with close method
@@ -157,7 +161,7 @@ export const mockAnimation = (
   name: string,
   url: string,
   event: string
-): Animation | any => {
+): Animation => {
   return {
     url,
     resource: createResource(name, url),

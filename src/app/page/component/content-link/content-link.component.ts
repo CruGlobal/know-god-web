@@ -1,9 +1,16 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   EventId,
   FlowWatcher,
   Link,
+  ParserState,
   Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
@@ -27,7 +34,7 @@ export class ContentLinkComponent implements OnChanges, OnDestroy {
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
   isInvisibleWatcher: FlowWatcher;
-  state: any;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;

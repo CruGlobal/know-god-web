@@ -1,7 +1,9 @@
 <ng-container *ngIf="ready && !isHidden">
-  <div class="multiselect mw568"
-       [style.visibility]="isInvisible ? 'hidden' : 'visible'"
-       attr.data-columns="{{ columns }}">
+  <div
+    class="multiselect mw568"
+    [style.visibility]="isInvisible ? 'hidden' : 'visible'"
+    attr.data-columns="{{ columns }}"
+  >
     <app-content-multiselect-option
       *ngFor="let option of options; trackBy: trackByFn"
       [item]="option"

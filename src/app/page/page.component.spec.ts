@@ -9,12 +9,15 @@ import {
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { godToolsParser } from '../services/xml-parser-service/xml-parser.service';
+import {
+  TractPage,
+  godToolsParser
+} from '../services/xml-parser-service/xml-parser.service';
 import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
 describe('PageComponent', () => {
-  let component: any;
+  let component: PageComponent;
   let fixture: ComponentFixture<PageComponent>;
   let pageService: PageService;
   let router: Router;
@@ -228,7 +231,7 @@ describe('PageComponent', () => {
       testName: string;
       pageId: string;
       initialPageId: string | null;
-      page: any;
+      page: Partial<TractPage>;
     }
     const tests: TestProps[] = [
       {
@@ -263,7 +266,7 @@ describe('PageComponent', () => {
 
         spyOn(component, 'getPageIdForRouting').and.returnValue(pageId);
 
-        component.loadBookPage(pageWithRealId);
+        component.loadBookPage(pageWithRealId as TractPage);
 
         expect(navigateByUrlSpy).toHaveBeenCalledWith(
           router.createUrlTree([

@@ -1,11 +1,23 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Accordion,
   Content,
-  FlowWatcher
+  FlowWatcher,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+
+interface AccordionSectionWithContent {
+  section: Accordion['Section'];
+  contents: Content[];
+}
 
 @Component({
   selector: 'app-content-accordion',
@@ -16,14 +28,14 @@ export class ContentAccordionComponent implements OnChanges, OnDestroy {
   @Input() item: Accordion;
 
   accordion: Accordion;
-  sections: any[];
+  sections: AccordionSectionWithContent[];
   ready: boolean;
   dir$: Observable<string>;
   isHidden: boolean;
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
   isInvisibleWatcher: FlowWatcher;
-  state: any;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
@@ -55,10 +67,11 @@ export class ContentAccordionComponent implements OnChanges, OnDestroy {
     }
   }
 
-  onClick(event: any) {
-    const parent = event.target.classList.contains('far')
-      ? event.target.parentElement.parentElement
-      : event.target.parentElement;
+  onClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const parent = target.classList.contains('far')
+      ? target.parentElement.parentElement
+      : target.parentElement;
     const hasActiveClass = parent.classList.contains('active');
     if (hasActiveClass) {
       parent.classList.remove('active');

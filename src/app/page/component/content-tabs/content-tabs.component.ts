@@ -1,8 +1,15 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Content,
   FlowWatcher,
+  ParserState,
   Tab,
   Tabs
 } from 'src/app/services/xml-parser-service/xml-parser.service';
@@ -31,7 +38,7 @@ export class ContentTabsComponent implements OnChanges, OnDestroy {
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
   isInvisibleWatcher: FlowWatcher;
-  state: any;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;

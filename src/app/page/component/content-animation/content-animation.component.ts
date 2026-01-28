@@ -9,7 +9,11 @@ import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { Animation, FlowWatcher } from 'src/app/services/xml-parser-service/xml-parser.service';
+import {
+  Animation,
+  FlowWatcher,
+  ParserState
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -32,7 +36,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
   isInvisibleWatcher: FlowWatcher;
-  state: any;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;

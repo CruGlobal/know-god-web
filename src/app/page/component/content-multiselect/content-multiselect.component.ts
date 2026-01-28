@@ -1,8 +1,15 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   FlowWatcher,
   Multiselect,
-  MultiselectOption
+  MultiselectOption,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -18,7 +25,7 @@ export class ContentMultiselectComponent implements OnChanges, OnDestroy {
   options: MultiselectOption[];
   columns: number;
   ready: boolean;
-  state: any;
+  state: ParserState;
   isHidden: boolean;
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;

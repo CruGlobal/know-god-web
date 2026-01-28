@@ -1,9 +1,17 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Button,
   EventId,
-  FlowWatcher
+  FlowWatcher,
+  ParserState,
+  Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
@@ -17,7 +25,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   @Input() item: Button;
 
   button: Button;
-  text: any;
+  text: Text;
   ready: boolean;
   buttonText: string;
   type: string;
@@ -30,7 +38,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;
   isInvisibleWatcher: FlowWatcher;
-  state: any;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;

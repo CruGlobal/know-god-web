@@ -39,7 +39,7 @@ describe('LessonComponent', () => {
   });
 
   it('should trigger onFormAction when formAction emits', () => {
-    const spy = spyOn<any>(component, 'onFormAction');
+    const spy = spyOn(component, 'onFormAction');
     component.ngOnChanges({
       page: new SimpleChange(null, page, true)
     });
