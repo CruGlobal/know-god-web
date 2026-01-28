@@ -1,9 +1,16 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   Card,
   Content,
   EventId,
-  FlowWatcher
+  FlowWatcher,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
@@ -21,7 +28,7 @@ export class ContentCardComponent implements OnChanges, OnDestroy {
   url: string;
   events: EventId[];
   ready: boolean;
-  state: any;
+  state: ParserState;
   isHidden: boolean;
   isInvisible: boolean;
   isHiddenWatcher: FlowWatcher;

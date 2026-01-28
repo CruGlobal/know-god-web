@@ -10,7 +10,7 @@ import { SHAREDURL } from '../../api/url';
 })
 export class SharingModalComponent implements OnInit {
   @Input()
-  book: any;
+  book: string;
   currentUrl: string;
   ShareState = 'min';
 
@@ -30,7 +30,7 @@ export class SharingModalComponent implements OnInit {
     document.getElementById('toast-container').style.left = '650px';
   }
 
-  shareTo(type): void {
+  shareTo(type: string): void {
     this.currentUrl = window.location.href;
     let url = '';
     switch (type) {

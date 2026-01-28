@@ -41,6 +41,42 @@ interface LiveShareSubscriptionPayload {
   };
 }
 
+interface Language {
+  id: string;
+  type: string;
+  attributes: {
+    code: string;
+    name: string;
+    direction: string;
+  };
+  relationships?: {
+    translations?: {
+      data: { id: string; type: string }[] | null;
+    };
+  };
+}
+
+interface Book {
+  id: string;
+  type: string;
+  attributes: {
+    abbreviation: string;
+    name: string;
+  };
+}
+
+interface JsonApiResource {
+  type: string;
+  id?: string;
+  attributes: { [key: string]: unknown };
+  relationships?: { [key: string]: unknown };
+}
+
+interface JsonApiResponse {
+  data: JsonApiResource | JsonApiResource[];
+  included: JsonApiResource[];
+}
+
 export enum getResourceTypeEnum {
   animation = 'animation',
   image = 'image'
@@ -57,29 +93,29 @@ export class PageComponent implements OnInit, OnDestroy {
   private _pageChanged = new Subject<void>();
   private _pageParams: IPageParameters;
   private _allLanguagesLoaded: boolean;
-  private _allLanguages: any[];
+  private _allLanguages: Language[];
   private _booksLoaded: boolean;
-  private _books: any[];
+  private _books: Book[];
   private _pageBookLoaded: boolean;
-  private _pageBook: any;
-  private _pageBookIndex: any;
+  private _pageBook: Book;
+  private _pageBookIndex: JsonApiResponse;
   private _pageBookManifest: Manifest;
   private _pageBookManifestLoaded: boolean;
-  private _pageBookTranslations: any[];
+  private _pageBookTranslations: JsonApiResource[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
   private _pageBookSubPages: Page[];
   private _visibleHiddenPageIds: Set<string>; // Track temporarily visible hidden pages
-  private _selectedLanguage: any;
+  private _selectedLanguage: Language;
   private liveShareSubscription: ActionCable.Channel;
 
   pagesLoaded: boolean;
   selectedLang: string;
-  availableLanguages: Array<any>;
+  availableLanguages: Language[];
   languagesVisible: boolean;
   resourceType: ResourceType;
   selectedBookName: string;
-  activePage: any;
+  activePage: Page;
   activePageOrder: number;
   totalPages: number;
   bookNotAvailableInLanguage: boolean;
@@ -178,7 +214,7 @@ export class PageComponent implements OnInit, OnDestroy {
     );
   };
 
-  selectLanguage(lang): void {
+  selectLanguage(lang: Language): void {
     this.router.navigate(
       this.buildRouteParams(
         lang.attributes.code,
@@ -329,7 +365,7 @@ export class PageComponent implements OnInit, OnDestroy {
 
   private loadBookManifestXML(): void {
     this.pageService.clear();
-    let item: any = {};
+    let item: JsonApiResource | undefined;
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
       if (
@@ -456,7 +492,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService
       .downloadFile(APIURL.GET_INDEX_FILE.replace('{0}', this._pageBook.id))
       .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
-      .subscribe((data: any) => {
+      .subscribe((data: ArrayBuffer) => {
         const enc = new TextDecoder('utf-8');
         const arr = new Uint8Array(data);
         const result = enc.decode(arr);
@@ -537,7 +573,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService
       .getBooks(APIURL.GET_ALL_BOOKS)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: any) => {
+      .subscribe((data: { data: Book[] }) => {
         if (data && data.data) {
           this._books = data.data;
           this._booksLoaded = true;
@@ -555,7 +591,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: any) => {
+      .subscribe((data: { data: Language[] }) => {
         if (data && data.data) {
           this._allLanguages = data.data;
           this._allLanguagesLoaded = true;

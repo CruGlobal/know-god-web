@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { SimpleChange } from '@angular/core';
-import { ContentParagraphComponent } from './content-paragraph.component';
-import { PageService } from '../../service/page-service.service';
-import { mockParagraph } from '../../../_tests/mocks';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   Paragraph,
   ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
+import { mockParagraph } from '../../../_tests/mocks';
+import { PageService } from '../../service/page-service.service';
+import { ContentParagraphComponent } from './content-paragraph.component';
 
 describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   let component: ContentParagraphComponent;
@@ -19,7 +19,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
       declarations: [ContentParagraphComponent],
       providers: [{ provide: PageService, useValue: pageService }]
     }).compileComponents();
-    
+
     fixture = TestBed.createComponent(ContentParagraphComponent);
     component = fixture.componentInstance;
   }));
@@ -42,10 +42,10 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   it('should close previous watcher when reinitializing', () => {
     const closeSpy1 = jasmine.createSpy('close1');
     const closeSpy2 = jasmine.createSpy('close2');
-    
+
     const mockPara1 = mockParagraph() as Paragraph;
     const mockPara2 = mockParagraph() as Paragraph;
-    
+
     mockPara1.watchIsGone = () => ({ close: closeSpy1 });
     mockPara2.watchIsGone = () => ({ close: closeSpy2 });
 
@@ -68,7 +68,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   it('should close watcher on component destroy', () => {
     const closeSpy = jasmine.createSpy('close');
     const mockPara = mockParagraph() as Paragraph;
-    
+
     mockPara.watchIsGone = () => ({ close: closeSpy });
 
     component.item = mockPara;
@@ -89,8 +89,11 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   it('should update visibility when watcher callback is triggered', () => {
     let visibilityCallback: (value: boolean) => void;
     const mockPara = mockParagraph() as Paragraph;
-    
-    mockPara.watchIsGone = (_state: ParserState, callback: (value: boolean) => void) => {
+
+    mockPara.watchIsGone = (
+      _state: ParserState,
+      callback: (value: boolean) => void
+    ) => {
       visibilityCallback = callback;
       callback(false); // Initially visible
       return { close: () => {} };
@@ -114,7 +117,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   it('should pass parser state to watcher', () => {
     const mockState = { testKey: 'testValue' };
     spyOn(pageService, 'parserState').and.returnValue(mockState);
-    
+
     const mockPara = mockParagraph() as Paragraph;
     const watchIsGoneSpy = spyOn(mockPara, 'watchIsGone').and.returnValue({
       close: () => {}

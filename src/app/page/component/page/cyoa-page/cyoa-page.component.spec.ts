@@ -33,7 +33,7 @@ describe('CYOAComponent', () => {
   });
 
   it('Ensure formAction is run when pageService.formAction is ran', async () => {
-    const spy = spyOn<any>(component, 'onFormAction');
+    const spy = spyOn(component, 'onFormAction');
     expect(spy).not.toHaveBeenCalled();
     pageService.formAction('action');
     expect(spy).toHaveBeenCalledWith('action');
@@ -59,7 +59,7 @@ describe('CYOAComponent', () => {
   describe('onFormAction', () => {
     beforeEach(waitForAsync(() => {
       spyOn(pageService, 'emailSignumFormDataNeeded');
-      (component as any).init();
+      component['init']();
     }));
 
     it('Event followup:send', async () => {
@@ -75,7 +75,7 @@ describe('CYOAComponent', () => {
     });
 
     it('should navigate back to page 1', async () => {
-      (component.page as any).parentPage = { position: '1' };
+      component.page['parentPage'] = { position: '1' };
       component.ready = true;
       component.showBackButton = true;
 
@@ -84,7 +84,7 @@ describe('CYOAComponent', () => {
     });
 
     it('should not navigate back', async () => {
-      (component.page as any).parentPage = { position: undefined };
+      component.page['parentPage'] = { position: undefined };
       component.ready = true;
       component.showBackButton = true;
 
@@ -93,7 +93,7 @@ describe('CYOAComponent', () => {
     });
 
     it('should not navigate back when back button is not shown', async () => {
-      (component.page as any).parentPage = { position: '1' };
+      component.page['parentPage'] = { position: '1' };
       component.ready = true;
       component.showBackButton = false;
 
@@ -102,7 +102,7 @@ describe('CYOAComponent', () => {
     });
 
     it('should not navigate back when component is not ready', async () => {
-      (component.page as any).parentPage = { position: '1' };
+      component.page['parentPage'] = { position: '1' };
       component.ready = false;
       component.showBackButton = true;
 

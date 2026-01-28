@@ -1,7 +1,9 @@
 <ng-container *ngIf="ready && !isHidden">
-  <div class="mw568 buttonContent tc"
-       [style.visibility]="isInvisible ? 'hidden' : 'visible'"
-       dir="{{ dir$ | async }}">
+  <div
+    class="mw568 buttonContent tc"
+    [style.visibility]="isInvisible ? 'hidden' : 'visible'"
+    dir="{{ dir$ | async }}"
+  >
     <a
       *ngIf="type === 'url'"
       [href]="url"

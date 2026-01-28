@@ -1,10 +1,16 @@
-import { Component, Input, OnChanges, OnDestroy, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  Text,
   FlowWatcher,
-  parseTextAddBrTags,
-  ParserState
+  ParserState,
+  Text,
+  parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -22,7 +28,7 @@ export class ContentTextComponent implements OnChanges, OnDestroy {
   isFirstPage$: Observable<boolean>;
   dir$: Observable<string>;
   textColor: string;
-  styles: any;
+  styles: { [key: string]: string | number };
   startImgResource: string | null;
   startImgWidth: string | null;
   isHidden: boolean;
