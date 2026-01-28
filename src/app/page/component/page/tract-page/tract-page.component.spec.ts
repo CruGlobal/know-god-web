@@ -112,6 +112,14 @@ describe('TractPageComponent', () => {
   describe('onFormAction', () => {
     let setHiddenCardToShowSpy, setShownCardToHiddenSpy;
 
+    const setupComponentForPage = (page: TractPage, order: number) => {
+      component.page = page;
+      component.order = order;
+      component.ngOnChanges({
+        page: new SimpleChange(null, page, true)
+      });
+    };
+
     beforeEach(waitForAsync(() => {
       spyOn(pageService, 'emailSignumFormDataNeeded');
       spyOn(pageService, 'changeHeader');
@@ -138,11 +146,7 @@ describe('TractPageComponent', () => {
     });
 
     it('Event includes "-no-thanks" & on last page', async () => {
-      component.page = Lastpage;
-      component.order = 3;
-      component.ngOnChanges({
-        page: new SimpleChange(null, Lastpage, true)
-      });
+      setupComponentForPage(Lastpage, 3);
 
       pageService.formAction('test-no-thanks');
 
@@ -182,10 +186,7 @@ describe('TractPageComponent', () => {
     });
 
     it('Modal Listeners', async () => {
-      component.page = Modalpage;
-      component.ngOnChanges({
-        page: new SimpleChange(null, Modalpage, true)
-      });
+      setupComponentForPage(Modalpage, 3);
 
       pageService.formAction('modalTitle-0');
 
@@ -194,10 +195,7 @@ describe('TractPageComponent', () => {
     });
 
     it('Modal Dismiss Listeners', async () => {
-      component.page = Modalpage;
-      component.ngOnChanges({
-        page: new SimpleChange(null, Modalpage, true)
-      });
+      setupComponentForPage(Modalpage, 3);
 
       pageService.formAction('modalTitle-0-dismess');
 
