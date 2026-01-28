@@ -29,14 +29,25 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
     component = fixture.componentInstance;
   }));
 
-  it('should call toggleSelected with the correct, current parser state', () => {
-    const mockOption = mockMultiselectOption(false);
+  interface TestSetup {
+    mockOption: any; // Should be MultiselectOption
+    toggleSelectedSpy: jasmine.Spy;
+  }
+
+  const setupComponentWithMockOption = (initialSelectedValue: boolean): TestSetup => {
+    const mockOption = mockMultiselectOption(initialSelectedValue);
     const toggleSelectedSpy = spyOn(mockOption, 'toggleSelected');
 
     component.item = mockOption;
     component.ngOnChanges({
       item: new SimpleChange(null, mockOption, true)
     });
+
+    return { mockOption, toggleSelectedSpy };
+  };
+
+  it('should call toggleSelected with the correct, current parser state', () => {
+    const { toggleSelectedSpy } = setupComponentWithMockOption(false);
 
     // Check with initial state
     component.onClick();
@@ -79,13 +90,7 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
   });
 
   it('should handle multiple clicks on same option', () => {
-    const mockOption = mockMultiselectOption(false);
-    const toggleSelectedSpy = spyOn(mockOption, 'toggleSelected');
-
-    component.item = mockOption;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockOption, true)
-    });
+    const { toggleSelectedSpy } = setupComponentWithMockOption(false);
 
     // Click multiple times
     component.onClick();
@@ -96,12 +101,7 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
   });
 
   it('should initialize with parser state from service', () => {
-    const mockOption = mockMultiselectOption(false);
-
-    component.item = mockOption;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockOption, true)
-    });
+    setupComponentWithMockOption(false);
 
     expect(pageService.parserState).toHaveBeenCalled();
     expect(component.state).toBe(mockState);
