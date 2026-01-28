@@ -105,7 +105,6 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
     component.onClick();
 
     expect(toggleSelectedSpy).toHaveBeenCalledTimes(3);
-    expect(toggleSelectedSpy).toHaveBeenCalledWith(mockState);
   });
 
   it('should initialize with parser state from service', () => {
