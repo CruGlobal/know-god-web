@@ -10,6 +10,13 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   let fixture: ComponentFixture<ContentParagraphComponent>;
   let pageService: PageService;
 
+  const initializeComponent = (item, previousItem = null) => {
+    component.item = item;
+    component.ngOnChanges({
+      item: new SimpleChange(previousItem, item, previousItem === null)
+    });
+  };
+
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
     TestBed.configureTestingModule({
@@ -27,10 +34,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
       close: () => {}
     });
 
-    component.item = mockParagraph;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockParagraph, true)
-    });
+    initializeComponent(mockParagraph);
 
     expect(watchIsGoneSpy).toHaveBeenCalled();
     expect(component.isHiddenWatcher).toBeDefined();
@@ -46,17 +50,8 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
     mockParagraph1.watchIsGone = () => ({ close: closeSpy1 });
     mockParagraph2.watchIsGone = () => ({ close: closeSpy2 });
 
-    // First initialization
-    component.item = mockParagraph1;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockParagraph1, true)
-    });
-
-    // Second initialization should close first watcher
-    component.item = mockParagraph2;
-    component.ngOnChanges({
-      item: new SimpleChange(mockParagraph1, mockParagraph2, false)
-    });
+    initializeComponent(mockParagraph1);
+    initializeComponent(mockParagraph2, mockParagraph1);
 
     expect(closeSpy1).toHaveBeenCalled();
     expect(component.isHiddenWatcher.close).toBe(closeSpy2);
@@ -65,28 +60,21 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   it('should close watcher on component destroy', () => {
     const closeSpy = jasmine.createSpy('close');
     const mockParagraph = mockParagraph();
-
     mockParagraph.watchIsGone = () => ({ close: closeSpy });
 
-    component.item = mockParagraph;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockParagraph, true)
-    });
-
+    initializeComponent(mockParagraph);
     component.ngOnDestroy();
 
     expect(closeSpy).toHaveBeenCalled();
   });
 
   it('should handle destroy when no watcher exists', () => {
-    // Should not throw error when destroying without watcher
     expect(() => component.ngOnDestroy()).not.toThrow();
   });
 
   it('should update visibility when watcher callback is triggered', () => {
     let visibilityCallback: (value: boolean) => void;
     const mockParagraph = mockParagraph();
-
     mockParagraph.watchIsGone = (
       _state: ParserState,
       callback: (value: boolean) => void
@@ -96,10 +84,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
       return { close: () => {} };
     };
 
-    component.item = mockParagraph;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockParagraph, true)
-    });
+    initializeComponent(mockParagraph);
 
     expect(component.isHidden).toBe(false);
 
@@ -120,10 +105,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
       close: () => {}
     });
 
-    component.item = mockParagraph;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockParagraph, true)
-    });
+    initializeComponent(mockParagraph);
 
     expect(watchIsGoneSpy).toHaveBeenCalledWith(
       jasmine.any(Object),
