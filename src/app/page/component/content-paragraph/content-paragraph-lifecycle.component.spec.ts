@@ -25,14 +25,14 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   }));
 
   it('should create visibility watcher on initialization', () => {
-    const mockPara = mockParagraph() as Paragraph;
-    const watchIsGoneSpy = spyOn(mockPara, 'watchIsGone').and.returnValue({
+    const mockParagraph = mockParagraph() as Paragraph;
+    const watchIsGoneSpy = spyOn(mockParagraph, 'watchIsGone').and.returnValue({
       close: () => {}
     });
 
-    component.item = mockPara;
+    component.item = mockParagraph;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockPara, true)
+      item: new SimpleChange(null, mockParagraph, true)
     });
 
     expect(watchIsGoneSpy).toHaveBeenCalled();
@@ -43,22 +43,22 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
     const closeSpy1 = jasmine.createSpy('close1');
     const closeSpy2 = jasmine.createSpy('close2');
 
-    const mockPara1 = mockParagraph() as Paragraph;
-    const mockPara2 = mockParagraph() as Paragraph;
+    const mockParagraph1 = mockParagraph() as Paragraph;
+    const mockParagraph2 = mockParagraph() as Paragraph;
 
-    mockPara1.watchIsGone = () => ({ close: closeSpy1 });
-    mockPara2.watchIsGone = () => ({ close: closeSpy2 });
+    mockParagraph1.watchIsGone = () => ({ close: closeSpy1 });
+    mockParagraph2.watchIsGone = () => ({ close: closeSpy2 });
 
     // First initialization
-    component.item = mockPara1;
+    component.item = mockParagraph1;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockPara1, true)
+      item: new SimpleChange(null, mockParagraph1, true)
     });
 
     // Second initialization should close first watcher
-    component.item = mockPara2;
+    component.item = mockParagraph2;
     component.ngOnChanges({
-      item: new SimpleChange(mockPara1, mockPara2, false)
+      item: new SimpleChange(mockParagraph1, mockParagraph2, false)
     });
 
     expect(closeSpy1).toHaveBeenCalled();
@@ -67,13 +67,13 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
 
   it('should close watcher on component destroy', () => {
     const closeSpy = jasmine.createSpy('close');
-    const mockPara = mockParagraph() as Paragraph;
+    const mockParagraph = mockParagraph() as Paragraph;
 
-    mockPara.watchIsGone = () => ({ close: closeSpy });
+    mockParagraph.watchIsGone = () => ({ close: closeSpy });
 
-    component.item = mockPara;
+    component.item = mockParagraph;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockPara, true)
+      item: new SimpleChange(null, mockParagraph, true)
     });
 
     component.ngOnDestroy();
@@ -88,9 +88,9 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
 
   it('should update visibility when watcher callback is triggered', () => {
     let visibilityCallback: (value: boolean) => void;
-    const mockPara = mockParagraph() as Paragraph;
+    const mockParagraph = mockParagraph() as Paragraph;
 
-    mockPara.watchIsGone = (
+    mockParagraph.watchIsGone = (
       _state: ParserState,
       callback: (value: boolean) => void
     ) => {
@@ -99,9 +99,9 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
       return { close: () => {} };
     };
 
-    component.item = mockPara;
+    component.item = mockParagraph;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockPara, true)
+      item: new SimpleChange(null, mockParagraph, true)
     });
 
     expect(component.isHidden).toBe(false);
@@ -118,14 +118,14 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
     const mockState = { testKey: 'testValue' };
     spyOn(pageService, 'parserState').and.returnValue(mockState);
 
-    const mockPara = mockParagraph() as Paragraph;
-    const watchIsGoneSpy = spyOn(mockPara, 'watchIsGone').and.returnValue({
+    const mockParagraph = mockParagraph() as Paragraph;
+    const watchIsGoneSpy = spyOn(mockParagraph, 'watchIsGone').and.returnValue({
       close: () => {}
     });
 
-    component.item = mockPara;
+    component.item = mockParagraph;
     component.ngOnChanges({
-      item: new SimpleChange(null, mockPara, true)
+      item: new SimpleChange(null, mockParagraph, true)
     });
 
     expect(watchIsGoneSpy).toHaveBeenCalledWith(
