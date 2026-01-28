@@ -11,7 +11,8 @@ import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import {
   TractPage,
-  godToolsParser
+  godToolsParser,
+  Page
 } from '../services/xml-parser-service/xml-parser.service';
 import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
@@ -529,7 +530,10 @@ describe('PageComponent', () => {
   });
 
   describe('getPageIdForRouting() — CYOA handling', () => {
-    const setupGetPageIdForRoutingTest = (pageId: string, activePage: any) => {
+    const setupGetPageIdForRoutingTest = (
+          pageId: string,
+          activePage: Partial<Page>
+        ) => {
       component._pageParams.pageId = pageId;
       component.activePage = activePage;
     };
