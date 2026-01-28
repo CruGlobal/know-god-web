@@ -29,7 +29,7 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
     component = fixture.componentInstance;
   }));
 
-  it('should update state when option is selected', () => {
+  it('should call toggleSelected with the correct, current parser state', () => {
     const mockOption = mockMultiselectOption(false);
     const toggleSelectedSpy = spyOn(mockOption, 'toggleSelected');
 
@@ -38,9 +38,18 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
       item: new SimpleChange(null, mockOption, true)
     });
 
+    // Check with initial state
     component.onClick();
-
     expect(toggleSelectedSpy).toHaveBeenCalledWith(mockState);
+
+    // Update mock state and check again
+    mockState.familylessonqz = 'quiz_talkingtofamily_differences';
+    component.onClick();
+    expect(toggleSelectedSpy).toHaveBeenCalledWith(
+      jasmine.objectContaining({
+        familylessonqz: 'quiz_talkingtofamily_differences'
+      })
+    );
   });
 
   it('should maintain state reference across multiple selections', () => {
@@ -67,27 +76,6 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
     // Both should use the same state object
     expect(toggleSpy1).toHaveBeenCalledWith(mockState);
     expect(toggleSpy2).toHaveBeenCalledWith(mockState);
-  });
-
-  it('should call toggleSelected with current parser state', () => {
-    const mockOption = mockMultiselectOption(false);
-    const toggleSelectedSpy = spyOn(mockOption, 'toggleSelected');
-
-    // Update mock state
-    mockState.familylessonqz = 'quiz_talkingtofamily_differences';
-
-    component.item = mockOption;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockOption, true)
-    });
-
-    component.onClick();
-
-    expect(toggleSelectedSpy).toHaveBeenCalledWith(
-      jasmine.objectContaining({
-        familylessonqz: 'quiz_talkingtofamily_differences'
-      })
-    );
   });
 
   it('should handle multiple clicks on same option', () => {
