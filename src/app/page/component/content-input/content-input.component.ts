@@ -1,6 +1,14 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  FlowWatcher,
+  ParserState,
   Text,
   parseTextRemoveBrTags,
   Input as xmlInput
@@ -12,7 +20,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-input.component.html',
   styleUrls: ['./content-input.component.css']
 })
-export class ContentInputComponent implements OnChanges {
+export class ContentInputComponent implements OnChanges, OnDestroy {
   @Input() item: xmlInput;
 
   input: xmlInput;
@@ -26,9 +34,20 @@ export class ContentInputComponent implements OnChanges {
   name: string;
   type: string;
   dir$: Observable<string>;
+  isHidden: boolean;
+  isInvisible: boolean;
+  isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -59,6 +78,22 @@ export class ContentInputComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watchers
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+
+    // Watch for gone-if expressions (removes from DOM)
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
+    );
+
     this.label = this.input?.label || null;
     this.labelText = this.input.label?.text || '';
     this.placeholder = this.input?.placeholder || null;

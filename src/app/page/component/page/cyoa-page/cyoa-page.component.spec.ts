@@ -33,7 +33,7 @@ describe('CYOAComponent', () => {
   });
 
   it('Ensure formAction is run when pageService.formAction is ran', async () => {
-    const spy = spyOn<any>(component, 'onFormAction');
+    const spy = spyOn(component, 'onFormAction');
     expect(spy).not.toHaveBeenCalled();
     pageService.formAction('action');
     expect(spy).toHaveBeenCalledWith('action');
@@ -59,7 +59,7 @@ describe('CYOAComponent', () => {
   describe('onFormAction', () => {
     beforeEach(waitForAsync(() => {
       spyOn(pageService, 'emailSignumFormDataNeeded');
-      (component as any).init();
+      component['init']();
     }));
 
     it('Event followup:send', async () => {
@@ -69,42 +69,44 @@ describe('CYOAComponent', () => {
   });
 
   describe('navigateBack', () => {
+    const setupNavigateBackTest = (
+      parentPagePosition: string | undefined,
+      ready: boolean,
+      showBackButton: boolean
+    ) => {
+      component.page['parentPage'] = { position: parentPagePosition };
+      component.ready = ready;
+      component.showBackButton = showBackButton;
+    };
+
     beforeEach(() => {
       spyOn(pageService, 'navigateToPage');
       component.page = page;
     });
 
     it('should navigate back to page 1', async () => {
-      (component.page as any).parentPage = { position: '1' };
-      component.ready = true;
-      component.showBackButton = true;
+      setupNavigateBackTest('1', true, true);
 
       component.navigateBack();
       expect(pageService.navigateToPage).toHaveBeenCalledWith('1');
     });
 
     it('should not navigate back', async () => {
-      (component.page as any).parentPage = { position: undefined };
-      component.ready = true;
-      component.showBackButton = true;
+      setupNavigateBackTest(undefined, true, true);
 
       component.navigateBack();
       expect(pageService.navigateToPage).not.toHaveBeenCalled();
     });
 
     it('should not navigate back when back button is not shown', async () => {
-      (component.page as any).parentPage = { position: '1' };
-      component.ready = true;
-      component.showBackButton = false;
+      setupNavigateBackTest('1', true, false);
 
       component.navigateBack();
       expect(pageService.navigateToPage).not.toHaveBeenCalled();
     });
 
     it('should not navigate back when component is not ready', async () => {
-      (component.page as any).parentPage = { position: '1' };
-      component.ready = false;
-      component.showBackButton = true;
+      setupNavigateBackTest('1', false, true);
 
       component.navigateBack();
       expect(pageService.navigateToPage).not.toHaveBeenCalled();

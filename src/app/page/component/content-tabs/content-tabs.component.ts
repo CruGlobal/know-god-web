@@ -1,7 +1,15 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Content,
+  FlowWatcher,
+  ParserState,
   Tab,
   Tabs
 } from 'src/app/services/xml-parser-service/xml-parser.service';
@@ -17,7 +25,7 @@ interface TabWithContent {
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })
-export class ContentTabsComponent implements OnChanges {
+export class ContentTabsComponent implements OnChanges, OnDestroy {
   @Input() item: Tabs;
 
   tabs: Tabs;
@@ -26,10 +34,21 @@ export class ContentTabsComponent implements OnChanges {
   ready: boolean;
   dir$: Observable<string>;
   isModal$: Observable<boolean>;
+  isHidden: boolean;
+  isInvisible: boolean;
+  isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
     this.isModal$ = this.pageService.isModal$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -58,6 +77,22 @@ export class ContentTabsComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watchers
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+
+    // Watch for gone-if expressions (removes from DOM)
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
+    );
+
     this.tabs.tabs.forEach((tab) => {
       const contents: Content[] = [];
       if (tab.content)

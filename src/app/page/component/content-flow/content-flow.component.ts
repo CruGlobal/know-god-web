@@ -3,7 +3,8 @@ import {
   DimensionParser,
   Flow,
   FlowItem,
-  Horizontal
+  Horizontal,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -18,7 +19,7 @@ export class ContentFlowComponent implements OnChanges {
   flow: Flow;
   items: (FlowItem & { itemWidth?: string | null })[];
   ready: boolean;
-  state: any;
+  state: ParserState;
   justifyContent: Horizontal;
 
   constructor(private pageService: PageService) {

@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { BehaviorSubject } from 'rxjs';
+import { CyoaContentPage } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../../service/page-service.service';
 import { CYOACardCollectionComponent } from './cyoa-card-collection-page.component';
 
@@ -44,7 +45,7 @@ describe('CYOACardCollectionComponent', () => {
         { id: '2', content: [] },
         { id: '3', content: [] }
       ]
-    } as any;
+    } as CyoaContentPage;
 
     component.order = 1;
     component.totalPages = 3;

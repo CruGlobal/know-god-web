@@ -15,7 +15,7 @@ import { PageService } from '../../service/page-service.service';
 export class PageHeaderComponent implements OnChanges {
   @Input() header: Header;
 
-  private _unsubscribeAll: Subject<any>;
+  private _unsubscribeAll: Subject<void>;
 
   ready: boolean;
   headerText: string;
@@ -26,7 +26,7 @@ export class PageHeaderComponent implements OnChanges {
   isFirstPage$: Observable<boolean>;
 
   constructor(private pageService: PageService) {
-    this._unsubscribeAll = new Subject<any>();
+    this._unsubscribeAll = new Subject<void>();
     this.dir$ = this.pageService.pageDir$;
     this.isForm$ = this.pageService.isForm$;
     this.isFirstPage$ = this.pageService.isFirstPage$;

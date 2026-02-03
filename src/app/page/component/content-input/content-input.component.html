@@ -1,4 +1,4 @@
-<ng-container *ngIf="ready">
+<ng-container *ngIf="ready && !isHidden">
   <label [for]="name" [innerHTML]="labelText"></label>
   <input
     [type]="type"

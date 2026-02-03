@@ -1,6 +1,14 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
+  FlowWatcher,
+  ParserState,
   Text,
   parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xml-parser.service';
@@ -11,7 +19,7 @@ import { PageService } from '../../service/page-service.service';
   templateUrl: './content-text.component.html',
   styleUrls: ['./content-text.component.css']
 })
-export class ContentTextComponent implements OnChanges {
+export class ContentTextComponent implements OnChanges, OnDestroy {
   @Input() item: Text;
 
   text: Text;
@@ -20,13 +28,24 @@ export class ContentTextComponent implements OnChanges {
   isFirstPage$: Observable<boolean>;
   dir$: Observable<string>;
   textColor: string;
-  styles: any;
+  styles: { [key: string]: string | number };
   startImgResource: string | null;
   startImgWidth: string | null;
+  isHidden: boolean;
+  isInvisible: boolean;
+  isHiddenWatcher: FlowWatcher;
+  isInvisibleWatcher: FlowWatcher;
+  state: ParserState;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
     this.dir$ = this.pageService.pageDir$;
+    this.state = this.pageService.parserState();
+  }
+
+  ngOnDestroy(): void {
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,6 +69,22 @@ export class ContentTextComponent implements OnChanges {
   }
 
   private init(): void {
+    // Initialize visibility watchers
+    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+
+    // Watch for gone-if expressions (removes from DOM)
+    this.isHiddenWatcher = this.item.watchIsGone(
+      this.state,
+      (value) => (this.isHidden = value)
+    );
+
+    // Watch for invisible-if expressions (hides but keeps space)
+    this.isInvisibleWatcher = this.item.watchIsInvisible(
+      this.state,
+      (value) => (this.isInvisible = value)
+    );
+
     const styles = {
       'font-weight': this.text.fontWeight ? this.text.fontWeight : '',
       'font-style': this.text.textStyles?.some(

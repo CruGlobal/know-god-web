@@ -9,12 +9,16 @@ import {
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { godToolsParser } from '../services/xml-parser-service/xml-parser.service';
+import {
+  Page,
+  TractPage,
+  godToolsParser
+} from '../services/xml-parser-service/xml-parser.service';
 import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
 describe('PageComponent', () => {
-  let component: any;
+  let component: PageComponent;
   let fixture: ComponentFixture<PageComponent>;
   let pageService: PageService;
   let router: Router;
@@ -228,7 +232,7 @@ describe('PageComponent', () => {
       testName: string;
       pageId: string;
       initialPageId: string | null;
-      page: any;
+      page: Partial<TractPage>;
     }
     const tests: TestProps[] = [
       {
@@ -263,7 +267,7 @@ describe('PageComponent', () => {
 
         spyOn(component, 'getPageIdForRouting').and.returnValue(pageId);
 
-        component.loadBookPage(pageWithRealId);
+        component.loadBookPage(pageWithRealId as TractPage);
 
         expect(navigateByUrlSpy).toHaveBeenCalledWith(
           router.createUrlTree([
@@ -380,7 +384,12 @@ describe('PageComponent', () => {
   });
 
   describe('setCardUrl()', () => {
+    const setupSetCardUrlTest = (langId: string | null) => {
+      component._pageParams.langId = langId;
+    };
+
     it('should navigate with correct params', () => {
+      setupSetCardUrlTest(langId);
       component.setCardUrl(2);
 
       expect(router.navigate).toHaveBeenCalledWith([
@@ -394,7 +403,7 @@ describe('PageComponent', () => {
     });
 
     it('should not navigate if _pageParams.langId is missing', () => {
-      component._pageParams.langId = null;
+      setupSetCardUrlTest(null);
 
       component.setCardUrl(2);
 
@@ -521,9 +530,16 @@ describe('PageComponent', () => {
   });
 
   describe('getPageIdForRouting() — CYOA handling', () => {
+    const setupGetPageIdForRoutingTest = (
+      pageId: string,
+      activePage: Partial<Page>
+    ) => {
+      component._pageParams.pageId = pageId;
+      component.activePage = activePage;
+    };
+
     it('returns page.id if activePage is CYOA and page.position is 0 and route pageId is "0"', () => {
-      component._pageParams.pageId = '0';
-      component.activePage = cyoaPage;
+      setupGetPageIdForRoutingTest('0', cyoaPage);
 
       const result = component.getPageIdForRouting({
         id: 'cyoa-real-id',
@@ -534,10 +550,7 @@ describe('PageComponent', () => {
     });
 
     it('returns page.position if activePage is NOT CYOA even if pageId is "0"', () => {
-      component._pageParams.pageId = '0';
-
-      // Not a CYOA instance
-      component.activePage = {};
+      setupGetPageIdForRoutingTest('0', {});
 
       const result = component.getPageIdForRouting({
         id: 'some-id',
@@ -549,18 +562,22 @@ describe('PageComponent', () => {
   });
 
   describe('cleanPageId()', () => {
+    const setupCleanPageIdTest = (pageId: string | number) => {
+      component._pageParams.pageId = pageId;
+    };
+
     it('should return number if pageId is numeric string', () => {
-      component._pageParams.pageId = '3';
+      setupCleanPageIdTest('3');
       expect(component['cleanPageId']()).toBe(3);
     });
 
     it('should return string if pageId is non-numeric', () => {
-      component._pageParams.pageId = 'abc';
+      setupCleanPageIdTest('abc');
       expect(component['cleanPageId']()).toBe('abc');
     });
 
     it('should return number if pageId is already a number', () => {
-      component._pageParams.pageId = 5;
+      setupCleanPageIdTest(5);
       expect(component['cleanPageId']()).toBe(5);
     });
   });
