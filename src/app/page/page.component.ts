@@ -306,7 +306,7 @@ export class PageComponent implements OnInit, OnDestroy {
       const attachments = this._pageBookIndex.included.filter(
         (row) =>
           row.type.toLowerCase() === 'attachment' &&
-          row.attributes['file-file-name'].toLowerCase() ===
+          (row.attributes['file-file-name'] as string).toLowerCase() ===
             resourceName.toLowerCase()
       );
 
@@ -314,7 +314,7 @@ export class PageComponent implements OnInit, OnDestroy {
         return '';
       }
 
-      const fileUrl = attachments[0].attributes.file;
+      const fileUrl = attachments[0].attributes.file as string;
       if (resourceType === getResourceTypeEnum.animation) {
         this.pageService.addToAnimationsDict(resourceName, fileUrl);
         return fileUrl;
@@ -368,10 +368,10 @@ export class PageComponent implements OnInit, OnDestroy {
     let item: JsonApiResource | undefined;
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
-      if (
-        translation?.relationships?.language?.data?.id ===
-        this._selectedLanguage.id
-      ) {
+      const lang = translation?.relationships?.language as
+        | { data?: { id?: string } }
+        | undefined;
+      if (lang?.data?.id === this._selectedLanguage.id) {
         item = translation;
         return;
       }
@@ -411,19 +411,20 @@ export class PageComponent implements OnInit, OnDestroy {
           this._pageBookIndex.included.forEach((resource) => {
             const { attributes, type } = resource;
             if (type === 'attachment') {
+              const fileName = attributes['file-file-name'] as string;
               this.pageService.addAttachment(
-                attributes['file-file-name'],
-                attributes.file
+                fileName,
+                attributes.file as string
               );
               const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                attributes['file-file-name']
+                fileName
               );
 
               this.getResource(
                 isImage
                   ? getResourceTypeEnum.image
                   : getResourceTypeEnum.animation,
-                attributes['file-file-name']
+                fileName
               );
             }
           });
@@ -557,7 +558,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBook =
       this._books.find((book) =>
         book.attributes.abbreviation === this._pageParams.bookId ? book : false
-      ) || {};
+      ) || ({} as Book);
 
     if (!this._pageBook.id) {
       this.pageService.setDir('ltr');
@@ -621,12 +622,12 @@ export class PageComponent implements OnInit, OnDestroy {
   private checkIfPreSelectedLanguageExists(): boolean {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
-        return (
-          x?.relationships?.language?.data?.id &&
-          x?.relationships?.language?.data?.id === this._selectedLanguage.id
-        );
+        const lang = x?.relationships?.language as
+          | { data?: { id?: string } }
+          | undefined;
+        return lang?.data?.id && lang.data.id === this._selectedLanguage.id;
       });
-      return y && y.id;
+      return !!(y && y.id);
     } else {
       return false;
     }
@@ -923,7 +924,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pageService.emailSignupFormData$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        filter((tData) => tData)
+        filter((tData) => !!tData)
       )
       .subscribe((data) => {
         if (data.name && data.email && data.destination_id) {
@@ -950,8 +951,8 @@ export class PageComponent implements OnInit, OnDestroy {
     this._booksLoaded = false;
     this._books = [];
     this._pageBookLoaded = false;
-    this._pageBook = {};
-    this._pageBookIndex = {};
+    this._pageBook = {} as Book;
+    this._pageBookIndex = {} as JsonApiResponse;
     this._pageBookManifestLoaded = false;
     this._pageBookManifest = {} as Manifest;
     this._pageBookTranslations = [];

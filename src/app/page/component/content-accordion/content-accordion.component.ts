@@ -8,6 +8,7 @@ import {
 import { Observable } from 'rxjs';
 import {
   Accordion,
+  AccordionSection,
   Content,
   FlowWatcher,
   ParserState
@@ -15,7 +16,7 @@ import {
 import { PageService } from '../../service/page-service.service';
 
 interface AccordionSectionWithContent {
-  section: Accordion['Section'];
+  section: AccordionSection;
   contents: Content[];
 }
 
