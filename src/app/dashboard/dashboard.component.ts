@@ -51,7 +51,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageName: string;
   dispLanguageDirection: string;
   langSwitchOn: boolean;
-  availableLangs: [];
+  availableLangs: { code: string; name: string }[];
   resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
