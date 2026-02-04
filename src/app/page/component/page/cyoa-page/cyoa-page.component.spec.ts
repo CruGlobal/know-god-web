@@ -59,12 +59,20 @@ describe('CYOAComponent', () => {
   describe('onFormAction', () => {
     beforeEach(waitForAsync(() => {
       spyOn(pageService, 'emailSignumFormDataNeeded');
+      spyOn(pageService, 'contentEvent');
       (component as any).init();
     }));
 
     it('Event followup:send', async () => {
       pageService.formAction('followup:send');
       expect(pageService.emailSignumFormDataNeeded).toHaveBeenCalled();
+    });
+
+    it('should call contentEvent for navigation events', () => {
+      pageService.formAction('some-navigation-event');
+      expect(pageService.contentEvent).toHaveBeenCalledWith(
+        'some-navigation-event'
+      );
     });
   });
 
