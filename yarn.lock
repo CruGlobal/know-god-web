@@ -7287,7 +7287,7 @@ __metadata:
     karma-jasmine: "npm:^5.1.0"
     karma-jasmine-html-reporter: "npm:^2.1.0"
     lottie-web: "npm:^5.12.2"
-    ngx-lottie: "npm:^8.3.0"
+    ngx-lottie: "npm:^20.0.0"
     ngx-toastr: "npm:^17.0.2"
     prettier: "npm:^3.4.1"
     pretty-quick: "npm:^4.0.0"
@@ -7979,16 +7979,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ngx-lottie@npm:^8.3.0":
-  version: 8.3.0
-  resolution: "ngx-lottie@npm:8.3.0"
+"ngx-lottie@npm:^20.0.0":
+  version: 20.0.0
+  resolution: "ngx-lottie@npm:20.0.0"
   dependencies:
     "@scarf/scarf": "npm:^1.1.1"
     tslib: "npm:^2.3.0"
   peerDependencies:
-    "@angular/core": ">=13"
+    "@angular/core": ">=20"
     lottie-web: ">=5.9.2"
-  checksum: 10c0/2f92b9b1b9615fb40ca7575224565ca4098d9c7fa7ec7c8c559f3a1ca7f618292914ae7960b34134e80447e14327df37de82146921542c5c6994f9d2208c7d0a
+  checksum: 10c0/df25d237909b988bae08db0a424a993eb06d0c3223621e793d73448cce999a90da57838de96097e2d2f7cfef92c5a0e522726e4717802857c976b7f5fd3bac8a
   languageName: node
   linkType: hard
 
