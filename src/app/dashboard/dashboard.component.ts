@@ -126,7 +126,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (
         tLanguage.attributes &&
         tLanguage.attributes.code &&
-        tLanguage.attributes.code === pRouteLang
+        tLanguage.attributes.code.toLowerCase() === pRouteLang.toLowerCase()
       ) {
         this.dispLanguage = parseInt(tLanguage.id as string, 10);
         this.dispLanguageCode = tLanguage.attributes.code;

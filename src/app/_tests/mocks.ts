@@ -597,6 +597,25 @@ export const mockPageComponent = {
       direction: 'ltr',
       name: 'English'
     }
+  },
+  languageChineseTraditional: {
+    id: '3333',
+    type: 'translation',
+    relationships: {
+      translations: {
+        data: [
+          {
+            id: '3',
+            type: 'language'
+          }
+        ]
+      }
+    },
+    attributes: {
+      code: 'zh-Hant',
+      direction: 'ltr',
+      name: 'Chinese (Traditional)'
+    }
   }
 };
 
