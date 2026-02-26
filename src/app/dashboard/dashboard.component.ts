@@ -101,23 +101,23 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
-  private checkRouteLang(pRouteLang: string): void {
+  private checkRouteLang(urlLanguageCode: string): void {
     this.dispLanguage = undefined;
 
     if (this._languagesData) {
-      this.setDisplayLanguage(pRouteLang);
+      this.setDisplayLanguage(urlLanguageCode);
     } else {
       this.commonService
         .getLanguages(APIURL.GET_ALL_LANGUAGES)
         .pipe(takeUntil(this._unsubscribeAll), take(1))
         .subscribe((data: any) => {
           this._languagesData = data.data;
-          this.setDisplayLanguage(pRouteLang);
+          this.setDisplayLanguage(urlLanguageCode);
         });
     }
   }
 
-  private setDisplayLanguage(pRouteLang: string): void {
+  private setDisplayLanguage(urlLanguageCode: string): void {
     if (!this._languagesData) {
       return;
     }
@@ -126,7 +126,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       if (
         tLanguage.attributes &&
         tLanguage.attributes.code &&
-        tLanguage.attributes.code.toLowerCase() === pRouteLang.toLowerCase()
+        tLanguage.attributes.code.toLowerCase() ===
+          urlLanguageCode.toLowerCase()
       ) {
         this.dispLanguage = parseInt(tLanguage.id as string, 10);
         this.dispLanguageCode = tLanguage.attributes.code;
