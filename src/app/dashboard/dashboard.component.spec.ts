@@ -6,7 +6,7 @@ import { CommonService } from '../services/common.service';
 import { DashboardComponent } from './dashboard.component';
 
 describe('DashboardComponent', () => {
-  let component: any;
+  let component: DashboardComponent;
   let fixture: ComponentFixture<DashboardComponent>;
 
   beforeEach(waitForAsync(() => {
@@ -27,8 +27,10 @@ describe('DashboardComponent', () => {
   });
 
   it('setDisplayLanguage() should match case-insensitively and store API correct casing', () => {
-    component._languagesData = [mockPageComponent.languageChineseTraditional];
-    component.setDisplayLanguage('zh-hant');
+    component['_languagesData'] = [
+      mockPageComponent.languageChineseTraditional
+    ];
+    component['setDisplayLanguage']('zh-hant');
     expect(component.dispLanguage).toEqual(3333);
     expect(component.dispLanguageCode).toEqual('zh-Hant');
     expect(component.dispLanguageName).toEqual('Chinese (Traditional)');
