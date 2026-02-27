@@ -321,6 +321,18 @@ describe('PageComponent', () => {
     );
   });
 
+  it('setSelectedLanguage() should match case-insensitively and self-heal langId casing', () => {
+    spyOn(pageService, 'setDir');
+    component._allLanguages = [mockPageComponent.languageChineseTraditional];
+    component._pageParams.langId = 'zh-hant';
+    component.setSelectedLanguage();
+    expect(component._selectedLanguage).toEqual(
+      mockPageComponent.languageChineseTraditional
+    );
+    expect(component.selectedLang).toEqual('Chinese (Traditional)');
+    expect(component._pageParams.langId).toEqual('zh-Hant');
+  });
+
   it('checkIfPreSelectedLanguageExists() - True', () => {
     component._selectedLanguage = mockPageComponent.languageEnglish;
     const preSelected = component.checkIfPreSelectedLanguageExists();

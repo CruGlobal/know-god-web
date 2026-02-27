@@ -570,7 +570,11 @@ export class PageComponent implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
       const attributes = lang.attributes;
-      if (attributes?.code && attributes?.code === this._pageParams.langId) {
+      if (
+        attributes?.code &&
+        attributes.code.toLowerCase() === this._pageParams.langId.toLowerCase()
+      ) {
+        this._pageParams.langId = attributes.code;
         this._selectedLanguage = lang;
         this.selectedLang = attributes.name;
         this.pageService.setDir(attributes.direction);
