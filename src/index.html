@@ -44,6 +44,13 @@
       // a condition which checks if the page is embedded in an iframe
       if (window.location !== window.parent.location) {
         window.isEmbedded = true;
+
+        // capture ministry identifier and referrer for embed tracking
+        var hashQuery = location.hash.split('?')[1] || '';
+        var params = new URLSearchParams(hashQuery);
+        window.embeddingMinistry = params.get('ministry') || '';
+        window.embeddingReferrer = document.referrer || '';
+
         history.pushState({}, 'entry page', location.hash.substring(1));
 
         window.addEventListener(
