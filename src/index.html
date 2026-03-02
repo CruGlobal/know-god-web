@@ -46,8 +46,8 @@
         window.isEmbedded = true;
 
         // capture ministry identifier and referrer for embed tracking
-        var hashQuery = location.hash.split('?')[1] || '';
-        var params = new URLSearchParams(hashQuery);
+        const hashQuery = location.hash.split('?')[1] || '';
+        const params = new URLSearchParams(hashQuery);
         window.embeddingMinistry = params.get('ministry') || '';
         window.embeddingReferrer = document.referrer || '';
 
