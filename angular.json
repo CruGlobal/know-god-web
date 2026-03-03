@@ -103,7 +103,14 @@
             "karmaConfig": "src/karma.conf.cjs",
             "styles": ["src/styles.css"],
             "scripts": [],
-            "assets": ["src/assets"]
+            "assets": [
+              "src/assets",
+              {
+                "glob": "**/*",
+                "input": "embed",
+                "output": "embed"
+              }
+            ]
           }
         },
         "lint": {
