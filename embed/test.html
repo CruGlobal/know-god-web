@@ -1,0 +1,273 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Embed.js Test Page</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+          sans-serif;
+        background-color: #f0f2f5;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 8px;
+        color: #333;
+      }
+
+      .subtitle {
+        text-align: center;
+        color: #666;
+        margin-bottom: 24px;
+        font-size: 14px;
+      }
+
+      .controls {
+        max-width: 900px;
+        margin: 0 auto 20px;
+        background: #fff;
+        border-radius: 8px;
+        padding: 16px 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .controls summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: #333;
+      }
+
+      .controls-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 12px;
+        margin-top: 12px;
+      }
+
+      .controls-grid label {
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+        color: #555;
+        font-weight: 500;
+      }
+
+      .controls-grid input {
+        margin-top: 4px;
+        padding: 6px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .controls button {
+        margin-top: 12px;
+        padding: 8px 20px;
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .controls button:hover {
+        background: #1d4ed8;
+      }
+
+      .embed-wrapper {
+        max-width: 900px;
+        margin: 0 auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+      }
+
+      .embed-wrapper h2 {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 12px;
+      }
+
+      #log {
+        max-width: 900px;
+        margin: 20px auto 0;
+        background: #1e1e1e;
+        color: #d4d4d4;
+        border-radius: 8px;
+        padding: 12px 16px;
+        font-family: 'SF Mono', Monaco, Consolas, monospace;
+        font-size: 12px;
+        max-height: 200px;
+        overflow-y: auto;
+      }
+
+      #log .log-entry {
+        padding: 2px 0;
+        border-bottom: 1px solid #333;
+      }
+
+      #log .log-entry:last-child {
+        border-bottom: none;
+      }
+
+      #log .log-time {
+        color: #888;
+        margin-right: 8px;
+      }
+
+      #log .log-msg-info {
+        color: #9cdcfe;
+      }
+
+      #log .log-msg-height {
+        color: #6a9955;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Embed.js Test Page</h1>
+    <p class="subtitle">
+      Tests the embed script against the current host. Simulates how a
+      third-party site would embed KnowGod content.
+    </p>
+
+    <div class="controls">
+      <details open>
+        <summary>Configuration</summary>
+        <div class="controls-grid">
+          <label>
+            data-book
+            <input type="text" id="inputBook" value="kgp-us" />
+          </label>
+          <label>
+            data-lang
+            <input type="text" id="inputLang" value="en" />
+          </label>
+          <label>
+            data-ministry
+            <input type="text" id="inputMinistry" value="test-ministry" />
+          </label>
+        </div>
+        <button onclick="reload()">Reload Embed</button>
+      </details>
+    </div>
+
+    <div class="embed-wrapper">
+      <h2>Embedded Content</h2>
+      <div
+        id="knowGodEmbed"
+        data-book="kgp-us"
+        data-lang="en"
+        data-ministry="test-ministry"
+      ></div>
+    </div>
+
+    <div id="log"></div>
+
+    <script>
+      // Resolve the app domain to the current host so the embed works locally
+      // In production, the CI/CD pipeline replaces {appDomain} in embed.js.
+      // For this test page we inline a patched version of the embed logic
+      // that uses the current origin instead.
+
+      var appDomain = window.location.origin;
+
+      function log(msg, type) {
+        var el = document.getElementById('log');
+        var entry = document.createElement('div');
+        entry.className = 'log-entry';
+        var time = new Date().toLocaleTimeString();
+        entry.innerHTML =
+          '<span class="log-time">' +
+          time +
+          '</span><span class="log-msg-' +
+          (type || 'info') +
+          '">' +
+          msg +
+          '</span>';
+        el.prepend(entry);
+      }
+
+      function createEmbed() {
+        var container = document.getElementById('knowGodEmbed');
+
+        // Clear previous iframe if any
+        container.innerHTML = '';
+
+        var dataBook = container.getAttribute('data-book');
+        var dataLang = container.getAttribute('data-lang');
+        var dataMinistry = container.getAttribute('data-ministry');
+
+        var iframe = document.createElement('iframe');
+        iframe.style.width = '100%';
+        iframe.style.border = 'none';
+        iframe.style.overflow = 'hidden';
+        iframe.style.minHeight = '450px';
+        iframe.setAttribute('allowtransparency', 'true');
+        iframe.setAttribute('scrolling', 'no');
+
+        iframe.src =
+          [appDomain, '#', dataLang, dataBook].join('/') +
+          '?embedded=true' +
+          (dataMinistry ? '&ministry=' + encodeURIComponent(dataMinistry) : '');
+
+        container.appendChild(iframe);
+
+        log('iframe created: ' + iframe.src);
+
+        // Listen for height messages from the iframe
+        var previousHeight = 0;
+        window.addEventListener(
+          'message',
+          function (e) {
+            if (isNaN(e.data) || previousHeight === e.data) return;
+
+            iframe.style.height = e.data + 'px';
+            log('height updated: ' + e.data + 'px', 'height');
+
+            var newiframeTop =
+              document.getElementById('knowGodEmbed').getBoundingClientRect()
+                .top + window.scrollY;
+            if (window.pageYOffset > newiframeTop) {
+              window.scrollTo({ top: newiframeTop });
+            }
+
+            previousHeight = e.data;
+          },
+          false
+        );
+      }
+
+      function reload() {
+        var container = document.getElementById('knowGodEmbed');
+        container.setAttribute(
+          'data-book',
+          document.getElementById('inputBook').value
+        );
+        container.setAttribute(
+          'data-lang',
+          document.getElementById('inputLang').value
+        );
+        container.setAttribute(
+          'data-ministry',
+          document.getElementById('inputMinistry').value
+        );
+        createEmbed();
+      }
+
+      // Initial load
+      createEmbed();
+    </script>
+  </body>
+</html>
