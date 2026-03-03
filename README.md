@@ -9,6 +9,19 @@ This is an Angular 17 project created with TypeScript.
 <script src="https://knowgod.com/embed.js"></script>
 ```
 
+### Testing the Embed Locally
+
+A test page is available at `embed/test.html` to verify the embed script works correctly. Start the dev server and open the test page:
+
+```bash
+yarn start
+# then open http://localhost:4200/embed/test.html
+```
+
+The test page uses `window.location.origin` to dynamically point the iframe at the current host, so it works in any environment without needing the `{appDomain}` placeholder that CI/CD replaces in the production `embed.js`.
+
+You can change the `data-book`, `data-lang`, and `data-ministry` values and click **Reload Embed** to test different configurations. The log panel at the bottom shows the generated iframe URL and any `postMessage` height updates received from the embedded content.
+
 ## Environments
 
 - Production: https://knowgod.com/en
