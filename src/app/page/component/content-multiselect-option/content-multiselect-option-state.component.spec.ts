@@ -24,7 +24,7 @@ describe('ContentMultiselectOptionComponent - State Management', () => {
     mockState = pageService.parserState() as ParserStateWithFields;
     mockState.testKey = 'testValue';
     mockState.familylessonqz = null;
-    mockState['contentEvents'] ??= [];
+    (mockState as any)['contentEvents'] = [];
 
     spyOn(pageService, 'parserState').and.returnValue(mockState);
 

@@ -384,7 +384,7 @@ export class PageComponent implements OnInit, OnDestroy {
       item.attributes &&
       item.attributes['manifest-name']
     ) {
-      const manifestName = item.attributes['manifest-name'];
+      const manifestName = item.attributes['manifest-name'] as string;
       this.pullParserFactory.setOrigin(APIURL.GET_TRANSLATION_FILES);
       const config = ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)

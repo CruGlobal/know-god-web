@@ -103,7 +103,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   it('should pass parser state to watcher', () => {
     const mockState = pageService.parserState() as ParserStateWithFields;
     mockState.testKey = 'testValue';
-    mockState['contentEvents'] ??= [];
+    (mockState as any)['contentEvents'] = [];
     spyOn(pageService, 'parserState').and.returnValue(mockState);
 
     const paragraphItem = mockParagraph();
