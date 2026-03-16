@@ -1,3 +1,5 @@
+import { SimpleChange } from '@angular/core';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import {
   MultiselectOption,
   ParserState
@@ -6,18 +8,23 @@ import { mockMultiselectOption } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentMultiselectOptionComponent } from './content-multiselect-option.component';
 
+type ParserStateWithFields = ParserState & {
+  familylessonqz: string | null;
+  testKey: string;
+} & Record<string, unknown>;
+
 describe('ContentMultiselectOptionComponent - State Management', () => {
   let component: ContentMultiselectOptionComponent;
   let fixture: ComponentFixture<ContentMultiselectOptionComponent>;
   let pageService: PageService;
-  let mockState: Partial<ParserState>;
+  let mockState: ParserStateWithFields;
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
-    mockState = {
-      testKey: 'testValue',
-      familylessonqz: null
-    } as Partial<ParserState>;
+    mockState = pageService.parserState() as ParserStateWithFields;
+    mockState.testKey = 'testValue';
+    mockState.familylessonqz = null;
+    mockState['contentEvents'] ??= [];
 
     spyOn(pageService, 'parserState').and.returnValue(mockState);
 

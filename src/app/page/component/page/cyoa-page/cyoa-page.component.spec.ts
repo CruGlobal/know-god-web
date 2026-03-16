@@ -5,7 +5,7 @@ import { PageService } from '../../../service/page-service.service';
 import { CYOAComponent } from './cyoa-page.component';
 
 describe('CYOAComponent', () => {
-  let component: CYOAComponent;
+  let component: any;
   let fixture: ComponentFixture<CYOAComponent>;
   let pageService: PageService;
   const page = mockCyoa();
@@ -41,7 +41,7 @@ describe('CYOAComponent', () => {
 
   it('Test Observables', async () => {
     component.ngOnChanges({
-      page: new SimpleChange(null, component, true)
+      page: new SimpleChange(null, page, true)
     });
 
     component.isForm$.subscribe((value) => {

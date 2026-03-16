@@ -38,6 +38,29 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   isInvisibleWatcher: FlowWatcher;
   state: ParserState;
 
+  private getAnimationListeners(): {
+    playListeners: { name: string }[];
+    stopListeners: { name: string }[];
+  } {
+    const animationWithListeners = this.animation as Animation & {
+      playListeners?: { name: string }[];
+      stopListeners?: { name: string }[];
+      _playListeners?: { name: string }[];
+      _stopListeners?: { name: string }[];
+    };
+
+    return {
+      playListeners:
+        animationWithListeners.playListeners ??
+        animationWithListeners._playListeners ??
+        [],
+      stopListeners:
+        animationWithListeners.stopListeners ??
+        animationWithListeners._stopListeners ??
+        []
+    };
+  }
+
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
     this.state = this.pageService.parserState();
@@ -128,7 +151,8 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
 
     this.hasEvents = !!this.animation.events;
 
-    if (!!this.animation.playListeners || !!this.animation.stopListeners) {
+    const { playListeners, stopListeners } = this.getAnimationListeners();
+    if (playListeners.length || stopListeners.length) {
       this.awaitAnimEvent();
     }
     this.ready = true;
@@ -139,16 +163,17 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((event) => {
         if (!this.anmViewItem) return;
-        const playListeners = this.animation.playListeners.filter(
+        const { playListeners, stopListeners } = this.getAnimationListeners();
+        const shouldPlay = playListeners.some(
           (listener) => listener.name === event
-        ).length;
-        const stopListeners = this.animation.stopListeners.filter(
+        );
+        const shouldStop = stopListeners.some(
           (listener) => listener.name === event
-        ).length;
+        );
 
-        if (playListeners) {
+        if (shouldPlay) {
           this.anmViewItem.play();
-        } else if (stopListeners) {
+        } else if (shouldStop) {
           this.anmViewItem.pause();
         }
       });

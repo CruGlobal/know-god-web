@@ -171,9 +171,6 @@ export const mockAnimation = (
     stopListeners: [createEventId(`${event}-stop-listener`)],
     isClickable: true,
     events: [createEventId(event)],
-    _events: null,
-    _playListeners: null,
-    _stopListeners: null,
     ...standardTypeValues()
   };
 };
@@ -450,8 +447,6 @@ export const mockHero = (
   return {
     heading: createText(heading),
     content,
-    getAnalyticsEvents: null,
-    _getAnalyticsEvents: null,
     ...standardTypeValues()
   };
 };

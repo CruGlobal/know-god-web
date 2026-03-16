@@ -18,7 +18,7 @@ import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
 describe('PageComponent', () => {
-  let component: PageComponent;
+  let component: any;
   let fixture: ComponentFixture<PageComponent>;
   let pageService: PageService;
   let router: Router;
@@ -66,7 +66,7 @@ describe('PageComponent', () => {
 
   beforeEach(() => {
     fixture = TestBed.createComponent(PageComponent);
-    router = TestBed.get(Router);
+    router = TestBed.inject(Router);
     component = fixture.componentInstance;
     fixture.detectChanges();
     spyOn(router, 'navigate');

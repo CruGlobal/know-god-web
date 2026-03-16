@@ -55,7 +55,7 @@ describe('ContentImageComponent', () => {
 
     expect(component.isEventType).toBeTrue();
 
-    const pageService = TestBed.get(PageService);
+    const pageService = TestBed.inject(PageService);
     spyOn(pageService, 'formAction');
 
     component.formAction();

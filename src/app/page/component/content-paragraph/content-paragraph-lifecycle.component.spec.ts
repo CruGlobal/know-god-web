@@ -5,6 +5,10 @@ import { mockParagraph } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentParagraphComponent } from './content-paragraph.component';
 
+type ParserStateWithFields = ParserState & {
+  testKey: string;
+} & Record<string, unknown>;
+
 describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   let component: ContentParagraphComponent;
   let fixture: ComponentFixture<ContentParagraphComponent>;
@@ -29,12 +33,12 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   }));
 
   it('should create visibility watcher on initialization', () => {
-    const mockParagraph = mockParagraph();
-    const watchIsGoneSpy = spyOn(mockParagraph, 'watchIsGone').and.returnValue({
+    const paragraphItem = mockParagraph();
+    const watchIsGoneSpy = spyOn(paragraphItem, 'watchIsGone').and.returnValue({
       close: () => {}
     });
 
-    initializeComponent(mockParagraph);
+    initializeComponent(paragraphItem);
 
     expect(watchIsGoneSpy).toHaveBeenCalled();
     expect(component.isHiddenWatcher).toBeDefined();
@@ -59,10 +63,10 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
 
   it('should close watcher on component destroy', () => {
     const closeSpy = jasmine.createSpy('close');
-    const mockParagraph = mockParagraph();
-    mockParagraph.watchIsGone = () => ({ close: closeSpy });
+    const paragraphItem = mockParagraph();
+    paragraphItem.watchIsGone = () => ({ close: closeSpy });
 
-    initializeComponent(mockParagraph);
+    initializeComponent(paragraphItem);
     component.ngOnDestroy();
 
     expect(closeSpy).toHaveBeenCalled();
@@ -74,8 +78,8 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
 
   it('should update visibility when watcher callback is triggered', () => {
     let visibilityCallback: (value: boolean) => void;
-    const mockParagraph = mockParagraph();
-    mockParagraph.watchIsGone = (
+    const paragraphItem = mockParagraph();
+    paragraphItem.watchIsGone = (
       _state: ParserState,
       callback: (value: boolean) => void
     ) => {
@@ -84,7 +88,7 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
       return { close: () => {} };
     };
 
-    initializeComponent(mockParagraph);
+    initializeComponent(paragraphItem);
 
     expect(component.isHidden).toBe(false);
 
@@ -97,15 +101,17 @@ describe('ContentParagraphComponent - Visibility Watcher Lifecycle', () => {
   });
 
   it('should pass parser state to watcher', () => {
-    const mockState: Partial<ParserState> = { testKey: 'testValue' };
+    const mockState = pageService.parserState() as ParserStateWithFields;
+    mockState.testKey = 'testValue';
+    mockState['contentEvents'] ??= [];
     spyOn(pageService, 'parserState').and.returnValue(mockState);
 
-    const mockParagraph = mockParagraph();
-    const watchIsGoneSpy = spyOn(mockParagraph, 'watchIsGone').and.returnValue({
+    const paragraphItem = mockParagraph();
+    const watchIsGoneSpy = spyOn(paragraphItem, 'watchIsGone').and.returnValue({
       close: () => {}
     });
 
-    initializeComponent(mockParagraph);
+    initializeComponent(paragraphItem);
 
     expect(watchIsGoneSpy).toHaveBeenCalledWith(
       jasmine.any(Object),

@@ -50,7 +50,7 @@ describe('ContentButtonComponent', () => {
       item: new SimpleChange(null, mockEventButton, true)
     });
 
-    const pageService = TestBed.get(PageService);
+    const pageService = TestBed.inject(PageService);
     spyOn(pageService, 'formAction');
 
     component.formAction();

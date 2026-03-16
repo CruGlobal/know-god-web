@@ -5,7 +5,7 @@ import { PageService } from '../../../service/page-service.service';
 import { LessonComponent } from './lesson-page.component';
 
 describe('LessonComponent', () => {
-  let component: LessonComponent;
+  let component: any;
   let fixture: ComponentFixture<LessonComponent>;
   let pageService: PageService;
   const page = mockLesson();

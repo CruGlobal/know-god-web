@@ -32,7 +32,7 @@ describe('ContentCardComponent', () => {
     expect(component.events).toEqual(card.events);
     expect(component.ready).toBeTrue();
 
-    const pageService = TestBed.get(PageService);
+    const pageService = TestBed.inject(PageService);
     spyOn(pageService, 'formAction');
 
     component.eventClick();
@@ -46,7 +46,7 @@ describe('ContentCardComponent', () => {
       item: new SimpleChange(null, cardClickable, true)
     });
 
-    const pageService = TestBed.get(PageService);
+    const pageService = TestBed.inject(PageService);
     spyOn(pageService, 'formAction');
 
     component.eventClick();

@@ -1,11 +1,12 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { mockTractPage } from '../../../../_tests/mocks';
+import { TractPage } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../../service/page-service.service';
 import { TractPageComponent } from './tract-page.component';
 
 describe('TractPageComponent', () => {
-  let component: TractPageComponent;
+  let component: any;
   let fixture: ComponentFixture<TractPageComponent>;
   let pageService: PageService;
   const page = mockTractPage(
