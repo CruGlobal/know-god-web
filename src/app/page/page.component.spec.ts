@@ -340,7 +340,7 @@ describe('PageComponent', () => {
   it('checkIfPreSelectedLanguageExists() - True', () => {
     component._selectedLanguage = mockPageComponent.languageEnglish;
     const preSelected = component.checkIfPreSelectedLanguageExists();
-    expect(preSelected).toEqual('4');
+    expect(preSelected).toBeTrue();
   });
 
   it('checkIfPreSelectedLanguageExists() - False', () => {
