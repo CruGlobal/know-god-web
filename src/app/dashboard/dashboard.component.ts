@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly _lessonsRoute = 'lessons';
   tools: Resource[] = [];
   lessons: Resource[] = [];
+  languagesWithLessons: Set<string>;
   englishLangId = 1;
   englishLangCode = 'en';
   englishLangName = 'English';
@@ -82,10 +83,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.availableLangs = this._languagesData.map((lang) => ({
-          code: lang.attributes.code,
-          name: lang.attributes.name
-        }));
+        this.availableLangs = this._languagesData
+          .filter((lang) => {
+            if (!this.languagesWithLessons || !this.isLessonsPage()) {
+              return true;
+            }
+            return this.languagesWithLessons.has(lang.id);
+          })
+          .map((lang) => ({
+            code: lang.attributes.code,
+            name: lang.attributes.name
+          }));
       });
 
     if (!this._languagesData) {
@@ -158,6 +166,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.tools = data.tools;
             this.lessons = data.lessons;
             this.sectionReady = true;
+            this.languagesWithLessons = data.languagesWithLessons;
+            this._languagesReady.next();
           });
       });
   }
