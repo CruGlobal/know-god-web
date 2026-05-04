@@ -167,6 +167,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.lessons = data.lessons;
             this.sectionReady = true;
             this.languagesWithLessons = data.languagesWithLessons;
+            // Rebuild availableLangs since languagesWithLessons is set asynchronously after the initial load
             this._languagesReady.next();
           });
       });

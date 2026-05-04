@@ -56,7 +56,8 @@ export class ResourceService {
       booksData.data
         .filter(
           (resource: any) =>
-            resource.attributes['resource-type'] === ResourceType.Lesson
+            resource.attributes['resource-type'] === ResourceType.Lesson &&
+            !resource.attributes['attr-hidden']
         )
         .map((resource) => resource.id)
     );
