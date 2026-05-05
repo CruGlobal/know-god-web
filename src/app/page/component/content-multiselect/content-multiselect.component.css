@@ -8,6 +8,10 @@
   margin: 0;
 }
 
+.multiselect app-content-multiselect-option {
+  margin-top: 5px;
+}
+
 .multiselect[data-columns='1'] app-content-multiselect-option {
   flex: 0 1 100%;
 }

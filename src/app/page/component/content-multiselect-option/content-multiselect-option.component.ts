@@ -5,6 +5,7 @@ import {
   OnDestroy,
   SimpleChanges
 } from '@angular/core';
+import { org } from '@cruglobal/godtools-shared';
 import {
   Content,
   FlowWatcher,
@@ -55,6 +56,13 @@ export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
 
   onClick() {
     this.option.toggleSelected(this.state);
+  }
+
+  get isCard(): boolean {
+    return (
+      this.option.style ===
+      org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.CARD
+    );
   }
 
   private init(): void {
