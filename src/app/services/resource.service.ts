@@ -16,6 +16,7 @@ export interface Resource {
 export interface DashboardData {
   tools: Resource[];
   lessons: Resource[];
+  languagesWithLessons: Set<string>;
 }
 
 @Injectable({
@@ -49,6 +50,25 @@ export class ResourceService {
       (included: any) =>
         included.type === 'translation' &&
         Number(included.relationships.language.data.id) === languageId
+    );
+
+    const lessonResourceIds = new Set<string>(
+      booksData.data
+        .filter(
+          (resource: any) =>
+            resource.attributes['resource-type'] === ResourceType.Lesson &&
+            !resource.attributes['attr-hidden']
+        )
+        .map((resource) => resource.id)
+    );
+    const languagesWithLessons = new Set<string>(
+      booksData.included
+        .filter(
+          (included: any) =>
+            included.type === 'translation' &&
+            lessonResourceIds.has(included.relationships.resource.data.id)
+        )
+        .map((translation: any) => translation.relationships.language.data.id)
     );
 
     const tools: Resource[] = [];
@@ -121,6 +141,6 @@ export class ResourceService {
         }
       });
 
-    return { tools, lessons };
+    return { tools, lessons, languagesWithLessons };
   }
 }

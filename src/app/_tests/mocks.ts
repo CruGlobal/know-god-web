@@ -619,6 +619,73 @@ export const mockPageComponent = {
   }
 };
 
+export const mockBooksData = {
+  data: [
+    {
+      id: '1',
+      attributes: {
+        'resource-type': 'lesson',
+        'attr-hidden': false,
+        abbreviation: 'lesson1'
+      }
+    },
+    {
+      id: '2',
+      attributes: {
+        'resource-type': 'tract',
+        'attr-hidden': false,
+        abbreviation: 'tract1'
+      }
+    },
+    {
+      id: '3',
+      attributes: {
+        'resource-type': 'lesson',
+        'attr-hidden': true,
+        abbreviation: 'hidden-lesson'
+      }
+    }
+  ],
+  included: [
+    {
+      type: 'translation',
+      id: 't1',
+      relationships: {
+        resource: { data: { id: '1' } },
+        language: { data: { id: '1' } }
+      },
+      attributes: {
+        'translated-name': 'Lesson 1',
+        'translated-tagline': 'tagline'
+      }
+    },
+    {
+      type: 'translation',
+      id: 't2',
+      relationships: {
+        resource: { data: { id: '2' } },
+        language: { data: { id: '2' } }
+      },
+      attributes: {
+        'translated-name': 'Tract 1',
+        'translated-tagline': 'tagline'
+      }
+    },
+    {
+      type: 'translation',
+      id: 't3',
+      relationships: {
+        resource: { data: { id: '3' } },
+        language: { data: { id: '3' } }
+      },
+      attributes: {
+        'translated-name': 'Hidden Lesson',
+        'translated-tagline': 'tagline'
+      }
+    }
+  ]
+};
+
 export const mockSpacer = (height = 100): Spacer => {
   return {
     height,
