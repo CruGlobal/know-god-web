@@ -39,7 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageName: string;
   dispLanguageDirection: string;
   langSwitchOn: boolean;
-  availableLangs: [];
+  availableLangs: { code: string; name: string }[];
   resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
@@ -83,16 +83,18 @@ export class DashboardComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
+        const shouldFilterLanguages =
+          this.languagesWithLessons && this.isLessonsPage();
+
         this.availableLangs = this._languagesData
           .filter((lang) => {
-            if (!this.languagesWithLessons || !this.isLessonsPage()) {
-              return true;
-            }
-            return this.languagesWithLessons.has(lang.id);
+            return (
+              !shouldFilterLanguages || this.languagesWithLessons.has(lang.id)
+            );
           })
-          .map((lang) => ({
-            code: lang.attributes.code,
-            name: lang.attributes.name
+          .map(({ attributes }) => ({
+            code: attributes.code,
+            name: attributes.name
           }));
       });
 
@@ -194,13 +196,13 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.lessons = [];
     this.langSwitchOn = !this.langSwitchOn;
 
-    if (this.isToolsPage()) {
-      this.route.navigate(['/', pLangCode, this._toolsRoute]);
-    } else if (this.isLessonsPage()) {
-      this.route.navigate(['/', pLangCode, this._lessonsRoute]);
-    } else {
-      this.route.navigate(['/', pLangCode]);
-    }
+    const segment = this.isToolsPage()
+      ? this._toolsRoute
+      : this.isLessonsPage()
+        ? this._lessonsRoute
+        : null;
+
+    this.route.navigate(segment ? ['/', pLangCode, segment] : ['/', pLangCode]);
   }
 
   get toolsRoute(): string {
