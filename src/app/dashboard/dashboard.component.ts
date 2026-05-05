@@ -27,6 +27,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private readonly _lessonsRoute = 'lessons';
   tools: Resource[] = [];
   lessons: Resource[] = [];
+  languagesWithLessons: Set<string>;
   englishLangId = 1;
   englishLangCode = 'en';
   englishLangName = 'English';
@@ -38,7 +39,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageName: string;
   dispLanguageDirection: string;
   langSwitchOn: boolean;
-  availableLangs: [];
+  availableLangs: { code: string; name: string }[];
   resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
@@ -82,10 +83,19 @@ export class DashboardComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.availableLangs = this._languagesData.map((lang) => ({
-          code: lang.attributes.code,
-          name: lang.attributes.name
-        }));
+        const shouldFilterLanguages =
+          this.languagesWithLessons && this.isLessonsPage();
+
+        this.availableLangs = this._languagesData
+          .filter((lang) => {
+            return (
+              !shouldFilterLanguages || this.languagesWithLessons.has(lang.id)
+            );
+          })
+          .map(({ attributes }) => ({
+            code: attributes.code,
+            name: attributes.name
+          }));
       });
 
     if (!this._languagesData) {
@@ -158,6 +168,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
             this.tools = data.tools;
             this.lessons = data.lessons;
             this.sectionReady = true;
+            this.languagesWithLessons = data.languagesWithLessons;
+            // Rebuild availableLangs since languagesWithLessons is set asynchronously after the initial load
+            this._languagesReady.next();
           });
       });
   }
@@ -182,7 +195,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.tools = [];
     this.lessons = [];
     this.langSwitchOn = !this.langSwitchOn;
-    this.route.navigate(['/', pLangCode]);
+
+    const segment = this.isToolsPage()
+      ? this._toolsRoute
+      : this.isLessonsPage()
+        ? this._lessonsRoute
+        : null;
+
+    this.route.navigate(segment ? ['/', pLangCode, segment] : ['/', pLangCode]);
   }
 
   get toolsRoute(): string {

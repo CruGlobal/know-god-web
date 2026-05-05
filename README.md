@@ -4,10 +4,22 @@ This is an Angular 17 project created with TypeScript.
 
 ## Embed
 
+Add the following snippet to any HTML page to embed a KnowGod.com gospel presentation:
+
 ```html
-<div id="knowGodEmbed" data-book="kgp-us" data-lang="en"></div>
+<div id="knowGodEmbed" data-book="kgp-us" data-lang="en" data-ministry="your-ministry-name"></div>
 <script src="https://knowgod.com/embed.js"></script>
 ```
+
+### Data Attributes
+
+| Attribute | Required | Description |
+|---|---|---|
+| `data-book` | Yes | The book/resource identifier (e.g. `kgp-us`, `satisfied`) |
+| `data-lang` | Yes | Language code (e.g. `en`, `es`, `fr`) |
+| `data-ministry` | No | Your ministry identifier. Used for analytics to track which ministries are embedding content. |
+
+The script creates an iframe pointing to `https://knowgod.com/#/{lang}/{book}?embedded=true`. When `data-ministry` is provided, a `&ministry={value}` parameter is appended to the URL so the analytics service can attribute embeds to specific ministries.
 
 ### Testing the Embed Locally
 
