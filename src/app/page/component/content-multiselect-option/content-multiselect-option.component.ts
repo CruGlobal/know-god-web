@@ -5,11 +5,11 @@ import {
   OnDestroy,
   SimpleChanges
 } from '@angular/core';
-import { org } from '@cruglobal/godtools-shared';
 import {
   Content,
   FlowWatcher,
-  MultiselectOption
+  MultiselectOption,
+  MultiselectOptionStyle
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -59,10 +59,7 @@ export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
   }
 
   get isCard(): boolean {
-    return (
-      this.option.style ===
-      org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.CARD
-    );
+    return this.option.style === MultiselectOptionStyle.CARD;
   }
 
   private init(): void {

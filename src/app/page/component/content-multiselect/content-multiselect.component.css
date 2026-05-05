@@ -8,7 +8,7 @@
   margin: 0;
 }
 
-.multiselect app-content-multiselect-option {
+.multiselect app-content-multiselect-option:has(.multiselect-option.card) {
   margin-top: 5px;
 }
 
