@@ -5,7 +5,6 @@ import {
   EventId,
   Image
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -22,7 +21,7 @@ export class ContentImageComponent implements OnChanges {
   isFirstPage$: Observable<boolean>;
   width: string;
   events: EventId[];
-  isEventType: boolean;
+  isClickable: boolean;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
@@ -49,9 +48,7 @@ export class ContentImageComponent implements OnChanges {
   }
 
   formAction(): void {
-    if (this.events && this.isEventType) {
-      this.pageService.formAction(formatEvents(this.events));
-    }
+    this.pageService.handleClickable(this.events, this.image.url);
   }
 
   private init(): void {
@@ -71,7 +68,7 @@ export class ContentImageComponent implements OnChanges {
       ? dimensions.value + dimensions.symbol
       : null;
     this.events = this.image.events;
-    this.isEventType = !!this.events?.length;
+    this.isClickable = !!this.events?.length || !!this.image.url;
     this.ready = true;
   }
 }

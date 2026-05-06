@@ -5,7 +5,6 @@ import {
   Link,
   Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -50,9 +49,7 @@ export class ContentLinkComponent implements OnChanges {
   }
 
   formAction(): void {
-    if (this.events) {
-      this.pageService.formAction(formatEvents(this.events));
-    }
+    this.pageService.handleClickable(this.events, this.link.url);
   }
 
   private init(): void {

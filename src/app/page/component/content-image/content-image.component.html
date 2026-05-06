@@ -1,5 +1,5 @@
 <ng-container *ngIf="ready">
-  <a *ngIf="isEventType" (click)="formAction()" href="javascript:void(0)">
+  <a *ngIf="isClickable" (click)="formAction()" href="javascript:void(0)">
     <img
       class="imageContent ng-binding"
       [ngClass]="{ firstImage: isFirstPage$ | async }"
@@ -9,7 +9,7 @@
     />
   </a>
   <img
-    *ngIf="!isEventType"
+    *ngIf="!isClickable"
     class="imageContent ng-binding"
     [ngClass]="{ firstImage: isFirstPage$ | async }"
     [src]="imgResource"

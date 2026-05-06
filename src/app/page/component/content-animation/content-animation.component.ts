@@ -58,16 +58,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   onAnimationClick(): void {
-    if (this.animation.events) {
-      let action = '';
-      this.animation.events.forEach((event, idx) => {
-        const value = event?.namespace
-          ? `${event.namespace}:${event.name}`
-          : event.name;
-        action += idx ? ` ${value}` : value;
-      });
-      this.pageService.formAction(action);
-    }
+    this.pageService.handleClickable(this.animation.events, this.animation.url);
   }
 
   onAnimationCreated(anim: AnimationItem): void {

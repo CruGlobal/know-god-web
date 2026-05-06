@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { State } from '../../services/xml-parser-service/xml-parser.service';
+import { formatEvents } from 'src/app/shared/formatEvents';
+import {
+  EventId,
+  State
+} from '../../services/xml-parser-service/xml-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -183,6 +187,15 @@ export class PageService {
 
   parserState(): any {
     return this.XmlParserState;
+  }
+
+  async handleClickable(events: EventId[], url: string): Promise<void> {
+    if (events && events.length) {
+      await this.formAction(formatEvents(events));
+    }
+    if (url) {
+      window.open(url, '_blank');
+    }
   }
 
   // CYOA Navigation Stack/Array

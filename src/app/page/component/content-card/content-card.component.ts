@@ -4,7 +4,6 @@ import {
   Content,
   EventId
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -45,10 +44,8 @@ export class ContentCardComponent implements OnChanges {
     }
   }
 
-  async eventClick(): Promise<void> {
-    if (this.events.length)
-      await this.pageService.formAction(formatEvents(this.events));
-    if (this.url) window.open(this.url, '_blank');
+  eventClick(): void {
+    this.pageService.handleClickable(this.events, this.url);
   }
 
   private init(): void {
