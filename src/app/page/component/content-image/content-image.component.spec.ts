@@ -1,5 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { Image } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { mockImage } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentImageComponent } from './content-image.component';
@@ -10,8 +11,15 @@ describe('ContentImageComponent', () => {
   const fileName = 'name-of-file.png';
   const filePath = `/some-folder/${fileName}`;
   const imageEvent = 'page3';
+  const url = 'https://example.com';
   const image = mockImage(fileName, filePath, imageEvent);
-  const imageWithoutEvents = mockImage(fileName, filePath);
+  const imageOnlyEvents = { ...image, url: null } as Image;
+  const imageOnlyUrl = { ...mockImage(fileName, filePath), url } as Image;
+  const imageWithEventsAndUrl = { ...image, url } as Image;
+  const imageNotClickable = {
+    ...mockImage(fileName, filePath),
+    url: null
+  } as Image;
   const fileNameNotAdded = 'name-of-file-not-added.png';
   const filePathNotAdded = `/some-folder/${fileName}`;
   const imageNoNameNotAdded = mockImage(fileNameNotAdded, filePathNotAdded);
@@ -53,7 +61,7 @@ describe('ContentImageComponent', () => {
       item: new SimpleChange(null, image, true)
     });
 
-    expect(component.isEventType).toBeTrue();
+    expect(component.isClickable).toBeTrue();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
@@ -63,14 +71,41 @@ describe('ContentImageComponent', () => {
     expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
   });
 
-  describe('isEventType', () => {
-    it('should be false when no events are provided', () => {
-      component.item = imageWithoutEvents;
+  describe('isClickable', () => {
+    it('should be true when only events are provided', () => {
+      component.item = imageOnlyEvents;
       component.ngOnChanges({
-        item: new SimpleChange(null, imageWithoutEvents, true)
+        item: new SimpleChange(null, imageOnlyEvents, true)
       });
 
-      expect(component.isEventType).toBeFalse();
+      expect(component.isClickable).toBeTrue();
+    });
+
+    it('should be true when only url is provided', () => {
+      component.item = imageOnlyUrl;
+      component.ngOnChanges({
+        item: new SimpleChange(null, imageOnlyUrl, true)
+      });
+
+      expect(component.isClickable).toBeTrue();
+    });
+
+    it('should be true when both events and url are provided', () => {
+      component.item = imageWithEventsAndUrl;
+      component.ngOnChanges({
+        item: new SimpleChange(null, imageWithEventsAndUrl, true)
+      });
+
+      expect(component.isClickable).toBeTrue();
+    });
+
+    it('should be false when no events or urls are provided', () => {
+      component.item = imageNotClickable;
+      component.ngOnChanges({
+        item: new SimpleChange(null, imageNotClickable, true)
+      });
+
+      expect(component.isClickable).toBeFalse();
     });
   });
 });

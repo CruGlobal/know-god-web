@@ -1,4 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { createEventId } from 'src/app/_tests/mocks';
 import { PageService } from './page-service.service';
 
 describe('PageService', () => {
@@ -16,6 +17,40 @@ describe('PageService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('handleClickable', () => {
+    beforeEach(() => {
+      spyOn(service, 'formAction');
+      spyOn(window, 'open');
+    });
+
+    it('fires events and opens url when both are present', async () => {
+      await service.handleClickable(
+        [createEventId('foo')],
+        'https://example.com'
+      );
+      expect(service.formAction).toHaveBeenCalledWith('foo');
+      expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank');
+    });
+
+    it('fires events when url not present', () => {
+      service.handleClickable([createEventId('foo')], null);
+      expect(service.formAction).toHaveBeenCalledWith('foo');
+      expect(window.open).not.toHaveBeenCalled();
+    });
+
+    it('opens url only when events not present', () => {
+      service.handleClickable([], 'https://example.com');
+      expect(service.formAction).not.toHaveBeenCalled();
+      expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank');
+    });
+
+    it('does nothing when neither events nor url are provided', () => {
+      service.handleClickable([], null);
+      expect(service.formAction).not.toHaveBeenCalled();
+      expect(window.open).not.toHaveBeenCalled();
+    });
   });
 
   it('addToNavigationStack() should add a page to the stack', (done) => {

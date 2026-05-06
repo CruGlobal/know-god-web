@@ -30,7 +30,6 @@ describe('ContentButtonComponent', () => {
     });
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
-    expect(component.type).toBe('event');
     expect(component.events.length).toBe(1);
   });
 
@@ -41,7 +40,6 @@ describe('ContentButtonComponent', () => {
     });
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
-    expect(component.type).toBe('url');
   });
 
   it('Test events', () => {
