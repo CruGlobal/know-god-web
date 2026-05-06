@@ -17,6 +17,7 @@ import {
   Modal,
   Multiselect,
   MultiselectOption,
+  MultiselectOptionStyle,
   Paragraph,
   Resource,
   Spacer,
@@ -344,13 +345,13 @@ export const mockModal = (title: string, listeners): Modal => {
 };
 
 export const mockMultiselectOption = (
-  initialSelectedValue
+  initialSelectedValue,
+  style: org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style = MultiselectOptionStyle.CARD
 ): MultiselectOption => {
   let selectedValue = initialSelectedValue;
   return {
     id: null,
-    style:
-      org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.CARD,
+    style,
     backgroundColor: '#000000',
     selectedColor: '#ffffff',
     multiselect: null,

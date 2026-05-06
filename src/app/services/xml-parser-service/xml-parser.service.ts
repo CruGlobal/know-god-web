@@ -77,6 +77,9 @@ export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
 export const ManifestParser = manifestParser;
 export const State = org.cru.godtools.shared.renderer.state.State;
 
+export const MultiselectOptionStyle =
+  org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style;
+
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
     // console.log('CONTENT: Image');

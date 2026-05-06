@@ -8,7 +8,8 @@ import {
 import {
   Content,
   FlowWatcher,
-  MultiselectOption
+  MultiselectOption,
+  MultiselectOptionStyle
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -55,6 +56,10 @@ export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
 
   onClick() {
     this.option.toggleSelected(this.state);
+  }
+
+  get isCard(): boolean {
+    return this.option.style === MultiselectOptionStyle.CARD;
   }
 
   private init(): void {
