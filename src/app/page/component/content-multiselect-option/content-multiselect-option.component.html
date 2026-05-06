@@ -4,7 +4,7 @@
     'background-color': selected ? option.selectedColor : option.backgroundColor
   }"
   class="multiselect-option"
-  [ngClass]="{ selected: selected }"
+  [ngClass]="{ selected: selected, card: isCard }"
   (click)="onClick()"
 >
   <app-content-repeater [items]="contents"></app-content-repeater>
