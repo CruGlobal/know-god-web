@@ -9,7 +9,7 @@
   <a
     *ngIf="card.isClickable"
     class="card clickable"
-    (click)="eventClick()"
+    (click)="onClick()"
     [ngStyle]="{ 'background-color': background }"
   >
     <app-content-repeater [items]="contents"></app-content-repeater>

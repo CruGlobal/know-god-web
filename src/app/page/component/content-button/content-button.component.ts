@@ -1,9 +1,6 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  Button,
-  EventId
-} from 'src/app/services/xml-parser-service/xml-parser.service';
+import { Button } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -18,8 +15,6 @@ export class ContentButtonComponent implements OnChanges {
   text: any;
   ready: boolean;
   buttonText: string;
-  events: EventId[];
-  url: string;
   buttonTextColor: string;
   buttonBgColor: string;
   dir$: Observable<string>;
@@ -39,8 +34,6 @@ export class ContentButtonComponent implements OnChanges {
             ) {
               this.ready = false;
               this.buttonText = '';
-              this.events = [] as EventId[];
-              this.url = '';
               this.text = null;
               this.button = this.item;
               this.buttonTextColor = '';
@@ -53,8 +46,8 @@ export class ContentButtonComponent implements OnChanges {
     }
   }
 
-  formAction(): void {
-    this.pageService.handleClickable(this.events, this.url);
+  onClick(): void {
+    this.pageService.handleClickable(this.button.events, this.button.url);
   }
 
   private init(): void {
@@ -66,8 +59,6 @@ export class ContentButtonComponent implements OnChanges {
       this.buttonText = this.text?.text || '';
     }
 
-    this.url = this.button.url;
-    this.events = this.button.events;
     this.ready = true;
   }
 }

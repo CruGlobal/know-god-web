@@ -44,7 +44,6 @@ describe('ContentAnimationComponent', () => {
       loop: true,
       autoplay: true
     });
-    expect(component.hasEvents).toBeTrue();
   });
 
   it('Find animation from pageService if not in pageService', () => {
@@ -53,5 +52,19 @@ describe('ContentAnimationComponent', () => {
       item: new SimpleChange(null, animationNoNameNotAdded, true)
     });
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
+  });
+
+  it('fires events and opens url when both are configured', () => {
+    component.item = animation;
+    component.ngOnChanges({ item: new SimpleChange(null, animation, true) });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+    spyOn(window, 'open');
+
+    component.onClick();
+
+    expect(pageService.formAction).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(filePath, '_blank');
   });
 });

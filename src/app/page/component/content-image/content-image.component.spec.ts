@@ -60,9 +60,25 @@ describe('ContentImageComponent', () => {
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
 
-    component.formAction();
+    component.onClick();
 
     expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
+  });
+
+  it('fires events and opens url when both are configured', () => {
+    component.item = imageWithEventsAndUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, imageWithEventsAndUrl, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+    spyOn(window, 'open');
+
+    component.onClick();
+
+    expect(pageService.formAction).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith(filePath, '_blank');
   });
 
   describe('isClickable', () => {

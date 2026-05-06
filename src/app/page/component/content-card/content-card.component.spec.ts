@@ -28,14 +28,12 @@ describe('ContentCardComponent', () => {
 
     expect(component.contents).toEqual(card.content);
     expect(component.background).toEqual(card.backgroundColor);
-    expect(component.url).toEqual(card.url);
-    expect(component.events).toEqual(card.events);
     expect(component.ready).toBeTrue();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
 
-    component.eventClick();
+    component.onClick();
 
     expect(pageService.formAction).not.toHaveBeenCalled();
   });
@@ -49,7 +47,23 @@ describe('ContentCardComponent', () => {
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
 
-    component.eventClick();
+    component.onClick();
     expect(pageService.formAction).toHaveBeenCalled();
+  });
+
+  it('fires events and opens url when both are configured', () => {
+    component.item = cardClickable;
+    component.ngOnChanges({
+      item: new SimpleChange(null, cardClickable, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+    spyOn(window, 'open');
+
+    component.onClick();
+
+    expect(pageService.formAction).toHaveBeenCalled();
+    expect(window.open).toHaveBeenCalledWith('URL', '_blank');
   });
 });

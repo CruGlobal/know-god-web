@@ -179,15 +179,11 @@ export const mockInput = (
   };
 };
 
-export const mockLink = (
-  url: string,
-  text: string,
-  isClickable: boolean
-): Link => {
+export const mockLink = (url: string, text: string): Link => {
   return {
     url,
     text: createText(text),
-    isClickable,
+    isClickable: true,
     events: [
       createEventId('followup-testing-event'),
       createEventId('send', 'followup')
@@ -405,7 +401,7 @@ export const mockFlow = (): Flow => {
 export const mockCard = (isClickable): Card => {
   return {
     backgroundColor: '#000000',
-    url: 'URL',
+    url: isClickable ? 'URL' : null,
     content: mockContent(),
     isClickable,
     events: isClickable

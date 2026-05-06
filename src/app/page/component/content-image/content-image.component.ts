@@ -2,7 +2,6 @@ import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   DimensionParser,
-  EventId,
   Image
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
@@ -20,7 +19,6 @@ export class ContentImageComponent implements OnChanges {
   imgResource: string;
   isFirstPage$: Observable<boolean>;
   width: string;
-  events: EventId[];
   isClickable: boolean;
 
   constructor(private pageService: PageService) {
@@ -47,8 +45,8 @@ export class ContentImageComponent implements OnChanges {
     }
   }
 
-  formAction(): void {
-    this.pageService.handleClickable(this.events, this.image.url);
+  onClick(): void {
+    this.pageService.handleClickable(this.image.events, this.image.url);
   }
 
   private init(): void {
@@ -67,7 +65,6 @@ export class ContentImageComponent implements OnChanges {
     this.width = dimensions?.value
       ? dimensions.value + dimensions.symbol
       : null;
-    this.events = this.image.events;
     this.isClickable = this.image.isClickable;
     this.ready = true;
   }

@@ -25,11 +25,8 @@ describe('PageService', () => {
       spyOn(window, 'open');
     });
 
-    it('fires events and opens url when both are present', async () => {
-      await service.handleClickable(
-        [createEventId('foo')],
-        'https://example.com'
-      );
+    it('fires events and opens url when both are present', () => {
+      service.handleClickable([createEventId('foo')], 'https://example.com');
       expect(service.formAction).toHaveBeenCalledWith('foo');
       expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank');
     });
