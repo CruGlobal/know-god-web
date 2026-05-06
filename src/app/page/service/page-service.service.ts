@@ -191,7 +191,16 @@ export class PageService {
 
   async handleClickable(events: EventId[], url: string): Promise<void> {
     if (events && events.length) {
-      await this.formAction(formatEvents(events));
+      // Each event can resolve into an array of events, so combine them into a single array.
+      // This is necessary to support complex form actions with 'state' in the EventId.
+      // (`Array.flatMap` isn't supported yet, so we use `[].concat(...arrays)`)
+      const resolvedEvents = [].concat(
+        ...events.map((event) =>
+          event.resolve(this.parserState()).asJsReadonlyArrayView()
+        )
+      );
+
+      await this.formAction(formatEvents(resolvedEvents));
     }
     if (url) {
       window.open(url, '_blank');

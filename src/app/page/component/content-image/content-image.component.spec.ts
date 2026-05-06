@@ -1,6 +1,5 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Image } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { mockImage } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentImageComponent } from './content-image.component';
@@ -11,15 +10,10 @@ describe('ContentImageComponent', () => {
   const fileName = 'name-of-file.png';
   const filePath = `/some-folder/${fileName}`;
   const imageEvent = 'page3';
-  const url = 'https://example.com';
-  const image = mockImage(fileName, filePath, imageEvent);
-  const imageOnlyEvents = { ...image, url: null } as Image;
-  const imageOnlyUrl = { ...mockImage(fileName, filePath), url } as Image;
-  const imageWithEventsAndUrl = { ...image, url } as Image;
-  const imageNotClickable = {
-    ...mockImage(fileName, filePath),
-    url: null
-  } as Image;
+  const imageOnlyEvents = mockImage(fileName, null, imageEvent);
+  const imageOnlyUrl = mockImage(fileName, filePath, null);
+  const imageWithEventsAndUrl = mockImage(fileName, filePath, imageEvent);
+  const imageNotClickable = mockImage(fileName, null, null);
   const fileNameNotAdded = 'name-of-file-not-added.png';
   const filePathNotAdded = `/some-folder/${fileName}`;
   const imageNoNameNotAdded = mockImage(fileNameNotAdded, filePathNotAdded);
@@ -39,9 +33,9 @@ describe('ContentImageComponent', () => {
   }));
 
   it('Fetch image from pageService', async () => {
-    component.item = image;
+    component.item = imageWithEventsAndUrl;
     component.ngOnChanges({
-      item: new SimpleChange(null, image, true)
+      item: new SimpleChange(null, imageWithEventsAndUrl, true)
     });
     expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
     expect(component.imgResource).toBe(filePath);
@@ -56,9 +50,9 @@ describe('ContentImageComponent', () => {
   });
 
   it('correctly calls events', () => {
-    component.item = image;
+    component.item = imageWithEventsAndUrl;
     component.ngOnChanges({
-      item: new SimpleChange(null, image, true)
+      item: new SimpleChange(null, imageWithEventsAndUrl, true)
     });
 
     expect(component.isClickable).toBeTrue();

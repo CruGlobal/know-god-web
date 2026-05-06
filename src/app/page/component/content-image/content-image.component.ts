@@ -68,7 +68,7 @@ export class ContentImageComponent implements OnChanges {
       ? dimensions.value + dimensions.symbol
       : null;
     this.events = this.image.events;
-    this.isClickable = !!this.events?.length || !!this.image.url;
+    this.isClickable = this.image.isClickable;
     this.ready = true;
   }
 }

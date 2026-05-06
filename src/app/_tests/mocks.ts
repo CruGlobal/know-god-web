@@ -103,7 +103,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     iconSize: 1,
     text: createText('Button Text'),
     events: event ? [createEventId(event)] : [],
-    isClickable: true,
+    isClickable: !!url || !!event,
     ...standardTypeValues()
   };
 };
@@ -126,14 +126,14 @@ export const mockButton = (
 export const mockImage = (
   name: string,
   url: string,
-  event: string = ''
+  event: string = null
 ): Image => {
   return {
     url,
     resource: createResource(name, url),
     gravity: null,
     width: null,
-    isClickable: null,
+    isClickable: !!url || !!event,
     events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
@@ -151,7 +151,7 @@ export const mockAnimation = (
     autoPlay: true,
     playListeners: [createEventId(`${event}-play-listener`)],
     stopListeners: [createEventId(`${event}-stop-listener`)],
-    isClickable: true,
+    isClickable: !!url || !!event,
     events: [createEventId(event)],
     _events: null,
     _playListeners: null,
