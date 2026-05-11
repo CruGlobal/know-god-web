@@ -65,10 +65,10 @@ describe('ContentImageComponent', () => {
     expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
   });
 
-  it('fires events and opens url when both are configured', () => {
-    component.item = imageWithEventsAndUrl;
+  it('fires events only when clicked on with events', () => {
+    component.item = imageOnlyEvents;
     component.ngOnChanges({
-      item: new SimpleChange(null, imageWithEventsAndUrl, true)
+      item: new SimpleChange(null, imageOnlyEvents, true)
     });
 
     const pageService = TestBed.get(PageService);
@@ -78,6 +78,22 @@ describe('ContentImageComponent', () => {
     component.onClick();
 
     expect(pageService.formAction).toHaveBeenCalled();
+    expect(window.open).not.toHaveBeenCalled();
+  });
+
+  it('opens urls only when clicked on with url', () => {
+    component.item = imageOnlyUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, imageOnlyUrl, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+    spyOn(window, 'open');
+
+    component.onClick();
+
+    expect(pageService.formAction).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith(filePath, '_blank');
   });
 

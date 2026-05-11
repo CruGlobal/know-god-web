@@ -7,8 +7,9 @@ import { ContentCardComponent } from './content-card.component';
 describe('ContentCardComponent', () => {
   let component: ContentCardComponent;
   let fixture: ComponentFixture<ContentCardComponent>;
-  const card = mockCard(false);
-  const cardClickable = mockCard(true);
+  const card = mockCard(false, false);
+  const clickableUrl = mockCard(true, true);
+  const eventClickable = mockCard(true, false);
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -38,23 +39,10 @@ describe('ContentCardComponent', () => {
     expect(pageService.formAction).not.toHaveBeenCalled();
   });
 
-  it('should run pageService formAction if clicked on with events', async () => {
-    component.item = cardClickable;
+  it('fires events only when clicked on with events', async () => {
+    component.item = eventClickable;
     component.ngOnChanges({
-      item: new SimpleChange(null, cardClickable, true)
-    });
-
-    const pageService = TestBed.get(PageService);
-    spyOn(pageService, 'formAction');
-
-    component.onClick();
-    expect(pageService.formAction).toHaveBeenCalled();
-  });
-
-  it('fires events and opens url when both are configured', () => {
-    component.item = cardClickable;
-    component.ngOnChanges({
-      item: new SimpleChange(null, cardClickable, true)
+      item: new SimpleChange(null, eventClickable, true)
     });
 
     const pageService = TestBed.get(PageService);
@@ -62,8 +50,22 @@ describe('ContentCardComponent', () => {
     spyOn(window, 'open');
 
     component.onClick();
-
     expect(pageService.formAction).toHaveBeenCalled();
+    expect(window.open).not.toHaveBeenCalled();
+  });
+
+  it('opens urls only when clicked on with url', async () => {
+    component.item = clickableUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, clickableUrl, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+    spyOn(window, 'open');
+
+    component.onClick();
+    expect(pageService.formAction).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith('URL', '_blank');
   });
 });

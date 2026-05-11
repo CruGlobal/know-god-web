@@ -8,7 +8,8 @@ describe('ContentLinkComponent', () => {
   let component: ContentLinkComponent;
   let fixture: ComponentFixture<ContentLinkComponent>;
   let pageService: PageService;
-  const link = mockLink('https://cru.org', 'link text');
+  const linkWithUrl = mockLink('https://cru.org', 'link text');
+  const linkWithEvents = mockLink(null, 'link text');
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
@@ -23,37 +24,44 @@ describe('ContentLinkComponent', () => {
   }));
 
   it('Values are assigned correctly', async () => {
-    component.item = link;
+    component.item = linkWithUrl;
     component.ngOnChanges({
-      item: new SimpleChange(null, link, true)
+      item: new SimpleChange(null, linkWithUrl, true)
     });
 
-    expect(component.text).toEqual(link.text);
+    expect(component.text).toEqual(linkWithUrl.text);
     expect(component.linkText).toBe('link text');
   });
 
-  it('Form Action function sends the correct info to pageService', async () => {
-    component.item = link;
+  it('fires events only when clicked on with events', () => {
+    component.item = linkWithEvents;
     component.ngOnChanges({
-      item: new SimpleChange(null, link, true)
+      item: new SimpleChange(null, linkWithEvents, true)
     });
-
-    component.onClick();
-    expect(pageService.formAction).toHaveBeenCalledWith(
-      'followup-testing-event followup:send'
-    );
-  });
-
-  it('fires events and opens url when both are configured', () => {
-    component.item = link;
-    component.ngOnChanges({ item: new SimpleChange(null, link, true) });
 
     const pageService = TestBed.get(PageService);
     spyOn(window, 'open');
 
     component.onClick();
 
-    expect(pageService.formAction).toHaveBeenCalled();
+    expect(pageService.formAction).toHaveBeenCalledWith(
+      'followup-testing-event followup:send'
+    );
+    expect(window.open).not.toHaveBeenCalled();
+  });
+
+  it('opens urls only when clicked on with url', () => {
+    component.item = linkWithUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, linkWithUrl, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(window, 'open');
+
+    component.onClick();
+
+    expect(pageService.formAction).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith('https://cru.org', '_blank');
   });
 });

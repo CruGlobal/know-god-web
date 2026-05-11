@@ -152,7 +152,7 @@ export const mockAnimation = (
     playListeners: [createEventId(`${event}-play-listener`)],
     stopListeners: [createEventId(`${event}-stop-listener`)],
     isClickable: !!url || !!event,
-    events: [createEventId(event)],
+    events: event ? [createEventId(event)] : [],
     _events: null,
     _playListeners: null,
     _stopListeners: null,
@@ -184,10 +184,12 @@ export const mockLink = (url: string, text: string): Link => {
     url,
     text: createText(text),
     isClickable: true,
-    events: [
-      createEventId('followup-testing-event'),
-      createEventId('send', 'followup')
-    ],
+    events: !url
+      ? [
+          createEventId('followup-testing-event'),
+          createEventId('send', 'followup')
+        ]
+      : [],
     ...standardTypeValues()
   };
 };
@@ -398,15 +400,16 @@ export const mockFlow = (): Flow => {
   };
 };
 
-export const mockCard = (isClickable): Card => {
+export const mockCard = (isClickable: boolean, isUrl: boolean): Card => {
   return {
     backgroundColor: '#000000',
-    url: isClickable ? 'URL' : null,
+    url: isUrl ? 'URL' : null,
     content: mockContent(),
     isClickable,
-    events: isClickable
-      ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
-      : [],
+    events:
+      isClickable && !isUrl
+        ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
+        : [],
     ...standardTypeValues()
   };
 };

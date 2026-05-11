@@ -10,6 +10,8 @@ describe('ContentAnimationComponent', () => {
   const fileName = 'the_four_animation.json';
   const filePath = `/some-folder/${fileName}`;
   const animation = mockAnimation(fileName, filePath, 'event');
+  const animationWithUrl = mockAnimation(fileName, filePath, null);
+  const animationWithEvents = mockAnimation(fileName, null, 'event');
   const fileNameNotAdded = 'name-of-file-not-added.png';
   const filePathNotAdded = `/some-folder/${fileName}`;
   const animationNoNameNotAdded = mockAnimation(
@@ -54,9 +56,11 @@ describe('ContentAnimationComponent', () => {
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
   });
 
-  it('fires events and opens url when both are configured', () => {
-    component.item = animation;
-    component.ngOnChanges({ item: new SimpleChange(null, animation, true) });
+  it('fires events only when clicked on with events', () => {
+    component.item = animationWithEvents;
+    component.ngOnChanges({
+      item: new SimpleChange(null, animationWithEvents, true)
+    });
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
@@ -65,6 +69,22 @@ describe('ContentAnimationComponent', () => {
     component.onClick();
 
     expect(pageService.formAction).toHaveBeenCalled();
+    expect(window.open).not.toHaveBeenCalled();
+  });
+
+  it('opens urls only when clicked on with url', () => {
+    component.item = animationWithUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, animationWithUrl, true)
+    });
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+    spyOn(window, 'open');
+
+    component.onClick();
+
+    expect(pageService.formAction).not.toHaveBeenCalled();
     expect(window.open).toHaveBeenCalledWith(filePath, '_blank');
   });
 });
