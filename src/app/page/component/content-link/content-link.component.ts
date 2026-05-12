@@ -1,11 +1,9 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  EventId,
   Link,
   Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -20,7 +18,6 @@ export class ContentLinkComponent implements OnChanges {
   text: Text;
   ready: boolean;
   linkText: string;
-  events: EventId[];
   dir$: Observable<string>;
 
   constructor(private pageService: PageService) {
@@ -38,7 +35,6 @@ export class ContentLinkComponent implements OnChanges {
             ) {
               this.ready = false;
               this.linkText = '';
-              this.events = null;
               this.text = null;
               this.link = this.item;
               this.init();
@@ -49,16 +45,13 @@ export class ContentLinkComponent implements OnChanges {
     }
   }
 
-  formAction(): void {
-    if (this.events) {
-      this.pageService.formAction(formatEvents(this.events));
-    }
+  onClick(): void {
+    this.pageService.handleClickable(this.link.events);
   }
 
   private init(): void {
     this.text = this.link.text || null;
     this.linkText = this.link.text?.text || '';
-    this.events = this.link.events;
     this.ready = true;
   }
 }
