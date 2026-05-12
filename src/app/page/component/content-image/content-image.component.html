@@ -23,7 +23,7 @@
     />
   </a>
   <ng-template #nonUrlImage>
-    <button type="button" (click)="onClick()">
+    <button *ngIf="isClickable" type="button" (click)="onClick()">
       <img
         class="imageContent ng-binding"
         [ngClass]="{ firstImage: isFirstPage$ | async }"
