@@ -57,7 +57,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   onClick(): void {
-    this.pageService.handleClickable(this.animation.events, this.animation.url);
+    this.pageService.handleClickable(this.animation.events);
   }
 
   onAnimationCreated(anim: AnimationItem): void {

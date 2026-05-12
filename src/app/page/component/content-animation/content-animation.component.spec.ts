@@ -1,4 +1,4 @@
-import { SimpleChange } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { mockAnimation } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
@@ -25,7 +25,8 @@ describe('ContentAnimationComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [ContentAnimationComponent],
-      providers: [{ provide: PageService, useValue: pageService }]
+      providers: [{ provide: PageService, useValue: pageService }],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents();
     fixture = TestBed.createComponent(ContentAnimationComponent);
     component = fixture.componentInstance;
@@ -61,15 +62,15 @@ describe('ContentAnimationComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, animationWithEvents, true)
     });
+    fixture.detectChanges();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
-    spyOn(window, 'open');
 
     component.onClick();
 
     expect(pageService.formAction).toHaveBeenCalled();
-    expect(window.open).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('a')).toBeNull();
   });
 
   it('opens urls only when clicked on with url', () => {
@@ -77,14 +78,37 @@ describe('ContentAnimationComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, animationWithUrl, true)
     });
+    fixture.detectChanges();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
-    spyOn(window, 'open');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(animationWithUrl.url);
+    expect(anchor.getAttribute('target')).toBe('_blank');
 
     component.onClick();
 
     expect(pageService.formAction).not.toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledWith(filePath, '_blank');
+  });
+
+  it('fires events and opens url when both are present', () => {
+    component.item = animation;
+    component.ngOnChanges({
+      item: new SimpleChange(null, animation, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(animation.url);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
+    expect(pageService.formAction).toHaveBeenCalledWith('event');
   });
 });

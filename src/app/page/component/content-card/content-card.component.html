@@ -7,11 +7,24 @@
     <app-content-repeater [items]="contents"></app-content-repeater>
   </div>
   <a
-    *ngIf="card.isClickable"
+    *ngIf="card.isClickable && card.url; else cardTemplate"
     class="card clickable"
+    [href]="card.url"
+    target="_blank"
+    rel="noopener noreferrer"
     (click)="onClick()"
     [ngStyle]="{ 'background-color': background }"
   >
     <app-content-repeater [items]="contents"></app-content-repeater>
   </a>
+  <ng-template #cardTemplate>
+    <a
+      *ngIf="card.isClickable"
+      class="card clickable"
+      (click)="onClick()"
+      [ngStyle]="{ 'background-color': background }"
+    >
+      <app-content-repeater [items]="contents"></app-content-repeater>
+    </a>
+  </ng-template>
 </ng-container>

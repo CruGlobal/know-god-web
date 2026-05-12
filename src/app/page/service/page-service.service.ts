@@ -189,7 +189,7 @@ export class PageService {
     return this.XmlParserState;
   }
 
-  handleClickable(events: EventId[], url: string): void {
+  handleClickable(events: EventId[]): void {
     if (events && events.length) {
       // Each event can resolve into an array of events, so combine them into a single array.
       // This is necessary to support complex form actions with 'state' in the EventId.
@@ -201,9 +201,6 @@ export class PageService {
       );
 
       this.formAction(formatEvents(resolvedEvents));
-    }
-    if (url) {
-      window.open(url, '_blank');
     }
   }
 

@@ -42,7 +42,7 @@ export class ContentCardComponent implements OnChanges {
   }
 
   onClick(): void {
-    this.pageService.handleClickable(this.card.events, this.card.url);
+    this.pageService.handleClickable(this.card.events);
   }
 
   private init(): void {

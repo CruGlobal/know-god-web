@@ -9,7 +9,8 @@ describe('ContentLinkComponent', () => {
   let fixture: ComponentFixture<ContentLinkComponent>;
   let pageService: PageService;
   const linkWithUrl = mockLink('https://cru.org', 'link text');
-  const linkWithEvents = mockLink(null, 'link text');
+  const linkWithEvents = mockLink(null, 'link text', true);
+  const linkWithUrlAndEvents = mockLink('https://cru.org', 'link text', true);
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
@@ -38,16 +39,16 @@ describe('ContentLinkComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, linkWithEvents, true)
     });
+    fixture.detectChanges();
 
     const pageService = TestBed.get(PageService);
-    spyOn(window, 'open');
-
     component.onClick();
 
     expect(pageService.formAction).toHaveBeenCalledWith(
       'followup-testing-event followup:send'
     );
-    expect(window.open).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('a')).toBeNull();
+    expect(fixture.nativeElement.querySelector('button')).toBeTruthy();
   });
 
   it('opens urls only when clicked on with url', () => {
@@ -55,13 +56,37 @@ describe('ContentLinkComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, linkWithUrl, true)
     });
+    fixture.detectChanges();
 
     const pageService = TestBed.get(PageService);
-    spyOn(window, 'open');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(linkWithUrl.url);
+    expect(anchor.getAttribute('target')).toBe('_blank');
 
     component.onClick();
-
     expect(pageService.formAction).not.toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledWith('https://cru.org', '_blank');
+    expect(fixture.nativeElement.querySelector('button')).toBeNull();
+  });
+
+  it('fires events and opens url when both are present', () => {
+    component.item = linkWithUrlAndEvents;
+    component.ngOnChanges({
+      item: new SimpleChange(null, linkWithUrlAndEvents, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(linkWithUrlAndEvents.url);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
+    expect(pageService.formAction).toHaveBeenCalledWith(
+      'followup-testing-event followup:send'
+    );
   });
 });

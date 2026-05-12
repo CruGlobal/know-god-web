@@ -1,9 +1,23 @@
 <ng-container *ngIf="ready && anmResource">
   <div class="animation-container">
-    <ng-lottie
+    <a
+      *ngIf="animation.url; else animationTemplate"
+      [href]="animation.url"
+      target="_blank"
+      rel="noopener noreferrer"
       (click)="onClick()"
-      [options]="lottieOptions"
-      (animationCreated)="onAnimationCreated($event)"
-    ></ng-lottie>
+    >
+      <ng-lottie
+        [options]="lottieOptions"
+        (animationCreated)="onAnimationCreated($event)"
+      ></ng-lottie>
+    </a>
+    <ng-template #animationTemplate>
+      <ng-lottie
+        (click)="onClick()"
+        [options]="lottieOptions"
+        (animationCreated)="onAnimationCreated($event)"
+      ></ng-lottie>
+    </ng-template>
   </div>
 </ng-container>

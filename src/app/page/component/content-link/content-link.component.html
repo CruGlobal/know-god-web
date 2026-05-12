@@ -1,5 +1,15 @@
 <ng-container *ngIf="ready">
   <div class="linkContent indent">
-    <a (click)="onClick()" href="javascript:void(0)">{{ linkText }}</a>
+    <a
+      *ngIf="link.url; else linkTemplate"
+      [href]="link.url"
+      target="_blank"
+      rel="noopener noreferrer"
+      (click)="onClick()"
+      >{{ linkText }}</a
+    >
+    <ng-template #linkTemplate>
+      <button type="button" (click)="onClick()">{{ linkText }}</button>
+    </ng-template>
   </div>
 </ng-container>

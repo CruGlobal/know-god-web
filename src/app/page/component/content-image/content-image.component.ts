@@ -46,7 +46,7 @@ export class ContentImageComponent implements OnChanges {
   }
 
   onClick(): void {
-    this.pageService.handleClickable(this.image.events, this.image.url);
+    this.pageService.handleClickable(this.image.events);
   }
 
   private init(): void {

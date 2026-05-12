@@ -25,26 +25,14 @@ describe('PageService', () => {
       spyOn(window, 'open');
     });
 
-    it('fires events and opens url when both are present', () => {
-      service.handleClickable([createEventId('foo')], 'https://example.com');
-      expect(service.formAction).toHaveBeenCalledWith('foo');
-      expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank');
-    });
-
-    it('fires events when url not present', () => {
-      service.handleClickable([createEventId('foo')], null);
+    it('fires events when events are present', () => {
+      service.handleClickable([createEventId('foo')]);
       expect(service.formAction).toHaveBeenCalledWith('foo');
       expect(window.open).not.toHaveBeenCalled();
     });
 
-    it('opens url only when events not present', () => {
-      service.handleClickable([], 'https://example.com');
-      expect(service.formAction).not.toHaveBeenCalled();
-      expect(window.open).toHaveBeenCalledWith('https://example.com', '_blank');
-    });
-
-    it('does nothing when neither events nor url are provided', () => {
-      service.handleClickable([], null);
+    it('does nothing when events are not provided', () => {
+      service.handleClickable([]);
       expect(service.formAction).not.toHaveBeenCalled();
       expect(window.open).not.toHaveBeenCalled();
     });

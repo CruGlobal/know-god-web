@@ -1,11 +1,30 @@
 <ng-container *ngIf="ready">
   <div class="mw568 buttonContent tc" dir="{{ dir$ | async }}">
     <a
+      *ngIf="button.url; else buttonTemplate"
       class="button"
-      [ngStyle]="{ 'background-color': buttonBgColor, color: buttonTextColor }"
+      [href]="button.url"
+      [ngStyle]="{
+        'background-color': buttonBgColor,
+        color: buttonTextColor
+      }"
+      target="_blank"
+      rel="noopener noreferrer"
       (click)="onClick()"
-      href="javascript:void(0)"
       >{{ buttonText }}</a
     >
+    <ng-template #buttonTemplate>
+      <button
+        type="button"
+        class="button"
+        [ngStyle]="{
+          'background-color': buttonBgColor,
+          color: buttonTextColor
+        }"
+        (click)="onClick()"
+      >
+        {{ buttonText }}
+      </button>
+    </ng-template>
   </div>
 </ng-container>

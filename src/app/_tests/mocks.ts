@@ -179,12 +179,16 @@ export const mockInput = (
   };
 };
 
-export const mockLink = (url: string, text: string): Link => {
+export const mockLink = (
+  url: string,
+  text: string,
+  hasEvents: boolean = false
+): Link => {
   return {
     url,
     text: createText(text),
     isClickable: true,
-    events: !url
+    events: hasEvents
       ? [
           createEventId('followup-testing-event'),
           createEventId('send', 'followup')
@@ -400,16 +404,15 @@ export const mockFlow = (): Flow => {
   };
 };
 
-export const mockCard = (isClickable: boolean, isUrl: boolean): Card => {
+export const mockCard = (hasEvents: boolean, hasUrl: boolean): Card => {
   return {
     backgroundColor: '#000000',
-    url: isUrl ? 'URL' : null,
+    url: hasUrl ? 'URL' : null,
     content: mockContent(),
-    isClickable,
-    events:
-      isClickable && !isUrl
-        ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
-        : [],
+    isClickable: hasEvents || hasUrl,
+    events: hasEvents
+      ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
+      : [],
     ...standardTypeValues()
   };
 };

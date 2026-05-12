@@ -46,7 +46,7 @@ export class ContentLinkComponent implements OnChanges {
   }
 
   onClick(): void {
-    this.pageService.handleClickable(this.link.events, this.link.url);
+    this.pageService.handleClickable(this.link.events);
   }
 
   private init(): void {

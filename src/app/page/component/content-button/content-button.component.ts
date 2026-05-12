@@ -47,7 +47,7 @@ export class ContentButtonComponent implements OnChanges {
   }
 
   onClick(): void {
-    this.pageService.handleClickable(this.button.events, this.button.url);
+    this.pageService.handleClickable(this.button.events);
   }
 
   private init(): void {

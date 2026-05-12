@@ -49,13 +49,12 @@ describe('ContentImageComponent', () => {
     expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
   });
 
-  it('correctly calls events', () => {
-    component.item = imageWithEventsAndUrl;
+  it('fires events only when clicked on with events', () => {
+    component.item = imageOnlyEvents;
     component.ngOnChanges({
-      item: new SimpleChange(null, imageWithEventsAndUrl, true)
+      item: new SimpleChange(null, imageOnlyEvents, true)
     });
-
-    expect(component.isClickable).toBeTrue();
+    fixture.detectChanges();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
@@ -63,22 +62,8 @@ describe('ContentImageComponent', () => {
     component.onClick();
 
     expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
-  });
-
-  it('fires events only when clicked on with events', () => {
-    component.item = imageOnlyEvents;
-    component.ngOnChanges({
-      item: new SimpleChange(null, imageOnlyEvents, true)
-    });
-
-    const pageService = TestBed.get(PageService);
-    spyOn(pageService, 'formAction');
-    spyOn(window, 'open');
-
-    component.onClick();
-
-    expect(pageService.formAction).toHaveBeenCalled();
-    expect(window.open).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('a')).toBeNull();
+    expect(fixture.nativeElement.querySelector('button')).toBeTruthy();
   });
 
   it('opens urls only when clicked on with url', () => {
@@ -86,15 +71,38 @@ describe('ContentImageComponent', () => {
     component.ngOnChanges({
       item: new SimpleChange(null, imageOnlyUrl, true)
     });
+    fixture.detectChanges();
 
     const pageService = TestBed.get(PageService);
     spyOn(pageService, 'formAction');
-    spyOn(window, 'open');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(filePath);
+    expect(anchor.getAttribute('target')).toBe('_blank');
 
     component.onClick();
-
     expect(pageService.formAction).not.toHaveBeenCalled();
-    expect(window.open).toHaveBeenCalledWith(filePath, '_blank');
+    expect(fixture.nativeElement.querySelector('button')).toBeNull();
+  });
+
+  it('fires events and opens url when both are present', () => {
+    component.item = imageWithEventsAndUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, imageWithEventsAndUrl, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(filePath);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
+    expect(pageService.formAction).toHaveBeenCalledWith(imageEvent);
   });
 
   describe('isClickable', () => {
