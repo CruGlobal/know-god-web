@@ -1,6 +1,14 @@
 <ng-container *ngIf="ready">
+  <img
+    *ngIf="!isClickable"
+    class="imageContent ng-binding"
+    [ngClass]="{ firstImage: isFirstPage$ | async }"
+    [src]="imgResource"
+    [ngStyle]="{ width: width }"
+    alt=""
+  />
   <a
-    *ngIf="image.url; else nonUrlImage"
+    *ngIf="isClickable && image.url; else nonUrlImage"
     [href]="image.url"
     target="_blank"
     rel="noopener noreferrer"
@@ -15,11 +23,7 @@
     />
   </a>
   <ng-template #nonUrlImage>
-    <button
-      *ngIf="isClickable; else nonClickableImage"
-      type="button"
-      (click)="onClick()"
-    >
+    <button type="button" (click)="onClick()">
       <img
         class="imageContent ng-binding"
         [ngClass]="{ firstImage: isFirstPage$ | async }"
@@ -28,14 +32,5 @@
         alt=""
       />
     </button>
-    <ng-template #nonClickableImage>
-      <img
-        class="imageContent ng-binding"
-        [ngClass]="{ firstImage: isFirstPage$ | async }"
-        [src]="imgResource"
-        [ngStyle]="{ width: width }"
-        alt=""
-      />
-    </ng-template>
   </ng-template>
 </ng-container>
