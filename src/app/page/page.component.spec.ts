@@ -4,12 +4,17 @@ import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import {
   createEventId,
+  mockPageBookIndexData,
   mockPageComponent,
   mockTractPage
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
-import { godToolsParser } from '../services/xml-parser-service/xml-parser.service';
+import {
+  ManifestParser,
+  XmlParserData,
+  godToolsParser
+} from '../services/xml-parser-service/xml-parser.service';
 import { PageComponent, getResourceTypeEnum } from './page.component';
 import { PageService } from './service/page-service.service';
 
@@ -277,6 +282,49 @@ describe('PageComponent', () => {
         );
       });
     });
+  });
+
+  it('loadBookManifestXML() fetches only needed resources', async () => {
+    component._pageBookIndex = mockPageBookIndexData;
+
+    component._selectedLanguage = { id: '2222' };
+    component._pageBookTranslations = [
+      {
+        id: 'tx-1',
+        attributes: { 'manifest-name': 'foo.xml' },
+        relationships: { language: { data: { id: '2222' } } }
+      }
+    ];
+
+    const fakeManifest = {
+      relatedFiles: {
+        asJsReadonlySetView: () => new Set(['aaa111.png', 'bbb222.png'])
+      },
+      pages: []
+    };
+    spyOn(ManifestParser.prototype, 'parseManifest').and.returnValue(
+      Promise.resolve({ manifest: fakeManifest } as unknown as XmlParserData)
+    );
+
+    const addAttachmentSpy = spyOn(pageService, 'addAttachment');
+    spyOn(component, 'getResource');
+
+    component['loadBookManifestXML']();
+    await fixture.whenStable();
+
+    expect(addAttachmentSpy).toHaveBeenCalledTimes(2);
+    expect(addAttachmentSpy).toHaveBeenCalledWith(
+      'needed-1.png',
+      'https://cru.org/needed-1.png'
+    );
+    expect(addAttachmentSpy).toHaveBeenCalledWith(
+      'needed-2.png',
+      'https://cru.org/needed-2.png'
+    );
+    expect(addAttachmentSpy).not.toHaveBeenCalledWith(
+      'skipped.png',
+      'https://cru.org/skipped.png'
+    );
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {
