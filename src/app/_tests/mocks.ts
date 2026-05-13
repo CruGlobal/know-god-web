@@ -104,7 +104,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     iconSize: 1,
     text: createText('Button Text'),
     events: event ? [createEventId(event)] : [],
-    isClickable: true,
+    isClickable: !!url || !!event,
     ...standardTypeValues()
   };
 };
@@ -127,14 +127,14 @@ export const mockButton = (
 export const mockImage = (
   name: string,
   url: string,
-  event: string = ''
+  event: string = null
 ): Image => {
   return {
     url,
     resource: createResource(name, url),
     gravity: null,
     width: null,
-    isClickable: null,
+    isClickable: !!url || !!event,
     events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
@@ -152,8 +152,8 @@ export const mockAnimation = (
     autoPlay: true,
     playListeners: [createEventId(`${event}-play-listener`)],
     stopListeners: [createEventId(`${event}-stop-listener`)],
-    isClickable: true,
-    events: [createEventId(event)],
+    isClickable: !!url || !!event,
+    events: event ? [createEventId(event)] : [],
     _events: null,
     _playListeners: null,
     _stopListeners: null,
@@ -183,16 +183,18 @@ export const mockInput = (
 export const mockLink = (
   url: string,
   text: string,
-  isClickable: boolean
+  hasEvents: boolean = false
 ): Link => {
   return {
     url,
     text: createText(text),
-    isClickable,
-    events: [
-      createEventId('followup-testing-event'),
-      createEventId('send', 'followup')
-    ],
+    isClickable: true,
+    events: hasEvents
+      ? [
+          createEventId('followup-testing-event'),
+          createEventId('send', 'followup')
+        ]
+      : [],
     ...standardTypeValues()
   };
 };
@@ -403,13 +405,13 @@ export const mockFlow = (): Flow => {
   };
 };
 
-export const mockCard = (isClickable): Card => {
+export const mockCard = (hasEvents: boolean, hasUrl: boolean): Card => {
   return {
     backgroundColor: '#000000',
-    url: 'URL',
+    url: hasUrl ? 'URL' : null,
     content: mockContent(),
-    isClickable,
-    events: isClickable
+    isClickable: hasEvents || hasUrl,
+    events: hasEvents
       ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
       : [],
     ...standardTypeValues()

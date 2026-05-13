@@ -25,7 +25,6 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   ready: boolean;
   anmResource: string;
   anmViewItem: AnimationItem;
-  hasEvents: boolean;
   dir$: Observable<string>;
   lottieOptions: AnimationOptions;
 
@@ -57,17 +56,8 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
     }
   }
 
-  onAnimationClick(): void {
-    if (this.animation.events) {
-      let action = '';
-      this.animation.events.forEach((event, idx) => {
-        const value = event?.namespace
-          ? `${event.namespace}:${event.name}`
-          : event.name;
-        action += idx ? ` ${value}` : value;
-      });
-      this.pageService.formAction(action);
-    }
+  onClick(): void {
+    this.pageService.handleClickable(this.animation.events);
   }
 
   onAnimationCreated(anim: AnimationItem): void {
@@ -97,8 +87,6 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
         autoplay: !!this.animation.autoPlay
       };
     }
-
-    this.hasEvents = !!this.animation.events;
 
     if (!!this.animation.playListeners || !!this.animation.stopListeners) {
       this.awaitAnimEvent();
