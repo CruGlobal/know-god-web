@@ -307,23 +307,24 @@ describe('PageComponent', () => {
     );
 
     const addAttachmentSpy = spyOn(pageService, 'addAttachment');
-    spyOn(component, 'getResource');
+    const getResourceSpy = spyOn(component, 'getResource');
 
     component['loadBookManifestXML']();
     await fixture.whenStable();
 
-    expect(addAttachmentSpy).toHaveBeenCalledTimes(2);
-    expect(addAttachmentSpy).toHaveBeenCalledWith(
-      'needed-1.png',
-      'https://cru.org/needed-1.png'
+    expect(addAttachmentSpy).toHaveBeenCalledTimes(3);
+
+    expect(getResourceSpy).toHaveBeenCalledWith(
+      getResourceTypeEnum.image,
+      'needed-1.png'
     );
-    expect(addAttachmentSpy).toHaveBeenCalledWith(
-      'needed-2.png',
-      'https://cru.org/needed-2.png'
+    expect(getResourceSpy).toHaveBeenCalledWith(
+      getResourceTypeEnum.image,
+      'needed-2.png'
     );
-    expect(addAttachmentSpy).not.toHaveBeenCalledWith(
-      'skipped.png',
-      'https://cru.org/skipped.png'
+    expect(getResourceSpy).not.toHaveBeenCalledWith(
+      getResourceTypeEnum.image,
+      'skipped.png'
     );
   });
 

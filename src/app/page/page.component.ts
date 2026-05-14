@@ -29,8 +29,6 @@ import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
 
 const IMAGE_EXTENSIONS_REGEX = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i;
-const SUPPORTED_EXTENSIONS_REGEX =
-  /\.(gif|jpe?g|tiff?|png|webp|svg|bmp|json)$/i;
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -371,11 +369,11 @@ export class PageComponent implements OnInit, OnDestroy {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
-          // Remove file extensions to get the SHAs
+          // Remove file extensions to get the SHAs for manifest resources
           const neededShas = new Set(
-            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? [])
-              .filter((file) => !file.endsWith('.xml'))
-              .map((file) => file.replace(SUPPORTED_EXTENSIONS_REGEX, ''))
+            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? []).map(
+              (file) => file.replace(/\.[^.]+$/, '')
+            )
           );
 
           // Loop through and get all needed resources.
@@ -385,14 +383,17 @@ export class PageComponent implements OnInit, OnDestroy {
             if (type !== 'attachment') {
               return;
             }
-            if (!neededShas.has(attributes.sha256)) {
-              return;
-            }
 
+            // Add all resources to the lookup table so they can be accessed by any page that needs them
             this.pageService.addAttachment(
               attributes['file-file-name'],
               attributes.file
             );
+
+            if (!neededShas.has(attributes.sha256)) {
+              return;
+            }
+
             const isImage = IMAGE_EXTENSIONS_REGEX.test(
               attributes['file-file-name']
             );
