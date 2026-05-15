@@ -689,6 +689,36 @@ export const mockBooksData = {
   ]
 };
 
+export const mockPageBookIndexData = {
+  data: { attributes: {} },
+  included: [
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'aaa111',
+        file: 'https://cru.org/needed-1.png',
+        'file-file-name': 'needed-1.png'
+      }
+    },
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'bbb222',
+        file: 'https://cru.org/needed-2.png',
+        'file-file-name': 'needed-2.png'
+      }
+    },
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'zzz999',
+        file: 'https://cru.org/skipped.png',
+        'file-file-name': 'skipped.png'
+      }
+    }
+  ]
+};
+
 export const mockSpacer = (height = 100): Spacer => {
   return {
     height,
