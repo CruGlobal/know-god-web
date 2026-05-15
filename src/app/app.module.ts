@@ -1,14 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
+import { I18NEXT_SERVICE, I18NextModule } from 'angular-i18next';
 import { LottieModule } from 'ngx-lottie';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { appInit } from './i18n';
 import { CalltoactionComponent } from './page/component/calltoaction/calltoaction.component';
 import { CardComponent } from './page/component/card/card.component';
 import { ContentAccordionComponent } from './page/component/content-accordion/content-accordion.component';
@@ -154,9 +156,19 @@ export function playerFactory() {
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
-    LottieModule.forRoot({ player: playerFactory })
+    LottieModule.forRoot({ player: playerFactory }),
+    I18NextModule.forRoot()
   ],
-  providers: [CommonModule, LoaderService],
+  providers: [
+    CommonModule,
+    LoaderService,
+    {
+      provide: APP_INITIALIZER,
+      useFactory: appInit,
+      deps: [I18NEXT_SERVICE],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

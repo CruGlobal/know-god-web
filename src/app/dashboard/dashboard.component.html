@@ -5,10 +5,10 @@
     </a>
     <div class="navigation" [class.main-dashboard]="isMainDashboard()">
       <a routerLink="/{{ dispLanguageCode }}/tools" routerLinkActive="active">
-        Tools
+        {{ 'Tools' | i18next }}
       </a>
       <a routerLink="/{{ dispLanguageCode }}/lessons" routerLinkActive="active">
-        Lessons
+        {{ 'Lessons' | i18next }}
       </a>
     </div>
     <div class="language-switcher">
@@ -32,7 +32,7 @@
   <div class="bs-container" *ngIf="sectionReady">
     <app-dashboard-list
       *ngIf="isMainDashboard() || isToolsPage()"
-      title="Tools"
+      [title]="'Tools' | i18next"
       [resources]="isToolsPage() ? tools : (tools | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
       [dispLanguageCode]="dispLanguageCode"
@@ -43,7 +43,7 @@
 
     <app-dashboard-list
       *ngIf="isMainDashboard() || isLessonsPage()"
-      title="Lessons"
+      [title]="'Lessons' | i18next"
       [resources]="isLessonsPage() ? lessons : (lessons | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
       [dispLanguageCode]="dispLanguageCode"
@@ -60,12 +60,15 @@
   [ngClass]="{ 'section-loading': !sectionReady }"
 >
   <div class="bs-container">
-    ©1994-{{ currentYear }} Cru. All Rights Reserved.
-    <a href="https://godtoolsapp.com/terms-of-use/" target="_blank"
-      >Terms of Use</a
+    {{ '©1994-{{ year }} Cru. All Rights Reserved.' | i18next: { year:
+    currentYear } }}
+    <a href="https://godtoolsapp.com/terms-of-use/" target="_blank">{{
+      'Terms of Use' | i18next
+    }}</a
     >.
-    <a href="https://www.cru.org/us/en/about/privacy.html" target="_blank"
-      >Privacy Policy</a
+    <a href="https://www.cru.org/us/en/about/privacy.html" target="_blank">{{
+      'Privacy Policy' | i18next
+    }}</a
     >.
   </div>
 </footer>

@@ -1,0 +1,57 @@
+name: CrowdIn Translation PR
+
+on:
+  schedule:
+    # Run every Monday at 10:50am UTC (5:50am EST). To avoid delays and possibly dropped jobs
+    # GitHub recommends not scheduling jobs at the top of the hour.
+    - cron: '50 10 * * 1'
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .tool-versions
+      - name: 📦 Install Dependencies
+        # Download packages from the registry instead of git-lfs to save git-lfs bandwidth
+        run: yarn cache clean && yarn install
+
+      - name: 🌐 Extract Translations
+        run: yarn extract
+      - name: 🔤🔽 CrowdIn Translations Download
+        run: yarn crowdin download translations
+        env:
+          CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
+      - name: 🔤 Sort Translations
+        run: yarn crowdin:sort-translations
+      - name: 🔀 Create PR
+        uses: peter-evans/create-pull-request@v7
+        env:
+          # Disable git hooks because we are only modifying translation files
+          HUSKY: 0
+        with:
+          branch: bot-update-translations
+          add-paths: |
+            src/assets/locales/
+          # Sign commits so that the author is a bot
+          sign-commits: true
+          commit-message: Run `yarn extract` and `yarn crowdin:download`
+          title: '[no-Jira] Update translations'
+          body: |
+            Update translations with the latest labels extracted from the components and downloaded from CrowdIn.
+
+            Due to GitHub Actions restrictions, our `on: pull_request` CI workflow will not run automatically because this PR was created by a bot. To get it to run, a human will have to push a commit to the branch.
+
+            ```sh
+            $ git switch bot-update-translations
+            $ git commit --allow-empty --message "Bump CI"
+            $ git push
+            ```
