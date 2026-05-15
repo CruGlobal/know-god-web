@@ -28,6 +28,8 @@ import {
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
 
+const IMAGE_EXTENSIONS_REGEX = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i;
+
 interface LiveShareSubscriptionPayload {
   data?: {
     type: 'navigation-event';
@@ -367,25 +369,41 @@ export class PageComponent implements OnInit, OnDestroy {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
-          // Loop through and get all resources.
+          // Remove file extensions to get the SHAs for manifest resources
+          const neededShas = new Set(
+            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? []).map(
+              (file) => file.replace(/\.[^.]+$/, '')
+            )
+          );
+
+          // Loop through and get all needed resources.
           this._pageBookIndex.included.forEach((resource) => {
             const { attributes, type } = resource;
-            if (type === 'attachment') {
-              this.pageService.addAttachment(
-                attributes['file-file-name'],
-                attributes.file
-              );
-              const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                attributes['file-file-name']
-              );
 
-              this.getResource(
-                isImage
-                  ? getResourceTypeEnum.image
-                  : getResourceTypeEnum.animation,
-                attributes['file-file-name']
-              );
+            if (type !== 'attachment') {
+              return;
             }
+
+            // Add all resources to the lookup table so they can be accessed by any page that needs them
+            this.pageService.addAttachment(
+              attributes['file-file-name'],
+              attributes.file
+            );
+
+            if (!neededShas.has(attributes.sha256)) {
+              return;
+            }
+
+            const isImage = IMAGE_EXTENSIONS_REGEX.test(
+              attributes['file-file-name']
+            );
+
+            this.getResource(
+              isImage
+                ? getResourceTypeEnum.image
+                : getResourceTypeEnum.animation,
+              attributes['file-file-name']
+            );
           });
 
           if (manifest?.pages?.length) {
