@@ -54,3 +54,5 @@ Thumbs.db
 
 # i18next-parser backup of removed keys (regenerated on every extract)
 src/assets/locales/*/translation_old.json
+
+.env
