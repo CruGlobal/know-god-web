@@ -328,6 +328,97 @@ In short: `embed.js` is the lightweight bridge that the host site loads, and the
 real app runs sandboxed in an iframe. The two communicate via `postMessage` so
 the embed grows and shrinks to fit its content automatically.
 
+## Translations (i18n & Crowdin)
+
+> **Status:** This translation tooling is being rolled out. If the files,
+> scripts, or workflows referenced below aren't present in your checkout yet,
+> they're still landing — this section documents the intended workflow.
+
+UI strings are translated with [i18next](https://www.i18next.com/) and managed in
+[Crowdin](https://crowdin.com/). Developers only ever write **English** strings in
+templates; everything else (extraction, upload, translator hand-off, and the
+return PR) is automated.
+
+### Main flow
+
+1. A developer writes a string in a template using the `i18next` pipe:
+   `{{ 'Tools' | i18next }}`.
+2. `yarn extract` scans the code and writes the keys into
+   `src/assets/locales/en/translation.json`.
+3. When changes are merged to `main`, the English strings are uploaded to
+   Crowdin for translators.
+4. Every **Monday at 5:50am EST**, translations are downloaded from Crowdin,
+   sorted, and a PR titled **"Update translations"** is opened automatically.
+5. The UI team reviews and approves that PR.
+
+### One-time setup (installing the tooling)
+
+This repo uses **Yarn** — use the `yarn add` commands below (the `npm` equivalents
+are shown for reference only; don't run `npm install` here, as it would create a
+conflicting `package-lock.json`).
+
+```bash
+# Runtime dependencies
+yarn add i18next i18next-browser-languagedetector i18next-http-backend angular-i18next
+# Dev dependency: the extractor
+yarn add --dev i18next-parser
+# Crowdin CLI
+yarn add crowdin @crowdin/cli
+
+# npm equivalents (reference only):
+#   npm install i18next i18next-browser-languagedetector i18next-http-backend angular-i18next
+#   npm install --save-dev i18next-parser
+#   npm install crowdin @crowdin/cli
+```
+
+### Crowdin project
+
+- **Project ID:** `897600` _(temporary — to be migrated to a new project owned by
+  Sway Ciaramello)._
+- **`CROWDIN_API_TOKEN`** is created in the Crowdin project and stored as a GitHub
+  Actions repository secret at
+  [Settings → Secrets → Actions](https://github.com/CruGlobal/know-god-web/settings/secrets/actions).
+
+### Files and what they do
+
+| File | Purpose |
+| --- | --- |
+| `src/app/i18n.ts` | Starts up i18next when the app loads |
+| `src/app/app.module.ts` | Registers i18next with Angular so the `i18next` pipe works in templates |
+| `i18next-parser.config.cjs` | Config for `yarn extract`; a custom lexer matches the `'key' \| i18next` pattern in HTML and extracts the key |
+| `crowdin/sort-translations.cjs` | Alphabetically sorts every locale's `translation.json` |
+| `src/assets/locales/en/translation.json` | The generated English source file |
+| `crowdin.yml` | Crowdin project config — which file is the source, where translations go, and who reviews the auto-PRs |
+| `.github/workflows/node.js.yml` | Adds a translation job to CI so every PR runs `yarn extract` |
+| `.github/workflows/crowdin.yml` | Scheduled job that extracts, downloads translations from Crowdin, sorts them, and opens the "Update translations" PR |
+
+### Using it in templates
+
+The key **is the full English string**. Simple string:
+
+```html
+{{ 'Tools' | i18next }}
+```
+
+String with a dynamic value:
+
+```html
+{{ '1994-{{ year }} Cru. All Rights Reserved.' | i18next: { year: currentYear } }}
+```
+
+These produce the following entries in `translation.json` (keys are the full
+English text):
+
+```json
+{
+  "Tools": "Tools",
+  "1994-{{ year }} Cru. All Rights Reserved.": "1994-{{ year }} Cru. All Rights Reserved."
+}
+```
+
+After adding or changing strings, run `yarn extract` and commit the updated
+`translation.json` along with your change.
+
 ## Continuous Integration
 
 CI is defined in [`.github/workflows`](.github/workflows). There are two
