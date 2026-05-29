@@ -32,7 +32,17 @@ in the form `/#/{lang}/{book}` (e.g. `/#/en/kgp-us` for "Knowing God Personally"
   Jira project prefix. If your work has no ticket, use a short descriptive title.
 - **Commits:** clean up your commit history before requesting review.
 
-## 4. Before opening a PR
+## 4. Translations (i18n)
+
+All UI strings are English-only in templates and translated via i18next +
+Crowdin. When you add or change a user-facing string, write it with the `i18next`
+pipe (e.g. `{{ 'Tools' | i18next }}`), run `yarn extract`, and commit the updated
+`src/assets/locales/en/translation.json` with your change. Translators and the
+weekly "Update translations" PR are handled automatically. See the
+**[Translations (i18n & Crowdin)](README.md#translations-i18n--crowdin)** section
+of the README for the full flow, setup, and template examples.
+
+## 5. Before opening a PR
 
 Run the same checks CI runs, so you don't round-trip with the pipeline:
 
@@ -43,10 +53,13 @@ yarn test --no-watch  # unit tests, single run (Karma + Jasmine)
 yarn build            # confirm a production build compiles
 ```
 
+If you touched user-facing strings, also run `yarn extract` and commit the
+updated `translation.json`.
+
 A Husky pre-commit hook runs `pretty-quick` on staged files, but running the
 full set above is still the reliable way to match CI.
 
-## 5. Deploying to a test environment
+## 6. Deploying to a test environment
 
 Branch promotion is driven by PR labels (see
 [`.github/workflows/update-staging.yml`](.github/workflows/update-staging.yml)):
@@ -62,7 +75,7 @@ Branch promotion is driven by PR labels (see
 | Development | https://dev.knowgod.com/en   | `development`|
 | Local       | http://localhost:4200/en     | —            |
 
-## 6. Review
+## 7. Review
 
 Request a review from another person on the project. There is no `CODEOWNERS`
 file, so if you're new or external and don't know who to tag, ask the team lead
@@ -73,7 +86,7 @@ reviewer can verify the visual result quickly.
 The PR template (`.github/PULL_REQUEST_TEMPLATE.md`) populates automatically when
 you open a PR — fill out every section and tick the checklist.
 
-## 7. Claude Code plugins (optional but recommended)
+## 8. Claude Code plugins (optional but recommended)
 
 This repo ships the shared
 [`CruGlobal/claude-code-plugins`](https://github.com/CruGlobal/claude-code-plugins)
