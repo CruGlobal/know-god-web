@@ -12,6 +12,20 @@
         >
           <img src="assets/img/kg-logo-blue.png"
         /></a>
+        <div class="page-navigation">
+          <a
+            [ngClass]="{ 'active-tool': router.url.includes('/tool/') }"
+            [routerLink]="['/', _pageParams.langId, 'tools']"
+          >
+            Tools
+          </a>
+          <a
+            [ngClass]="{ 'active-tool': router.url.includes('/lesson/') }"
+            [routerLink]="['/', _pageParams.langId, 'lessons']"
+          >
+            Lessons
+          </a>
+        </div>
         <span
           class="kg-gray-dark ng-binding language-selector-toggle"
           (click)="onToggleLanguageSelect()"
@@ -61,6 +75,14 @@
         [totalPages]="totalPages"
       >
       </app-tract-page>
+
+      <app-lesson-page
+        *ngIf="resourceType === 'lesson'"
+        [page]="activePage"
+        [order]="activePageOrder"
+        [totalPages]="totalPages"
+      >
+      </app-lesson-page>
     </div>
 
     <ng-container *ngIf="bookNotAvailableInLanguage">

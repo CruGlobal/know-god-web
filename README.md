@@ -249,15 +249,37 @@ then assert against the rendered DOM or the component instance.
 
 ## Embed
 
-Any site can drop a Know God tool onto a page with two lines of HTML:
+Add the following snippet to any HTML page to embed a KnowGod.com gospel presentation:
 
 ```html
-<div id="knowGodEmbed" data-book="kgp-us" data-lang="en"></div>
+<div id="knowGodEmbed" data-book="kgp-us" data-lang="en" data-ministry="your-ministry-name"></div>
 <script src="https://knowgod.com/embed.js"></script>
 ```
 
-- `data-book` — the resource/tool to load (e.g. `kgp-us` for "Knowing God Personally").
-- `data-lang` — the language code (e.g. `en`).
+### Data Attributes
+
+| Attribute | Required | Description |
+|---|---|---|
+| `data-book` | Yes | The book/resource identifier (e.g. `kgp-us`, `satisfied`) |
+| `data-lang` | Yes | Language code (e.g. `en`, `es`, `fr`) |
+| `data-ministry` | No | Your ministry identifier. Used for analytics to track which ministries are embedding content. |
+
+The script creates an iframe pointing to `https://knowgod.com/#/{lang}/{book}?embedded=true`. When `data-ministry` is provided, a `&ministry={value}` parameter is appended to the URL so the analytics service can attribute embeds to specific ministries.
+
+### Testing the Embed Locally
+
+A test page is available at `embed/test.html` to verify the embed script works correctly. Start the dev server and open the test page:
+
+```bash
+yarn start
+# then open http://localhost:4200/embed/test.html
+```
+
+The test page uses `window.location.origin` to dynamically point the iframe at the current host, so it works in any environment without needing the `{appDomain}` placeholder that CI/CD replaces in the production `embed.js`.
+
+You can change the `data-book`, `data-lang`, and `data-ministry` values and click **Reload Embed** to test different configurations. The log panel at the bottom shows the generated iframe URL and any `postMessage` height updates received from the embedded content.
+
+## Environments
 
 A working example lives in [`embed/example.html`](embed/example.html).
 
@@ -391,3 +413,7 @@ To update who the owners are, edit `.github/CODEOWNERS`.
 
 - Push to `staging` to auto-deploy to stage.knowgod.com
 - Push to `main` to auto-deploy to knowgod.com
+
+## Documentation
+
+Additional documentation can be found in the `docs/` directory.

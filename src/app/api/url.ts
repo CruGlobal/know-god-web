@@ -8,7 +8,7 @@ export const APIURL = {
   GET_ZIP_FILES: `${environment.mobileContentApiUrl}/translations/`,
   GET_INDEX_FILE: `${environment.mobileContentApiUrl}/resources/{0}?include=latest-translations,attachments`,
   POST_CREATE_SUBSCRIBER: `${environment.mobileContentApiUrl}/follow_ups/`,
-  GET_XML_FILES_FOR_MANIFEST: environment.GetXmlFilesForManifest,
+  GET_TRANSLATION_FILES: `${environment.mobileContentApiUrl}/translations/files/`,
   GET_ATTACHMENTS: '/attachments/'
 };
 

@@ -10,11 +10,15 @@ declare global {
           pageName: string;
           language: string;
           embedded: 'embed' | '';
+          ministry: string;
+          embeddingReferrer: string;
         };
         category: { primaryCategory: string };
       };
     };
     isEmbedded?: boolean;
+    embeddingMinistry?: string;
+    embeddingReferrer?: string;
   }
 }
 
@@ -46,7 +50,9 @@ export class AnalyticsService {
       pageInfo: {
         pageName: `${appName} : ${pageNumber || 'home'}`,
         language: language || 'en',
-        embedded: window.isEmbedded === true ? 'embed' : ''
+        embedded: window.isEmbedded === true ? 'embed' : '',
+        ministry: window.embeddingMinistry || '',
+        embeddingReferrer: window.embeddingReferrer || ''
       },
       category: {
         primaryCategory: appName

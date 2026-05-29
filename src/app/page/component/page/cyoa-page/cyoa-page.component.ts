@@ -129,5 +129,7 @@ export class CYOAComponent implements OnChanges, OnDestroy {
       }, 0);
       return;
     }
+
+    this.pageService.contentEvent(functionName);
   }
 }

@@ -5,9 +5,7 @@
 export const environment = {
   production: false,
   mobileContentApiUrl: 'https://mobile-content-api-stage.cru.org',
-  mobileContentApiWsUrl: 'wss://mobile-content-api-stage.cru.org/cable',
-  GetXmlFilesForManifest:
-    'https://mobile-content-api-stage.cru.org/translations/files/'
+  mobileContentApiWsUrl: 'wss://mobile-content-api-stage.cru.org/cable'
 };
 
 /*
