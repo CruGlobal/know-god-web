@@ -193,11 +193,8 @@ export class PageService {
     if (events && events.length) {
       // Each event can resolve into an array of events, so combine them into a single array.
       // This is necessary to support complex form actions with 'state' in the EventId.
-      // (`Array.flatMap` isn't supported yet, so we use `[].concat(...arrays)`)
-      const resolvedEvents = [].concat(
-        ...events.map((event) =>
-          event.resolve(this.parserState()).asJsReadonlyArrayView()
-        )
+      const resolvedEvents = events.flatMap((event) =>
+        event.resolve(this.parserState()).asJsReadonlyArrayView()
       );
 
       this.formAction(formatEvents(resolvedEvents));
