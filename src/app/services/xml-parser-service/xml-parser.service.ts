@@ -226,8 +226,9 @@ export const parseTextRemoveBrTags = (text: string): string => {
 @Injectable({
   providedIn: 'root'
 })
-export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
-  .JsXmlPullParserFactory {
+export class PullParserFactory
+  extends org.cru.godtools.shared.tool.parser.xml.JsXmlPullParserFactory
+{
   _fileOrigin: string;
   clearOrigin() {
     this._fileOrigin = '';

@@ -2,12 +2,14 @@ import { ViewportScroller } from '@angular/common';
 import {
   Component,
   HostListener,
+  Inject,
   OnDestroy,
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as ActionCable from '@rails/actioncable';
+import { I18NEXT_SERVICE, ITranslationService } from 'angular-i18next';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -95,7 +97,8 @@ export class PageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public router: Router,
     private viewportScroller: ViewportScroller,
-    private pullParserFactory: PullParserFactory
+    private pullParserFactory: PullParserFactory,
+    @Inject(I18NEXT_SERVICE) private i18n: ITranslationService
   ) {
     this._pageParams = {
       langId: '',
@@ -181,6 +184,7 @@ export class PageComponent implements OnInit, OnDestroy {
   };
 
   selectLanguage(lang): void {
+    this.i18n.changeLanguage(lang.attributes.code);
     this.router.navigate(
       this.buildRouteParams(
         lang.attributes.code,
