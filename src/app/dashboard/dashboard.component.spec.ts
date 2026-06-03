@@ -7,6 +7,7 @@ import {
   waitForAsync
 } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
+import { I18NextModule } from 'angular-i18next';
 import { mockPageComponent } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { DashboardComponent } from './dashboard.component';
@@ -18,7 +19,7 @@ describe('DashboardComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DashboardComponent],
-      imports: [HttpClientModule, RouterTestingModule],
+      imports: [HttpClientModule, RouterTestingModule, I18NextModule.forRoot()],
       providers: [CommonService]
     }).compileComponents();
   }));

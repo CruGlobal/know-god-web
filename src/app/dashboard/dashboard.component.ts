@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { I18NEXT_SERVICE, ITranslationService } from 'angular-i18next';
 import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { APIURL } from '../api/url';
@@ -46,7 +47,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public route: Router,
     public activatedRoute: ActivatedRoute,
     public commonService: CommonService,
-    readonly resourceService: ResourceService
+    readonly resourceService: ResourceService,
+    @Inject(I18NEXT_SERVICE) private i18n: ITranslationService
   ) {}
 
   ngOnInit(): void {
@@ -141,6 +143,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       ) {
         this.dispLanguage = parseInt(tLanguage.id as string, 10);
         this.dispLanguageCode = tLanguage.attributes.code;
+        this.i18n.changeLanguage(this.dispLanguageCode);
         this.dispLanguageName = tLanguage.attributes.name;
         this.dispLanguageDirection = tLanguage.attributes.direction;
       }
