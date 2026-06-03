@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { I18NextModule } from 'angular-i18next';
 import { DashboardListComponent } from './dashboard-list.component';
 
 describe('DashboardListComponent', () => {
@@ -7,7 +8,8 @@ describe('DashboardListComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DashboardListComponent]
+      declarations: [DashboardListComponent],
+      imports: [I18NextModule.forRoot()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardListComponent);
