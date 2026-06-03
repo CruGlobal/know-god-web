@@ -281,11 +281,11 @@ auto-merges into both `staging` and `development`; **`On Development`** merges i
 
 Branch → environment:
 
-| Environment | URL                          | Deploys from |
-| ----------- | ---------------------------- | ------------ |
-| Production  | https://knowgod.com/en       | `main`       |
-| Staging     | https://stage.knowgod.com/en | `staging`    |
-| Development | https://dev.knowgod.com/en   | —            |
+| Environment | URL                          | Deploys from  |
+| ----------- | ---------------------------- | ------------- |
+| Production  | https://knowgod.com/en       | `main`        |
+| Staging     | https://stage.knowgod.com/en | `staging`     |
+| Development | https://dev.knowgod.com/en   | `development` |
 | Local       | http://localhost:4200/en     | —            |
 
 ## Before creating a PR
@@ -299,8 +299,8 @@ yarn test             # run unit tests once
 yarn build            # confirm a production build compiles
 ```
 
-A Husky pre-commit hook runs `pretty-quick` on staged files, but the full set
-above still catches more. Open your PR against **`staging`** or **`main`** (the
+A Husky pre-commit hook runs `yarn lint` and `yarn prettier:check`, but the full
+set above still catches more. Open your PR against **`staging`** or **`main`** (the
 branches CI runs PR checks on); add the `On Staging` / `On Development` label to
 deploy it to a test environment.
 

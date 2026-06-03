@@ -100,5 +100,5 @@ Local app: <http://localhost:4200/en>.
   `.github/workflows/update-staging.yml`).
 - Before opening a PR, run the four CI-mirroring checks: `yarn prettier:write`,
   `yarn lint`, `yarn test --no-watch`, `yarn build`. A Husky pre-commit hook runs
-  `pretty-quick` on staged files.
+  `yarn lint` and `yarn prettier:check`.
 - See `CONTRIBUTING.md` and `README.md` for the full workflow.
