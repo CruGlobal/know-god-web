@@ -5,7 +5,7 @@
     </h2>
     <a *ngIf="viewAllRoute" [routerLink]="[viewAllRoute]" class="view-all-link">
       <span class="view-all-text"
-        >{{ viewAllText || ('View All' | i18next) }}
+        >{{ viewAllText || ('View All' | i18nextEager) }}
       </span>
       <span>{{ title }}</span>
       <em class="far fa-arrow-right"></em>

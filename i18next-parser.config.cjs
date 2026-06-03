@@ -4,7 +4,7 @@ class AngularPipeLexer extends EventEmitter {
   constructor(options = {}) {
     super();
     this.keys = [];
-    this.functions = options.functions || ['i18next'];
+    this.functions = options.functions || ['i18next', 'i18nextEager'];
   }
 
   extract(content) {

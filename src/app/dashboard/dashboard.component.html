@@ -5,10 +5,10 @@
     </a>
     <div class="navigation" [class.main-dashboard]="isMainDashboard()">
       <a routerLink="/{{ dispLanguageCode }}/tools" routerLinkActive="active">
-        {{ 'Tools' | i18next }}
+        {{ 'Tools' | i18nextEager }}
       </a>
       <a routerLink="/{{ dispLanguageCode }}/lessons" routerLinkActive="active">
-        {{ 'Lessons' | i18next }}
+        {{ 'Lessons' | i18nextEager }}
       </a>
     </div>
     <div class="language-switcher">
@@ -32,7 +32,7 @@
   <div class="bs-container" *ngIf="sectionReady">
     <app-dashboard-list
       *ngIf="isMainDashboard() || isToolsPage()"
-      [title]="'Tools' | i18next"
+      [title]="'Tools' | i18nextEager"
       [resources]="isToolsPage() ? tools : (tools | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
       [dispLanguageCode]="dispLanguageCode"
@@ -43,7 +43,7 @@
 
     <app-dashboard-list
       *ngIf="isMainDashboard() || isLessonsPage()"
-      [title]="'Lessons' | i18next"
+      [title]="'Lessons' | i18nextEager"
       [resources]="isLessonsPage() ? lessons : (lessons | slice: 0 : 3)"
       [dispLanguageDirection]="dispLanguageDirection"
       [dispLanguageCode]="dispLanguageCode"
@@ -60,14 +60,14 @@
   [ngClass]="{ 'section-loading': !sectionReady }"
 >
   <div class="bs-container">
-    {{ '©1994-{{ year }} Cru. All Rights Reserved.' | i18next: { year:
+    {{ '©1994-{{ year }} Cru. All Rights Reserved.' | i18nextEager: { year:
     currentYear } }}
     <a href="https://godtoolsapp.com/terms-of-use/" target="_blank">{{
-      'Terms of Use' | i18next
+      'Terms of Use' | i18nextEager
     }}</a
     >.
     <a href="https://www.cru.org/us/en/about/privacy.html" target="_blank">{{
-      'Privacy Policy' | i18next
+      'Privacy Policy' | i18nextEager
     }}</a
     >.
   </div>
