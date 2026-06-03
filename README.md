@@ -248,9 +248,14 @@ Embed**; the log panel shows the generated URL and incoming height updates.
 Developers only write **English** strings in templates with the `i18next` pipe;
 extraction, upload, and the translation-return PR are automated:
 
-1. Write a string: `{{ 'Tools' | i18next }}` (or with a value:
-   `{{ '1994-{{ year }} Cru.' | i18next: { year: currentYear } }}`). The key
-   **is** the full English string.
+1. Write a string: `{{ 'Tools' | i18nextEager }}` (or with a value:
+   `{{ '1994-{{ year }} Cru.' | i18nextEager: { year: currentYear } }}`). The
+   key **is** the full English string.
+
+   > **Use `i18nextEager`, not the bare `i18next` pipe.** `i18next` resolves
+   > once and caches, so labels go stale when the in-app language selector
+   > switches language without re-rendering. `i18nextEager` re-resolves on
+   > language change, keeping persistent labels in sync.
 2. `yarn extract` writes keys into `src/assets/locales/en/translation.json`;
    commit it with your change.
 3. On merge to `main`, English strings upload to Crowdin.
