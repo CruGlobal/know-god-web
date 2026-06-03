@@ -16,6 +16,21 @@ This is an Angular 17 project created with TypeScript.
 - Development: https://dev.knowgod.com/en
 - Local: http://localhost:4200/en
 
+## Browser Support
+
+Browser and device usage based on GA4 28-day active users for knowgod.com / GodTools (Apr 8 – May 5, 2026).
+
+**Targeted browsers** (`.browserslistrc`: `> 0.5%, last 2 versions, Firefox ESR, not dead`): the last 2 versions of Chrome, Edge, Firefox (and Firefox ESR), Safari (macOS & iOS), and other evergreen browsers above 0.5% global usage. Internet Explorer is not supported.
+
+| Browser          | Share |     | Device  | Share |
+| :--------------- | :---- | :-- | :------ | :---- |
+| Android Webview  | 50.5% |     | Mobile  | 86.5% |
+| Chrome           | 36.2% |     | Desktop | 13.2% |
+| Safari           | 8.0%  |     | Tablet  | 0.4%  |
+| Samsung Internet | 2.5%  |     |         |       |
+| Edge             | 1.1%  |     |         |       |
+| Other            | <1%   |     |         |       |
+
 ## Development
 
 ### Getting Started
