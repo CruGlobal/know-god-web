@@ -7,7 +7,7 @@ the [README](README.md) for the deep detail.
 ## 1. Get set up
 
 Follow the **Getting started** steps in the [README](README.md): install the
-pinned Node version with asdf (`.tool-versions` → Node 20.17.0), confirm Yarn
+pinned Node version with asdf (`.tool-versions` → Node 24.9.0), confirm Yarn
 4.7.0 resolves (enable Corepack if not), run `yarn` to install, then `yarn start`
 (production data) or `yarn start:dev` (staging data) and open
 <http://localhost:4200/en>.
@@ -68,20 +68,25 @@ Branch promotion is driven by PR labels (see
   `development`.
 - **`On Development`** — auto-merges into `development` only.
 
-| Environment | URL                          | Deploys from |
-| ----------- | ---------------------------- | ------------ |
-| Production  | https://knowgod.com/en       | `main`       |
-| Staging     | https://stage.knowgod.com/en | `staging`    |
-| Development | https://dev.knowgod.com/en   | `development`|
-| Local       | http://localhost:4200/en     | —            |
+| Environment | URL                          | Deploys from  |
+| ----------- | ---------------------------- | ------------- |
+| Production  | https://knowgod.com/en       | `main`        |
+| Staging     | https://stage.knowgod.com/en | `staging`     |
+| Development | https://dev.knowgod.com/en   | `development` |
+| Local       | http://localhost:4200/en     | —             |
 
 ## 7. Review
 
-Request a review from another person on the project. There is no `CODEOWNERS`
-file, so if you're new or external and don't know who to tag, ask the team lead
-or whoever assigned you the ticket. For UI or tool-content changes, include
-before/after screenshots or a short screen recording in the PR description so the
-reviewer can verify the visual result quickly.
+Before requesting a review from a human, run `/quality:agent-review` (see
+section 8) and address its findings — this catches the easy stuff and keeps the
+codeowner review focused on substance.
+
+GitHub automatically requests a review from the repo's code owners
+(`.github/CODEOWNERS`) when you open a PR. The PR will need a passing code review
+from one of the codeowners before merging. If you're unsure who to ask, check
+with the team lead or whoever assigned you the ticket. For UI or tool-content
+changes, include before/after screenshots or a short screen recording in the PR
+description so the reviewer can verify the visual result quickly.
 
 The PR template (`.github/PULL_REQUEST_TEMPLATE.md`) populates automatically when
 you open a PR — fill out every section and tick the checklist.
@@ -92,7 +97,7 @@ This repo ships the shared
 [`CruGlobal/claude-code-plugins`](https://github.com/CruGlobal/claude-code-plugins)
 marketplace in `.claude/settings.json`, so if you use Claude Code the `git`,
 `quality`, `testing`, `admin`, and `figma` plugins are enabled for the project
-automatically (run `/plugin marketplace update` if they don't appear). Useful
-commands include `/quality:pr-review` before requesting review and
-`/testing:test-writer` for new specs. These skills read `CLAUDE.md` in the repo
-root to follow our Angular, testing, and embed conventions.
+automatically (run `/plugin marketplace update` if they don't appear). Beyond
+`/quality:agent-review` (covered in section 7), `/testing:test-writer` scaffolds
+new specs for you. These skills read `CLAUDE.md` in the repo root to follow our
+Angular, testing, and embed conventions.
