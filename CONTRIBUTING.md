@@ -34,6 +34,11 @@ in the form `/#/{lang}/{book}` (e.g. `/#/en/kgp-us` for "Knowing God Personally"
 
 ## 4. Translations (i18n)
 
+> **Status: not yet landed.** The `i18next` pipe, the `yarn extract` script, and
+> `src/assets/locales/` don't exist in the checkout yet — the flow below is the
+> planned process, not a current pre-PR requirement. Skip it until the tooling
+> lands.
+
 All UI strings are English-only in templates and translated via i18next +
 Crowdin. When you add or change a user-facing string, write it with the `i18next`
 pipe (e.g. `{{ 'Tools' | i18next }}`), run `yarn extract`, and commit the updated
@@ -53,11 +58,13 @@ yarn test --no-watch  # unit tests, single run (Karma + Jasmine)
 yarn build            # confirm a production build compiles
 ```
 
-If you touched user-facing strings, also run `yarn extract` and commit the
-updated `translation.json`.
+Once i18n lands (see [§4](#4-translations-i18n)), touching user-facing strings
+will also mean running `yarn extract` and committing the updated
+`translation.json`. That tooling doesn't exist yet, so there's nothing extra to
+run today.
 
-A Husky pre-commit hook runs `pretty-quick` on staged files, but running the
-full set above is still the reliable way to match CI.
+A Husky pre-commit hook runs `yarn lint` and `yarn prettier:check`, but running
+the full set above is still the reliable way to match CI.
 
 ## 6. Deploying to a test environment
 
