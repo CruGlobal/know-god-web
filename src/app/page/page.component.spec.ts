@@ -2,6 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { I18NextModule } from 'angular-i18next';
 import {
   createEventId,
   mockPageBookIndexData,
@@ -56,7 +57,7 @@ describe('PageComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [PageComponent],
-      imports: [HttpClientModule, RouterTestingModule],
+      imports: [HttpClientModule, RouterTestingModule, I18NextModule.forRoot()],
       providers: [
         CommonService,
         LoaderService,
