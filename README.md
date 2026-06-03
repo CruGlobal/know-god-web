@@ -10,12 +10,12 @@ project from a clean machine. By the end you'll have the app running locally at
 
 ### Prerequisites
 
-| Tool       | Version    | Why                                        |
-| ---------- | ---------- | ------------------------------------------ |
-| Node.js    | `20.17.0`  | Defined in [`.tool-versions`](.tool-versions) |
-| Yarn       | `4.7.0`    | Package manager (bundled via `.yarn/releases`) |
-| Git        | any recent | Cloning the repo and deploying             |
-| Homebrew   | any recent | Installing asdf                            |
+| Tool     | Version    | Why                                            |
+| -------- | ---------- | ---------------------------------------------- |
+| Node.js  | `24.9.0`   | Defined in [`.tool-versions`](.tool-versions)  |
+| Yarn     | `4.7.0`    | Package manager (bundled via `.yarn/releases`) |
+| Git      | any recent | Cloning the repo and deploying                 |
+| Homebrew | any recent | Installing asdf                                |
 
 This project pins exact tool versions, so matching them avoids hard-to-debug
 issues. Node is managed with [asdf](https://asdf-vm.com/) and Yarn is committed
@@ -36,7 +36,7 @@ cd know-god-web
 
 ### Step 2 — Install the correct Node version with asdf
 
-This project requires Node `20.17.0`. Check what you have with `node --version`.
+This project requires Node `24.9.0`. Check what you have with `node --version`.
 If it doesn't match, install the pinned version with asdf.
 
 ```bash
@@ -58,11 +58,11 @@ echo -e "\n. $(brew --prefix asdf)/libexec/asdf.sh" >> ${ZDOTDIR:-~}/.zshrc
 asdf install nodejs
 
 # Confirm you're now on the right version
-node --version   # should print v20.17.0
+node --version   # should print v24.9.0
 ```
 
 Because the version is pinned in `.tool-versions`, asdf automatically switches to
-`20.17.0` whenever you `cd` into this project.
+`24.9.0` whenever you `cd` into this project.
 
 ### Step 3 — Verify Yarn
 
@@ -110,20 +110,20 @@ the site. The server hot-reloads as you edit files.
 
 ### Useful scripts
 
-| Command               | What it does                                            |
-| --------------------- | ------------------------------------------------------- |
-| `yarn start`          | Dev server, production configuration                    |
-| `yarn start:dev`      | Dev server, development configuration (staging data)    |
-| `yarn build`          | Production build                                         |
-| `yarn build:dev`      | Development build                                        |
-| `yarn test`           | Run unit tests once (Karma + Jasmine)                   |
-| `yarn lint`           | Lint and auto-fix `src/**/*.{js,ts,html}`               |
-| `yarn prettier:check` | Report files that aren't formatted                      |
-| `yarn prettier:write` | Format all files                                        |
+| Command               | What it does                                         |
+| --------------------- | ---------------------------------------------------- |
+| `yarn start`          | Dev server, production configuration                 |
+| `yarn start:dev`      | Dev server, development configuration (staging data) |
+| `yarn build`          | Production build                                     |
+| `yarn build:dev`      | Development build                                    |
+| `yarn test`           | Run unit tests once (Karma + Jasmine)                |
+| `yarn lint`           | Lint and auto-fix `src/**/*.{js,ts,html}`            |
+| `yarn prettier:check` | Report files that aren't formatted                   |
+| `yarn prettier:write` | Format all files                                     |
 
 ### Troubleshooting
 
-- **`node --version` doesn't show `20.17.0`** — Make sure you opened a new
+- **`node --version` doesn't show `24.9.0`** — Make sure you opened a new
   terminal after the asdf shell integration step, and that you're inside the
   repo directory so asdf reads `.tool-versions`.
 - **`command not found: yarn`** — Run `corepack enable`, then retry. Yarn is
@@ -231,7 +231,7 @@ describe('DashboardComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DashboardComponent],
+      declarations: [DashboardComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(DashboardComponent);
@@ -252,17 +252,22 @@ then assert against the rendered DOM or the component instance.
 Add the following snippet to any HTML page to embed a KnowGod.com gospel presentation:
 
 ```html
-<div id="knowGodEmbed" data-book="kgp-us" data-lang="en" data-ministry="your-ministry-name"></div>
+<div
+  id="knowGodEmbed"
+  data-book="kgp-us"
+  data-lang="en"
+  data-ministry="your-ministry-name"
+></div>
 <script src="https://knowgod.com/embed.js"></script>
 ```
 
 ### Data Attributes
 
-| Attribute | Required | Description |
-|---|---|---|
-| `data-book` | Yes | The book/resource identifier (e.g. `kgp-us`, `satisfied`) |
-| `data-lang` | Yes | Language code (e.g. `en`, `es`, `fr`) |
-| `data-ministry` | No | Your ministry identifier. Used for analytics to track which ministries are embedding content. |
+| Attribute       | Required | Description                                                                                   |
+| --------------- | -------- | --------------------------------------------------------------------------------------------- |
+| `data-book`     | Yes      | The book/resource identifier (e.g. `kgp-us`, `satisfied`)                                     |
+| `data-lang`     | Yes      | Language code (e.g. `en`, `es`, `fr`)                                                         |
+| `data-ministry` | No       | Your ministry identifier. Used for analytics to track which ministries are embedding content. |
 
 The script creates an iframe pointing to `https://knowgod.com/#/{lang}/{book}?embedded=true`. When `data-ministry` is provided, a `&ministry={value}` parameter is appended to the URL so the analytics service can attribute embeds to specific ministries.
 
@@ -313,7 +318,7 @@ full flow:
 5. **Auto-resizing (iframe → parent).** Because the app lives in an iframe, the
    host page can't know how tall the content is. The app handles this from inside
    the iframe (`src/index.html`): it detects it's embedded (`window.location !==
-   window.parent.location`), then uses a `MutationObserver` to watch for content
+window.parent.location`), then uses a `MutationObserver` to watch for content
    changes and calls `parent.postMessage(document.body.offsetHeight, '*')`
    whenever the height changes (with a few delayed re-sends to account for images
    loading).
@@ -374,23 +379,23 @@ yarn add crowdin @crowdin/cli
 ### Crowdin project
 
 - **Project ID:** `897600` _(temporary — to be migrated to a new project owned by
-  Sway Ciaramello)._
+  Daniel Frett)._
 - **`CROWDIN_API_TOKEN`** is created in the Crowdin project and stored as a GitHub
   Actions repository secret at
   [Settings → Secrets → Actions](https://github.com/CruGlobal/know-god-web/settings/secrets/actions).
 
 ### Files and what they do
 
-| File | Purpose |
-| --- | --- |
-| `src/app/i18n.ts` | Starts up i18next when the app loads |
-| `src/app/app.module.ts` | Registers i18next with Angular so the `i18next` pipe works in templates |
-| `i18next-parser.config.cjs` | Config for `yarn extract`; a custom lexer matches the `'key' \| i18next` pattern in HTML and extracts the key |
-| `crowdin/sort-translations.cjs` | Alphabetically sorts every locale's `translation.json` |
-| `src/assets/locales/en/translation.json` | The generated English source file |
-| `crowdin.yml` | Crowdin project config — which file is the source, where translations go, and who reviews the auto-PRs |
-| `.github/workflows/node.js.yml` | Adds a translation job to CI so every PR runs `yarn extract` |
-| `.github/workflows/crowdin.yml` | Scheduled job that extracts, downloads translations from Crowdin, sorts them, and opens the "Update translations" PR |
+| File                                     | Purpose                                                                                                              |
+| ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `src/app/i18n.ts`                        | Starts up i18next when the app loads                                                                                 |
+| `src/app/app.module.ts`                  | Registers i18next with Angular so the `i18next` pipe works in templates                                              |
+| `i18next-parser.config.cjs`              | Config for `yarn extract`; a custom lexer matches the `'key' \| i18next` pattern in HTML and extracts the key        |
+| `crowdin/sort-translations.cjs`          | Alphabetically sorts every locale's `translation.json`                                                               |
+| `src/assets/locales/en/translation.json` | The generated English source file                                                                                    |
+| `crowdin.yml`                            | Crowdin project config — which file is the source, where translations go, and who reviews the auto-PRs               |
+| `.github/workflows/node.js.yml`          | Adds a translation job to CI so every PR runs `yarn extract`                                                         |
+| `.github/workflows/crowdin.yml`          | Scheduled job that extracts, downloads translations from Crowdin, sorts them, and opens the "Update translations" PR |
 
 ### Using it in templates
 
@@ -403,7 +408,8 @@ The key **is the full English string**. Simple string:
 String with a dynamic value:
 
 ```html
-{{ '1994-{{ year }} Cru. All Rights Reserved.' | i18next: { year: currentYear } }}
+{{ '1994-{{ year }} Cru. All Rights Reserved.' | i18next: { year: currentYear }
+}}
 ```
 
 These produce the following entries in `translation.json` (keys are the full
@@ -430,12 +436,12 @@ Runs on pushes to `staging`, `development`, and `main`, and on pull requests
 targeting `staging` or `main`. Every job installs dependencies first (Node
 version comes from `.tool-versions`). The four jobs are:
 
-| Job                      | What it checks                                                                 |
-| ------------------------ | ------------------------------------------------------------------------------ |
-| 🧹 **Lint & Prettier**   | Runs `yarn prettier:check` then `yarn lint` — fails if anything is unformatted or violates lint rules. |
-| ✅ **Tests**             | Runs `yarn test --no-watch` (Karma + Jasmine unit tests, single run).          |
-| 🏗️ **Build app**         | Runs `yarn build` to confirm a production build compiles.                      |
-| 🚀 **Deploy app**        | Only on pushes (not PRs) to `main`/`staging`/`development`. Waits for the three jobs above to pass, builds with the env-matched configuration, injects the host into `embed.js`, copies the `mobile/` directory, and syncs everything to S3. |
+| Job                    | What it checks                                                                                                                                                                                                                               |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 🧹 **Lint & Prettier** | Runs `yarn prettier:check` then `yarn lint` — fails if anything is unformatted or violates lint rules.                                                                                                                                       |
+| ✅ **Tests**           | Runs `yarn test --no-watch` (Karma + Jasmine unit tests, single run).                                                                                                                                                                        |
+| 🏗️ **Build app**       | Runs `yarn build` to confirm a production build compiles.                                                                                                                                                                                    |
+| 🚀 **Deploy app**      | Only on pushes (not PRs) to `main`/`staging`/`development`. Waits for the three jobs above to pass, builds with the env-matched configuration, injects the host into `embed.js`, copies the `mobile/` directory, and syncs everything to S3. |
 
 The deploy job picks its target environment from the branch: `main` → prod,
 `staging` → stage, `development` → dev. PRs never deploy — they only run lint,
@@ -493,12 +499,12 @@ To update who the owners are, edit `.github/CODEOWNERS`.
 
 ## Environments at a glance
 
-| Environment | URL                            | Deploys from |
-| ----------- | ------------------------------ | ------------ |
-| Production  | https://knowgod.com/en         | `main`       |
-| Staging     | https://stage.knowgod.com/en   | `staging`    |
-| Development | https://dev.knowgod.com/en     | —            |
-| Local       | http://localhost:4200/en       | —            |
+| Environment | URL                          | Deploys from |
+| ----------- | ---------------------------- | ------------ |
+| Production  | https://knowgod.com/en       | `main`       |
+| Staging     | https://stage.knowgod.com/en | `staging`    |
+| Development | https://dev.knowgod.com/en   | —            |
+| Local       | http://localhost:4200/en     | —            |
 
 ### Deploy
 
