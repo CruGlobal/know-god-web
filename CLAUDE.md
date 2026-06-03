@@ -26,7 +26,7 @@ Tools are addressed by a hash route: `/#/{lang}/{book}` (e.g. `/#/en/kgp-us`).
 - **Styling:** plain CSS. Global styles in `src/styles.css`; each component has a
   co-located `*.component.css`. There is **no** Tailwind, SCSS, or CSS-modules
   setup — match the existing component-CSS pattern.
-- **Node:** pinned to 20.17.0 via `.tool-versions` (asdf). **Yarn 4.7.0** via
+- **Node:** pinned to 24.9.0 via `.tool-versions` (asdf). **Yarn 4.7.0** via
   Corepack (`.yarnrc.yml`); always use `yarn`, never `npm`.
 
 ## Directory structure
