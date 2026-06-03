@@ -29,7 +29,7 @@ Example:
 
 - [ ] I have opened this PR against `staging` or `main` (CI only runs PR checks on those branches)
 - [ ] I have given my PR a title with the format "GT-(JIRA#) (summary sentence max 80 chars)" — the GT (GodTools) ticket prefix matches the Jira board; if there is no ticket, use "[No Jira] - (summary sentence max 80 chars)"
-- [ ] I have applied the appropriate labels — add **"On Staging"** to auto-merge this branch into `staging` and `development`, or **"On Development"** to merge into `development` only, so it deploys to a live test environment (see [`update-staging.yml`](workflows/update-staging.yml))
+- [ ] I have applied the appropriate labels — add **"On Staging"** to auto-merge this branch into `staging` and `development`, or **"On Development"** to merge into `development` only, so it deploys to a live test environment (see [`update-staging.yml`](.github/workflows/update-staging.yml))
 - [ ] I have run `yarn lint` and `yarn prettier:check` and fixed any issues
 - [ ] `yarn test --no-watch` passes locally
 - [ ] I have run `/agent-review` and addressed its findings before requesting a dev review
