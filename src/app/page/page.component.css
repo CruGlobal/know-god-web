@@ -77,9 +77,33 @@ p {
   position: relative;
   z-index: 1;
 }
+
 #toolHeader .logo img {
   height: 24px;
   margin: 20px 0 0 0;
+}
+
+#toolHeader .page-navigation {
+  display: flex;
+  gap: 20px;
+  position: absolute;
+  right: 80px;
+  top: 0;
+  bottom: 0;
+  align-items: center;
+}
+
+#toolHeader .page-navigation a {
+  font-size: 14px;
+  font-weight: 800;
+}
+
+#toolHeader .page-navigation .active-tool {
+  color: #000;
+}
+
+#toolHeader .page-navigation a:hover {
+  text-decoration: underline;
 }
 
 #languageList {
@@ -111,21 +135,60 @@ p {
   }
 }
 
-@media screen and (max-width: 440px) {
-  #toolHeader .logo img {
-    margin: 12px 0 0 0;
+@media screen and (max-width: 550px) {
+  #toolHeader {
+    margin: 12px;
   }
+
+  #toolHeader .header {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+  }
+
   #toolHeader .logo {
-    display: block;
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
   }
+
+  #toolHeader .logo img {
+    height: 16px;
+    width: auto;
+    max-width: none;
+    margin: 0;
+  }
+
+  #toolHeader .header .absolute {
+    grid-column: 2;
+    grid-row: 1;
+    justify-self: end;
+    align-self: center;
+  }
+
+  #toolHeader .page-navigation {
+    grid-column: 1;
+    grid-row: 2;
+    position: static;
+  }
+
+  #toolHeader .page-navigation a {
+    font-size: 12px;
+  }
+
   .language-selector-toggle {
-    position: relative;
+    grid-column: 2;
+    grid-row: 2;
+    position: static;
+    font-size: 12px;
+    justify-self: end;
   }
+
   .language-selector-toggle > .langicon {
     float: none;
-  }
-  .header {
-    height: auto;
+    vertical-align: middle;
+    margin-top: 0;
   }
 }
 

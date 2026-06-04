@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { State } from '../../services/xml-parser-service/xml-parser.service';
+import { formatEvents } from 'src/app/shared/formatEvents';
+import {
+  EventId,
+  State
+} from '../../services/xml-parser-service/xml-parser.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +31,7 @@ export class PageService {
   private XmlParserState = State.createState();
 
   formAction$: Observable<string> = this._formAction.asObservable();
-  contentEvent$: Observable<string> = this._formAction.asObservable();
+  contentEvent$: Observable<string> = this._contentEvent.asObservable();
   changeHeader$: Observable<string> = this._changeHeader.asObservable();
   getEmailSignupFormData$: Observable<any> =
     this._getEmailSignupFormData.asObservable();
@@ -90,6 +94,11 @@ export class PageService {
   setPageOrder(currentPageOrder: number, numberOfPages: number): void {
     this._isFirstPage.next(currentPageOrder === 0);
     this._isLastPage.next(numberOfPages - 1 === currentPageOrder);
+  }
+
+  setPageNavigationState(hasPreviousPage: boolean, hasNextPage: boolean): void {
+    this._isFirstPage.next(!hasPreviousPage);
+    this._isLastPage.next(!hasNextPage);
   }
 
   setDir(pDir: string): void {
@@ -178,6 +187,18 @@ export class PageService {
 
   parserState(): any {
     return this.XmlParserState;
+  }
+
+  handleClickable(events: EventId[]): void {
+    if (events && events.length) {
+      // Each event can resolve into an array of events, so combine them into a single array.
+      // This is necessary to support complex form actions with 'state' in the EventId.
+      const resolvedEvents = events.flatMap((event) =>
+        event.resolve(this.parserState()).asJsReadonlyArrayView()
+      );
+
+      this.formAction(formatEvents(resolvedEvents));
+    }
   }
 
   // CYOA Navigation Stack/Array

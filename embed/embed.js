@@ -9,6 +9,7 @@
     var baseUrl = '{appDomain}';
     var dataBook = knowGodEmbed.getAttribute('data-book');
     var dataLang = knowGodEmbed.getAttribute('data-lang');
+    var dataMinistry = knowGodEmbed.getAttribute('data-ministry');
 
     //build iframe element
     var iframe = document.createElement('iframe');
@@ -19,7 +20,9 @@
     iframe.setAttribute('allowtransparency', 'true');
     iframe.setAttribute('scrolling', 'no');
     iframe.src =
-      [baseUrl, '#', dataLang, dataBook].join('/') + '?embedded=true';
+      [baseUrl, '#', dataLang, dataBook].join('/') +
+      '?embedded=true' +
+      (dataMinistry ? '&ministry=' + encodeURIComponent(dataMinistry) : '');
 
     knowGodEmbed.appendChild(iframe);
 

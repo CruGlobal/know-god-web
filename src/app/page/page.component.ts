@@ -2,12 +2,14 @@ import { ViewportScroller } from '@angular/common';
 import {
   Component,
   HostListener,
+  Inject,
   OnDestroy,
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as ActionCable from '@rails/actioncable';
+import { I18NEXT_SERVICE, ITranslationService } from 'angular-i18next';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -27,6 +29,8 @@ import {
 } from '../services/xml-parser-service/xml-parser.service';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
+
+const IMAGE_EXTENSIONS_REGEX = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i;
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -69,6 +73,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
   private _pageBookSubPages: Page[];
+  private _visibleHiddenPageIds: Set<string>; // Track temporarily visible hidden pages
   private _selectedLanguage: any;
   private liveShareSubscription: ActionCable.Channel;
 
@@ -92,16 +97,17 @@ export class PageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public router: Router,
     private viewportScroller: ViewportScroller,
-    private pullParserFactory: PullParserFactory
+    private pullParserFactory: PullParserFactory,
+    @Inject(I18NEXT_SERVICE) private i18n: ITranslationService
   ) {
     this._pageParams = {
       langId: '',
-      resourceType: '',
       toolType: '',
       bookId: ''
     };
     this._books = [];
     this.activePageOrder = 0;
+    this._visibleHiddenPageIds = new Set<string>();
   }
 
   @HostListener('window:keyup', ['$event'])
@@ -110,9 +116,9 @@ export class PageComponent implements OnInit, OnDestroy {
       return;
     }
     if (event.key === 'ArrowLeft') {
-      this.onTractPreviousPage();
+      this.onPreviousPage();
     } else if (event.key === 'ArrowRight') {
-      this.onTractNextPage();
+      this.onNextPage();
     }
   }
 
@@ -147,73 +153,115 @@ export class PageComponent implements OnInit, OnDestroy {
     }
   }
 
+  private buildRouteParams(
+    ...segments: (string | number)[]
+  ): (string | number)[] {
+    // For lessons (no resourceType), use: langId, 'lesson', bookId, ...rest
+    // For tools (with resourceType), use: langId, 'tool', resourceType, bookId, ...rest
+    const [langId, toolTypeParam, ...rest] = segments;
+
+    if (this._pageParams.resourceType) {
+      const toolType = toolTypeParam || 'tool';
+      return [langId, toolType, this._pageParams.resourceType, ...rest];
+    }
+    const toolType = toolTypeParam || 'lesson';
+    return [langId, toolType, ...rest];
+  }
+
   setCardUrl = (card: number) => {
     if (!this._pageParams.langId) {
       return;
     }
-    this.router.navigate([
-      this._pageParams.langId,
-      this._pageParams.toolType,
-      this._pageParams.resourceType,
-      this._pageParams.bookId,
-      this.getPageIdForRouting(this.activePage),
-      card
-    ]);
+    this.router.navigate(
+      this.buildRouteParams(
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.bookId,
+        this.getPageIdForRouting(this.activePage),
+        card
+      )
+    );
   };
 
   selectLanguage(lang): void {
-    this.router.navigate([
-      lang.attributes.code,
-      this._pageParams.toolType,
-      this._pageParams.resourceType,
-      this._pageParams.bookId,
-      this.getPageIdForRouting(this.activePage)
-    ]);
+    this.i18n.changeLanguage(lang.attributes.code);
+    this.router.navigate(
+      this.buildRouteParams(
+        lang.attributes.code,
+        this._pageParams.toolType,
+        this._pageParams.bookId,
+        this.getPageIdForRouting(this.activePage)
+      )
+    );
   }
 
   onToggleLanguageSelect(): void {
     this.languagesVisible = !this.languagesVisible;
   }
 
-  private onTractPreviousPage(): void {
+  private getVisiblePages(
+    currentPosition: number,
+    direction: 'next' | 'previous'
+  ): Page[] {
+    const pagesInDirection = this._pageBookSubPagesManifest.filter((page) =>
+      direction === 'next'
+        ? page.position > currentPosition
+        : page.position < currentPosition
+    );
+    return pagesInDirection.filter(
+      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+    );
+  }
+
+  private onPreviousPage(): void {
     const pageId = this.cleanPageId();
 
-    if (!this.isCYOAPage() && typeof pageId === 'number' && pageId > 0) {
-      this.router.navigate([
-        this._pageParams.langId,
-        this._pageParams.toolType,
-        this._pageParams.resourceType,
-        this._pageParams.bookId,
-        pageId - 1
-      ]);
+    if (!this.isCYOAPage() && typeof pageId === 'number') {
+      const previousVisiblePages = this.getVisiblePages(pageId, 'previous');
+
+      if (previousVisiblePages.length > 0) {
+        const previousPage =
+          previousVisiblePages[previousVisiblePages.length - 1];
+        this.router.navigate(
+          this.buildRouteParams(
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.bookId,
+            previousPage.position
+          )
+        );
+      }
     }
   }
 
-  private onTractNextPage(): void {
+  private onNextPage(): void {
     const pageId = this.cleanPageId();
-    if (
-      !this.isCYOAPage() &&
-      typeof pageId === 'number' &&
-      pageId + 1 < this._pageBookSubPagesManifest.length
-    ) {
-      this.router.navigate([
-        this._pageParams.langId,
-        this._pageParams.toolType,
-        this._pageParams.resourceType,
-        this._pageParams.bookId,
-        pageId + 1
-      ]);
+    if (!this.isCYOAPage() && typeof pageId === 'number') {
+      const nextVisiblePages = this.getVisiblePages(pageId, 'next');
+      const nextVisiblePage = nextVisiblePages[0];
+
+      if (nextVisiblePage) {
+        this.router.navigate(
+          this.buildRouteParams(
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.bookId,
+            nextVisiblePage.position
+          )
+        );
+      }
     }
   }
   private onNavigateToPage(page: number | string): void {
     this.pageService.addToNavigationStack(String(page));
-    this.router.navigate([
-      this._pageParams.langId,
-      this._pageParams.toolType,
-      this._pageParams.resourceType,
-      this._pageParams.bookId,
-      page
-    ]);
+    this.router.navigate(
+      this.buildRouteParams(
+        this._pageParams.langId,
+        this._pageParams.toolType,
+        this._pageParams.bookId,
+        page
+      )
+    );
   }
 
   private getResource(
@@ -270,13 +318,14 @@ export class PageComponent implements OnInit, OnDestroy {
 
         // Only replace URL if it's not already using the real page.id
         if (String(pageIdForUrl) !== String(pageId)) {
-          const urlTree = this.router.createUrlTree([
-            this._pageParams.langId,
-            this._pageParams.toolType,
-            this._pageParams.resourceType,
-            this._pageParams.bookId,
-            pageIdForUrl
-          ]);
+          const urlTree = this.router.createUrlTree(
+            this.buildRouteParams(
+              this._pageParams.langId,
+              this._pageParams.toolType,
+              this._pageParams.bookId,
+              pageIdForUrl
+            )
+          );
 
           this.router.navigateByUrl(urlTree, { replaceUrl: true });
         }
@@ -290,12 +339,8 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
       if (
-        translation &&
-        translation.relationships &&
-        translation.relationships.language &&
-        translation.relationships.language.data &&
-        translation.relationships.language.data.id &&
-        translation.relationships.language.data.id === this._selectedLanguage.id
+        translation?.relationships?.language?.data?.id ===
+        this._selectedLanguage.id
       ) {
         item = translation;
         return;
@@ -310,11 +355,7 @@ export class PageComponent implements OnInit, OnDestroy {
       item.attributes['manifest-name']
     ) {
       const manifestName = item.attributes['manifest-name'];
-      const translationid = item.id;
-      const fileName = environment.production
-        ? APIURL.GET_XML_FILES_FOR_MANIFEST + translationid + '/' + manifestName
-        : APIURL.GET_XML_FILES_FOR_MANIFEST + manifestName;
-      this.pullParserFactory.setOrigin(fileName);
+      this.pullParserFactory.setOrigin(APIURL.GET_TRANSLATION_FILES);
       const config = ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
         .withSupportedFeatures([
@@ -328,35 +369,55 @@ export class PageComponent implements OnInit, OnDestroy {
       const controller = new AbortController();
       const signal = controller.signal;
       try {
-        parser.parseManifest(fileName, signal).then((data) => {
+        parser.parseManifest(manifestName, signal).then((data) => {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
-          // Loop through and get all resources.
+          // Remove file extensions to get the SHAs for manifest resources
+          const neededShas = new Set(
+            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? []).map(
+              (file) => file.replace(/\.[^.]+$/, '')
+            )
+          );
+
+          // Loop through and get all needed resources.
           this._pageBookIndex.included.forEach((resource) => {
             const { attributes, type } = resource;
-            if (type === 'attachment') {
-              this.pageService.addAttachment(
-                attributes['file-file-name'],
-                attributes.file
-              );
-              const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                attributes['file-file-name']
-              );
 
-              this.getResource(
-                isImage
-                  ? getResourceTypeEnum.image
-                  : getResourceTypeEnum.animation,
-                attributes['file-file-name']
-              );
+            if (type !== 'attachment') {
+              return;
             }
+
+            // Add all resources to the lookup table so they can be accessed by any page that needs them
+            this.pageService.addAttachment(
+              attributes['file-file-name'],
+              attributes.file
+            );
+
+            if (!neededShas.has(attributes.sha256)) {
+              return;
+            }
+
+            const isImage = IMAGE_EXTENSIONS_REGEX.test(
+              attributes['file-file-name']
+            );
+
+            this.getResource(
+              isImage
+                ? getResourceTypeEnum.image
+                : getResourceTypeEnum.animation,
+              attributes['file-file-name']
+            );
           });
 
           if (manifest?.pages?.length) {
             this._pageBookSubPagesManifest = manifest.pages;
-            this._pageBookSubPages = manifest.pages;
-            this.totalPages = manifest.pages.length;
+            this._visibleHiddenPageIds.clear();
+            this._pageBookSubPages = manifest.pages.filter(
+              (page) => !page.isHidden
+            );
+
+            this.totalPages = this._pageBookSubPages.length;
             this._pageBookManifestLoaded = true;
             manifest.pages.forEach((page) => {
               this.loadBookPage(page as TractPage);
@@ -419,7 +480,11 @@ export class PageComponent implements OnInit, OnDestroy {
         const result = enc.decode(arr);
         const jsonResource = JSON.parse(result);
         this._pageBookIndex = jsonResource;
-        const resourceTypes = [ResourceType.Tract, ResourceType.CYOA];
+        const resourceTypes = [
+          ResourceType.Tract,
+          ResourceType.CYOA,
+          ResourceType.Lesson
+        ];
 
         if (
           !resourceTypes.includes(
@@ -527,7 +592,11 @@ export class PageComponent implements OnInit, OnDestroy {
   private setSelectedLanguage(): void {
     this._allLanguages.forEach((lang) => {
       const attributes = lang.attributes;
-      if (attributes?.code && attributes?.code === this._pageParams.langId) {
+      if (
+        attributes?.code &&
+        attributes.code.toLowerCase() === this._pageParams.langId.toLowerCase()
+      ) {
+        this._pageParams.langId = attributes.code;
         this._selectedLanguage = lang;
         this.selectedLang = attributes.name;
         this.pageService.setDir(attributes.direction);
@@ -639,7 +708,7 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onTractNextPage();
+        this.onNextPage();
       });
 
     // Navigate to the previous page upon request
@@ -650,7 +719,7 @@ export class PageComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
-        this.onTractPreviousPage();
+        this.onPreviousPage();
       });
 
     // Navigate to specified page upon request
@@ -671,12 +740,18 @@ export class PageComponent implements OnInit, OnDestroy {
   private awaitPageEvent(): void {
     // We listen for page events and dismiss events
     // We then navigate to the page that has the event
-    const allListenersOnAllPages = this._pageBookSubPages.reduce(
+    // Use _pageBookSubPagesManifest (ALL pages including hidden) to get all listeners
+    const allListenersOnAllPages = this._pageBookSubPagesManifest.reduce(
       (allListeners, page) => {
-        return allListeners.concat(
-          page.listeners.map((listener) => listener.name),
-          page.dismissListeners.map((listener) => listener.name)
-        );
+        // Add null checks for listeners and dismissListeners
+        const pageListeners = page.listeners
+          ? page.listeners.map((listener) => listener.name)
+          : [];
+        const pageDismissListeners = page.dismissListeners
+          ? page.dismissListeners.map((listener) => listener.name)
+          : [];
+
+        return allListeners.concat(pageListeners, pageDismissListeners);
       },
       []
     );
@@ -732,7 +807,8 @@ export class PageComponent implements OnInit, OnDestroy {
     let isListener = false;
     let isDismissListener = false;
     let pageToNavigateTo = null;
-    this._pageBookSubPages.forEach((page) => {
+
+    this._pageBookSubPagesManifest.forEach((page) => {
       const foundListener = page.listeners.some(
         (listener) => listener.name === event
       );
@@ -765,30 +841,67 @@ export class PageComponent implements OnInit, OnDestroy {
     const pageIdForRouting = this.getPageIdForRouting(pageToNavigateTo);
 
     if (isListener) {
+      if (pageToNavigateTo.isHidden) {
+        // Mark page as temporarily visible so that we can navigate to it.
+        this._visibleHiddenPageIds.add(pageToNavigateTo.id);
+        // Rebuild visible pages list
+        this.updateVisiblePages();
+      }
+
       this.pageService.addToNavigationStack(String(pageIdForRouting));
-      this.router.navigate([
-        this._pageParams.langId,
-        this._pageParams.toolType,
-        this._pageParams.resourceType,
-        this._pageParams.bookId,
-        pageIdForRouting
-      ]);
+      this.router.navigate(
+        this.buildRouteParams(
+          this._pageParams.langId,
+          this._pageParams.toolType,
+          this._pageParams.bookId,
+          pageIdForRouting
+        )
+      );
     }
 
     if (isDismissListener) {
       this.pageService.removeFromNavigationStack(String(pageIdForRouting));
       this.pageService.getNavigationStack().subscribe((stack) => {
         const previousPage = stack[stack.length - 1];
-        this.router.navigate([
-          this._pageParams.langId,
-          this._pageParams.toolType,
-          this._pageParams.resourceType,
-          this._pageParams.bookId,
-          previousPage
-        ]);
+        this.router.navigate(
+          this.buildRouteParams(
+            this._pageParams.langId,
+            this._pageParams.toolType,
+            this._pageParams.bookId,
+            previousPage
+          )
+        );
       });
       // We want to hide the page, for now I've set this to go to the next page.
-      this.onTractNextPage();
+      this.onNextPage();
+    }
+  }
+
+  private updateVisiblePages(): void {
+    this._pageBookSubPages = this._pageBookSubPagesManifest.filter(
+      (page) => !page.isHidden || this._visibleHiddenPageIds.has(page.id)
+    );
+    this.totalPages = this._pageBookSubPages.length;
+  }
+
+  private cleanupHiddenPages(currentPageId: string): void {
+    const currentPage = this._pageBookSubPagesManifest.find(
+      (page) => page.id === currentPageId
+    );
+
+    const hiddenPagesToRemove: string[] = [];
+    this._visibleHiddenPageIds.forEach((pageId) => {
+      if (pageId !== currentPageId || !currentPage.isHidden) {
+        hiddenPagesToRemove.push(pageId);
+      }
+    });
+
+    hiddenPagesToRemove.forEach((pageId) => {
+      this._visibleHiddenPageIds.delete(pageId);
+    });
+
+    if (hiddenPagesToRemove.length) {
+      this.updateVisiblePages();
     }
   }
 
@@ -831,6 +944,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBookTranslationId = 0;
     this._pageBookSubPagesManifest = [];
     this._pageBookSubPages = [];
+    this._visibleHiddenPageIds.clear();
     this.availableLanguages = [];
     this.selectedBookName = '';
     this.languagesVisible = false;
@@ -844,12 +958,28 @@ export class PageComponent implements OnInit, OnDestroy {
   private showPage(page: TractPage): void {
     this.activePageOrder = page.position;
     this.activePage = page;
+
+    this.cleanupHiddenPages(page.id);
+
+    const hasNextPage = this.hasNextVisiblePage(page.position);
+    const hasPreviousPage = this.hasPreviousVisiblePage(page.position);
+
+    this.pageService.setPageNavigationState(hasPreviousPage, hasNextPage);
+
     this.awaitPageNavigation();
     this.viewportScroller.scrollToPosition([0, 0]);
     setTimeout(() => {
       this.pagesLoaded = true;
       this.loaderService.display(false);
     }, 0);
+  }
+
+  private hasNextVisiblePage(currentPosition: number): boolean {
+    return this.getVisiblePages(currentPosition, 'next').length > 0;
+  }
+
+  private hasPreviousVisiblePage(currentPosition: number): boolean {
+    return this.getVisiblePages(currentPosition, 'previous').length > 0;
   }
 
   private awaitLiveShareStream(): void {
@@ -870,13 +1000,12 @@ export class PageComponent implements OnInit, OnDestroy {
 
             const Url = this.router
               .createUrlTree(
-                [
+                this.buildRouteParams(
                   data.attributes.locale,
                   this._pageParams.toolType,
-                  this._pageParams.resourceType,
                   data.attributes.tool,
                   data.attributes.page
-                ],
+                ),
                 {
                   queryParams: this.route.snapshot.queryParams,
 

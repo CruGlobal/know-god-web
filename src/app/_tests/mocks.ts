@@ -12,10 +12,12 @@ import {
   FlowItem,
   Image,
   Input,
+  LessonPage,
   Link,
   Modal,
   Multiselect,
   MultiselectOption,
+  MultiselectOptionStyle,
   Paragraph,
   Resource,
   Spacer,
@@ -102,7 +104,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     iconSize: 1,
     text: createText('Button Text'),
     events: event ? [createEventId(event)] : [],
-    isClickable: true,
+    isClickable: !!url || !!event,
     ...standardTypeValues()
   };
 };
@@ -125,21 +127,19 @@ export const mockButton = (
 export const mockImage = (
   name: string,
   url: string,
-  event: string = ''
+  event: string = null
 ): Image => {
   return {
     url,
     resource: createResource(name, url),
     gravity: null,
     width: null,
-    isClickable: null,
+    isClickable: !!url || !!event,
     events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
 };
 
-// TODO
-// Once we get resource returning correctly, remove e31_1.
 export const mockAnimation = (
   name: string,
   url: string,
@@ -147,14 +147,13 @@ export const mockAnimation = (
 ): Animation | any => {
   return {
     url,
-    e31_1: name,
     resource: createResource(name, url),
     loop: true,
     autoPlay: true,
     playListeners: [createEventId(`${event}-play-listener`)],
     stopListeners: [createEventId(`${event}-stop-listener`)],
-    isClickable: true,
-    events: [createEventId(event)],
+    isClickable: !!url || !!event,
+    events: event ? [createEventId(event)] : [],
     _events: null,
     _playListeners: null,
     _stopListeners: null,
@@ -169,10 +168,8 @@ export const mockInput = (
   placeholder: string
 ): Input => {
   return {
-    type: {
-      name: 'TEXT',
-      ordinal: 0
-    },
+    id: null,
+    type: org.cru.godtools.shared.tool.parser.model.Input.Type.TEXT,
     name: name,
     value: value,
     isRequired: true,
@@ -186,16 +183,18 @@ export const mockInput = (
 export const mockLink = (
   url: string,
   text: string,
-  isClickable: boolean
+  hasEvents: boolean = false
 ): Link => {
   return {
     url,
     text: createText(text),
-    isClickable,
-    events: [
-      createEventId('followup-testing-event'),
-      createEventId('send', 'followup')
-    ],
+    isClickable: true,
+    events: hasEvents
+      ? [
+          createEventId('followup-testing-event'),
+          createEventId('send', 'followup')
+        ]
+      : [],
     ...standardTypeValues()
   };
 };
@@ -269,6 +268,7 @@ export const mockTractCard = (
     visiblePosition: null,
     isLastVisibleCard: null,
     isHidden,
+    background: null,
     backgroundImage: null,
     label: createText(label),
     dismissListeners: [createEventId(`${listeners}-dismiss`)],
@@ -295,12 +295,41 @@ export const mockCyoa = (): CyoaContentPage => {
     parentPage: null,
     parentPageParams: null,
     nextPage: null,
+    background: null,
+    backgroundImage: null,
+    isFirstPage: false,
+    isLastPage: false,
+    isHidden: false,
+    dismissListeners: null,
+    listeners: null,
+    previousPage: null,
+    content: mockContent(),
+    backgroundColor: undefined,
+    backgroundImageGravity: undefined,
+    backgroundImageScaleType: undefined,
+    ...standardTypeValues()
+  };
+};
+
+export const mockLesson = (): LessonPage => {
+  return {
+    id: null,
+    position: null,
+    parentPage: null,
+    parentPageParams: null,
+    nextPage: null,
+    isFirstPage: false,
+    isLastPage: false,
+    background: null,
     backgroundImage: null,
     isHidden: false,
     dismissListeners: null,
     listeners: null,
     previousPage: null,
     content: mockContent(),
+    backgroundColor: undefined,
+    backgroundImageGravity: undefined,
+    backgroundImageScaleType: undefined,
     ...standardTypeValues()
   };
 };
@@ -318,18 +347,19 @@ export const mockModal = (title: string, listeners): Modal => {
 };
 
 export const mockMultiselectOption = (
-  initialSelectedValue
+  initialSelectedValue,
+  style: org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style = MultiselectOptionStyle.CARD
 ): MultiselectOption => {
   let selectedValue = initialSelectedValue;
   return {
-    style: {
-      name: 'CARD',
-      ordinal: 0
-    },
+    id: null,
+    style,
     backgroundColor: '#000000',
     selectedColor: '#ffffff',
     multiselect: null,
     content: [],
+    isClickable: null,
+    isClickableFlow: null,
     isSelected: () => selectedValue,
     isSelectedFlow: null,
     watchIsSelected: () => null,
@@ -343,6 +373,7 @@ export const mockMultiselectOption = (
 
 export const mockMultiselect = (): Multiselect => {
   return {
+    id: null,
     columns: 4,
     options: [mockMultiselectOption(false), mockMultiselectOption(true)],
     ...standardTypeValues()
@@ -374,13 +405,13 @@ export const mockFlow = (): Flow => {
   };
 };
 
-export const mockCard = (isClickable): Card => {
+export const mockCard = (hasEvents: boolean, hasUrl: boolean): Card => {
   return {
     backgroundColor: '#000000',
-    url: 'URL',
+    url: hasUrl ? 'URL' : null,
     content: mockContent(),
-    isClickable,
-    events: isClickable
+    isClickable: hasEvents || hasUrl,
+    events: hasEvents
       ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
       : [],
     ...standardTypeValues()
@@ -423,6 +454,7 @@ export const mockTractPage = (
   dismissListeners: EventId[] = []
 ): org.cru.godtools.shared.tool.parser.model.tract.TractPage => {
   return {
+    isFirstPage: false,
     isLastPage,
     header: mockHeader(headerNumber, headerText),
     hero: mockHero(heroHeading),
@@ -445,8 +477,11 @@ export const mockTractPage = (
     isHidden: false,
     findModal: null,
     visibleCards: null,
+    background: null,
     backgroundImage: null,
-    getAnalyticsEvents: null,
+    backgroundColor: undefined,
+    backgroundImageGravity: undefined,
+    backgroundImageScaleType: undefined,
     dismissListeners: dismissListeners,
     listeners: listeners,
     ...standardTypeValues()
@@ -565,7 +600,123 @@ export const mockPageComponent = {
       direction: 'ltr',
       name: 'English'
     }
+  },
+  languageChineseTraditional: {
+    id: '3333',
+    type: 'translation',
+    relationships: {
+      translations: {
+        data: [
+          {
+            id: '3',
+            type: 'language'
+          }
+        ]
+      }
+    },
+    attributes: {
+      code: 'zh-Hant',
+      direction: 'ltr',
+      name: 'Chinese (Traditional)'
+    }
   }
+};
+
+export const mockBooksData = {
+  data: [
+    {
+      id: '1',
+      attributes: {
+        'resource-type': 'lesson',
+        'attr-hidden': false,
+        abbreviation: 'lesson1'
+      }
+    },
+    {
+      id: '2',
+      attributes: {
+        'resource-type': 'tract',
+        'attr-hidden': false,
+        abbreviation: 'tract1'
+      }
+    },
+    {
+      id: '3',
+      attributes: {
+        'resource-type': 'lesson',
+        'attr-hidden': true,
+        abbreviation: 'hidden-lesson'
+      }
+    }
+  ],
+  included: [
+    {
+      type: 'translation',
+      id: 't1',
+      relationships: {
+        resource: { data: { id: '1' } },
+        language: { data: { id: '1' } }
+      },
+      attributes: {
+        'translated-name': 'Lesson 1',
+        'translated-tagline': 'tagline'
+      }
+    },
+    {
+      type: 'translation',
+      id: 't2',
+      relationships: {
+        resource: { data: { id: '2' } },
+        language: { data: { id: '2' } }
+      },
+      attributes: {
+        'translated-name': 'Tract 1',
+        'translated-tagline': 'tagline'
+      }
+    },
+    {
+      type: 'translation',
+      id: 't3',
+      relationships: {
+        resource: { data: { id: '3' } },
+        language: { data: { id: '3' } }
+      },
+      attributes: {
+        'translated-name': 'Hidden Lesson',
+        'translated-tagline': 'tagline'
+      }
+    }
+  ]
+};
+
+export const mockPageBookIndexData = {
+  data: { attributes: {} },
+  included: [
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'aaa111',
+        file: 'https://cru.org/needed-1.png',
+        'file-file-name': 'needed-1.png'
+      }
+    },
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'bbb222',
+        file: 'https://cru.org/needed-2.png',
+        'file-file-name': 'needed-2.png'
+      }
+    },
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'zzz999',
+        file: 'https://cru.org/skipped.png',
+        'file-file-name': 'skipped.png'
+      }
+    }
+  ]
 };
 
 export const mockSpacer = (height = 100): Spacer => {

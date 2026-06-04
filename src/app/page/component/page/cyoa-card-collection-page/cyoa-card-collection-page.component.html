@@ -32,41 +32,35 @@
     </ng-container>
 
     <div
-      id="tool-navigation"
+      id="page-navigation"
       class="mw568 tc"
       *ngIf="(isForm$ | async) === false && (isModal$ | async) === false"
     >
       <ng-container *ngIf="(dir$ | async) === 'ltr'">
         <!-- If not first page -->
         <ng-container *ngIf="!isFirstCard()">
-          <a
+          <button
             (click)="showPreviousCard()"
-            href="javascript:void(0)"
             class="button button-white far fa-arrow-left"
-            ><span class="hide"></span
-          ></a>
+          >
+            <span class="hide"></span>
+          </button>
         </ng-container>
 
         <!-- If not last page -->
         <ng-container *ngIf="!isLastCard()">
-          <a
-            (click)="showNextCard()"
-            href="javascript:void(0)"
-            class="button far fa-arrow-right"
-            ><span class="hide"></span
-          ></a>
+          <button (click)="showNextCard()" class="button far fa-arrow-right">
+            <span class="hide"></span>
+          </button>
         </ng-container>
       </ng-container>
 
       <ng-container *ngIf="(dir$ | async) === 'rtl'">
         <!-- If not first page -->
         <ng-container *ngIf="!isLastCard()">
-          <a
-            (click)="showNextCard()"
-            href="javascript:void(0)"
-            class="button far fa-arrow-left"
-            ><span class="hide"></span
-          ></a>
+          <button (click)="showNextCard()" class="button far fa-arrow-left">
+            <span class="hide"></span>
+          </button>
         </ng-container>
 
         <!-- If not last page -->

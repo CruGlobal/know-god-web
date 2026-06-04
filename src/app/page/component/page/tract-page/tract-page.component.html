@@ -32,55 +32,15 @@
       <app-page-modal [modal]="modal"></app-page-modal>
     </ng-container>
 
-    <div
-      id="tool-navigation"
-      class="mw568 tc"
-      *ngIf="(isForm$ | async) === false && (isModal$ | async) === false"
-    >
-      <ng-container *ngIf="(dir$ | async) === 'ltr'">
-        <!-- If not first page -->
-        <ng-container *ngIf="(isFirstPage$ | async) === false">
-          <a
-            (click)="previous()"
-            href="javascript:void(0)"
-            class="button button-white far fa-arrow-left"
-            ><span class="hide"></span
-          ></a>
-        </ng-container>
-
-        <!-- If not last page -->
-        <ng-container *ngIf="(isLastPage$ | async) === false">
-          <a
-            (click)="next()"
-            href="javascript:void(0)"
-            class="button far fa-arrow-right"
-            ><span class="hide"></span
-          ></a>
-        </ng-container>
-      </ng-container>
-
-      <ng-container *ngIf="(dir$ | async) === 'rtl'">
-        <!-- If not first page -->
-        <ng-container *ngIf="(isLastPage$ | async) === false">
-          <a
-            (click)="next()"
-            href="javascript:void(0)"
-            class="button far fa-arrow-left"
-            ><span class="hide"></span
-          ></a>
-        </ng-container>
-
-        <!-- If not last page -->
-        <ng-container *ngIf="(isFirstPage$ | async) === false">
-          <a
-            (click)="previous()"
-            href="javascript:void(0)"
-            class="button button-white far fa-arrow-right"
-            ><span class="hide"></span
-          ></a>
-        </ng-container>
-      </ng-container>
-    </div>
+    <app-page-navigation
+      [direction$]="dir$"
+      [isForm$]="isForm$"
+      [isModal$]="isModal$"
+      [isFirstPage$]="isFirstPage$"
+      [isLastPage$]="isLastPage$"
+      (nextEvent)="next()"
+      (previousEvent)="previous()"
+    ></app-page-navigation>
 
     <ng-container
       *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"

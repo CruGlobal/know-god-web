@@ -36,6 +36,10 @@ export type CYOAPage =
   | CyoaPageCollectionPage;
 export type CYOAPageCard =
   org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card;
+
+export type LessonPage =
+  org.cru.godtools.shared.tool.parser.model.lesson.LessonPage;
+
 export type CardCollectionHeader =
   org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Header;
 export type Parent = org.cru.godtools.shared.tool.parser.model.Parent;
@@ -72,6 +76,9 @@ export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
 export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
 export const ManifestParser = manifestParser;
 export const State = org.cru.godtools.shared.renderer.state.State;
+
+export const MultiselectOptionStyle =
+  org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style;
 
 export const ContentParser = (content: any): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
@@ -219,14 +226,15 @@ export const parseTextRemoveBrTags = (text: string): string => {
 @Injectable({
   providedIn: 'root'
 })
-export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
-  .JsXmlPullParserFactory {
+export class PullParserFactory
+  extends org.cru.godtools.shared.tool.parser.xml.JsXmlPullParserFactory
+{
   _fileOrigin: string;
   clearOrigin() {
     this._fileOrigin = '';
   }
   setOrigin(file: string) {
-    this._fileOrigin = file.match(/^.*[\\\/]/)[0] || '';
+    this._fileOrigin = file;
   }
   getOrigin() {
     return this._fileOrigin;
@@ -254,7 +262,8 @@ export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
 
 export enum ResourceType {
   Tract = 'tract',
-  CYOA = 'cyoa'
+  CYOA = 'cyoa',
+  Lesson = 'lesson'
 }
 
 export enum ToolType {

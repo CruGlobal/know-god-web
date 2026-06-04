@@ -1,0 +1,42 @@
+<ng-container *ngIf="ready">
+  <div
+    id="toolContent"
+    [ngClass]="{
+      tc: isLastPage$ | async,
+      firstPage: isFirstPage$ | async,
+      lastPage: isLastPage$ | async
+    }"
+  >
+    <app-content-repeater
+      *ngIf="content && content.length && (isModal$ | async) === false"
+      [items]="content"
+    ></app-content-repeater>
+
+    <app-page-navigation
+      [direction$]="dir$"
+      [isForm$]="isForm$"
+      [isModal$]="isModal$"
+      [isFirstPage$]="isFirstPage$"
+      [isLastPage$]="isLastPage$"
+      (nextEvent)="next()"
+      (previousEvent)="previous()"
+    ></app-page-navigation>
+
+    <ng-container
+      *ngIf="(isModal$ | async) === false && (isModal$ | async) === false"
+    >
+      <footer id="toolFooter">
+        <span
+          ><a href="https://godtoolsapp.com" target="_blank"
+            >Learn more at godtoolsapp.com</a
+          ></span
+        >
+        <span
+          >© 1994-{{ currentYear }}
+          <a href="https://cru.org" target="_blank">Cru</a>. All Rights
+          Reserved.</span
+        >
+      </footer>
+    </ng-container>
+  </div>
+</ng-container>

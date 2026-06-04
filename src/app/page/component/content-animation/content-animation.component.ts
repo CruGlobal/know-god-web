@@ -25,7 +25,6 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   ready: boolean;
   anmResource: string;
   anmViewItem: AnimationItem;
-  hasEvents: boolean;
   dir$: Observable<string>;
   lottieOptions: AnimationOptions;
 
@@ -57,35 +56,28 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
     }
   }
 
-  onAnimationClick(): void {
-    if (this.animation.events) {
-      let action = '';
-      this.animation.events.forEach((event, idx) => {
-        const value = event?.namespace
-          ? `${event.namespace}:${event.name}`
-          : event.name;
-        action += idx ? ` ${value}` : value;
-      });
-      this.pageService.formAction(action);
-    }
+  onClick(): void {
+    this.pageService.handleClickable(this.animation.events);
   }
 
-  onAnimationCreated(anim: any) {
-    this.anmViewItem = anim as AnimationItem;
+  onAnimationCreated(anim: AnimationItem): void {
+    this.anmViewItem = anim;
   }
 
   private init(): void {
-    // TODO
-    // Need to update to e31_1 when we release a new Shared Parser.
-    const resource = {
-      name: (this.animation as any).e31_1 || ''
-    };
-    this.anmResource = this.pageService.getAnimationUrl(resource.name || '');
+    if (!this.animation?.resource?.name) {
+      return;
+    }
+    this.anmResource = this.pageService.getAnimationUrl(
+      this.animation.resource.name
+    );
     if (
-      this.anmResource === resource.name &&
+      this.anmResource === this.animation.resource.name &&
       !this.anmResource.includes('http')
     ) {
-      this.anmResource = this.pageService.findAttachment(resource.name) || '';
+      this.anmResource = this.pageService.findAttachment(
+        this.animation.resource.name
+      );
     }
 
     if (this.anmResource) {
@@ -95,8 +87,6 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
         autoplay: !!this.animation.autoPlay
       };
     }
-
-    this.hasEvents = !!this.animation.events;
 
     if (!!this.animation.playListeners || !!this.animation.stopListeners) {
       this.awaitAnimEvent();
