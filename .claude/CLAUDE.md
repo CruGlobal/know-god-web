@@ -6,21 +6,23 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 Know God Web is an Angular 17 application that renders GodTools religious content for web and embedded (iframe) contexts. Content is fetched from Cru Global's mobile-content-api and parsed from XML manifests using `@cruglobal/godtools-shared`.
 
-**Live sites:** knowgod.com (prod/master), stage.knowgod.com (staging)
+**Live sites:** knowgod.com (prod/main), stage.knowgod.com (staging)
 
 ## Commands
 
 | Task | Command |
 |------|---------|
 | Install dependencies | `yarn install` |
-| Dev server (localhost:4200) | `npm run start:dev` |
-| Production build | `npm run build` |
-| Run all tests | `npm test` |
-| Lint (with autofix) | `npm run lint` |
-| Format check | `npm run prettier:check` |
-| Format fix | `npm run prettier:write` |
+| Dev server (localhost:4200) | `yarn start:dev` |
+| Production build | `yarn build` |
+| Run all tests | `yarn test --no-watch` |
+| Lint (with autofix) | `yarn lint` |
+| Format check | `yarn prettier:check` |
+| Format fix | `yarn prettier:write` |
 
-Tests use Karma + Jasmine with ChromeHeadless. There is no single-test runner configured; all specs run together via `ng test --watch=false`.
+Always use `yarn`, never `npm` (Yarn 4.7.0 via Corepack; see the root `CLAUDE.md`).
+
+Tests use Karma + Jasmine with ChromeHeadless. There is no single-test runner configured; all specs run together via `yarn test --no-watch`.
 
 ## Architecture
 
@@ -67,11 +69,14 @@ RxJS Subjects/BehaviorSubjects directly in services (no NgRx):
 ## Build & Deploy
 
 CI is GitHub Actions (`.github/workflows/node.js.yml`). Branches auto-deploy to AWS S3:
-- `master` -> production
+- `main` -> production
 - `staging` -> stage
 - `development` -> dev
 
-The `update-staging.yml` workflow auto-merges master -> staging -> development.
+The `update-staging.yml` workflow promotes work to lower environments via PR
+labels: `On Staging` auto-merges the branch into `staging` and `development`,
+`On Development` merges into `development` only. (Its legacy `push` trigger still
+references the old `master` branch, which no longer exists.)
 
 Build output goes to `dist/knowgod/`, plus `embed/embed.js` and `mobile/` are copied alongside.
 
