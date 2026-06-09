@@ -19,6 +19,7 @@ import {
   MultiselectOption,
   MultiselectOptionStyle,
   Paragraph,
+  ParserState,
   Resource,
   Spacer,
   Text,
@@ -55,8 +56,25 @@ const standardTypeValues = () => {
     isInvisibleFlow: null,
     isGone: null,
     isGoneFlow: null,
-    watchIsGone: null,
-    watchIsInvisible: null,
+    watchIsGone: (state: ParserState, callback: (value: boolean) => void) => {
+      // Mock watcher that immediately calls callback with false (not hidden)
+      callback(false);
+      // Return a mock watcher object with close method
+      return {
+        close: () => {}
+      };
+    },
+    watchIsInvisible: (
+      state: ParserState,
+      callback: (value: boolean) => void
+    ) => {
+      // Mock watcher that immediately calls callback with false (not invisible)
+      callback(false);
+      // Return a mock watcher object with close method
+      return {
+        close: () => {}
+      };
+    },
     watchVisibility: null,
     invisibleIf: null,
     goneIf: null,
@@ -144,7 +162,7 @@ export const mockAnimation = (
   name: string,
   url: string,
   event: string
-): Animation | any => {
+): Animation => {
   return {
     url,
     resource: createResource(name, url),
@@ -154,9 +172,6 @@ export const mockAnimation = (
     stopListeners: [createEventId(`${event}-stop-listener`)],
     isClickable: !!url || !!event,
     events: event ? [createEventId(event)] : [],
-    _events: null,
-    _playListeners: null,
-    _stopListeners: null,
     ...standardTypeValues()
   };
 };
@@ -435,8 +450,6 @@ export const mockHero = (
   return {
     heading: createText(heading),
     content,
-    getAnalyticsEvents: null,
-    _getAnalyticsEvents: null,
     ...standardTypeValues()
   };
 };
@@ -625,7 +638,9 @@ export const mockPageComponent = {
 export const mockBooksData = {
   data: [
     {
+      type: 'resource',
       id: '1',
+      relationships: {},
       attributes: {
         'resource-type': 'lesson',
         'attr-hidden': false,
@@ -633,7 +648,9 @@ export const mockBooksData = {
       }
     },
     {
+      type: 'resource',
       id: '2',
+      relationships: {},
       attributes: {
         'resource-type': 'tract',
         'attr-hidden': false,
@@ -641,7 +658,9 @@ export const mockBooksData = {
       }
     },
     {
+      type: 'resource',
       id: '3',
+      relationships: {},
       attributes: {
         'resource-type': 'lesson',
         'attr-hidden': true,
@@ -654,8 +673,8 @@ export const mockBooksData = {
       type: 'translation',
       id: 't1',
       relationships: {
-        resource: { data: { id: '1' } },
-        language: { data: { id: '1' } }
+        resource: { data: { type: 'resource', id: '1' } },
+        language: { data: { type: 'language', id: '1' } }
       },
       attributes: {
         'translated-name': 'Lesson 1',
@@ -666,8 +685,8 @@ export const mockBooksData = {
       type: 'translation',
       id: 't2',
       relationships: {
-        resource: { data: { id: '2' } },
-        language: { data: { id: '2' } }
+        resource: { data: { type: 'resource', id: '2' } },
+        language: { data: { type: 'language', id: '2' } }
       },
       attributes: {
         'translated-name': 'Tract 1',
@@ -678,8 +697,8 @@ export const mockBooksData = {
       type: 'translation',
       id: 't3',
       relationships: {
-        resource: { data: { id: '3' } },
-        language: { data: { id: '3' } }
+        resource: { data: { type: 'resource', id: '3' } },
+        language: { data: { type: 'language', id: '3' } }
       },
       attributes: {
         'translated-name': 'Hidden Lesson',

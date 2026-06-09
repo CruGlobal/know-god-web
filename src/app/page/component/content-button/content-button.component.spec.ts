@@ -53,7 +53,7 @@ describe('ContentButtonComponent', () => {
     });
     fixture.detectChanges();
 
-    const pageService = TestBed.get(PageService);
+    const pageService = TestBed.inject(PageService);
     spyOn(pageService, 'formAction');
 
     component.onClick();

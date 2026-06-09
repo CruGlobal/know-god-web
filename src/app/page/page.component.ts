@@ -45,6 +45,42 @@ interface LiveShareSubscriptionPayload {
   };
 }
 
+interface Language {
+  id: string;
+  type: string;
+  attributes: {
+    code: string;
+    name: string;
+    direction: string;
+  };
+  relationships?: {
+    translations?: {
+      data: { id: string; type: string }[] | null;
+    };
+  };
+}
+
+interface Book {
+  id: string;
+  type: string;
+  attributes: {
+    abbreviation: string;
+    name: string;
+  };
+}
+
+interface JsonApiResource {
+  type: string;
+  id?: string;
+  attributes: { [key: string]: unknown };
+  relationships?: { [key: string]: unknown };
+}
+
+interface JsonApiResponse {
+  data: JsonApiResource | JsonApiResource[];
+  included: JsonApiResource[];
+}
+
 export enum getResourceTypeEnum {
   animation = 'animation',
   image = 'image'
@@ -61,29 +97,29 @@ export class PageComponent implements OnInit, OnDestroy {
   private _pageChanged = new Subject<void>();
   private _pageParams: IPageParameters;
   private _allLanguagesLoaded: boolean;
-  private _allLanguages: any[];
+  private _allLanguages: Language[];
   private _booksLoaded: boolean;
-  private _books: any[];
+  private _books: Book[];
   private _pageBookLoaded: boolean;
-  private _pageBook: any;
-  private _pageBookIndex: any;
+  private _pageBook: Book;
+  private _pageBookIndex: JsonApiResponse;
   private _pageBookManifest: Manifest;
   private _pageBookManifestLoaded: boolean;
-  private _pageBookTranslations: any[];
+  private _pageBookTranslations: JsonApiResource[];
   private _pageBookTranslationId: number;
   private _pageBookSubPagesManifest: Page[];
   private _pageBookSubPages: Page[];
   private _visibleHiddenPageIds: Set<string>; // Track temporarily visible hidden pages
-  private _selectedLanguage: any;
+  private _selectedLanguage: Language;
   private liveShareSubscription: ActionCable.Channel;
 
   pagesLoaded: boolean;
   selectedLang: string;
-  availableLanguages: Array<any>;
+  availableLanguages: Language[];
   languagesVisible: boolean;
   resourceType: ResourceType;
   selectedBookName: string;
-  activePage: any;
+  activePage: Page;
   activePageOrder: number;
   totalPages: number;
   bookNotAvailableInLanguage: boolean;
@@ -183,7 +219,7 @@ export class PageComponent implements OnInit, OnDestroy {
     );
   };
 
-  selectLanguage(lang): void {
+  selectLanguage(lang: Language): void {
     this.i18n.changeLanguage(lang.attributes.code);
     this.router.navigate(
       this.buildRouteParams(
@@ -276,7 +312,7 @@ export class PageComponent implements OnInit, OnDestroy {
       const attachments = this._pageBookIndex.included.filter(
         (row) =>
           row.type.toLowerCase() === 'attachment' &&
-          row.attributes['file-file-name'].toLowerCase() ===
+          (row.attributes['file-file-name'] as string).toLowerCase() ===
             resourceName.toLowerCase()
       );
 
@@ -284,7 +320,7 @@ export class PageComponent implements OnInit, OnDestroy {
         return '';
       }
 
-      const fileUrl = attachments[0].attributes.file;
+      const fileUrl = attachments[0].attributes.file as string;
       if (resourceType === getResourceTypeEnum.animation) {
         this.pageService.addToAnimationsDict(resourceName, fileUrl);
         return fileUrl;
@@ -335,13 +371,13 @@ export class PageComponent implements OnInit, OnDestroy {
 
   private loadBookManifestXML(): void {
     this.pageService.clear();
-    let item: any = {};
+    let item: JsonApiResource | undefined;
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
-      if (
-        translation?.relationships?.language?.data?.id ===
-        this._selectedLanguage.id
-      ) {
+      const lang = translation?.relationships?.language as
+        | { data?: { id?: string } }
+        | undefined;
+      if (lang?.data?.id === this._selectedLanguage.id) {
         item = translation;
         return;
       }
@@ -354,7 +390,7 @@ export class PageComponent implements OnInit, OnDestroy {
       item.attributes &&
       item.attributes['manifest-name']
     ) {
-      const manifestName = item.attributes['manifest-name'];
+      const manifestName = item.attributes['manifest-name'] as string;
       this.pullParserFactory.setOrigin(APIURL.GET_TRANSLATION_FILES);
       const config = ParserConfig.createParserConfig()
         .withLegacyWebImageResources(true)
@@ -388,25 +424,21 @@ export class PageComponent implements OnInit, OnDestroy {
               return;
             }
 
+            const fileName = attributes['file-file-name'] as string;
             // Add all resources to the lookup table so they can be accessed by any page that needs them
-            this.pageService.addAttachment(
-              attributes['file-file-name'],
-              attributes.file
-            );
+            this.pageService.addAttachment(fileName, attributes.file as string);
 
-            if (!neededShas.has(attributes.sha256)) {
+            if (!neededShas.has(attributes.sha256 as string)) {
               return;
             }
 
-            const isImage = IMAGE_EXTENSIONS_REGEX.test(
-              attributes['file-file-name']
-            );
+            const isImage = IMAGE_EXTENSIONS_REGEX.test(fileName);
 
             this.getResource(
               isImage
                 ? getResourceTypeEnum.image
                 : getResourceTypeEnum.animation,
-              attributes['file-file-name']
+              fileName
             );
           });
 
@@ -474,7 +506,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService
       .downloadFile(APIURL.GET_INDEX_FILE.replace('{0}', this._pageBook.id))
       .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
-      .subscribe((data: any) => {
+      .subscribe((data: ArrayBuffer) => {
         const enc = new TextDecoder('utf-8');
         const arr = new Uint8Array(data);
         const result = enc.decode(arr);
@@ -539,7 +571,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBook =
       this._books.find((book) =>
         book.attributes.abbreviation === this._pageParams.bookId ? book : false
-      ) || {};
+      ) || ({} as Book);
 
     if (!this._pageBook.id) {
       this.pageService.setDir('ltr');
@@ -555,7 +587,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService
       .getBooks(APIURL.GET_ALL_BOOKS)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: any) => {
+      .subscribe((data: { data: Book[] }) => {
         if (data && data.data) {
           this._books = data.data;
           this._booksLoaded = true;
@@ -573,7 +605,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: any) => {
+      .subscribe((data: { data: Language[] }) => {
         if (data && data.data) {
           this._allLanguages = data.data;
           this._allLanguagesLoaded = true;
@@ -607,12 +639,12 @@ export class PageComponent implements OnInit, OnDestroy {
   private checkIfPreSelectedLanguageExists(): boolean {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
-        return (
-          x?.relationships?.language?.data?.id &&
-          x?.relationships?.language?.data?.id === this._selectedLanguage.id
-        );
+        const lang = x?.relationships?.language as
+          | { data?: { id?: string } }
+          | undefined;
+        return lang?.data?.id && lang.data.id === this._selectedLanguage.id;
       });
-      return y && y.id;
+      return !!(y && y.id);
     } else {
       return false;
     }
@@ -909,7 +941,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pageService.emailSignupFormData$
       .pipe(
         takeUntil(this._unsubscribeAll),
-        filter((tData) => tData)
+        filter((tData) => !!tData)
       )
       .subscribe((data) => {
         if (data.name && data.email && data.destination_id) {
@@ -936,8 +968,8 @@ export class PageComponent implements OnInit, OnDestroy {
     this._booksLoaded = false;
     this._books = [];
     this._pageBookLoaded = false;
-    this._pageBook = {};
-    this._pageBookIndex = {};
+    this._pageBook = {} as Book;
+    this._pageBookIndex = {} as JsonApiResponse;
     this._pageBookManifestLoaded = false;
     this._pageBookManifest = {} as Manifest;
     this._pageBookTranslations = [];

@@ -1,4 +1,7 @@
-<ng-container *ngIf="ready">
+<div
+  *ngIf="ready && !visibility.isHidden"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
   <div
     *ngIf="!card.isClickable"
     class="card"
@@ -27,4 +30,4 @@
       <app-content-repeater [items]="contents"></app-content-repeater>
     </a>
   </ng-template>
-</ng-container>
+</div>
