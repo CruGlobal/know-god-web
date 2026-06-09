@@ -1,4 +1,5 @@
 import { TestBed, inject } from '@angular/core/testing';
+import { createEventId } from 'src/app/_tests/mocks';
 import { PageService } from './page-service.service';
 
 describe('PageService', () => {
@@ -16,6 +17,25 @@ describe('PageService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  describe('handleClickable', () => {
+    beforeEach(() => {
+      spyOn(service, 'formAction');
+      spyOn(window, 'open');
+    });
+
+    it('fires events when events are present', () => {
+      service.handleClickable([createEventId('foo')]);
+      expect(service.formAction).toHaveBeenCalledWith('foo');
+      expect(window.open).not.toHaveBeenCalled();
+    });
+
+    it('does nothing when events are not provided', () => {
+      service.handleClickable([]);
+      expect(service.formAction).not.toHaveBeenCalled();
+      expect(window.open).not.toHaveBeenCalled();
+    });
   });
 
   it('addToNavigationStack() should add a page to the stack', (done) => {

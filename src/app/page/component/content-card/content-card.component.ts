@@ -8,11 +8,9 @@ import {
 import {
   Card,
   Content,
-  EventId,
   FlowWatcher,
   ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -25,8 +23,6 @@ export class ContentCardComponent implements OnChanges, OnDestroy {
   card: Card;
   contents: Content[];
   background: string;
-  url: string;
-  events: EventId[];
   ready: boolean;
   state: ParserState;
   isHidden: boolean;
@@ -62,10 +58,8 @@ export class ContentCardComponent implements OnChanges, OnDestroy {
     }
   }
 
-  async eventClick(): Promise<void> {
-    if (this.events.length)
-      await this.pageService.formAction(formatEvents(this.events));
-    if (this.url) window.open(this.url, '_blank');
+  onClick(): void {
+    this.pageService.handleClickable(this.card.events);
   }
 
   private init(): void {
@@ -86,8 +80,6 @@ export class ContentCardComponent implements OnChanges, OnDestroy {
     );
 
     this.background = this.card.backgroundColor;
-    this.events = this.card.events;
-    this.url = this.card.url;
     const contents: Content[] = [];
     this.card.content.forEach((content) =>
       content ? contents.push(content) : null

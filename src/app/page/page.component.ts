@@ -2,12 +2,14 @@ import { ViewportScroller } from '@angular/common';
 import {
   Component,
   HostListener,
+  Inject,
   OnDestroy,
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as ActionCable from '@rails/actioncable';
+import { I18NEXT_SERVICE, ITranslationService } from 'angular-i18next';
 import { Subject } from 'rxjs';
 import { delay, filter, takeUntil } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
@@ -27,6 +29,8 @@ import {
 } from '../services/xml-parser-service/xml-parser.service';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
+
+const IMAGE_EXTENSIONS_REGEX = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i;
 
 interface LiveShareSubscriptionPayload {
   data?: {
@@ -129,7 +133,8 @@ export class PageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public router: Router,
     private viewportScroller: ViewportScroller,
-    private pullParserFactory: PullParserFactory
+    private pullParserFactory: PullParserFactory,
+    @Inject(I18NEXT_SERVICE) private i18n: ITranslationService
   ) {
     this._pageParams = {
       langId: '',
@@ -215,6 +220,7 @@ export class PageComponent implements OnInit, OnDestroy {
   };
 
   selectLanguage(lang: Language): void {
+    this.i18n.changeLanguage(lang.attributes.code);
     this.router.navigate(
       this.buildRouteParams(
         lang.attributes.code,
@@ -403,26 +409,37 @@ export class PageComponent implements OnInit, OnDestroy {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
-          // Loop through and get all resources.
+          // Remove file extensions to get the SHAs for manifest resources
+          const neededShas = new Set(
+            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? []).map(
+              (file) => file.replace(/\.[^.]+$/, '')
+            )
+          );
+
+          // Loop through and get all needed resources.
           this._pageBookIndex.included.forEach((resource) => {
             const { attributes, type } = resource;
-            if (type === 'attachment') {
-              const fileName = attributes['file-file-name'] as string;
-              this.pageService.addAttachment(
-                fileName,
-                attributes.file as string
-              );
-              const isImage = /\.(gif|jpe?g|tiff?|png|webp|svg|bmp)$/i.test(
-                fileName
-              );
 
-              this.getResource(
-                isImage
-                  ? getResourceTypeEnum.image
-                  : getResourceTypeEnum.animation,
-                fileName
-              );
+            if (type !== 'attachment') {
+              return;
             }
+
+            const fileName = attributes['file-file-name'] as string;
+            // Add all resources to the lookup table so they can be accessed by any page that needs them
+            this.pageService.addAttachment(fileName, attributes.file as string);
+
+            if (!neededShas.has(attributes.sha256 as string)) {
+              return;
+            }
+
+            const isImage = IMAGE_EXTENSIONS_REGEX.test(fileName);
+
+            this.getResource(
+              isImage
+                ? getResourceTypeEnum.image
+                : getResourceTypeEnum.animation,
+              fileName
+            );
           });
 
           if (manifest?.pages?.length) {

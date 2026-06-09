@@ -1,8 +1,13 @@
 <div>
   <div class="resource-header">
-    <h2 class="list-header">{{ title }}</h2>
+    <h2 class="list-header">
+      {{ title }}
+    </h2>
     <a *ngIf="viewAllRoute" [routerLink]="[viewAllRoute]" class="view-all-link">
-      <span class="view-all-text">{{ viewAllText }} {{ title }}</span>
+      <span class="view-all-text"
+        >{{ viewAllText || ('View All' | i18nextEager) }}
+      </span>
+      <span>{{ title }}</span>
       <em class="far fa-arrow-right"></em>
     </a>
   </div>

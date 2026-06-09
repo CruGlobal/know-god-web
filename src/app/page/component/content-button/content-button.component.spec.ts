@@ -12,6 +12,11 @@ describe('ContentButtonComponent', () => {
   const buttonEvent = 'open-test-modal';
   const mockEventButton = mockButton(buttonText, '', buttonEvent);
   const mockUrlButton = mockButton(buttonText, buttonUrl, '');
+  const mockButtonWithEventAndUrl = mockButton(
+    buttonText,
+    buttonUrl,
+    buttonEvent
+  );
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -30,8 +35,6 @@ describe('ContentButtonComponent', () => {
     });
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
-    expect(component.type).toBe('event');
-    expect(component.events.length).toBe(1);
   });
 
   it('URL Button, Added http set URL', () => {
@@ -41,20 +44,60 @@ describe('ContentButtonComponent', () => {
     });
     expect(component).toBeTruthy();
     expect(component.buttonText).toBe(buttonText);
-    expect(component.type).toBe('url');
   });
 
-  it('Test events', () => {
+  it('fires events only when clicked on with events', () => {
     component.item = mockEventButton;
     component.ngOnChanges({
       item: new SimpleChange(null, mockEventButton, true)
     });
+    fixture.detectChanges();
 
     const pageService = TestBed.inject(PageService);
     spyOn(pageService, 'formAction');
 
-    component.formAction();
+    component.onClick();
+    expect(pageService.formAction).toHaveBeenCalledWith(buttonEvent);
+    expect(fixture.nativeElement.querySelector('a')).toBeNull();
+    expect(fixture.nativeElement.querySelector('button')).toBeTruthy();
+  });
 
+  it('opens urls only when clicked on with url', () => {
+    component.item = mockUrlButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockUrlButton, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(buttonUrl);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
+    expect(pageService.formAction).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('button')).toBeNull();
+  });
+
+  it('fires events and opens url when both are present', () => {
+    component.item = mockButtonWithEventAndUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockButtonWithEventAndUrl, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+    spyOn(pageService, 'formAction');
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(buttonUrl);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
     expect(pageService.formAction).toHaveBeenCalledWith(buttonEvent);
   });
 });

@@ -7,13 +7,11 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  EventId,
   FlowWatcher,
   Link,
   ParserState,
   Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { formatEvents } from 'src/app/shared/formatEvents';
 import { PageService } from '../../service/page-service.service';
 
 @Component({
@@ -28,7 +26,6 @@ export class ContentLinkComponent implements OnChanges, OnDestroy {
   text: Text;
   ready: boolean;
   linkText: string;
-  events: EventId[];
   dir$: Observable<string>;
   isHidden: boolean;
   isInvisible: boolean;
@@ -57,7 +54,6 @@ export class ContentLinkComponent implements OnChanges, OnDestroy {
             ) {
               this.ready = false;
               this.linkText = '';
-              this.events = null;
               this.text = null;
               this.link = this.item;
               this.init();
@@ -68,10 +64,8 @@ export class ContentLinkComponent implements OnChanges, OnDestroy {
     }
   }
 
-  formAction(): void {
-    if (this.events) {
-      this.pageService.formAction(formatEvents(this.events));
-    }
+  onClick(): void {
+    this.pageService.handleClickable(this.link.events);
   }
 
   private init(): void {
@@ -93,7 +87,6 @@ export class ContentLinkComponent implements OnChanges, OnDestroy {
 
     this.text = this.link.text || null;
     this.linkText = this.link.text?.text || '';
-    this.events = this.link.events;
     this.ready = true;
   }
 }

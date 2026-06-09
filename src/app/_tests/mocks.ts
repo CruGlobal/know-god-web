@@ -17,6 +17,7 @@ import {
   Modal,
   Multiselect,
   MultiselectOption,
+  MultiselectOptionStyle,
   Paragraph,
   ParserState,
   Resource,
@@ -121,7 +122,7 @@ const createButton = (text: string, url: string, event: string): Button => {
     iconSize: 1,
     text: createText('Button Text'),
     events: event ? [createEventId(event)] : [],
-    isClickable: true,
+    isClickable: !!url || !!event,
     ...standardTypeValues()
   };
 };
@@ -144,14 +145,14 @@ export const mockButton = (
 export const mockImage = (
   name: string,
   url: string,
-  event: string = ''
+  event: string = null
 ): Image => {
   return {
     url,
     resource: createResource(name, url),
     gravity: null,
     width: null,
-    isClickable: null,
+    isClickable: !!url || !!event,
     events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
@@ -169,8 +170,8 @@ export const mockAnimation = (
     autoPlay: true,
     playListeners: [createEventId(`${event}-play-listener`)],
     stopListeners: [createEventId(`${event}-stop-listener`)],
-    isClickable: true,
-    events: [createEventId(event)],
+    isClickable: !!url || !!event,
+    events: event ? [createEventId(event)] : [],
     ...standardTypeValues()
   };
 };
@@ -197,16 +198,18 @@ export const mockInput = (
 export const mockLink = (
   url: string,
   text: string,
-  isClickable: boolean
+  hasEvents: boolean = false
 ): Link => {
   return {
     url,
     text: createText(text),
-    isClickable,
-    events: [
-      createEventId('followup-testing-event'),
-      createEventId('send', 'followup')
-    ],
+    isClickable: true,
+    events: hasEvents
+      ? [
+          createEventId('followup-testing-event'),
+          createEventId('send', 'followup')
+        ]
+      : [],
     ...standardTypeValues()
   };
 };
@@ -359,13 +362,13 @@ export const mockModal = (title: string, listeners): Modal => {
 };
 
 export const mockMultiselectOption = (
-  initialSelectedValue
+  initialSelectedValue,
+  style: org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style = MultiselectOptionStyle.CARD
 ): MultiselectOption => {
   let selectedValue = initialSelectedValue;
   return {
     id: null,
-    style:
-      org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style.CARD,
+    style,
     backgroundColor: '#000000',
     selectedColor: '#ffffff',
     multiselect: null,
@@ -417,13 +420,13 @@ export const mockFlow = (): Flow => {
   };
 };
 
-export const mockCard = (isClickable): Card => {
+export const mockCard = (hasEvents: boolean, hasUrl: boolean): Card => {
   return {
     backgroundColor: '#000000',
-    url: 'URL',
+    url: hasUrl ? 'URL' : null,
     content: mockContent(),
-    isClickable,
-    events: isClickable
+    isClickable: hasEvents || hasUrl,
+    events: hasEvents
       ? [createEventId('event-1', 'namespace'), createEventId('event-2')]
       : [],
     ...standardTypeValues()
@@ -630,6 +633,103 @@ export const mockPageComponent = {
       name: 'Chinese (Traditional)'
     }
   }
+};
+
+export const mockBooksData = {
+  data: [
+    {
+      id: '1',
+      attributes: {
+        'resource-type': 'lesson',
+        'attr-hidden': false,
+        abbreviation: 'lesson1'
+      }
+    },
+    {
+      id: '2',
+      attributes: {
+        'resource-type': 'tract',
+        'attr-hidden': false,
+        abbreviation: 'tract1'
+      }
+    },
+    {
+      id: '3',
+      attributes: {
+        'resource-type': 'lesson',
+        'attr-hidden': true,
+        abbreviation: 'hidden-lesson'
+      }
+    }
+  ],
+  included: [
+    {
+      type: 'translation',
+      id: 't1',
+      relationships: {
+        resource: { data: { id: '1' } },
+        language: { data: { id: '1' } }
+      },
+      attributes: {
+        'translated-name': 'Lesson 1',
+        'translated-tagline': 'tagline'
+      }
+    },
+    {
+      type: 'translation',
+      id: 't2',
+      relationships: {
+        resource: { data: { id: '2' } },
+        language: { data: { id: '2' } }
+      },
+      attributes: {
+        'translated-name': 'Tract 1',
+        'translated-tagline': 'tagline'
+      }
+    },
+    {
+      type: 'translation',
+      id: 't3',
+      relationships: {
+        resource: { data: { id: '3' } },
+        language: { data: { id: '3' } }
+      },
+      attributes: {
+        'translated-name': 'Hidden Lesson',
+        'translated-tagline': 'tagline'
+      }
+    }
+  ]
+};
+
+export const mockPageBookIndexData = {
+  data: { attributes: {} },
+  included: [
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'aaa111',
+        file: 'https://cru.org/needed-1.png',
+        'file-file-name': 'needed-1.png'
+      }
+    },
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'bbb222',
+        file: 'https://cru.org/needed-2.png',
+        'file-file-name': 'needed-2.png'
+      }
+    },
+    {
+      type: 'attachment',
+      attributes: {
+        sha256: 'zzz999',
+        file: 'https://cru.org/skipped.png',
+        'file-file-name': 'skipped.png'
+      }
+    }
+  ]
 };
 
 export const mockSpacer = (height = 100): Spacer => {

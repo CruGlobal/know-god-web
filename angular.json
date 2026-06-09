@@ -20,6 +20,7 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": [
               "src/assets/img",
+              "src/assets/locales",
               "src/assets/sitemap.txt",
               {
                 "glob": "**/*",
@@ -52,7 +53,7 @@
               ],
               "optimization": true,
               "outputHashing": "all",
-              "sourceMap": false,
+              "sourceMap": true,
               "namedChunks": false,
               "extractLicenses": true,
               "buildOptimizer": true,

@@ -19,7 +19,7 @@ export class DashboardListComponent {
   @Input() title: string = '';
   @Input() resources: Resource[] = [];
   @Input() dispLanguageDirection: string = 'ltr';
-  @Input() viewAllText: string = 'View All';
+  @Input() viewAllText: string = '';
   @Input() viewAllRoute: string = '';
   @Input() dispLanguageCode: string = '';
   @Output() resourceClick = new EventEmitter<Resource>();

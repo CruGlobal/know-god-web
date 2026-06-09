@@ -2,16 +2,20 @@ import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
+import { I18NextModule } from 'angular-i18next';
 import {
   createEventId,
+  mockPageBookIndexData,
   mockPageComponent,
   mockTractPage
 } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import {
+  ManifestParser,
   Page,
   TractPage,
+  XmlParserData,
   godToolsParser
 } from '../services/xml-parser-service/xml-parser.service';
 import { PageComponent, getResourceTypeEnum } from './page.component';
@@ -55,7 +59,7 @@ describe('PageComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [PageComponent],
-      imports: [HttpClientModule, RouterTestingModule],
+      imports: [HttpClientModule, RouterTestingModule, I18NextModule.forRoot()],
       providers: [
         CommonService,
         LoaderService,
@@ -281,6 +285,50 @@ describe('PageComponent', () => {
         );
       });
     });
+  });
+
+  it('loadBookManifestXML() fetches only needed resources', async () => {
+    component._pageBookIndex = mockPageBookIndexData;
+
+    component._selectedLanguage = { id: '2222' };
+    component._pageBookTranslations = [
+      {
+        id: 'tx-1',
+        attributes: { 'manifest-name': 'foo.xml' },
+        relationships: { language: { data: { id: '2222' } } }
+      }
+    ];
+
+    const fakeManifest = {
+      relatedFiles: {
+        asJsReadonlySetView: () => new Set(['aaa111.png', 'bbb222.png'])
+      },
+      pages: []
+    };
+    spyOn(ManifestParser.prototype, 'parseManifest').and.returnValue(
+      Promise.resolve({ manifest: fakeManifest } as unknown as XmlParserData)
+    );
+
+    const addAttachmentSpy = spyOn(pageService, 'addAttachment');
+    const getResourceSpy = spyOn(component, 'getResource');
+
+    component['loadBookManifestXML']();
+    await fixture.whenStable();
+
+    expect(addAttachmentSpy).toHaveBeenCalledTimes(3);
+
+    expect(getResourceSpy).toHaveBeenCalledWith(
+      getResourceTypeEnum.image,
+      'needed-1.png'
+    );
+    expect(getResourceSpy).toHaveBeenCalledWith(
+      getResourceTypeEnum.image,
+      'needed-2.png'
+    );
+    expect(getResourceSpy).not.toHaveBeenCalledWith(
+      getResourceTypeEnum.image,
+      'skipped.png'
+    );
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {

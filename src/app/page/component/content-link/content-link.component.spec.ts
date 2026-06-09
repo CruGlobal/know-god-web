@@ -4,11 +4,13 @@ import { mockLink } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentLinkComponent } from './content-link.component';
 
-describe('ContentInputComponent', () => {
+describe('ContentLinkComponent', () => {
   let component: ContentLinkComponent;
   let fixture: ComponentFixture<ContentLinkComponent>;
   let pageService: PageService;
-  const link = mockLink('https://cru.org', 'link text', true);
+  const linkWithUrl = mockLink('https://cru.org', 'link text');
+  const linkWithEvents = mockLink(null, 'link text', true);
+  const linkWithUrlAndEvents = mockLink('https://cru.org', 'link text', true);
 
   beforeEach(waitForAsync(() => {
     pageService = new PageService();
@@ -23,23 +25,66 @@ describe('ContentInputComponent', () => {
   }));
 
   it('Values are assigned correctly', async () => {
-    component.item = link;
+    component.item = linkWithUrl;
     component.ngOnChanges({
-      item: new SimpleChange(null, link, true)
+      item: new SimpleChange(null, linkWithUrl, true)
     });
 
-    expect(component.text).toEqual(link.text);
+    expect(component.text).toEqual(linkWithUrl.text);
     expect(component.linkText).toBe('link text');
-    expect(component.events).toEqual(link.events);
   });
 
-  it('Form Action function sends the correct info to pageService', async () => {
-    component.item = link;
+  it('fires events only when clicked on with events', () => {
+    component.item = linkWithEvents;
     component.ngOnChanges({
-      item: new SimpleChange(null, link, true)
+      item: new SimpleChange(null, linkWithEvents, true)
     });
+    fixture.detectChanges();
 
-    component.formAction();
+    const pageService = TestBed.get(PageService);
+    component.onClick();
+
+    expect(pageService.formAction).toHaveBeenCalledWith(
+      'followup-testing-event followup:send'
+    );
+    expect(fixture.nativeElement.querySelector('a')).toBeNull();
+    expect(fixture.nativeElement.querySelector('button')).toBeTruthy();
+  });
+
+  it('opens urls only when clicked on with url', () => {
+    component.item = linkWithUrl;
+    component.ngOnChanges({
+      item: new SimpleChange(null, linkWithUrl, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(linkWithUrl.url);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
+    expect(pageService.formAction).not.toHaveBeenCalled();
+    expect(fixture.nativeElement.querySelector('button')).toBeNull();
+  });
+
+  it('fires events and opens url when both are present', () => {
+    component.item = linkWithUrlAndEvents;
+    component.ngOnChanges({
+      item: new SimpleChange(null, linkWithUrlAndEvents, true)
+    });
+    fixture.detectChanges();
+
+    const pageService = TestBed.get(PageService);
+
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor).toBeTruthy();
+    expect(anchor.getAttribute('href')).toBe(linkWithUrlAndEvents.url);
+    expect(anchor.getAttribute('target')).toBe('_blank');
+
+    component.onClick();
     expect(pageService.formAction).toHaveBeenCalledWith(
       'followup-testing-event followup:send'
     );

@@ -78,6 +78,9 @@ export const ManifestParser = manifestParser;
 export const State = org.cru.godtools.shared.renderer.state.State;
 export type ParserState = ReturnType<typeof State.createState>;
 
+export const MultiselectOptionStyle =
+  org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style;
+
 export const ContentParser = (content: Content): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
     // console.log('CONTENT: Image');
@@ -224,8 +227,9 @@ export const parseTextRemoveBrTags = (text: string): string => {
 @Injectable({
   providedIn: 'root'
 })
-export class PullParserFactory extends org.cru.godtools.shared.tool.parser.xml
-  .JsXmlPullParserFactory {
+export class PullParserFactory
+  extends org.cru.godtools.shared.tool.parser.xml.JsXmlPullParserFactory
+{
   _fileOrigin: string;
   clearOrigin() {
     this._fileOrigin = '';

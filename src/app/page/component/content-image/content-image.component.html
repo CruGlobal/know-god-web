@@ -1,5 +1,19 @@
 <ng-container *ngIf="ready && !isHidden">
-  <a *ngIf="isEventType" (click)="formAction()" href="javascript:void(0)">
+  <img
+    *ngIf="!isClickable"
+    class="imageContent ng-binding"
+    [ngClass]="{ firstImage: isFirstPage$ | async }"
+    [src]="imgResource"
+    [ngStyle]="{ width: width }"
+    alt=""
+  />
+  <a
+    *ngIf="isClickable && image.url; else nonUrlImage"
+    [href]="image.url"
+    target="_blank"
+    rel="noopener noreferrer"
+    (click)="onClick()"
+  >
     <img
       class="imageContent ng-binding"
       [ngClass]="{ firstImage: isFirstPage$ | async }"
@@ -8,12 +22,15 @@
       alt=""
     />
   </a>
-  <img
-    *ngIf="!isEventType"
-    class="imageContent ng-binding"
-    [ngClass]="{ firstImage: isFirstPage$ | async }"
-    [src]="imgResource"
-    [ngStyle]="{ width: width }"
-    alt=""
-  />
+  <ng-template #nonUrlImage>
+    <button *ngIf="isClickable" type="button" (click)="onClick()">
+      <img
+        class="imageContent ng-binding"
+        [ngClass]="{ firstImage: isFirstPage$ | async }"
+        [src]="imgResource"
+        [ngStyle]="{ width: width }"
+        alt=""
+      />
+    </button>
+  </ng-template>
 </ng-container>

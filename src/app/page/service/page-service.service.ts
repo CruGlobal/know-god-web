@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { formatEvents } from 'src/app/shared/formatEvents';
 import {
+  EventId,
   ParserState,
   State
 } from '../../services/xml-parser-service/xml-parser.service';
@@ -192,6 +194,18 @@ export class PageService {
 
   parserState(): ParserState {
     return this.XmlParserState;
+  }
+
+  handleClickable(events: EventId[]): void {
+    if (events && events.length) {
+      // Each event can resolve into an array of events, so combine them into a single array.
+      // This is necessary to support complex form actions with 'state' in the EventId.
+      const resolvedEvents = events.flatMap((event) =>
+        event.resolve(this.parserState()).asJsReadonlyArrayView()
+      );
+
+      this.formAction(formatEvents(resolvedEvents));
+    }
   }
 
   // CYOA Navigation Stack/Array
