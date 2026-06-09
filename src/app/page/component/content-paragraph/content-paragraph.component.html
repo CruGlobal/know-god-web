@@ -1,5 +1,6 @@
-<ng-container *ngIf="ready && !isHidden && items && items.length">
-  <div [style.visibility]="isInvisible ? 'hidden' : 'visible'">
-    <app-content-repeater [items]="items"></app-content-repeater>
-  </div>
-</ng-container>
+<div
+  *ngIf="ready && !visibility.isHidden && items && items.length"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
+  <app-content-repeater [items]="items"></app-content-repeater>
+</div>

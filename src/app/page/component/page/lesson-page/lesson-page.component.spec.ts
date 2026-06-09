@@ -5,7 +5,7 @@ import { PageService } from '../../../service/page-service.service';
 import { LessonComponent } from './lesson-page.component';
 
 describe('LessonComponent', () => {
-  let component: any;
+  let component: LessonComponent;
   let fixture: ComponentFixture<LessonComponent>;
   let pageService: PageService;
   const page = mockLesson();
@@ -39,7 +39,7 @@ describe('LessonComponent', () => {
   });
 
   it('should trigger onFormAction when formAction emits', () => {
-    const spy = spyOn(component, 'onFormAction');
+    const spy = spyOn<any>(component, 'onFormAction');
     component.ngOnChanges({
       page: new SimpleChange(null, page, true)
     });

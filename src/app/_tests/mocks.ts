@@ -638,7 +638,9 @@ export const mockPageComponent = {
 export const mockBooksData = {
   data: [
     {
+      type: 'resource',
       id: '1',
+      relationships: {},
       attributes: {
         'resource-type': 'lesson',
         'attr-hidden': false,
@@ -646,7 +648,9 @@ export const mockBooksData = {
       }
     },
     {
+      type: 'resource',
       id: '2',
+      relationships: {},
       attributes: {
         'resource-type': 'tract',
         'attr-hidden': false,
@@ -654,7 +658,9 @@ export const mockBooksData = {
       }
     },
     {
+      type: 'resource',
       id: '3',
+      relationships: {},
       attributes: {
         'resource-type': 'lesson',
         'attr-hidden': true,
@@ -667,8 +673,8 @@ export const mockBooksData = {
       type: 'translation',
       id: 't1',
       relationships: {
-        resource: { data: { id: '1' } },
-        language: { data: { id: '1' } }
+        resource: { data: { type: 'resource', id: '1' } },
+        language: { data: { type: 'language', id: '1' } }
       },
       attributes: {
         'translated-name': 'Lesson 1',
@@ -679,8 +685,8 @@ export const mockBooksData = {
       type: 'translation',
       id: 't2',
       relationships: {
-        resource: { data: { id: '2' } },
-        language: { data: { id: '2' } }
+        resource: { data: { type: 'resource', id: '2' } },
+        language: { data: { type: 'language', id: '2' } }
       },
       attributes: {
         'translated-name': 'Tract 1',
@@ -691,8 +697,8 @@ export const mockBooksData = {
       type: 'translation',
       id: 't3',
       relationships: {
-        resource: { data: { id: '3' } },
-        language: { data: { id: '3' } }
+        resource: { data: { type: 'resource', id: '3' } },
+        language: { data: { type: 'language', id: '3' } }
       },
       attributes: {
         'translated-name': 'Hidden Lesson',

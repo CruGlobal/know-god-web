@@ -9,12 +9,9 @@ import { AnimationItem } from 'lottie-web';
 import { AnimationOptions } from 'ngx-lottie';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import {
-  Animation,
-  FlowWatcher,
-  ParserState
-} from 'src/app/services/xml-parser-service/xml-parser.service';
+import { Animation } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-animation',
@@ -31,11 +28,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   anmViewItem: AnimationItem;
   dir$: Observable<string>;
   lottieOptions: AnimationOptions;
-  isHidden: boolean;
-  isInvisible: boolean;
-  isHiddenWatcher: FlowWatcher;
-  isInvisibleWatcher: FlowWatcher;
-  state: ParserState;
+  visibility: VisibilityWatchers;
 
   private getAnimationListeners(): {
     playListeners: { name: string }[];
@@ -62,14 +55,13 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -100,21 +92,7 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    // Initialize visibility watchers
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
-
-    // Watch for gone-if expressions (removes from DOM)
-    this.isHiddenWatcher = this.item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
-
-    // Watch for invisible-if expressions (hides but keeps space)
-    this.isInvisibleWatcher = this.item.watchIsInvisible(
-      this.state,
-      (value) => (this.isInvisible = value)
-    );
+    this.visibility.init(this.item);
 
     if (!this.animation?.resource?.name) {
       return;

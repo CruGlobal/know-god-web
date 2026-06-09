@@ -7,11 +7,10 @@ import {
 } from '@angular/core';
 import {
   Card,
-  Content,
-  FlowWatcher,
-  ParserState
+  Content
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-card',
@@ -24,19 +23,14 @@ export class ContentCardComponent implements OnChanges, OnDestroy {
   contents: Content[];
   background: string;
   ready: boolean;
-  state: ParserState;
-  isHidden: boolean;
-  isInvisible: boolean;
-  isHiddenWatcher: FlowWatcher;
-  isInvisibleWatcher: FlowWatcher;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnDestroy(): void {
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -63,21 +57,7 @@ export class ContentCardComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    // Initialize visibility watchers
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
-
-    // Watch for gone-if expressions (removes from DOM)
-    this.isHiddenWatcher = this.item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
-
-    // Watch for invisible-if expressions (hides but keeps space)
-    this.isInvisibleWatcher = this.item.watchIsInvisible(
-      this.state,
-      (value) => (this.isInvisible = value)
-    );
+    this.visibility.init(this.card);
 
     this.background = this.card.backgroundColor;
     const contents: Content[] = [];

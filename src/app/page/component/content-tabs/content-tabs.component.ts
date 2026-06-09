@@ -8,12 +8,11 @@ import {
 import { Observable } from 'rxjs';
 import {
   Content,
-  FlowWatcher,
-  ParserState,
   Tab,
   Tabs
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 interface TabWithContent {
   tab: Tab;
@@ -34,21 +33,16 @@ export class ContentTabsComponent implements OnChanges, OnDestroy {
   ready: boolean;
   dir$: Observable<string>;
   isModal$: Observable<boolean>;
-  isHidden: boolean;
-  isInvisible: boolean;
-  isHiddenWatcher: FlowWatcher;
-  isInvisibleWatcher: FlowWatcher;
-  state: ParserState;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
     this.isModal$ = this.pageService.isModal$;
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnDestroy(): void {
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -77,21 +71,7 @@ export class ContentTabsComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    // Initialize visibility watchers
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
-
-    // Watch for gone-if expressions (removes from DOM)
-    this.isHiddenWatcher = this.item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
-
-    // Watch for invisible-if expressions (hides but keeps space)
-    this.isInvisibleWatcher = this.item.watchIsInvisible(
-      this.state,
-      (value) => (this.isInvisible = value)
-    );
+    this.visibility.init(this.tabs);
 
     this.tabs.tabs.forEach((tab) => {
       const contents: Content[] = [];

@@ -1,34 +1,33 @@
-<ng-container *ngIf="ready && !isHidden">
-  <div
-    class="mw568 buttonContent tc"
-    [style.visibility]="isInvisible ? 'hidden' : 'visible'"
-    dir="{{ dir$ | async }}"
+<div
+  *ngIf="ready && !visibility.isHidden"
+  class="mw568 buttonContent tc"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+  dir="{{ dir$ | async }}"
+>
+  <a
+    *ngIf="button.url; else buttonTemplate"
+    class="button"
+    [href]="button.url"
+    [ngStyle]="{
+      'background-color': buttonBgColor,
+      color: buttonTextColor
+    }"
+    target="_blank"
+    rel="noopener noreferrer"
+    (click)="onClick()"
+    >{{ buttonText }}</a
   >
-    <a
-      *ngIf="button.url; else buttonTemplate"
+  <ng-template #buttonTemplate>
+    <button
+      type="button"
       class="button"
-      [href]="button.url"
       [ngStyle]="{
         'background-color': buttonBgColor,
         color: buttonTextColor
       }"
-      target="_blank"
-      rel="noopener noreferrer"
       (click)="onClick()"
-      >{{ buttonText }}</a
     >
-    <ng-template #buttonTemplate>
-      <button
-        type="button"
-        class="button"
-        [ngStyle]="{
-          'background-color': buttonBgColor,
-          color: buttonTextColor
-        }"
-        (click)="onClick()"
-      >
-        {{ buttonText }}
-      </button>
-    </ng-template>
-  </div>
-</ng-container>
+      {{ buttonText }}
+    </button>
+  </ng-template>
+</div>

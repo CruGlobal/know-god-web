@@ -1,26 +1,25 @@
-<ng-container *ngIf="ready && !isHidden && anmResource">
-  <div
-    class="animation-container"
-    [style.visibility]="isInvisible ? 'hidden' : 'visible'"
+<div
+  *ngIf="ready && !visibility.isHidden && anmResource"
+  class="animation-container"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
+  <a
+    *ngIf="animation.url; else animationTemplate"
+    [href]="animation.url"
+    target="_blank"
+    rel="noopener noreferrer"
+    (click)="onClick()"
   >
-    <a
-      *ngIf="animation.url; else animationTemplate"
-      [href]="animation.url"
-      target="_blank"
-      rel="noopener noreferrer"
+    <ng-lottie
+      [options]="lottieOptions"
+      (animationCreated)="onAnimationCreated($event)"
+    ></ng-lottie>
+  </a>
+  <ng-template #animationTemplate>
+    <ng-lottie
       (click)="onClick()"
-    >
-      <ng-lottie
-        [options]="lottieOptions"
-        (animationCreated)="onAnimationCreated($event)"
-      ></ng-lottie>
-    </a>
-    <ng-template #animationTemplate>
-      <ng-lottie
-        (click)="onClick()"
-        [options]="lottieOptions"
-        (animationCreated)="onAnimationCreated($event)"
-      ></ng-lottie>
-    </ng-template>
-  </div>
-</ng-container>
+      [options]="lottieOptions"
+      (animationCreated)="onAnimationCreated($event)"
+    ></ng-lottie>
+  </ng-template>
+</div>

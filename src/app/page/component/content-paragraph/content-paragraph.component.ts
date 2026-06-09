@@ -7,11 +7,10 @@ import {
 } from '@angular/core';
 import {
   Content,
-  FlowWatcher,
-  Paragraph,
-  ParserState
+  Paragraph
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-paragraph',
@@ -24,19 +23,14 @@ export class ContentParagraphComponent implements OnChanges, OnDestroy {
   paragraph: Paragraph;
   ready: boolean;
   items: Array<Content>;
-  isHidden: boolean;
-  isInvisible: boolean;
-  isHiddenWatcher: FlowWatcher;
-  isInvisibleWatcher: FlowWatcher;
-  state: ParserState;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnDestroy(): void {
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -60,21 +54,7 @@ export class ContentParagraphComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    // Initialize visibility watchers
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
-
-    // Watch for gone-if expressions (removes from DOM)
-    this.isHiddenWatcher = this.item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
-
-    // Watch for invisible-if expressions (hides but keeps space)
-    this.isInvisibleWatcher = this.item.watchIsInvisible(
-      this.state,
-      (value) => (this.isInvisible = value)
-    );
+    this.visibility.init(this.paragraph);
 
     this.items = this.paragraph.content;
     this.ready = true;

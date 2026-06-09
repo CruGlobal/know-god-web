@@ -7,13 +7,12 @@ import {
 } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  FlowWatcher,
-  ParserState,
   Text,
   parseTextRemoveBrTags,
   Input as xmlInput
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-input',
@@ -34,20 +33,15 @@ export class ContentInputComponent implements OnChanges, OnDestroy {
   name: string;
   type: string;
   dir$: Observable<string>;
-  isHidden: boolean;
-  isInvisible: boolean;
-  isHiddenWatcher: FlowWatcher;
-  isInvisibleWatcher: FlowWatcher;
-  state: ParserState;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnDestroy(): void {
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -78,21 +72,7 @@ export class ContentInputComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
-    // Initialize visibility watchers
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
-    if (this.isInvisibleWatcher) this.isInvisibleWatcher.close();
-
-    // Watch for gone-if expressions (removes from DOM)
-    this.isHiddenWatcher = this.item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
-
-    // Watch for invisible-if expressions (hides but keeps space)
-    this.isInvisibleWatcher = this.item.watchIsInvisible(
-      this.state,
-      (value) => (this.isInvisible = value)
-    );
+    this.visibility.init(this.input);
 
     this.label = this.input?.label || null;
     this.labelText = this.input.label?.text || '';

@@ -1,8 +1,8 @@
-<ng-container *ngIf="ready && !isHidden">
-  <div
-    class="linkContent indent"
-    [style.visibility]="isInvisible ? 'hidden' : 'visible'"
-  >
+<div
+  *ngIf="ready && !visibility.isHidden"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
+  <div class="linkContent indent">
     <a
       *ngIf="link.url; else linkTemplate"
       [href]="link.url"
@@ -15,4 +15,4 @@
       <button type="button" (click)="onClick()">{{ linkText }}</button>
     </ng-template>
   </div>
-</ng-container>
+</div>
