@@ -1,26 +1,42 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
-import { Button } from 'src/app/services/xml-parser-service/xml-parser.service';
+import {
+  Button,
+  Text
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-button',
   templateUrl: './content-button.component.html',
   styleUrls: ['./content-button.component.css']
 })
-export class ContentButtonComponent implements OnChanges {
+export class ContentButtonComponent implements OnChanges, OnDestroy {
   @Input() item: Button;
 
   button: Button;
-  text: any;
+  text: Text;
   ready: boolean;
   buttonText: string;
   buttonTextColor: string;
   buttonBgColor: string;
   dir$: Observable<string>;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -51,6 +67,8 @@ export class ContentButtonComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.button);
+
     // TODO Allow Button styles when Books are ready
     // this.buttonTextColor = this.button.buttonColor || ''
     // this.buttonBgColor = this.button.backgroundColor || ''

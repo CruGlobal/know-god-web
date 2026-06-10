@@ -76,11 +76,12 @@ export type FlowWatcher = org.cru.godtools.shared.tool.parser.util.FlowWatcher;
 export const ParserConfig = org.cru.godtools.shared.tool.parser.ParserConfig;
 export const ManifestParser = manifestParser;
 export const State = org.cru.godtools.shared.renderer.state.State;
+export type ParserState = ReturnType<typeof State.createState>;
 
 export const MultiselectOptionStyle =
   org.cru.godtools.shared.tool.parser.model.Multiselect.Option.Style;
 
-export const ContentParser = (content: any): string => {
+export const ContentParser = (content: Content): string => {
   if (content instanceof org.cru.godtools.shared.tool.parser.model.Image) {
     // console.log('CONTENT: Image');
     return 'image';
@@ -165,7 +166,7 @@ interface DimensionParser {
   symbol: string;
   value: number;
 }
-export const DimensionParser = (dimension: any): DimensionParser => {
+export const DimensionParser = (dimension: Dimension): DimensionParser => {
   let type = null,
     symbol = null,
     value = null;
@@ -250,7 +251,7 @@ export class PullParserFactory
     return new Promise((resolve) => {
       this.http
         .get(fileName, { responseType: 'arraybuffer' })
-        .subscribe((data: any) => {
+        .subscribe((data: ArrayBuffer) => {
           const enc = new TextDecoder('utf-8');
           const arr = new Uint8Array(data);
           const result = enc.decode(arr);

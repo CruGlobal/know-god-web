@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Text,
@@ -6,13 +12,14 @@ import {
   Input as xmlInput
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-input',
   templateUrl: './content-input.component.html',
   styleUrls: ['./content-input.component.css']
 })
-export class ContentInputComponent implements OnChanges {
+export class ContentInputComponent implements OnChanges, OnDestroy {
   @Input() item: xmlInput;
 
   input: xmlInput;
@@ -26,9 +33,15 @@ export class ContentInputComponent implements OnChanges {
   name: string;
   type: string;
   dir$: Observable<string>;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -59,6 +72,8 @@ export class ContentInputComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.input);
+
     this.label = this.input?.label || null;
     this.labelText = this.input.label?.text || '';
     this.placeholder = this.input?.placeholder || null;

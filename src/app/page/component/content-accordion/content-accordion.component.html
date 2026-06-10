@@ -1,4 +1,7 @@
-<ng-container *ngIf="ready && sections">
+<div
+  *ngIf="ready && !visibility.isHidden && sections"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
   <ng-container *ngFor="let section of sections; trackBy: trackByFn">
     <div class="accordion mw568">
       <button class="accordion-header" (click)="onClick($event)">
@@ -10,4 +13,4 @@
       </div>
     </div>
   </ng-container>
-</ng-container>
+</div>
