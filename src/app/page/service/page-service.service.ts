@@ -3,8 +3,15 @@ import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import {
   EventId,
+  ParserState,
   State
 } from '../../services/xml-parser-service/xml-parser.service';
+
+interface EmailSignupFormData {
+  name: string;
+  email: string;
+  destination_id: string;
+}
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +24,7 @@ export class PageService {
   private _contentEvent = new Subject<string>();
   private _changeHeader = new Subject<string>();
   private _getEmailSignupFormData = new Subject<void>();
-  private _emailSignupFormData = new Subject<void>();
+  private _emailSignupFormData = new Subject<EmailSignupFormData>();
   private _dir = new BehaviorSubject<string>('ltr');
   private _visibleTip = new BehaviorSubject<string>('');
   private _isFirstPage = new BehaviorSubject<boolean>(false);
@@ -33,12 +40,12 @@ export class PageService {
   formAction$: Observable<string> = this._formAction.asObservable();
   contentEvent$: Observable<string> = this._contentEvent.asObservable();
   changeHeader$: Observable<string> = this._changeHeader.asObservable();
-  getEmailSignupFormData$: Observable<any> =
+  getEmailSignupFormData$: Observable<void> =
     this._getEmailSignupFormData.asObservable();
-  emailSignupFormData$: Observable<any> =
+  emailSignupFormData$: Observable<EmailSignupFormData> =
     this._emailSignupFormData.asObservable();
-  nextPage$: Observable<any> = this._nextPage.asObservable();
-  previousPage$: Observable<any> = this._previousPage.asObservable();
+  nextPage$: Observable<void> = this._nextPage.asObservable();
+  previousPage$: Observable<void> = this._previousPage.asObservable();
   navigateToPage$: Observable<string | number> =
     this._navigateToPage.asObservable();
   pageDir$: Observable<string> = this._dir.asObservable();
@@ -125,7 +132,7 @@ export class PageService {
     this._getEmailSignupFormData.next();
   }
 
-  setEmailSignupFormData(data: any): void {
+  setEmailSignupFormData(data: EmailSignupFormData): void {
     this._emailSignupFormData.next(data);
   }
 
@@ -185,7 +192,7 @@ export class PageService {
     return false;
   }
 
-  parserState(): any {
+  parserState(): ParserState {
     return this.XmlParserState;
   }
 

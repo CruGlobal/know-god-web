@@ -1,4 +1,7 @@
-<ng-container *ngIf="ready">
+<div
+  *ngIf="ready && !visibility.isHidden"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
   <label [for]="name" [innerHTML]="labelText"></label>
   <input
     [type]="type"
@@ -10,4 +13,4 @@
     [required]="required"
     [(ngModel)]="value"
   />
-</ng-container>
+</div>

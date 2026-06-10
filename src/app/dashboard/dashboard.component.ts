@@ -12,6 +12,19 @@ import {
 } from '../services/xml-parser-service/xml-parser.service';
 import { getUrlResourceType } from '../shared/getUrlResourceType';
 
+interface Language {
+  id: string;
+  attributes: {
+    code: string;
+    name: string;
+    direction: string;
+  };
+}
+
+interface LanguagesResponse {
+  data: Language[];
+}
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -22,7 +35,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _languagesReady = new Subject<void>();
   private _languageChanged = new Subject<void>();
   private _prepareDataForLanguage = new Subject<void>();
-  private _languagesData: any;
+  private _languagesData: Language[];
 
   private readonly _toolsRoute = 'tools';
   private readonly _lessonsRoute = 'lessons';
@@ -104,7 +117,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.commonService
         .getLanguages(APIURL.GET_ALL_LANGUAGES)
         .pipe(takeUntil(this._unsubscribeAll), take(1))
-        .subscribe((data: any) => {
+        .subscribe((data: LanguagesResponse) => {
           this._languagesData = data.data;
           this._languagesReady.next();
         });
@@ -122,7 +135,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
       this.commonService
         .getLanguages(APIURL.GET_ALL_LANGUAGES)
         .pipe(takeUntil(this._unsubscribeAll), take(1))
-        .subscribe((data: any) => {
+        .subscribe((data: LanguagesResponse) => {
           this._languagesData = data.data;
           this.setDisplayLanguage(urlLanguageCode);
         });

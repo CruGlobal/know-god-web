@@ -9,7 +9,8 @@ import {
   Content,
   FlowWatcher,
   MultiselectOption,
-  MultiselectOptionStyle
+  MultiselectOptionStyle,
+  ParserState
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
 
@@ -24,7 +25,7 @@ export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
   contents: Content[];
   selected: boolean;
   ready: boolean;
-  state: any;
+  state: ParserState;
   selectedWatcher: FlowWatcher;
 
   constructor(private pageService: PageService) {
