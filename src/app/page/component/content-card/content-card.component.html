@@ -1,33 +1,34 @@
 <div
-  *ngIf="ready && !visibility.isHidden"
+  *ngIf="ready && !visibility.isHidden && !card.isClickable"
+  class="card"
   [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+  [ngStyle]="{ 'background-color': background }"
 >
-  <div
-    *ngIf="!card.isClickable"
-    class="card"
-    [ngStyle]="{ 'background-color': background }"
-  >
-    <app-content-repeater [items]="contents"></app-content-repeater>
-  </div>
+  <app-content-repeater [items]="contents"></app-content-repeater>
+</div>
+<a
+  *ngIf="
+    ready && !visibility.isHidden && card.isClickable && card.url;
+    else cardTemplate
+  "
+  class="card clickable"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+  [href]="card.url"
+  target="_blank"
+  rel="noopener noreferrer"
+  (click)="onClick()"
+  [ngStyle]="{ 'background-color': background }"
+>
+  <app-content-repeater [items]="contents"></app-content-repeater>
+</a>
+<ng-template #cardTemplate>
   <a
-    *ngIf="card.isClickable && card.url; else cardTemplate"
+    *ngIf="ready && !visibility.isHidden && card.isClickable"
     class="card clickable"
-    [href]="card.url"
-    target="_blank"
-    rel="noopener noreferrer"
+    [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
     (click)="onClick()"
     [ngStyle]="{ 'background-color': background }"
   >
     <app-content-repeater [items]="contents"></app-content-repeater>
   </a>
-  <ng-template #cardTemplate>
-    <a
-      *ngIf="card.isClickable"
-      class="card clickable"
-      (click)="onClick()"
-      [ngStyle]="{ 'background-color': background }"
-    >
-      <app-content-repeater [items]="contents"></app-content-repeater>
-    </a>
-  </ng-template>
-</div>
+</ng-template>

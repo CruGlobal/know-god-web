@@ -58,7 +58,7 @@ export class ContentRepeaterComponent implements OnChanges {
           this.content.push({ type, content });
         } else if (type === 'paragraph') {
           // Keep paragraphs as paragraph components to preserve gone-if expressions
-          this.content.push({ type, content: content as ContentItems });
+          this.content.push({ type, content: content });
         } else if (content['content']) {
           content['content'].forEach((c) => {
             const contentType = ContentParser(c);
