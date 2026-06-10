@@ -43,7 +43,18 @@ describe('CYOACardCollectionComponent', () => {
         { id: '1', content: [] },
         { id: '2', content: [] },
         { id: '3', content: [] }
-      ]
+      ],
+      header: undefined,
+      content: [],
+      id: 'test-page',
+      getAnalyticsEvents: () => [],
+      __doNotUseOrImplementIt: {},
+      manifest: undefined,
+      isCallToAction: false,
+      backgroundColor: undefined,
+      backgroundImage: undefined,
+      listeners: [],
+      modalAnalyticEvents: []
     } as any;
 
     component.order = 1;
