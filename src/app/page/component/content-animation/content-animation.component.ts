@@ -11,6 +11,7 @@ import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Animation } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-animation',
@@ -27,14 +28,40 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   anmViewItem: AnimationItem;
   dir$: Observable<string>;
   lottieOptions: AnimationOptions;
+  visibility: VisibilityWatchers;
+
+  private getAnimationListeners(): {
+    playListeners: { name: string }[];
+    stopListeners: { name: string }[];
+  } {
+    const animationWithListeners = this.animation as Animation & {
+      playListeners?: { name: string }[];
+      stopListeners?: { name: string }[];
+      _playListeners?: { name: string }[];
+      _stopListeners?: { name: string }[];
+    };
+
+    return {
+      playListeners:
+        animationWithListeners.playListeners ??
+        animationWithListeners._playListeners ??
+        [],
+      stopListeners:
+        animationWithListeners.stopListeners ??
+        animationWithListeners._stopListeners ??
+        []
+    };
+  }
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnDestroy() {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -65,6 +92,8 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   }
 
   private init(): void {
+    this.visibility.init(this.item);
+
     if (!this.animation?.resource?.name) {
       return;
     }
@@ -88,7 +117,8 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
       };
     }
 
-    if (!!this.animation.playListeners || !!this.animation.stopListeners) {
+    const { playListeners, stopListeners } = this.getAnimationListeners();
+    if (playListeners.length || stopListeners.length) {
       this.awaitAnimEvent();
     }
     this.ready = true;
@@ -99,16 +129,17 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe((event) => {
         if (!this.anmViewItem) return;
-        const playListeners = this.animation.playListeners.filter(
+        const { playListeners, stopListeners } = this.getAnimationListeners();
+        const shouldPlay = playListeners.some(
           (listener) => listener.name === event
-        ).length;
-        const stopListeners = this.animation.stopListeners.filter(
+        );
+        const shouldStop = stopListeners.some(
           (listener) => listener.name === event
-        ).length;
+        );
 
-        if (playListeners) {
+        if (shouldPlay) {
           this.anmViewItem.play();
-        } else if (stopListeners) {
+        } else if (shouldStop) {
           this.anmViewItem.pause();
         }
       });

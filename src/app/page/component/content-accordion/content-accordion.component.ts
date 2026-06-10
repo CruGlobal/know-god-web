@@ -1,26 +1,45 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Accordion,
+  AccordionSection,
   Content
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
+
+interface AccordionSectionWithContent {
+  section: AccordionSection;
+  contents: Content[];
+}
 
 @Component({
   selector: 'app-content-accordion',
   templateUrl: './content-accordion.component.html',
   styleUrls: ['./content-accordion.component.css']
 })
-export class ContentAccordionComponent implements OnChanges {
+export class ContentAccordionComponent implements OnChanges, OnDestroy {
   @Input() item: Accordion;
 
   accordion: Accordion;
-  sections: any[];
+  sections: AccordionSectionWithContent[];
   ready: boolean;
   dir$: Observable<string>;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -43,10 +62,11 @@ export class ContentAccordionComponent implements OnChanges {
     }
   }
 
-  onClick(event: any) {
-    const parent = event.target.classList.contains('far')
-      ? event.target.parentElement.parentElement
-      : event.target.parentElement;
+  onClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    const parent = target.classList.contains('far')
+      ? target.parentElement.parentElement
+      : target.parentElement;
     const hasActiveClass = parent.classList.contains('active');
     if (hasActiveClass) {
       parent.classList.remove('active');
@@ -56,6 +76,8 @@ export class ContentAccordionComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.item);
+
     this.item.sections.forEach((section) => {
       const contents: Content[] = [];
       if (section.content) {
