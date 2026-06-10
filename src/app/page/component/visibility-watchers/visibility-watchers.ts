@@ -31,9 +31,8 @@ export class VisibilityWatchers {
     });
 
     // Watch for invisible-if expressions (hides but keeps space)
-    this.isInvisibleWatcher = item.watchIsInvisible(
-      this.state,
-      (value) => (this.isInvisible = value)
-    );
+    this.isInvisibleWatcher = item.watchIsInvisible(this.state, (value) => {
+      this.isInvisible = value;
+    });
   }
 }
