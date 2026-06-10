@@ -104,8 +104,8 @@ export class ResourceService {
     booksData.data
       .sort(
         (o1: JsonApiResource, o2: JsonApiResource) =>
-          (o1.attributes['attr-default-order'] as number) -
-          (o2.attributes['attr-default-order'] as number)
+          ((o1.attributes['attr-default-order'] as number) || 0) -
+          ((o2.attributes['attr-default-order'] as number) || 0)
       )
       .forEach((resource: JsonApiResource) => {
         const { id: resourceId, attributes, relationships } = resource;
