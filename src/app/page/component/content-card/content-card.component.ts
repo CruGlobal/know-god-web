@@ -1,25 +1,36 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   Card,
   Content
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-card',
   templateUrl: './content-card.component.html',
   styleUrls: ['./content-card.component.css']
 })
-export class ContentCardComponent implements OnChanges {
+export class ContentCardComponent implements OnChanges, OnDestroy {
   @Input() item: Card;
   card: Card;
   contents: Content[];
   background: string;
   ready: boolean;
-  state: any;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -46,6 +57,8 @@ export class ContentCardComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.card);
+
     this.background = this.card.backgroundColor;
     const contents: Content[] = [];
     this.card.content.forEach((content) =>

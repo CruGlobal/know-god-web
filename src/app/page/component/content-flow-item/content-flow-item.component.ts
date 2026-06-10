@@ -8,10 +8,10 @@ import {
 } from '@angular/core';
 import {
   Content,
-  FlowItem,
-  FlowWatcher
+  FlowItem
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-flow-item',
@@ -23,12 +23,10 @@ export class ContentFlowItemComponent implements OnChanges, OnDestroy {
   @Input() item: FlowItem;
   contents: Content[];
   ready: boolean;
-  state: any;
-  isHidden: boolean;
-  isHiddenWatcher: FlowWatcher;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
-    this.state = this.pageService.parserState();
+    this.visibility = new VisibilityWatchers(this.pageService);
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,16 +48,12 @@ export class ContentFlowItemComponent implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    this.visibility.closeWatchers();
   }
 
   private init(): void {
-    if (this.isHiddenWatcher) this.isHiddenWatcher.close();
+    this.visibility.init(this.item);
 
-    this.isHiddenWatcher = this.item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
     const contents: Content[] = [];
     this.item.content.forEach((content) =>
       content ? contents.push(content) : null

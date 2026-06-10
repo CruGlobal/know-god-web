@@ -1,11 +1,12 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { TractPage } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { mockTractPage } from '../../../../_tests/mocks';
 import { PageService } from '../../../service/page-service.service';
 import { TractPageComponent } from './tract-page.component';
 
 describe('TractPageComponent', () => {
-  let component: TractPageComponent;
+  let component: any;
   let fixture: ComponentFixture<TractPageComponent>;
   let pageService: PageService;
   const page = mockTractPage(
@@ -68,7 +69,7 @@ describe('TractPageComponent', () => {
   });
 
   it('Ensure formAction is run when pageService.formAction is ran', async () => {
-    const spy = spyOn<any>(component, 'onFormAction');
+    const spy = spyOn(component, 'onFormAction');
     expect(spy).not.toHaveBeenCalled();
     pageService.formAction('action');
     expect(spy).toHaveBeenCalledWith('action');
@@ -112,6 +113,14 @@ describe('TractPageComponent', () => {
   describe('onFormAction', () => {
     let setHiddenCardToShowSpy, setShownCardToHiddenSpy;
 
+    const setupComponentForPage = (page: TractPage, order: number) => {
+      component.page = page;
+      component.order = order;
+      component.ngOnChanges({
+        page: new SimpleChange(null, page, true)
+      });
+    };
+
     beforeEach(waitForAsync(() => {
       spyOn(pageService, 'emailSignumFormDataNeeded');
       spyOn(pageService, 'changeHeader');
@@ -121,9 +130,9 @@ describe('TractPageComponent', () => {
       spyOn(pageService, 'formVisible');
       spyOn(pageService, 'modalHidden');
       spyOn(pageService, 'modalVisible');
-      setHiddenCardToShowSpy = spyOn<any>(component, 'setHiddenCardToShow');
-      setShownCardToHiddenSpy = spyOn<any>(component, 'setShownCardToHidden');
-      (component as any).init();
+      setHiddenCardToShowSpy = spyOn(component, 'setHiddenCardToShow');
+      setShownCardToHiddenSpy = spyOn(component, 'setShownCardToHidden');
+      component['init']();
     }));
 
     it('Event followup:send', async () => {
@@ -138,11 +147,7 @@ describe('TractPageComponent', () => {
     });
 
     it('Event includes "-no-thanks" & on last page', async () => {
-      component.page = Lastpage;
-      component.order = 3;
-      component.ngOnChanges({
-        page: new SimpleChange(null, Lastpage, true)
-      });
+      setupComponentForPage(Lastpage, 3);
 
       pageService.formAction('test-no-thanks');
 
@@ -156,13 +161,13 @@ describe('TractPageComponent', () => {
       pageService.formAction('cardLabel-2');
 
       expect(pageService.emailSignumFormDataNeeded).not.toHaveBeenCalled();
-      expect((component as any)._cardShownOnFormAction).toBe(2);
+      expect(component['_cardShownOnFormAction']).toBe(2);
       expect(pageService.formVisible).toHaveBeenCalled();
       expect(pageService.modalHidden).toHaveBeenCalled();
       expect(pageService.changeHeader).toHaveBeenCalledWith(
         page.cards[2].label.text
       );
-      expect((component as any)._cardsHiddenOnFormAction).toEqual([0, 1]);
+      expect(component['_cardsHiddenOnFormAction']).toEqual([0, 1]);
     });
 
     it('Card Dismiss Listeners', async () => {
@@ -170,22 +175,19 @@ describe('TractPageComponent', () => {
 
       expect(pageService.emailSignumFormDataNeeded).not.toHaveBeenCalled();
       setTimeout(() => {
-        if ((component as any)._cardsHiddenOnFormAction.length) {
+        if (component['_cardsHiddenOnFormAction'].length) {
           expect(setHiddenCardToShowSpy).toHaveBeenCalled();
         }
-        if ((component as any)._cardShownOnFormAction >= 0) {
+        if (component['_cardShownOnFormAction'] >= 0) {
           expect(setShownCardToHiddenSpy).toHaveBeenCalled();
         }
-        expect((component as any)._cardShownOnFormAction).toBe(-1);
-        expect((component as any)._cardsHiddenOnFormAction).toEqual([]);
+        expect(component['_cardShownOnFormAction']).toBe(-1);
+        expect(component['_cardsHiddenOnFormAction']).toEqual([]);
       }, 0);
     });
 
     it('Modal Listeners', async () => {
-      component.page = Modalpage;
-      component.ngOnChanges({
-        page: new SimpleChange(null, Modalpage, true)
-      });
+      setupComponentForPage(Modalpage, 3);
 
       pageService.formAction('modalTitle-0');
 
@@ -194,24 +196,21 @@ describe('TractPageComponent', () => {
     });
 
     it('Modal Dismiss Listeners', async () => {
-      component.page = Modalpage;
-      component.ngOnChanges({
-        page: new SimpleChange(null, Modalpage, true)
-      });
+      setupComponentForPage(Modalpage, 3);
 
       pageService.formAction('modalTitle-0-dismess');
 
       expect(pageService.modalHidden).toHaveBeenCalled();
       expect(pageService.formHidden).toHaveBeenCalled();
       setTimeout(() => {
-        if ((component as any)._cardsHiddenOnFormAction.length) {
+        if (component['_cardsHiddenOnFormAction'].length) {
           expect(setHiddenCardToShowSpy).toHaveBeenCalled();
         }
-        if ((component as any)._cardShownOnFormAction >= 0) {
+        if (component['_cardShownOnFormAction'] >= 0) {
           expect(setShownCardToHiddenSpy).toHaveBeenCalled();
         }
-        expect((component as any)._cardShownOnFormAction).toBe(-1);
-        expect((component as any)._cardsHiddenOnFormAction).toEqual([]);
+        expect(component['_cardShownOnFormAction']).toBe(-1);
+        expect(component['_cardsHiddenOnFormAction']).toEqual([]);
       }, 0);
     });
   });

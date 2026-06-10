@@ -1,15 +1,22 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Observable } from 'rxjs';
 import { Video } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-video',
   templateUrl: './content-video.component.html',
   styleUrls: ['./content-video.component.css']
 })
-export class ContentVideoComponent implements OnChanges {
+export class ContentVideoComponent implements OnChanges, OnDestroy {
   @Input() item: Video;
 
   video: Video;
@@ -18,12 +25,18 @@ export class ContentVideoComponent implements OnChanges {
   videoId: string;
   videoUrl: SafeResourceUrl;
   dir$: Observable<string>;
+  visibility: VisibilityWatchers;
 
   constructor(
     private pageService: PageService,
     public sanitizer: DomSanitizer
   ) {
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -48,6 +61,8 @@ export class ContentVideoComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.video);
+
     this.provider = this.video.provider.name || '';
     this.videoId = this.video.videoId || '';
     setTimeout(() => {

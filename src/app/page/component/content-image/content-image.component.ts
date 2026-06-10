@@ -1,17 +1,25 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   DimensionParser,
+  EventId,
   Image
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-image',
   templateUrl: './content-image.component.html',
   styleUrls: ['./content-image.component.css']
 })
-export class ContentImageComponent implements OnChanges {
+export class ContentImageComponent implements OnChanges, OnDestroy {
   @Input() item: Image;
 
   image: Image;
@@ -19,10 +27,18 @@ export class ContentImageComponent implements OnChanges {
   imgResource: string;
   isFirstPage$: Observable<boolean>;
   width: string;
+  events: EventId[];
+  isEventType: boolean;
+  visibility: VisibilityWatchers;
   isClickable: boolean;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = this.pageService.isFirstPage$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,6 +66,8 @@ export class ContentImageComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.image);
+
     this.imgResource = this.pageService.getImageUrl(
       this.image.resource.name || ''
     );

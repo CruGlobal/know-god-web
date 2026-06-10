@@ -1,4 +1,10 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Content,
@@ -6,6 +12,7 @@ import {
   Tabs
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 interface TabWithContent {
   tab: Tab;
@@ -17,7 +24,7 @@ interface TabWithContent {
   templateUrl: './content-tabs.component.html',
   styleUrls: ['./content-tabs.component.css']
 })
-export class ContentTabsComponent implements OnChanges {
+export class ContentTabsComponent implements OnChanges, OnDestroy {
   @Input() item: Tabs;
 
   tabs: Tabs;
@@ -26,10 +33,16 @@ export class ContentTabsComponent implements OnChanges {
   ready: boolean;
   dir$: Observable<string>;
   isModal$: Observable<boolean>;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
     this.isModal$ = this.pageService.isModal$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -58,6 +71,8 @@ export class ContentTabsComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.tabs);
+
     this.tabs.tabs.forEach((tab) => {
       const contents: Content[] = [];
       if (tab.content)
