@@ -26,10 +26,9 @@ export class VisibilityWatchers {
     this.closeWatchers();
 
     // Watch for gone-if expressions (removes from DOM)
-    this.isHiddenWatcher = item.watchIsGone(
-      this.state,
-      (value) => (this.isHidden = value)
-    );
+    this.isHiddenWatcher = item.watchIsGone(this.state, (value) => {
+      this.isHidden = value;
+    });
 
     // Watch for invisible-if expressions (hides but keeps space)
     this.isInvisibleWatcher = item.watchIsInvisible(
