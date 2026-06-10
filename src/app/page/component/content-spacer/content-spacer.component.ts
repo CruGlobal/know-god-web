@@ -1,14 +1,21 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import { Spacer } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-spacer',
   templateUrl: './content-spacer.component.html',
   styleUrls: ['./content-spacer.component.css']
 })
-export class ContentSpacerComponent implements OnChanges {
+export class ContentSpacerComponent implements OnChanges, OnDestroy {
   @Input() item: Spacer;
 
   spacer: Spacer;
@@ -16,9 +23,15 @@ export class ContentSpacerComponent implements OnChanges {
   mode: string;
   height: number;
   dir$: Observable<string>;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -43,6 +56,8 @@ export class ContentSpacerComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.spacer);
+
     this.mode = this.spacer.mode.name;
     this.height = this.spacer.height;
     this.ready = true;

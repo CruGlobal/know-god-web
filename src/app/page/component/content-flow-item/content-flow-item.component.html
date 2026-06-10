@@ -1,3 +1,7 @@
-<div *ngIf="ready && !isHidden" class="flow-item">
+<div
+  *ngIf="ready && !visibility.isHidden"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+  class="flow-item"
+>
   <app-content-repeater [items]="contents"></app-content-repeater>
 </div>

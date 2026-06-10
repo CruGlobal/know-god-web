@@ -1,4 +1,9 @@
-<ng-container *ngIf="ready && content && (isModal$ | async) === false">
+<div
+  *ngIf="
+    ready && !visibility.isHidden && content && (isModal$ | async) === false
+  "
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
   <ng-container *ngFor="let tab of content; trackBy: trackByFn">
     <ng-container *ngIf="tab.tab && tab.contents">
       <div class="tabContent">
@@ -8,4 +13,4 @@
       </div>
     </ng-container>
   </ng-container>
-</ng-container>
+</div>

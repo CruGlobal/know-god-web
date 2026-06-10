@@ -1,4 +1,7 @@
-<ng-container *ngIf="ready">
+<div
+  *ngIf="ready && !visibility.isHidden"
+  [style.visibility]="visibility.isInvisible ? 'hidden' : 'visible'"
+>
   <img
     *ngIf="!isClickable"
     class="imageContent ng-binding"
@@ -33,4 +36,4 @@
       />
     </button>
   </ng-template>
-</ng-container>
+</div>

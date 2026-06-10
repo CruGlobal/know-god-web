@@ -1,17 +1,24 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   Text,
   parseTextAddBrTags
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-text',
   templateUrl: './content-text.component.html',
   styleUrls: ['./content-text.component.css']
 })
-export class ContentTextComponent implements OnChanges {
+export class ContentTextComponent implements OnChanges, OnDestroy {
   @Input() item: Text;
 
   text: Text;
@@ -20,13 +27,19 @@ export class ContentTextComponent implements OnChanges {
   isFirstPage$: Observable<boolean>;
   dir$: Observable<string>;
   textColor: string;
-  styles: any;
+  styles: { [key: string]: string | number };
   startImgResource: string | null;
   startImgWidth: string | null;
+  visibility: VisibilityWatchers;
 
   constructor(private pageService: PageService) {
     this.isFirstPage$ = pageService.isFirstPage$;
     this.dir$ = this.pageService.pageDir$;
+    this.visibility = new VisibilityWatchers(this.pageService);
+  }
+
+  ngOnDestroy(): void {
+    this.visibility.closeWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -50,6 +63,8 @@ export class ContentTextComponent implements OnChanges {
   }
 
   private init(): void {
+    this.visibility.init(this.text);
+
     const styles = {
       'font-weight': this.text.fontWeight ? this.text.fontWeight : '',
       'font-style': this.text.textStyles?.some(
