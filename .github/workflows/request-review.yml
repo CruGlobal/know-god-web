@@ -1,12 +1,5 @@
 name: Request Team Review
 
-# When the "Review" label is applied to a PR, request a review from one
-# randomly-chosen member of the web-engineering-js team (excluding the PR
-# author). This replaces the old CODEOWNERS auto-requests, which pinged every
-# owner on every PR.
-#
-# Uses pull_request_target so the token has write permissions on PRs from
-# forks. This is safe because the workflow never checks out PR code.
 on:
   pull_request_target:
     types: [labeled]
@@ -47,11 +40,17 @@ jobs:
               console.log(`Could not list team members (${error.message}); using fallback list.`);
             }
 
-            // Don't request a review from the PR author or anyone already requested.
+            // Bail out if a team member already has a pending review request
+            // (e.g. the label was re-applied or someone was requested manually).
             const alreadyRequested = (pr.requested_reviewers || []).map((r) => r.login);
-            const candidates = members.filter(
-              (login) => login !== pr.user.login && !alreadyRequested.includes(login)
-            );
+            const pendingMember = alreadyRequested.find((login) => members.includes(login));
+            if (pendingMember) {
+              console.log(`${pendingMember} already has a pending review request; nothing to do.`);
+              return;
+            }
+
+            // Don't request a review from the PR author.
+            const candidates = members.filter((login) => login !== pr.user.login);
 
             if (candidates.length === 0) {
               console.log('No eligible reviewers to request.');
