@@ -10,6 +10,7 @@ import {
   EventId,
   Flow,
   FlowItem,
+  FlowWatcher,
   Image,
   Input,
   LessonPage,
@@ -746,5 +747,33 @@ export const mockSpacer = (height = 100): Spacer => {
       ordinal: 0
     },
     ...standardTypeValues()
+  };
+};
+
+export const mockVisibilityWatchers = (item: Content) => {
+  const goneClose = jasmine.createSpy('goneClose');
+  const invisibleClose = jasmine.createSpy('invisibleClose');
+  let goneCallback: (value: boolean) => void = () => {};
+  let invisibleCallback: (value: boolean) => void = () => {};
+
+  spyOn(item, 'watchIsGone').and.callFake(
+    (_state: ParserState, callback: (value: boolean) => void) => {
+      goneCallback = callback;
+      return { close: goneClose } as unknown as FlowWatcher;
+    }
+  );
+  spyOn(item, 'watchIsInvisible').and.callFake(
+    (_state: ParserState, callback: (value: boolean) => void) => {
+      invisibleCallback = callback;
+      return { close: invisibleClose } as unknown as FlowWatcher;
+    }
+  );
+
+  return {
+    item,
+    goneClose,
+    invisibleClose,
+    triggerGone: (value: boolean) => goneCallback(value),
+    triggerInvisible: (value: boolean) => invisibleCallback(value)
   };
 };
