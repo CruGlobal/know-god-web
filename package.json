@@ -14,7 +14,7 @@
     "postinstall": "husky install",
     "extract": "i18next --config i18next-parser.config.cjs",
     "crowdin:sort-translations": "node ./crowdin/sort-translations.cjs",
-    "crowdin:download": "crowdin download translations && yarn crowdin:sort-translations",
+    "crowdin:download": "crowdin download translations --skip-untranslated-strings && yarn crowdin:sort-translations",
     "crowdin:upload": "crowdin upload translations"
   },
   "type": "module",
