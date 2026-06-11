@@ -1,0 +1,44 @@
+name: Request Team Review
+
+# When the "Review" label is applied to a PR, request a review from the
+# web-engineering-js team. This replaces the old CODEOWNERS auto-requests:
+# reviews are only requested once the author marks the PR ready by labeling it.
+#
+# Uses pull_request_target so the token has write permissions on PRs from
+# forks. This is safe because the workflow never checks out PR code.
+on:
+  pull_request_target:
+    types: [labeled]
+
+permissions:
+  pull-requests: write
+
+jobs:
+  request-review:
+    name: 👀 Request review from team
+    runs-on: ubuntu-latest
+    if: github.event.label.name == 'Review' && github.event.pull_request.draft == false
+    steps:
+      - name: Request review from web-engineering-js
+        uses: actions/github-script@v7
+        with:
+          # Requesting a *team* review requires a token with org read access,
+          # which the default GITHUB_TOKEN may not have. If this step fails,
+          # add a REVIEW_BOT_TOKEN secret (PAT with repo + read:org scopes).
+          github-token: ${{ secrets.REVIEW_BOT_TOKEN || github.token }}
+          script: |
+            try {
+              await github.rest.pulls.requestReviewers({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: context.payload.pull_request.number,
+                team_reviewers: ['web-engineering-js'],
+              });
+              console.log('Requested review from web-engineering-js');
+            } catch (error) {
+              core.setFailed(
+                `Could not request team review: ${error.message}. ` +
+                'If this is a permissions error, add a REVIEW_BOT_TOKEN secret ' +
+                '(PAT with repo + read:org scopes).'
+              );
+            }
