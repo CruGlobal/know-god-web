@@ -1,29 +1,42 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnDestroy,
+  SimpleChanges
+} from '@angular/core';
 import {
   DimensionParser,
   Flow,
   FlowItem,
-  Horizontal,
-  ParserState
+  Horizontal
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
+import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
+
+type FlowContent = {
+  item: FlowItem;
+  itemWidth?: string | null;
+  visibility?: VisibilityWatchers;
+};
 
 @Component({
   selector: 'app-content-flow',
   templateUrl: './content-flow.component.html',
   styleUrls: ['./content-flow.component.css']
 })
-export class ContentFlowComponent implements OnChanges {
+export class ContentFlowComponent implements OnChanges, OnDestroy {
   @Input() item: Flow;
 
   flow: Flow;
-  items: (FlowItem & { itemWidth?: string | null })[];
+  items: FlowContent[];
   ready: boolean;
-  state: ParserState;
   justifyContent: Horizontal;
 
-  constructor(private pageService: PageService) {
-    this.state = this.pageService.parserState();
+  constructor(private pageService: PageService) {}
+
+  ngOnDestroy(): void {
+    this.closeItemWatchers();
   }
 
   ngOnChanges(changes: SimpleChanges) {
@@ -49,15 +62,31 @@ export class ContentFlowComponent implements OnChanges {
     return index;
   }
 
+  private closeItemWatchers(): void {
+    this.items?.forEach((contentItem) =>
+      contentItem.visibility?.closeWatchers()
+    );
+  }
+
   private init(): void {
-    this.items = this.item.items;
-    this.items.forEach((flowItem) => {
+    this.closeItemWatchers();
+
+    this.items = this.flow.items.map((flowItem) => {
       const dimension = DimensionParser(flowItem.width);
-      flowItem.itemWidth = dimension?.value
+      const itemWidth = dimension?.value
         ? dimension.value + dimension.symbol
         : null;
+
+      const visibility = new VisibilityWatchers(this.pageService);
+      visibility.init(flowItem);
+
+      return {
+        item: flowItem,
+        itemWidth,
+        visibility
+      };
     });
-    this.justifyContent = this.item.rowGravity;
+    this.justifyContent = this.flow.rowGravity;
     this.ready = true;
   }
 }

@@ -2,7 +2,6 @@ import {
   Component,
   Input,
   OnChanges,
-  OnDestroy,
   SimpleChanges,
   ViewEncapsulation
 } from '@angular/core';
@@ -10,8 +9,6 @@ import {
   Content,
   FlowItem
 } from 'src/app/services/xml-parser-service/xml-parser.service';
-import { PageService } from '../../service/page-service.service';
-import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 
 @Component({
   selector: 'app-content-flow-item',
@@ -19,15 +16,10 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
   styleUrls: ['./content-flow-item.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ContentFlowItemComponent implements OnChanges, OnDestroy {
+export class ContentFlowItemComponent implements OnChanges {
   @Input() item: FlowItem;
   contents: Content[];
   ready: boolean;
-  visibility: VisibilityWatchers;
-
-  constructor(private pageService: PageService) {
-    this.visibility = new VisibilityWatchers(this.pageService);
-  }
 
   ngOnChanges(changes: SimpleChanges) {
     for (const propName in changes) {
@@ -47,13 +39,7 @@ export class ContentFlowItemComponent implements OnChanges, OnDestroy {
     }
   }
 
-  ngOnDestroy(): void {
-    this.visibility.closeWatchers();
-  }
-
   private init(): void {
-    this.visibility.init(this.item);
-
     const contents: Content[] = [];
     this.item.content.forEach((content) =>
       content ? contents.push(content) : null
