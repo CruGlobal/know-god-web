@@ -1,8 +1,9 @@
 name: Request Team Review
 
-# When the "Review" label is applied to a PR, request a review from the
-# web-engineering-js team. This replaces the old CODEOWNERS auto-requests:
-# reviews are only requested once the author marks the PR ready by labeling it.
+# When the "Review" label is applied to a PR, request a review from one
+# randomly-chosen member of the web-engineering-js team (excluding the PR
+# author). This replaces the old CODEOWNERS auto-requests, which pinged every
+# owner on every PR.
 #
 # Uses pull_request_target so the token has write permissions on PRs from
 # forks. This is safe because the workflow never checks out PR code.
@@ -15,30 +16,58 @@ permissions:
 
 jobs:
   request-review:
-    name: 👀 Request review from team
+    name: 👀 Request review from a team member
     runs-on: ubuntu-latest
     if: github.event.label.name == 'Review' && github.event.pull_request.draft == false
     steps:
-      - name: Request review from web-engineering-js
+      - name: Request review from a random web-engineering-js member
         uses: actions/github-script@v7
         with:
-          # Requesting a *team* review requires a token with org read access,
-          # which the default GITHUB_TOKEN may not have. If this step fails,
-          # add a REVIEW_BOT_TOKEN secret (PAT with repo + read:org scopes).
+          # Listing team members requires org read access, which the default
+          # GITHUB_TOKEN does not have. Without a REVIEW_BOT_TOKEN secret
+          # (PAT with repo + read:org scopes), the fallback list below is used.
           github-token: ${{ secrets.REVIEW_BOT_TOKEN || github.token }}
           script: |
+            const pr = context.payload.pull_request;
+
+            // Fallback list, kept in sync with the web-engineering-js team
+            // (see cru-terraform/github/CruGlobal/teams/web_engineering_js).
+            let members = ['canac', 'dr-bizz', 'kegrimes', 'zweatshirt', 'wjames111'];
+
+            // Prefer the live team membership so this list never goes stale.
+            try {
+              const response = await github.paginate(github.rest.teams.listMembersInOrg, {
+                org: context.repo.owner,
+                team_slug: 'web-engineering-js',
+              });
+              if (response.length > 0) {
+                members = response.map((member) => member.login);
+              }
+            } catch (error) {
+              console.log(`Could not list team members (${error.message}); using fallback list.`);
+            }
+
+            // Don't request a review from the PR author or anyone already requested.
+            const alreadyRequested = (pr.requested_reviewers || []).map((r) => r.login);
+            const candidates = members.filter(
+              (login) => login !== pr.user.login && !alreadyRequested.includes(login)
+            );
+
+            if (candidates.length === 0) {
+              console.log('No eligible reviewers to request.');
+              return;
+            }
+
+            const reviewer = candidates[Math.floor(Math.random() * candidates.length)];
+
             try {
               await github.rest.pulls.requestReviewers({
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                pull_number: context.payload.pull_request.number,
-                team_reviewers: ['web-engineering-js'],
+                pull_number: pr.number,
+                reviewers: [reviewer],
               });
-              console.log('Requested review from web-engineering-js');
+              console.log(`Requested review from ${reviewer}`);
             } catch (error) {
-              core.setFailed(
-                `Could not request team review: ${error.message}. ` +
-                'If this is a permissions error, add a REVIEW_BOT_TOKEN secret ' +
-                '(PAT with repo + read:org scopes).'
-              );
+              core.setFailed(`Could not request review from ${reviewer}: ${error.message}`);
             }

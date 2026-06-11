@@ -33,6 +33,6 @@ Example:
 - [ ] I have run `yarn lint` and `yarn prettier:check` and fixed any issues
 - [ ] `yarn test --no-watch` passes locally
 - [ ] I have run `/agent-review` and addressed its findings before requesting a dev review
-- [ ] My PR is ready for review and I have applied the **"Review"** label — this automatically requests a review from the team
+- [ ] My PR is ready for review and I have applied the **"Review"** label — this automatically requests a review from a randomly-chosen team member
 - [ ] I have tested my changes on staging or development
 - [ ] I have cleaned up my commit history
