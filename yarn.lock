@@ -8643,7 +8643,7 @@ __metadata:
     ngx-toastr: "npm:^17.0.2"
     prettier: "npm:^3.4.1"
     pretty-quick: "npm:^4.0.0"
-    rxjs: "npm:7.8.1"
+    rxjs: "npm:7.8.2"
     stream: "npm:^0.0.3"
     ts-clipboard: "npm:^1.0.17"
     typescript: "npm:~5.4.5"
@@ -11131,7 +11131,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rxjs@npm:^7.8.1":
+"rxjs@npm:7.8.2, rxjs@npm:^7.8.1":
   version: 7.8.2
   resolution: "rxjs@npm:7.8.2"
   dependencies:
