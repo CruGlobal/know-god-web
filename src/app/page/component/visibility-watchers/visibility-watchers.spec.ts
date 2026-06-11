@@ -1,39 +1,7 @@
-import {
-  Content,
-  FlowWatcher,
-  ParserState
-} from 'src/app/services/xml-parser-service/xml-parser.service';
-import { mockText } from '../../../_tests/mocks';
+import { ParserState } from 'src/app/services/xml-parser-service/xml-parser.service';
+import { mockText, mockVisibilityWatchers } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { VisibilityWatchers } from './visibility-watchers';
-
-const wireWatchers = (item: Content) => {
-  const goneClose = jasmine.createSpy('goneClose');
-  const invisibleClose = jasmine.createSpy('invisibleClose');
-  let goneCallback: (value: boolean) => void = () => {};
-  let invisibleCallback: (value: boolean) => void = () => {};
-
-  spyOn(item, 'watchIsGone').and.callFake(
-    (_state: ParserState, callback: (value: boolean) => void) => {
-      goneCallback = callback;
-      return { close: goneClose } as unknown as FlowWatcher;
-    }
-  );
-  spyOn(item, 'watchIsInvisible').and.callFake(
-    (_state: ParserState, callback: (value: boolean) => void) => {
-      invisibleCallback = callback;
-      return { close: invisibleClose } as unknown as FlowWatcher;
-    }
-  );
-
-  return {
-    item,
-    goneClose,
-    invisibleClose,
-    triggerGone: (value: boolean) => goneCallback(value),
-    triggerInvisible: (value: boolean) => invisibleCallback(value)
-  };
-};
 
 describe('VisibilityWatchers', () => {
   let pageService: PageService;
@@ -53,7 +21,7 @@ describe('VisibilityWatchers', () => {
 
   describe('init', () => {
     it('opens a gone and an invisible watcher, passing the parser state', () => {
-      const { item } = wireWatchers(mockText('sample'));
+      const { item } = mockVisibilityWatchers(mockText('sample'));
 
       visibility.init(item);
 
@@ -68,7 +36,7 @@ describe('VisibilityWatchers', () => {
     });
 
     it('updates isHidden when the gone watcher emits', () => {
-      const watchers = wireWatchers(mockText('sample'));
+      const watchers = mockVisibilityWatchers(mockText('sample'));
       visibility.init(watchers.item);
 
       watchers.triggerGone(true);
@@ -79,7 +47,7 @@ describe('VisibilityWatchers', () => {
     });
 
     it('updates isInvisible when the invisible watcher emits', () => {
-      const watchers = wireWatchers(mockText('sample'));
+      const watchers = mockVisibilityWatchers(mockText('sample'));
       visibility.init(watchers.item);
 
       watchers.triggerInvisible(true);
@@ -90,10 +58,10 @@ describe('VisibilityWatchers', () => {
     });
 
     it('closes the previous watchers before opening new ones on re-init', () => {
-      const first = wireWatchers(mockText('first'));
+      const first = mockVisibilityWatchers(mockText('first'));
       visibility.init(first.item);
 
-      const second = wireWatchers(mockText('second'));
+      const second = mockVisibilityWatchers(mockText('second'));
       visibility.init(second.item);
 
       expect(first.goneClose).toHaveBeenCalledTimes(1);
@@ -103,7 +71,7 @@ describe('VisibilityWatchers', () => {
 
   describe('closeWatchers', () => {
     it('closes both watchers', () => {
-      const watchers = wireWatchers(mockText('sample'));
+      const watchers = mockVisibilityWatchers(mockText('sample'));
       visibility.init(watchers.item);
 
       visibility.closeWatchers();

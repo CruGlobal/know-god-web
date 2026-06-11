@@ -7,10 +7,12 @@
   >
     <!-- Subtract 17.5px from the percentage to account for the gap between flow-items  -->
     <app-content-flow-item
-      *ngFor="let item of items; trackBy: trackByFn"
-      [item]="item"
+      *ngFor="let contentItem of items; trackBy: trackByFn"
+      [item]="contentItem.item"
+      [hidden]="contentItem.visibility?.isHidden"
       [ngStyle]="{
-        flexBasis: 'calc(' + item.itemWidth + ' - 17.5px)'
+        flexBasis: 'calc(' + contentItem.itemWidth + ' - 17.5px)',
+        visibility: contentItem.visibility?.isInvisible ? 'hidden' : 'visible'
       }"
     >
     </app-content-flow-item>
