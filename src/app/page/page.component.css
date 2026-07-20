@@ -129,7 +129,8 @@ p {
   border-color: #999;
 }
 
-#languageList .no-language-results {
+#languageList .no-language-results span {
+  display: block;
   padding: 4px 16px;
   line-height: 1.25;
 }
