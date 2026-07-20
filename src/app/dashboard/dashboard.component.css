@@ -128,6 +128,38 @@
   font-weight: 400;
 }
 
+#languageSwitchModal > div.modal-content > div.language-search {
+  flex-shrink: 0;
+  margin: 5px 0 0 0;
+  padding: 0 15px 0 5px;
+}
+
+#languageSwitchModal > div.modal-content > div.language-search > input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  font-size: 13px;
+  color: #555;
+  border: 1px solid #efefef;
+  border-radius: 4px;
+  outline: none;
+}
+
+#languageSwitchModal > div.modal-content > div.language-search > input:focus {
+  border-color: #cccccc;
+}
+
+#languageSwitchModal > div.modal-content > div.no-language-results {
+  font-size: 13px;
+  color: #555;
+  text-align: center;
+}
+
+#languageSwitchModal > div.modal-content > div.no-language-results.has-message {
+  padding: 16px;
+}
+
 #languageSwitchModal > div.modal-content > ul.languages-grid {
   width: 100%;
   overflow-y: scroll;
