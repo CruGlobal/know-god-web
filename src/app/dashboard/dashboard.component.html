@@ -96,8 +96,15 @@
         {{ lang.name }}
       </li>
     </ul>
-    <div class="no-language-results" *ngIf="filteredLangs.length === 0">
-      {{ 'No languages found' | i18nextEager }}
+    <div
+      class="no-language-results"
+      role="status"
+      aria-live="polite"
+      [class.has-message]="filteredLangs.length === 0"
+    >
+      <ng-container *ngIf="filteredLangs.length === 0">
+        {{ 'No languages found' | i18nextEager }}
+      </ng-container>
     </div>
   </div>
 </div>

@@ -66,7 +66,7 @@ describe('DashboardComponent', () => {
     expect(component.availableLangs[0].code).toEqual('zh-Hant');
   }));
 
-  it('filteredLangs should filter by search text, matching names across languages', fakeAsync(() => {
+  it('filteredLangs should filter by search text', fakeAsync(() => {
     component['_languagesData'] = [
       mockPageComponent.languageEnglish,
       mockPageComponent.languageGerman,
@@ -82,10 +82,6 @@ describe('DashboardComponent', () => {
 
     // Matches the name shown in the selector
     component.languageSearchText = 'germ';
-    expect(component.filteredLangs.map((l) => l.code)).toEqual(['de']);
-
-    // Matches the language's own name for itself
-    component.languageSearchText = 'Deutsch';
     expect(component.filteredLangs.map((l) => l.code)).toEqual(['de']);
 
     component.languageSearchText = 'no such language';

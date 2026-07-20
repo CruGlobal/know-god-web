@@ -153,14 +153,50 @@ describe('PageComponent', () => {
       mockPageComponent.languageEnglish
     ]);
 
-    // Matches the language's own name for itself
-    component.languageSearchText = 'Deutsch';
+    // Matches the API-provided language name
+    component.languageSearchText = 'german';
     expect(component.filteredLanguages).toEqual([
       mockPageComponent.languageGerman
     ]);
 
     component.languageSearchText = 'no such language';
     expect(component.filteredLanguages.length).toEqual(0);
+  });
+
+  it('filteredLanguages should reuse cached search keys on repeated reads', () => {
+    component.availableLanguages = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman
+    ];
+    component.languageSearchText = 'eng';
+    const displayNamesSpy = spyOn(Intl, 'DisplayNames').and.callThrough();
+
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageEnglish
+    ]);
+    const callsAfterFirstRead = displayNamesSpy.calls.count();
+    expect(callsAfterFirstRead).toBeGreaterThan(0);
+
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageEnglish
+    ]);
+    expect(displayNamesSpy.calls.count()).toEqual(callsAfterFirstRead);
+  });
+
+  it('filteredLanguages should build new search keys when the display locale changes', () => {
+    component.availableLanguages = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman
+    ];
+    component.languageSearchText = 'eng';
+    const displayNamesSpy = spyOn(Intl, 'DisplayNames').and.callThrough();
+
+    expect(component.filteredLanguages.length).toEqual(1);
+    const callsForFirstLocale = displayNamesSpy.calls.count();
+
+    component._pageParams.langId = 'de';
+    expect(component.filteredLanguages.length).toEqual(1);
+    expect(displayNamesSpy.calls.count()).toBeGreaterThan(callsForFirstLocale);
   });
 
   it('onPreviousPage() on page 0', () => {

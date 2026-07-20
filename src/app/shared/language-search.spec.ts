@@ -1,5 +1,6 @@
 import {
   buildLanguageSearchKey,
+  filterLanguages,
   languageMatchesSearch,
   normalizeLanguageText
 } from './language-search';
@@ -68,6 +69,30 @@ describe('language-search', () => {
 
     it('rejects non-matching queries', () => {
       expect(languageMatchesSearch(key, 'swahili')).toBeFalse();
+    });
+  });
+
+  describe('filterLanguages', () => {
+    const languages = [
+      { name: 'Spanish', searchKey: buildLanguageSearchKey('es', 'Spanish') },
+      { name: 'German', searchKey: buildLanguageSearchKey('de', 'German') }
+    ];
+
+    it('returns the full list when the query is empty or whitespace', () => {
+      expect(filterLanguages(languages, (lang) => lang.searchKey, '')).toEqual(
+        languages
+      );
+      expect(
+        filterLanguages(languages, (lang) => lang.searchKey, '   ')
+      ).toEqual(languages);
+    });
+
+    it('keeps only matching languages', () => {
+      expect(
+        filterLanguages(languages, (lang) => lang.searchKey, 'ESPAÑOL').map(
+          (lang) => lang.name
+        )
+      ).toEqual(['Spanish']);
     });
   });
 });

@@ -29,7 +29,7 @@ import {
 } from '../services/xml-parser-service/xml-parser.service';
 import {
   buildLanguageSearchKey,
-  languageMatchesSearch
+  filterLanguages
 } from '../shared/language-search';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
@@ -246,14 +246,16 @@ export class PageComponent implements OnInit, OnDestroy {
     if (!this.availableLanguages) {
       return [];
     }
-    return this.availableLanguages.filter((lang) =>
-      languageMatchesSearch(
-        this.getLanguageSearchKey(lang),
-        this.languageSearchText
-      )
+    return filterLanguages(
+      this.availableLanguages,
+      (lang) => this.getLanguageSearchKey(lang),
+      this.languageSearchText
     );
   }
 
+  // Keys live in an external Map because availableLanguages holds shared
+  // parsed Language models this component must not mutate (unlike the
+  // dashboard, which owns its mapped objects and can build keys eagerly).
   private getLanguageSearchKey(lang: Language): string {
     const cacheKey = `${lang.id}|${this._pageParams.langId}`;
     let searchKey = this._languageSearchKeys.get(cacheKey);
@@ -1010,6 +1012,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBookSubPagesManifest = [];
     this._pageBookSubPages = [];
     this._visibleHiddenPageIds.clear();
+    this._languageSearchKeys.clear();
     this.availableLanguages = [];
     this.selectedBookName = '';
     this.languagesVisible = false;
