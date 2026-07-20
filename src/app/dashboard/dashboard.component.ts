@@ -13,7 +13,7 @@ import {
 import { getUrlResourceType } from '../shared/getUrlResourceType';
 import {
   buildLanguageSearchKey,
-  languageMatchesSearch
+  filterLanguages
 } from '../shared/language-search';
 
 interface Language {
@@ -220,8 +220,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (!this.availableLangs) {
       return [];
     }
-    return this.availableLangs.filter((lang) =>
-      languageMatchesSearch(lang.searchKey, this.languageSearchText)
+    return filterLanguages(
+      this.availableLangs,
+      (lang) => lang.searchKey,
+      this.languageSearchText
     );
   }
 

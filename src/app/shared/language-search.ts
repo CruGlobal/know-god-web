@@ -50,3 +50,17 @@ export function languageMatchesSearch(
   const normalizedQuery = normalizeLanguageText(query);
   return !normalizedQuery || searchKey.includes(normalizedQuery);
 }
+
+// Like filtering with languageMatchesSearch, but normalizes the query once for
+// the whole list instead of once per language.
+export function filterLanguages<T>(
+  items: T[],
+  getSearchKey: (item: T) => string,
+  query: string
+): T[] {
+  const normalizedQuery = normalizeLanguageText(query);
+  if (!normalizedQuery) {
+    return items;
+  }
+  return items.filter((item) => getSearchKey(item).includes(normalizedQuery));
+}

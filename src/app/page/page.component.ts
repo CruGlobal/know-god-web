@@ -29,7 +29,7 @@ import {
 } from '../services/xml-parser-service/xml-parser.service';
 import {
   buildLanguageSearchKey,
-  languageMatchesSearch
+  filterLanguages
 } from '../shared/language-search';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
@@ -246,11 +246,10 @@ export class PageComponent implements OnInit, OnDestroy {
     if (!this.availableLanguages) {
       return [];
     }
-    return this.availableLanguages.filter((lang) =>
-      languageMatchesSearch(
-        this.getLanguageSearchKey(lang),
-        this.languageSearchText
-      )
+    return filterLanguages(
+      this.availableLanguages,
+      (lang) => this.getLanguageSearchKey(lang),
+      this.languageSearchText
     );
   }
 
