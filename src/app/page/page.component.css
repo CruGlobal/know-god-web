@@ -110,6 +110,30 @@ p {
   background-color: #f0f0f0;
 }
 
+#languageList .language-search {
+  padding: 0 16px 8px;
+}
+
+#languageList .language-search input {
+  width: 100%;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  font-size: inherit;
+  line-height: 1.25;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  outline: none;
+}
+
+#languageList .language-search input:focus {
+  border-color: #999;
+}
+
+#languageList .no-language-results {
+  padding: 4px 16px;
+  line-height: 1.25;
+}
+
 #languageList ul {
   columns: 2;
   margin: 0;
