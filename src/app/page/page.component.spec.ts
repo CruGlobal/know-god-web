@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
@@ -59,7 +60,12 @@ describe('PageComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [PageComponent],
-      imports: [HttpClientModule, RouterTestingModule, I18NextModule.forRoot()],
+      imports: [
+        HttpClientModule,
+        FormsModule,
+        RouterTestingModule,
+        I18NextModule.forRoot()
+      ],
       providers: [
         CommonService,
         LoaderService,
@@ -124,6 +130,37 @@ describe('PageComponent', () => {
     component.languagesVisible = false;
     component.onToggleLanguageSelect();
     expect(component.languagesVisible).toBeTrue();
+  });
+
+  it('onToggleLanguageSelect() should clear the search text', () => {
+    component.languageSearchText = 'germ';
+    component.onToggleLanguageSelect();
+    expect(component.languageSearchText).toEqual('');
+  });
+
+  it('filteredLanguages should filter by search text, matching names across languages', () => {
+    component.availableLanguages = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman
+    ];
+
+    component.languageSearchText = '';
+    expect(component.filteredLanguages.length).toEqual(2);
+
+    // Matches the name shown in the selector
+    component.languageSearchText = 'eng';
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageEnglish
+    ]);
+
+    // Matches the language's own name for itself
+    component.languageSearchText = 'Deutsch';
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageGerman
+    ]);
+
+    component.languageSearchText = 'no such language';
+    expect(component.filteredLanguages.length).toEqual(0);
   });
 
   it('onPreviousPage() on page 0', () => {

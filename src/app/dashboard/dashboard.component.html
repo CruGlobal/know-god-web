@@ -78,14 +78,26 @@
     <div class="modal-close">
       <i class="fas fa-times" (click)="onSwitchLanguage()"></i>
     </div>
+    <div class="language-search">
+      <input
+        type="search"
+        dir="auto"
+        [(ngModel)]="languageSearchText"
+        [placeholder]="'Search languages' | i18nextEager"
+        [attr.aria-label]="'Search languages' | i18nextEager"
+      />
+    </div>
     <ul class="languages-grid">
       <li
         class="language"
-        *ngFor="let lang of availableLangs"
+        *ngFor="let lang of filteredLangs"
         (click)="onSelectLanguage(lang.code)"
       >
         {{ lang.name }}
       </li>
     </ul>
+    <div class="no-language-results" *ngIf="filteredLangs.length === 0">
+      {{ 'No languages found' | i18nextEager }}
+    </div>
   </div>
 </div>

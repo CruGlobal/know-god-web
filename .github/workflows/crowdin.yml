@@ -26,11 +26,9 @@ jobs:
       - name: 🌐 Extract Translations
         run: yarn extract
       - name: 🔤🔽 CrowdIn Translations Download
-        run: yarn crowdin download translations
+        run: yarn crowdin:download
         env:
           CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
-      - name: 🔤 Sort Translations
-        run: yarn crowdin:sort-translations
       - name: 🔀 Create PR
         uses: peter-evans/create-pull-request@v7
         env:
