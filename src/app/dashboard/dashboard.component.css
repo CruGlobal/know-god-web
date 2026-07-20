@@ -151,10 +151,13 @@
 }
 
 #languageSwitchModal > div.modal-content > div.no-language-results {
-  padding: 16px;
   font-size: 13px;
   color: #555;
   text-align: center;
+}
+
+#languageSwitchModal > div.modal-content > div.no-language-results.has-message {
+  padding: 16px;
 }
 
 #languageSwitchModal > div.modal-content > ul.languages-grid {
