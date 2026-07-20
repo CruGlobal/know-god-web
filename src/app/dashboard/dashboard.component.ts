@@ -11,6 +11,10 @@ import {
   ToolType
 } from '../services/xml-parser-service/xml-parser.service';
 import { getUrlResourceType } from '../shared/getUrlResourceType';
+import {
+  buildLanguageSearchKey,
+  languageMatchesSearch
+} from '../shared/language-search';
 
 interface Language {
   id: string;
@@ -53,7 +57,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageName: string;
   dispLanguageDirection: string;
   langSwitchOn: boolean;
-  availableLangs: { code: string; name: string }[];
+  availableLangs: { code: string; name: string; searchKey: string }[];
+  languageSearchText = '';
   resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
@@ -109,7 +114,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
           })
           .map(({ attributes }) => ({
             code: attributes.code,
-            name: attributes.name
+            name: attributes.name,
+            searchKey: buildLanguageSearchKey(
+              attributes.code,
+              attributes.name,
+              this.dispLanguageCode
+            )
           }));
       });
 
@@ -203,6 +213,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onSwitchLanguage(): void {
     this.langSwitchOn = !this.langSwitchOn;
+    this.languageSearchText = '';
+  }
+
+  get filteredLangs(): { code: string; name: string; searchKey: string }[] {
+    if (!this.availableLangs) {
+      return [];
+    }
+    return this.availableLangs.filter((lang) =>
+      languageMatchesSearch(lang.searchKey, this.languageSearchText)
+    );
   }
 
   onSelectLanguage(pLangCode: string): void {
