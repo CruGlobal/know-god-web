@@ -153,8 +153,8 @@ describe('PageComponent', () => {
       mockPageComponent.languageEnglish
     ]);
 
-    // Matches the language's own name for itself
-    component.languageSearchText = 'Deutsch';
+    // Matches the API-provided language name
+    component.languageSearchText = 'german';
     expect(component.filteredLanguages).toEqual([
       mockPageComponent.languageGerman
     ]);
