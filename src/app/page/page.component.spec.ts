@@ -1,5 +1,6 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
@@ -59,7 +60,12 @@ describe('PageComponent', () => {
     pageService = new PageService();
     TestBed.configureTestingModule({
       declarations: [PageComponent],
-      imports: [HttpClientModule, RouterTestingModule, I18NextModule.forRoot()],
+      imports: [
+        HttpClientModule,
+        FormsModule,
+        RouterTestingModule,
+        I18NextModule.forRoot()
+      ],
       providers: [
         CommonService,
         LoaderService,
@@ -124,6 +130,73 @@ describe('PageComponent', () => {
     component.languagesVisible = false;
     component.onToggleLanguageSelect();
     expect(component.languagesVisible).toBeTrue();
+  });
+
+  it('onToggleLanguageSelect() should clear the search text', () => {
+    component.languageSearchText = 'germ';
+    component.onToggleLanguageSelect();
+    expect(component.languageSearchText).toEqual('');
+  });
+
+  it('filteredLanguages should filter by search text, matching names across languages', () => {
+    component.availableLanguages = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman
+    ];
+
+    component.languageSearchText = '';
+    expect(component.filteredLanguages.length).toEqual(2);
+
+    // Matches the name shown in the selector
+    component.languageSearchText = 'eng';
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageEnglish
+    ]);
+
+    // Matches the API-provided language name
+    component.languageSearchText = 'german';
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageGerman
+    ]);
+
+    component.languageSearchText = 'no such language';
+    expect(component.filteredLanguages.length).toEqual(0);
+  });
+
+  it('filteredLanguages should reuse cached search keys on repeated reads', () => {
+    component.availableLanguages = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman
+    ];
+    component.languageSearchText = 'eng';
+    const displayNamesSpy = spyOn(Intl, 'DisplayNames').and.callThrough();
+
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageEnglish
+    ]);
+    const callsAfterFirstRead = displayNamesSpy.calls.count();
+    expect(callsAfterFirstRead).toBeGreaterThan(0);
+
+    expect(component.filteredLanguages).toEqual([
+      mockPageComponent.languageEnglish
+    ]);
+    expect(displayNamesSpy.calls.count()).toEqual(callsAfterFirstRead);
+  });
+
+  it('filteredLanguages should build new search keys when the display locale changes', () => {
+    component.availableLanguages = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman
+    ];
+    component.languageSearchText = 'eng';
+    const displayNamesSpy = spyOn(Intl, 'DisplayNames').and.callThrough();
+
+    expect(component.filteredLanguages.length).toEqual(1);
+    const callsForFirstLocale = displayNamesSpy.calls.count();
+
+    component._pageParams.langId = 'de';
+    expect(component.filteredLanguages.length).toEqual(1);
+    expect(displayNamesSpy.calls.count()).toBeGreaterThan(callsForFirstLocale);
   });
 
   it('onPreviousPage() on page 0', () => {
