@@ -38,6 +38,7 @@
         <div class="mw568">
           <div class="language-search">
             <input
+              #languageSearchInput
               type="search"
               dir="auto"
               [(ngModel)]="languageSearchText"
@@ -56,7 +57,11 @@
             </li>
           </ul>
           <div class="no-language-results" role="status" aria-live="polite">
-            <span *ngIf="filteredLanguages.length === 0">
+            <span
+              *ngIf="
+                availableLanguages.length > 0 && filteredLanguages.length === 0
+              "
+            >
               {{ 'No languages found' | i18nextEager }}
             </span>
           </div>
