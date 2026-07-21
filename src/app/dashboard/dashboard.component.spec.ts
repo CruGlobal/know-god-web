@@ -6,6 +6,7 @@ import {
   tick,
   waitForAsync
 } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
 import { mockPageComponent } from '../_tests/mocks';
@@ -19,7 +20,12 @@ describe('DashboardComponent', () => {
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [DashboardComponent],
-      imports: [HttpClientModule, RouterTestingModule, I18NextModule.forRoot()],
+      imports: [
+        HttpClientModule,
+        FormsModule,
+        RouterTestingModule,
+        I18NextModule.forRoot()
+      ],
       providers: [CommonService]
     }).compileComponents();
   }));
@@ -59,6 +65,34 @@ describe('DashboardComponent', () => {
     expect(component.availableLangs.length).toEqual(1);
     expect(component.availableLangs[0].code).toEqual('zh-Hant');
   }));
+
+  it('filteredLangs should filter by search text', fakeAsync(() => {
+    component['_languagesData'] = [
+      mockPageComponent.languageEnglish,
+      mockPageComponent.languageGerman,
+      mockPageComponent.languageChineseTraditional
+    ];
+    component.languagesWithLessons = null;
+    spyOn(component, 'isLessonsPage').and.returnValue(false);
+    component['prepareLanguageSwitcher']();
+    tick();
+
+    component.languageSearchText = '';
+    expect(component.filteredLangs.length).toEqual(3);
+
+    // Matches the name shown in the selector
+    component.languageSearchText = 'germ';
+    expect(component.filteredLangs.map((l) => l.code)).toEqual(['de']);
+
+    component.languageSearchText = 'no such language';
+    expect(component.filteredLangs.length).toEqual(0);
+  }));
+
+  it('onSwitchLanguage() should clear the search text', () => {
+    component.languageSearchText = 'germ';
+    component.onSwitchLanguage();
+    expect(component.languageSearchText).toEqual('');
+  });
 
   it('setDisplayLanguage() should match case-insensitively and store API correct casing', () => {
     component['_languagesData'] = [
