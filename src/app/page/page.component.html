@@ -36,16 +36,30 @@
       </div>
       <div id="languageList" class="py25 ng-hide" *ngIf="languagesVisible">
         <div class="mw568">
-          <ul>
+          <div class="language-search">
+            <input
+              type="search"
+              dir="auto"
+              [(ngModel)]="languageSearchText"
+              [placeholder]="'Search languages' | i18nextEager"
+              [attr.aria-label]="'Search languages' | i18nextEager"
+            />
+          </div>
+          <ul [class.fixed-height]="availableLanguages.length > 11">
             <li
               class="ng-binding"
               dir="ltr"
               (click)="selectLanguage(lang, true)"
-              *ngFor="let lang of availableLanguages"
+              *ngFor="let lang of filteredLanguages"
             >
               {{ lang.attributes.name }}
             </li>
           </ul>
+          <div class="no-language-results" role="status" aria-live="polite">
+            <span *ngIf="filteredLanguages.length === 0">
+              {{ 'No languages found' | i18nextEager }}
+            </span>
+          </div>
         </div>
       </div>
     </header>
