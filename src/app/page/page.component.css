@@ -110,10 +110,46 @@ p {
   background-color: #f0f0f0;
 }
 
+#languageList .language-search {
+  padding: 0 16px 8px;
+}
+
+#languageList .language-search input {
+  width: 100%;
+  padding: 6px 12px;
+  box-sizing: border-box;
+  font-size: inherit;
+  line-height: 1.25;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  outline: none;
+}
+
+#languageList .language-search input:focus {
+  border-color: #999;
+}
+
+#languageList .no-language-results span {
+  display: block;
+  padding: 4px 16px;
+  line-height: 1.25;
+}
+
 #languageList ul {
-  columns: 2;
   margin: 0;
   padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+#languageList ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+#languageList ul::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0;
+  border-radius: 3px;
 }
 
 #languageList li {
@@ -127,12 +163,6 @@ p {
 #languageList li:hover {
   background-color: white;
   cursor: pointer;
-}
-
-@media screen and (min-width: 550px) {
-  #languageList ul {
-    columns: 3;
-  }
 }
 
 @media screen and (max-width: 550px) {
