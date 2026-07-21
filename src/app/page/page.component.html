@@ -45,7 +45,7 @@
               [attr.aria-label]="'Search languages' | i18nextEager"
             />
           </div>
-          <ul>
+          <ul [class.fixed-height]="availableLanguages.length > 11">
             <li
               class="ng-binding"
               dir="ltr"

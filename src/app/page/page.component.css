@@ -141,6 +141,11 @@ p {
   max-height: 320px;
   overflow-y: auto;
   scrollbar-width: thin;
+  scrollbar-gutter: stable;
+}
+
+#languageList ul.fixed-height {
+  height: 320px;
 }
 
 #languageList ul::-webkit-scrollbar {
