@@ -46,24 +46,27 @@
               [attr.aria-label]="'Search languages' | i18nextEager"
             />
           </div>
-          <ul [class.fixed-height]="availableLanguages.length > 11">
-            <li
-              class="ng-binding"
-              dir="ltr"
-              (click)="selectLanguage(lang, true)"
-              *ngFor="let lang of filteredLanguages"
-            >
-              {{ lang.attributes.name }}
-            </li>
-          </ul>
-          <div class="no-language-results" role="status" aria-live="polite">
-            <span
-              *ngIf="
-                availableLanguages.length > 0 && filteredLanguages.length === 0
-              "
-            >
-              {{ 'No languages found' | i18nextEager }}
-            </span>
+          <div class="language-list" [style.height.px]="languageListHeightPx">
+            <ul>
+              <li
+                class="ng-binding"
+                dir="ltr"
+                (click)="selectLanguage(lang, true)"
+                *ngFor="let lang of filteredLanguages"
+              >
+                {{ lang.attributes.name }}
+              </li>
+            </ul>
+            <div class="no-language-results" role="status" aria-live="polite">
+              <span
+                *ngIf="
+                  availableLanguages.length > 0 &&
+                  filteredLanguages.length === 0
+                "
+              >
+                {{ 'No languages found' | i18nextEager }}
+              </span>
+            </div>
           </div>
         </div>
       </div>

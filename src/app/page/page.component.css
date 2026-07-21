@@ -135,17 +135,17 @@ p {
   line-height: 1.25;
 }
 
+#languageList .language-list {
+  overflow: hidden;
+}
+
 #languageList ul {
   margin: 0;
   padding: 0;
-  max-height: 320px;
+  max-height: 100%;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-gutter: stable;
-}
-
-#languageList ul.fixed-height {
-  height: 320px;
 }
 
 #languageList ul::-webkit-scrollbar {

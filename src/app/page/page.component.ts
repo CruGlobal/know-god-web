@@ -261,6 +261,19 @@ export class PageComponent implements OnInit, OnDestroy {
     );
   }
 
+  // The list keeps the height of the full (unfiltered) list while open, so
+  // filtering never changes the page height — otherwise the document scrollbar
+  // can appear/disappear mid-search and nudge the centered layout sideways.
+  // 28px = the rendered #languageList li height (2 * 4px padding + 20px line).
+  get languageListHeightPx(): number {
+    const rowHeightPx = 28;
+    const maxHeightPx = 320;
+    return Math.min(
+      maxHeightPx,
+      (this.availableLanguages?.length || 0) * rowHeightPx
+    );
+  }
+
   // Keys live in an external Map because availableLanguages holds shared
   // parsed Language models this component must not mutate (unlike the
   // dashboard, which owns its mapped objects and can build keys eagerly).
