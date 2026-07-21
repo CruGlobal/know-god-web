@@ -1,10 +1,12 @@
 import { ViewportScroller } from '@angular/common';
 import {
   Component,
+  ElementRef,
   HostListener,
   Inject,
   OnDestroy,
   OnInit,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -117,6 +119,9 @@ export class PageComponent implements OnInit, OnDestroy {
   private _selectedLanguage: Language;
   private _languageSearchKeys = new Map<string, string>();
   private liveShareSubscription: ActionCable.Channel;
+
+  @ViewChild('languageSearchInput')
+  private languageSearchInput: ElementRef<HTMLInputElement>;
 
   pagesLoaded: boolean;
   selectedLang: string;
@@ -240,6 +245,9 @@ export class PageComponent implements OnInit, OnDestroy {
   onToggleLanguageSelect(): void {
     this.languagesVisible = !this.languagesVisible;
     this.languageSearchText = '';
+    if (this.languagesVisible) {
+      setTimeout(() => this.languageSearchInput?.nativeElement.focus());
+    }
   }
 
   get filteredLanguages(): Language[] {
@@ -259,7 +267,7 @@ export class PageComponent implements OnInit, OnDestroy {
   private getLanguageSearchKey(lang: Language): string {
     const cacheKey = `${lang.id}|${this._pageParams.langId}`;
     let searchKey = this._languageSearchKeys.get(cacheKey);
-    if (!searchKey) {
+    if (searchKey === undefined) {
       searchKey = buildLanguageSearchKey(
         lang.attributes.code,
         lang.attributes.name,

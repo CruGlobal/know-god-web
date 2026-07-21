@@ -9,6 +9,7 @@ import {
 import { FormsModule } from '@angular/forms';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
+import { NEVER } from 'rxjs';
 import { mockPageComponent } from '../_tests/mocks';
 import { CommonService } from '../services/common.service';
 import { DashboardComponent } from './dashboard.component';
@@ -66,6 +67,19 @@ describe('DashboardComponent', () => {
     expect(component.availableLangs[0].code).toEqual('zh-Hant');
   }));
 
+  it('prepareLanguageSwitcher() should ignore languagesReady emissions before languages load', fakeAsync(() => {
+    spyOn(component.commonService, 'getLanguages').and.returnValue(NEVER);
+    component['prepareLanguageSwitcher']();
+
+    // awaitBooks re-emits languagesReady when dashboard data arrives, which
+    // can happen before the languages request resolves.
+    component['_languagesReady'].next();
+    tick();
+
+    expect(component.availableLangs).toBeUndefined();
+    expect(component.filteredLangs).toEqual([]);
+  }));
+
   it('filteredLangs should filter by search text', fakeAsync(() => {
     component['_languagesData'] = [
       mockPageComponent.languageEnglish,
@@ -77,22 +91,33 @@ describe('DashboardComponent', () => {
     component['prepareLanguageSwitcher']();
     tick();
 
-    component.languageSearchText = '';
     expect(component.filteredLangs.length).toEqual(3);
+    expect(component.showNoLanguagesMessage).toBeFalse();
 
     // Matches the name shown in the selector
-    component.languageSearchText = 'germ';
+    component.onLanguageSearchTextChange('germ');
     expect(component.filteredLangs.map((l) => l.code)).toEqual(['de']);
 
-    component.languageSearchText = 'no such language';
+    component.onLanguageSearchTextChange('no such language');
     expect(component.filteredLangs.length).toEqual(0);
+    expect(component.showNoLanguagesMessage).toBeTrue();
   }));
 
-  it('onSwitchLanguage() should clear the search text', () => {
-    component.languageSearchText = 'germ';
+  it('onSwitchLanguage() should clear the search text and restore the full list', fakeAsync(() => {
+    component['_languagesData'] = [mockPageComponent.languageGerman];
+    component.languagesWithLessons = null;
+    spyOn(component, 'isLessonsPage').and.returnValue(false);
+    component['prepareLanguageSwitcher']();
+    tick();
+
+    component.onLanguageSearchTextChange('no such language');
+    expect(component.filteredLangs.length).toEqual(0);
+
     component.onSwitchLanguage();
     expect(component.languageSearchText).toEqual('');
-  });
+    expect(component.filteredLangs.length).toEqual(1);
+    tick();
+  }));
 
   it('setDisplayLanguage() should match case-insensitively and store API correct casing', () => {
     component['_languagesData'] = [

@@ -34,7 +34,7 @@ function getIntlLanguageName(
 export function buildLanguageSearchKey(
   code: string,
   name: string,
-  displayLocale?: string
+  displayLocale: string
 ): string {
   const names = [name, code, getIntlLanguageName(code, code)];
   if (displayLocale) {
@@ -43,16 +43,7 @@ export function buildLanguageSearchKey(
   return names.filter(Boolean).map(normalizeLanguageText).join('\n');
 }
 
-export function languageMatchesSearch(
-  searchKey: string,
-  query: string
-): boolean {
-  const normalizedQuery = normalizeLanguageText(query);
-  return !normalizedQuery || searchKey.includes(normalizedQuery);
-}
-
-// Like filtering with languageMatchesSearch, but normalizes the query once for
-// the whole list instead of once per language.
+// Normalizes the query once for the whole list instead of once per language.
 export function filterLanguages<T>(
   items: T[],
   getSearchKey: (item: T) => string,
