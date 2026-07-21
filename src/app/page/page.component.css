@@ -136,9 +136,20 @@ p {
 }
 
 #languageList ul {
-  columns: 2;
   margin: 0;
   padding: 0;
+  max-height: 320px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+}
+
+#languageList ul::-webkit-scrollbar {
+  width: 6px;
+}
+
+#languageList ul::-webkit-scrollbar-thumb {
+  background-color: #c0c0c0;
+  border-radius: 3px;
 }
 
 #languageList li {
@@ -152,12 +163,6 @@ p {
 #languageList li:hover {
   background-color: white;
   cursor: pointer;
-}
-
-@media screen and (min-width: 550px) {
-  #languageList ul {
-    columns: 3;
-  }
 }
 
 @media screen and (max-width: 550px) {
