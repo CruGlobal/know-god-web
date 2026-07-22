@@ -28,7 +28,7 @@ import {
   Video
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 
-const createResource = (name: string, localName: string): Resource => {
+export const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
     name,
@@ -121,7 +121,15 @@ const createButton = (text: string, url: string, event: string): Button => {
       ordinal: 1
     },
     iconSize: 1,
-    text: createText('Button Text'),
+    // Plain-object text: the real createTestText throws when reading
+    // startImage/endImage without a manifest ancestor
+    text: {
+      ...mockText('Button Text'),
+      startImage: null,
+      startImageSize: null,
+      endImage: null,
+      endImageSize: null
+    } as Text,
     events: event ? [createEventId(event)] : [],
     isClickable: !!url || !!event,
     ...standardTypeValues()
