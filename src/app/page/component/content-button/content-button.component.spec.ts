@@ -135,6 +135,8 @@ describe('ContentButtonComponent', () => {
     expect(images[1].style.width).toBe('200px');
     expect(images[0].classList).toContain('buttonImgStart');
     expect(images[1].classList).toContain('buttonImgEnd');
+    expect(images[0].getAttribute('alt')).toBe('');
+    expect(images[1].getAttribute('alt')).toBe('');
   });
 
   it('renders the text images inside the anchor variant', () => {
