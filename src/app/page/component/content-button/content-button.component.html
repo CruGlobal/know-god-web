@@ -15,8 +15,9 @@
     target="_blank"
     rel="noopener noreferrer"
     (click)="onClick()"
-    >{{ buttonText }}</a
   >
+    <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
+  </a>
   <ng-template #buttonTemplate>
     <button
       type="button"
@@ -27,7 +28,37 @@
       }"
       (click)="onClick()"
     >
-      {{ buttonText }}
+      <ng-container *ngTemplateOutlet="buttonContent"></ng-container>
     </button>
+  </ng-template>
+  <ng-template #buttonContent>
+    <img
+      *ngIf="iconResource && iconGravity === 'START'"
+      class="buttonImg buttonImgStart"
+      [src]="iconResource"
+      [ngStyle]="{ width: iconWidth }"
+      [alt]="imgAlt"
+    />
+    <img
+      *ngIf="startImgResource"
+      class="buttonImg buttonImgStart"
+      [src]="startImgResource"
+      [ngStyle]="{ width: startImgWidth }"
+      [alt]="imgAlt"
+    />{{ buttonText
+    }}<img
+      *ngIf="endImgResource"
+      class="buttonImg buttonImgEnd"
+      [src]="endImgResource"
+      [ngStyle]="{ width: endImgWidth }"
+      [alt]="imgAlt"
+    />
+    <img
+      *ngIf="iconResource && iconGravity === 'END'"
+      class="buttonImg buttonImgEnd"
+      [src]="iconResource"
+      [ngStyle]="{ width: iconWidth }"
+      [alt]="imgAlt"
+    />
   </ng-template>
 </div>
