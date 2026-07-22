@@ -185,6 +185,25 @@ describe('ContentButtonComponent', () => {
     expect(icon.classList).toContain('buttonImgEnd');
   });
 
+  it('does not render the icon when gravity is CENTER', () => {
+    const pageService = TestBed.inject(PageService);
+    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
+
+    const iconButton = {
+      ...mockButton(buttonText, '', buttonEvent),
+      icon: createResource('icon.png', 'icon.png'),
+      iconGravity: { name: 'CENTER', ordinal: 1 },
+      iconSize: 18
+    } as Button;
+    component.item = iconButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, iconButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
+  });
+
   it('does not render images when the button has none', () => {
     component.item = mockEventButton;
     component.ngOnChanges({
