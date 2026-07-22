@@ -284,4 +284,52 @@ describe('ContentButtonComponent', () => {
     expect(icon).toBeTruthy();
     expect(icon.getAttribute('alt')).toBe('icon');
   });
+
+  it('falls back to the text image name when the icon will not render', () => {
+    const pageService = TestBed.inject(PageService);
+    pageService.addToImagesDict('image.png', 'https://cru.org/img.png');
+
+    const imageOnlyButton = {
+      ...mockButton('', '', buttonEvent),
+      text: {
+        ...mockText(''),
+        endImage: null,
+        endImageSize: null
+      } as Text,
+      icon: createResource('icon.png', 'icon.png'),
+      iconGravity: { name: 'CENTER', ordinal: 1 },
+      iconSize: 18
+    } as Button;
+    component.item = imageOnlyButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, imageOnlyButton, true)
+    });
+    fixture.detectChanges();
+
+    const image: HTMLImageElement =
+      fixture.nativeElement.querySelector('button img');
+    expect(image).toBeTruthy();
+    expect(image.getAttribute('alt')).toBe('image');
+  });
+
+  it("uses 'button' as the ultimate alt fallback", () => {
+    const emptyButton = {
+      ...mockButton('', '', buttonEvent),
+      text: {
+        ...mockText(''),
+        startImage: null,
+        startImageSize: null,
+        endImage: null,
+        endImageSize: null
+      } as Text,
+      icon: createResource('', '')
+    } as Button;
+    component.item = emptyButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, emptyButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.imgAlt).toBe('button');
+  });
 });

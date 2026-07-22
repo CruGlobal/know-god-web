@@ -115,8 +115,14 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   }
 
   private imageAltFallback(): string {
+    // Only prefer the icon name when the icon actually renders (START/END
+    // gravity); CENTER icons are never displayed.
+    const iconName =
+      this.iconGravity === 'START' || this.iconGravity === 'END'
+        ? this.button.icon?.name
+        : null;
     const name =
-      this.button.icon?.name ||
+      iconName ||
       this.button.text?.startImage?.name ||
       this.button.text?.endImage?.name ||
       '';
