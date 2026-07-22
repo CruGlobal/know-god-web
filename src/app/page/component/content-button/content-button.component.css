@@ -13,7 +13,7 @@ div.buttonContent {
 
 .button img.buttonImg {
     vertical-align: middle;
-    max-height: 46px;
+    max-width: 100%;
 }
 
 .button img.buttonImgStart {
