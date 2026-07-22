@@ -1,6 +1,9 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import { Button } from 'src/app/services/xml-parser-service/xml-parser.service';
+import {
+  Button,
+  Text
+} from 'src/app/services/xml-parser-service/xml-parser.service';
 import { createResource, mockButton, mockText } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentButtonComponent } from './content-button.component';
@@ -212,5 +215,34 @@ describe('ContentButtonComponent', () => {
     expect(images[0].getAttribute('src')).toBe(
       'https://cru.org/attachment.png'
     );
+  });
+
+  it('gives the icon a non-empty alt when the button has no text label', () => {
+    const pageService = TestBed.inject(PageService);
+    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
+
+    const iconOnlyButton = {
+      ...mockButton('', '', buttonEvent),
+      text: {
+        ...mockText(''),
+        startImage: null,
+        startImageSize: null,
+        endImage: null,
+        endImageSize: null
+      } as Text,
+      icon: createResource('icon.png', 'icon.png'),
+      iconGravity: { name: 'START', ordinal: 0 },
+      iconSize: 18
+    } as Button;
+    component.item = iconOnlyButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, iconOnlyButton, true)
+    });
+    fixture.detectChanges();
+
+    const icon: HTMLImageElement =
+      fixture.nativeElement.querySelector('button img');
+    expect(icon).toBeTruthy();
+    expect(icon.getAttribute('alt')).toBe('icon');
   });
 });

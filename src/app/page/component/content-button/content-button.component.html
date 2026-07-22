@@ -37,28 +37,28 @@
       class="buttonImg buttonImgStart"
       [src]="iconResource"
       [ngStyle]="{ width: iconWidth }"
-      alt=""
+      [alt]="imgAlt"
     />
     <img
       *ngIf="startImgResource"
       class="buttonImg buttonImgStart"
       [src]="startImgResource"
       [ngStyle]="{ width: startImgWidth }"
-      alt=""
+      [alt]="imgAlt"
     />{{ buttonText
     }}<img
       *ngIf="endImgResource"
       class="buttonImg buttonImgEnd"
       [src]="endImgResource"
       [ngStyle]="{ width: endImgWidth }"
-      alt=""
+      [alt]="imgAlt"
     />
     <img
       *ngIf="iconResource && iconGravity === 'END'"
       class="buttonImg buttonImgEnd"
       [src]="iconResource"
       [ngStyle]="{ width: iconWidth }"
-      alt=""
+      [alt]="imgAlt"
     />
   </ng-template>
 </div>

@@ -35,6 +35,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   startImgWidth: string | null;
   endImgResource: string | null;
   endImgWidth: string | null;
+  imgAlt: string;
   dir$: Observable<string>;
   visibility: VisibilityWatchers;
 
@@ -69,6 +70,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
               this.startImgWidth = null;
               this.endImgResource = null;
               this.endImgWidth = null;
+              this.imgAlt = '';
               this.init();
             }
           }
@@ -104,7 +106,21 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
     this.iconWidth = this.button.iconSize ? this.button.iconSize + 'px' : null;
     this.iconGravity = this.button.iconGravity?.name || '';
 
+    // Keep images decorative when the button has a text label, but give
+    // them a non-empty alt when they are the only content so the control
+    // still has an accessible name (WCAG 4.1.2).
+    this.imgAlt = this.buttonText ? '' : this.imageAltFallback();
+
     this.ready = true;
+  }
+
+  private imageAltFallback(): string {
+    const name =
+      this.button.icon?.name ||
+      this.button.text?.startImage?.name ||
+      this.button.text?.endImage?.name ||
+      '';
+    return name.replace(/\.[^.]+$/, '') || 'button';
   }
 
   private resolveImage(resource: Resource | null): string | null {
