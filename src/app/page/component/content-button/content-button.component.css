@@ -10,3 +10,16 @@ div.buttonContent {
 :host:not(:first-child) > div.buttonContent {
     margin-top: 12px;
 }
+
+.button img.buttonImg {
+    vertical-align: middle;
+    max-height: 46px;
+}
+
+.button img.buttonImgStart {
+    margin-inline-end: 8px;
+}
+
+.button img.buttonImgEnd {
+    margin-inline-start: 8px;
+}
