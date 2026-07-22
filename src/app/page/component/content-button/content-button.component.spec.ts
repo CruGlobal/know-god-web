@@ -137,6 +137,24 @@ describe('ContentButtonComponent', () => {
     expect(images[1].classList).toContain('buttonImgEnd');
   });
 
+  it('renders the text images inside the anchor variant', () => {
+    const pageService = TestBed.inject(PageService);
+    pageService.addToImagesDict('image.png', 'https://cru.org/img.png');
+
+    const urlButtonWithImages = {
+      ...mockButton(buttonText, buttonUrl, ''),
+      text: mockText(buttonText)
+    } as Button;
+    component.item = urlButtonWithImages;
+    component.ngOnChanges({
+      item: new SimpleChange(null, urlButtonWithImages, true)
+    });
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelectorAll('a img').length).toBe(2);
+    expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
+  });
+
   it('renders the button icon before the text when icon-gravity is start', () => {
     const pageService = TestBed.inject(PageService);
     pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
