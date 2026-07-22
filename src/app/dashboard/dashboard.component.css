@@ -115,6 +115,7 @@
 #languageSwitchModal > div.modal-content > div.modal-close {
   width: 100%;
   height: 36px;
+  flex-shrink: 0;
   display: block;
   text-align: right;
   margin-top: 10px;
@@ -152,6 +153,7 @@
 }
 
 #languageSwitchModal > div.modal-content > div.no-language-results {
+  flex-shrink: 0;
   font-size: 13px;
   color: #555;
   text-align: center;
