@@ -27,6 +27,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   buttonText: string;
   buttonTextColor: string;
   buttonBgColor: string;
+  isOutlined: boolean;
   dir$: Observable<string>;
   visibility: VisibilityWatchers;
 
@@ -54,6 +55,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
               this.button = this.item;
               this.buttonTextColor = '';
               this.buttonBgColor = '';
+              this.isOutlined = false;
               this.init();
             }
           }
@@ -68,6 +70,8 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
 
   private init(): void {
     this.visibility.init(this.button);
+
+    this.isOutlined = this.button.style?.name === 'OUTLINED';
 
     // TODO Allow Button styles when Books are ready
     // this.buttonTextColor = this.button.buttonColor || ''
