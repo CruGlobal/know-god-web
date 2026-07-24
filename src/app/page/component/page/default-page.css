@@ -11,9 +11,9 @@
   padding-left: 15px;
   padding-right: 15px;
 }
-.button.button-white {
+.button.button-outline {
   color: var(--kg-blue);
-  background-color: var(--kg-white);
+  background-color: transparent;
 }
 .button:hover {
   color: var(--kg-white) !important;

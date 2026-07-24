@@ -17,6 +17,18 @@ describe('ContentButtonComponent', () => {
     buttonUrl,
     buttonEvent
   );
+  const mockOutlinedButton = mockButton(
+    buttonText,
+    '',
+    buttonEvent,
+    'OUTLINED'
+  );
+  const mockOutlinedUrlButton = mockButton(
+    buttonText,
+    buttonUrl,
+    '',
+    'OUTLINED'
+  );
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
@@ -99,5 +111,43 @@ describe('ContentButtonComponent', () => {
 
     component.onClick();
     expect(pageService.formAction).toHaveBeenCalledWith(buttonEvent);
+  });
+
+  it('adds outlined class when button style is OUTLINED (event button)', () => {
+    component.item = mockOutlinedButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockOutlinedButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.isOutlined).toBe(true);
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button');
+    expect(button.classList).toContain('button-outline');
+  });
+
+  it('adds outlined class when button style is OUTLINED (url button)', () => {
+    component.item = mockOutlinedUrlButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockOutlinedUrlButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.isOutlined).toBe(true);
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor.classList).toContain('button-outline');
+  });
+
+  it('omits outlined class for a contained (default) button', () => {
+    component.item = mockEventButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockEventButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.isOutlined).toBe(false);
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button');
+    expect(button.classList).not.toContain('button-outline');
   });
 });
