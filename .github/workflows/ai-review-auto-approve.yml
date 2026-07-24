@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       head_branch:
-        description: "The PR head branch name"
+        description: 'The PR head branch name'
         required: true
         type: string
 
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check agent review and auto-approve
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         env:
           HEAD_BRANCH: ${{ inputs.head_branch }}
         with:

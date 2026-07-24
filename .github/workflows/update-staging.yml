@@ -2,7 +2,7 @@ name: Pipeline
 on:
   push:
     branches:
-      - master
+      - main
   pull_request:
     types: [labeled, synchronize]
 
@@ -10,9 +10,9 @@ jobs:
   update-staging:
     name: 🌱 Merge to Staging
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'On Staging')
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'On Staging')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: 🖇️ Merge current branch into staging
         uses: devmasx/merge-branch@1.4.0
         with:
@@ -23,9 +23,9 @@ jobs:
   update-development:
     name: 🛠 Merge to Development
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/master' || contains(github.event.pull_request.labels.*.name, 'On Staging') || contains(github.event.pull_request.labels.*.name, 'On Development')
+    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'On Staging') || contains(github.event.pull_request.labels.*.name, 'On Development')
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: 🖇️ Merge current branch into development
         uses: devmasx/merge-branch@1.4.0
         with:
