@@ -101,13 +101,15 @@ export const createEventId = (name: string, namespace?: string): EventId => {
   return new org.cru.godtools.shared.tool.parser.model.EventId(namespace, name);
 };
 
-const createButton = (text: string, url: string, event: string): Button => {
+const createButton = (
+  text: string,
+  url: string,
+  event: string,
+  style: Button['style']['name'] = 'CONTAINED'
+): Button => {
   return {
     url: url || null,
-    style: {
-      name: 'CONTAINED',
-      ordinal: 1
-    },
+    style: org.cru.godtools.shared.tool.parser.model.Button.Style[style],
     gravity: {
       name: 'CENTER',
       ordinal: 1
@@ -146,9 +148,10 @@ export const mockCallToAction = (text: string): CallToAction => {
 export const mockButton = (
   text: string,
   url: string,
-  event: string
+  event: string,
+  style: Button['style']['name'] = 'CONTAINED'
 ): Button => {
-  return createButton(text, url, event);
+  return createButton(text, url, event, style);
 };
 
 export const mockImage = (
