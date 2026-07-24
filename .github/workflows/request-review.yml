@@ -18,7 +18,7 @@ jobs:
     if: github.event.label.name == 'Review' && github.event.pull_request.draft == false
     steps:
       - name: Request review from a random web-engineering-js member
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           # Listing team members requires org read access, which the default
           # GITHUB_TOKEN does not have. Without a REVIEW_BOT_TOKEN secret
