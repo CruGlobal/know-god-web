@@ -1,4 +1,11 @@
-import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  OnInit,
+  ViewChild
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { I18NEXT_SERVICE, ITranslationService } from 'angular-i18next';
 import { Subject } from 'rxjs';
@@ -11,6 +18,10 @@ import {
   ToolType
 } from '../services/xml-parser-service/xml-parser.service';
 import { getUrlResourceType } from '../shared/getUrlResourceType';
+import {
+  buildLanguageSearchKey,
+  filterLanguages
+} from '../shared/language-search';
 
 interface Language {
   id: string;
@@ -36,6 +47,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private _languageChanged = new Subject<void>();
   private _prepareDataForLanguage = new Subject<void>();
   private _languagesData: Language[];
+  private _languageSearchKeys = new Map<string, string>();
+
+  @ViewChild('languageSearchInput')
+  private languageSearchInput: ElementRef<HTMLInputElement>;
 
   private readonly _toolsRoute = 'tools';
   private readonly _lessonsRoute = 'lessons';
@@ -54,6 +69,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
   dispLanguageDirection: string;
   langSwitchOn: boolean;
   availableLangs: { code: string; name: string }[];
+  filteredLangs: { code: string; name: string }[] = [];
+  showNoLanguagesMessage = false;
+  languageSearchText = '';
   resourceTypes = [ResourceType.Tract, ResourceType.CYOA, ResourceType.Lesson];
 
   constructor(
@@ -98,6 +116,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
         delay(0)
       )
       .subscribe(() => {
+        // awaitBooks can re-emit languagesReady before the languages request
+        // has resolved; ignore emissions until the data is actually here.
+        if (!this._languagesData) {
+          return;
+        }
+
         const shouldFilterLanguages =
           this.languagesWithLessons && this.isLessonsPage();
 
@@ -111,6 +135,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
             code: attributes.code,
             name: attributes.name
           }));
+        this.updateFilteredLangs();
       });
 
     if (!this._languagesData) {
@@ -203,6 +228,47 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   onSwitchLanguage(): void {
     this.langSwitchOn = !this.langSwitchOn;
+    this.languageSearchText = '';
+    this.updateFilteredLangs();
+    if (this.langSwitchOn) {
+      setTimeout(() => this.languageSearchInput?.nativeElement.focus());
+    }
+  }
+
+  onLanguageSearchTextChange(searchText: string): void {
+    this.languageSearchText = searchText;
+    this.updateFilteredLangs();
+  }
+
+  // Recomputed on demand instead of a getter so the filter doesn't re-run on
+  // every change-detection cycle.
+  private updateFilteredLangs(): void {
+    this.filteredLangs = this.availableLangs
+      ? filterLanguages(
+          this.availableLangs,
+          (lang) => this.getLanguageSearchKey(lang),
+          this.languageSearchText
+        )
+      : [];
+    this.showNoLanguagesMessage =
+      this.availableLangs?.length > 0 && this.filteredLangs.length === 0;
+  }
+
+  // Search keys are built lazily on the first non-empty search and cached, so
+  // opening the dashboard never pays the Intl.DisplayNames cost for the full
+  // language list up front.
+  private getLanguageSearchKey(lang: { code: string; name: string }): string {
+    const cacheKey = `${lang.code}|${this.dispLanguageCode}`;
+    let searchKey = this._languageSearchKeys.get(cacheKey);
+    if (searchKey === undefined) {
+      searchKey = buildLanguageSearchKey(
+        lang.code,
+        lang.name,
+        this.dispLanguageCode
+      );
+      this._languageSearchKeys.set(cacheKey, searchKey);
+    }
+    return searchKey;
   }
 
   onSelectLanguage(pLangCode: string): void {
