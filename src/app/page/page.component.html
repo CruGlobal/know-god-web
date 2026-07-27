@@ -38,6 +38,7 @@
         <div class="mw568">
           <div class="language-search">
             <input
+              #languageSearchInput
               type="search"
               dir="auto"
               [(ngModel)]="languageSearchText"
@@ -45,21 +46,27 @@
               [attr.aria-label]="'Search languages' | i18nextEager"
             />
           </div>
-          <ul>
-            <li
-              class="ng-binding"
-              dir="ltr"
-              (click)="selectLanguage(lang, true)"
-              *ngFor="let lang of filteredLanguages"
-            >
-              {{ lang.attributes.name }}
-            </li>
-          </ul>
-          <div
-            class="no-language-results"
-            *ngIf="filteredLanguages.length === 0"
-          >
-            {{ 'No languages found' | i18nextEager }}
+          <div class="language-list" [style.height.px]="languageListHeightPx">
+            <ul>
+              <li
+                class="ng-binding"
+                dir="ltr"
+                (click)="selectLanguage(lang, true)"
+                *ngFor="let lang of filteredLanguages"
+              >
+                {{ lang.attributes.name }}
+              </li>
+            </ul>
+            <div class="no-language-results" role="status" aria-live="polite">
+              <span
+                *ngIf="
+                  availableLanguages.length > 0 &&
+                  filteredLanguages.length === 0
+                "
+              >
+                {{ 'No languages found' | i18nextEager }}
+              </span>
+            </div>
           </div>
         </div>
       </div>

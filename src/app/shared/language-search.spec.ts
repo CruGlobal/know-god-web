@@ -1,10 +1,13 @@
 import {
   buildLanguageSearchKey,
-  languageMatchesSearch,
+  filterLanguages,
   normalizeLanguageText
 } from './language-search';
 
 describe('language-search', () => {
+  const matches = (searchKey: string, query: string): boolean =>
+    filterLanguages([searchKey], (key) => key, query).length === 1;
+
   describe('normalizeLanguageText', () => {
     it('lowercases and trims', () => {
       expect(normalizeLanguageText('  English ')).toEqual('english');
@@ -24,50 +27,73 @@ describe('language-search', () => {
   describe('buildLanguageSearchKey', () => {
     it('matches the name reported by the API', () => {
       const key = buildLanguageSearchKey('es', 'Spanish', 'en');
-      expect(languageMatchesSearch(key, 'span')).toBeTrue();
+      expect(matches(key, 'span')).toBeTrue();
     });
 
     it('matches the language code', () => {
       const key = buildLanguageSearchKey('es', 'Spanish', 'en');
-      expect(languageMatchesSearch(key, 'es')).toBeTrue();
+      expect(matches(key, 'es')).toBeTrue();
     });
 
     it("matches the language's own name for itself", () => {
       const key = buildLanguageSearchKey('es', 'Spanish', 'en');
-      expect(languageMatchesSearch(key, 'español')).toBeTrue();
-      expect(languageMatchesSearch(key, 'espanol')).toBeTrue();
+      expect(matches(key, 'español')).toBeTrue();
+      expect(matches(key, 'espanol')).toBeTrue();
     });
 
     it('matches the name localized to the displayed language', () => {
       const key = buildLanguageSearchKey('en', 'English', 'fr');
-      expect(languageMatchesSearch(key, 'anglais')).toBeTrue();
+      expect(matches(key, 'anglais')).toBeTrue();
     });
 
     it('matches non-Latin names', () => {
-      const key = buildLanguageSearchKey('zh-Hans', 'Chinese (Simplified)');
-      expect(languageMatchesSearch(key, '中文')).toBeTrue();
+      const key = buildLanguageSearchKey(
+        'zh-Hans',
+        'Chinese (Simplified)',
+        'en'
+      );
+      expect(matches(key, '中文')).toBeTrue();
     });
 
     it('does not throw on codes Intl cannot handle', () => {
       const key = buildLanguageSearchKey('not a code!', 'Mystery', 'en');
-      expect(languageMatchesSearch(key, 'mystery')).toBeTrue();
+      expect(matches(key, 'mystery')).toBeTrue();
     });
   });
 
-  describe('languageMatchesSearch', () => {
-    const key = buildLanguageSearchKey('de', 'German', 'en');
+  describe('filterLanguages', () => {
+    const languages = [
+      {
+        name: 'Spanish',
+        searchKey: buildLanguageSearchKey('es', 'Spanish', 'en')
+      },
+      {
+        name: 'German',
+        searchKey: buildLanguageSearchKey('de', 'German', 'en')
+      }
+    ];
 
-    it('matches everything when the query is empty or whitespace', () => {
-      expect(languageMatchesSearch(key, '')).toBeTrue();
-      expect(languageMatchesSearch(key, '   ')).toBeTrue();
+    it('returns the full list when the query is empty or whitespace', () => {
+      expect(filterLanguages(languages, (lang) => lang.searchKey, '')).toEqual(
+        languages
+      );
+      expect(
+        filterLanguages(languages, (lang) => lang.searchKey, '   ')
+      ).toEqual(languages);
     });
 
-    it('is case-insensitive', () => {
-      expect(languageMatchesSearch(key, 'GERMAN')).toBeTrue();
+    it('is case- and diacritic-insensitive', () => {
+      expect(
+        filterLanguages(languages, (lang) => lang.searchKey, 'ESPAÑOL').map(
+          (lang) => lang.name
+        )
+      ).toEqual(['Spanish']);
     });
 
-    it('rejects non-matching queries', () => {
-      expect(languageMatchesSearch(key, 'swahili')).toBeFalse();
+    it('drops languages that do not match', () => {
+      expect(
+        filterLanguages(languages, (lang) => lang.searchKey, 'swahili')
+      ).toEqual([]);
     });
   });
 });

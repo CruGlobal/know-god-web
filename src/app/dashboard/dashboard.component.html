@@ -80,9 +80,11 @@
     </div>
     <div class="language-search">
       <input
+        #languageSearchInput
         type="search"
         dir="auto"
-        [(ngModel)]="languageSearchText"
+        [ngModel]="languageSearchText"
+        (ngModelChange)="onLanguageSearchTextChange($event)"
         [placeholder]="'Search languages' | i18nextEager"
         [attr.aria-label]="'Search languages' | i18nextEager"
       />
@@ -96,8 +98,15 @@
         {{ lang.name }}
       </li>
     </ul>
-    <div class="no-language-results" *ngIf="filteredLangs.length === 0">
-      {{ 'No languages found' | i18nextEager }}
+    <div
+      class="no-language-results"
+      role="status"
+      aria-live="polite"
+      [class.has-message]="showNoLanguagesMessage"
+    >
+      <ng-container *ngIf="showNoLanguagesMessage">
+        {{ 'No languages found' | i18nextEager }}
+      </ng-container>
     </div>
   </div>
 </div>

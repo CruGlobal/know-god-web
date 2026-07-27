@@ -1,10 +1,12 @@
 import { ViewportScroller } from '@angular/common';
 import {
   Component,
+  ElementRef,
   HostListener,
   Inject,
   OnDestroy,
   OnInit,
+  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -29,7 +31,7 @@ import {
 } from '../services/xml-parser-service/xml-parser.service';
 import {
   buildLanguageSearchKey,
-  languageMatchesSearch
+  filterLanguages
 } from '../shared/language-search';
 import { IPageParameters } from './model/page-parameters';
 import { PageService } from './service/page-service.service';
@@ -117,6 +119,9 @@ export class PageComponent implements OnInit, OnDestroy {
   private _selectedLanguage: Language;
   private _languageSearchKeys = new Map<string, string>();
   private liveShareSubscription: ActionCable.Channel;
+
+  @ViewChild('languageSearchInput')
+  private languageSearchInput: ElementRef<HTMLInputElement>;
 
   pagesLoaded: boolean;
   selectedLang: string;
@@ -240,24 +245,42 @@ export class PageComponent implements OnInit, OnDestroy {
   onToggleLanguageSelect(): void {
     this.languagesVisible = !this.languagesVisible;
     this.languageSearchText = '';
+    if (this.languagesVisible) {
+      setTimeout(() => this.languageSearchInput?.nativeElement.focus());
+    }
   }
 
   get filteredLanguages(): Language[] {
     if (!this.availableLanguages) {
       return [];
     }
-    return this.availableLanguages.filter((lang) =>
-      languageMatchesSearch(
-        this.getLanguageSearchKey(lang),
-        this.languageSearchText
-      )
+    return filterLanguages(
+      this.availableLanguages,
+      (lang) => this.getLanguageSearchKey(lang),
+      this.languageSearchText
     );
   }
 
+  // The list keeps the height of the full (unfiltered) list while open, so
+  // filtering never changes the page height — otherwise the document scrollbar
+  // can appear/disappear mid-search and nudge the centered layout sideways.
+  // 28px = the rendered #languageList li height (2 * 4px padding + 20px line).
+  get languageListHeightPx(): number {
+    const rowHeightPx = 28;
+    const maxHeightPx = 320;
+    return Math.min(
+      maxHeightPx,
+      (this.availableLanguages?.length || 0) * rowHeightPx
+    );
+  }
+
+  // Keys live in an external Map because availableLanguages holds shared
+  // parsed Language models this component must not mutate (unlike the
+  // dashboard, which owns its mapped objects and can build keys eagerly).
   private getLanguageSearchKey(lang: Language): string {
     const cacheKey = `${lang.id}|${this._pageParams.langId}`;
     let searchKey = this._languageSearchKeys.get(cacheKey);
-    if (!searchKey) {
+    if (searchKey === undefined) {
       searchKey = buildLanguageSearchKey(
         lang.attributes.code,
         lang.attributes.name,
@@ -1010,6 +1033,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._pageBookSubPagesManifest = [];
     this._pageBookSubPages = [];
     this._visibleHiddenPageIds.clear();
+    this._languageSearchKeys.clear();
     this.availableLanguages = [];
     this.selectedBookName = '';
     this.languagesVisible = false;
