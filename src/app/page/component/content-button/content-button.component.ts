@@ -111,11 +111,10 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
     if (!resource?.name) {
       return null;
     }
-    let url = this.pageService.getImageUrl(resource.name);
-    // Try to find image in all attachments
-    if (url === resource.name && !url.includes('http')) {
-      url = this.pageService.findAttachment(resource.name);
-    }
-    return url || null;
+    // Only resolve through the images dict, which is limited to resources in
+    // the published manifest; the attachments table also contains unpublished
+    // files. getImageUrl echoes the name back when the image is not found.
+    const url = this.pageService.getImageUrl(resource.name);
+    return url && url !== resource.name ? url : null;
   }
 }
