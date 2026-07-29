@@ -31,10 +31,6 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   iconResource: string | null;
   iconWidth: string | null;
   iconGravity: string;
-  startImgResource: string | null;
-  startImgWidth: string | null;
-  endImgResource: string | null;
-  endImgWidth: string | null;
   imgAlt: string;
   dir$: Observable<string>;
   visibility: VisibilityWatchers;
@@ -66,10 +62,6 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
               this.iconResource = null;
               this.iconWidth = null;
               this.iconGravity = '';
-              this.startImgResource = null;
-              this.startImgWidth = null;
-              this.endImgResource = null;
-              this.endImgWidth = null;
               this.imgAlt = '';
               this.init();
             }
@@ -92,40 +84,22 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
     if (this.button.text) {
       this.text = this.button.text;
       this.buttonText = this.text?.text || '';
-      this.startImgResource = this.resolveImage(this.text.startImage);
-      this.startImgWidth = this.text.startImageSize
-        ? this.text.startImageSize + 'px'
-        : null;
-      this.endImgResource = this.resolveImage(this.text.endImage);
-      this.endImgWidth = this.text.endImageSize
-        ? this.text.endImageSize + 'px'
-        : null;
     }
 
     this.iconResource = this.resolveImage(this.button.icon);
     this.iconWidth = this.button.iconSize ? this.button.iconSize + 'px' : null;
     this.iconGravity = this.button.iconGravity?.name || '';
 
-    // Keep images decorative when the button has a text label, but give
-    // them a non-empty alt when they are the only content so the control
-    // still has an accessible name (WCAG 4.1.2).
+    // Keep the icon decorative when the button has a text label, but give
+    // it a non-empty alt when it is the only content so the control still
+    // has an accessible name (WCAG 4.1.2).
     this.imgAlt = this.buttonText ? '' : this.imageAltFallback();
 
     this.ready = true;
   }
 
   private imageAltFallback(): string {
-    // Only prefer the icon name when the icon actually renders (START/END
-    // gravity); CENTER icons are never displayed.
-    const iconName =
-      this.iconGravity === 'START' || this.iconGravity === 'END'
-        ? this.button.icon?.name
-        : null;
-    const name =
-      iconName ||
-      this.button.text?.startImage?.name ||
-      this.button.text?.endImage?.name ||
-      '';
+    const name = this.button.icon?.name || '';
     return name.replace(/\.[^.]+$/, '') || 'button';
   }
 

@@ -121,15 +121,7 @@ const createButton = (text: string, url: string, event: string): Button => {
       ordinal: 1
     },
     iconSize: 1,
-    // Plain-object text: the real createTestText throws when reading
-    // startImage/endImage without a manifest ancestor
-    text: {
-      ...mockText('Button Text'),
-      startImage: null,
-      startImageSize: null,
-      endImage: null,
-      endImageSize: null
-    } as Text,
+    text: createText('Button Text'),
     events: event ? [createEventId(event)] : [],
     isClickable: !!url || !!event,
     ...standardTypeValues()
