@@ -8,7 +8,6 @@ import {
 import { Observable } from 'rxjs';
 import {
   Button,
-  Resource,
   Text
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { PageService } from '../../service/page-service.service';
@@ -90,7 +89,7 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
       this.buttonText = this.text?.text || '';
     }
 
-    this.iconResource = this.resolveImage(this.button.icon);
+    this.iconResource = this.pageService.getResourceUrl(this.button.icon);
     this.iconWidth = this.button.iconSize ? this.button.iconSize + 'px' : null;
     this.iconGravity = this.button.iconGravity?.name || '';
 
@@ -105,16 +104,5 @@ export class ContentButtonComponent implements OnChanges, OnDestroy {
   private imageAltFallback(): string {
     const name = this.button.icon?.name || '';
     return name.replace(/\.[^.]+$/, '') || 'button';
-  }
-
-  private resolveImage(resource: Resource | null): string | null {
-    if (!resource?.name) {
-      return null;
-    }
-    // Only resolve through the images dict, which is limited to resources in
-    // the published manifest; the attachments table also contains unpublished
-    // files. getImageUrl echoes the name back when the image is not found.
-    const url = this.pageService.getImageUrl(resource.name);
-    return url && url !== resource.name ? url : null;
   }
 }
