@@ -28,7 +28,7 @@ import {
   Video
 } from 'src/app/services/xml-parser-service/xml-parser.service';
 
-const createResource = (name: string, localName: string): Resource => {
+export const createResource = (name: string, localName: string): Resource => {
   return {
     localName,
     name,
