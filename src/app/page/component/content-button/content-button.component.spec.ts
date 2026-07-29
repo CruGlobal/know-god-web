@@ -231,7 +231,9 @@ describe('ContentButtonComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
-  it('falls back to attachments when the icon is not in the images dict', () => {
+  it('does not resolve the icon from the attachments table', () => {
+    // The attachments table also contains unpublished files; icons only
+    // resolve through the images dict built from the published manifest.
     const pageService = TestBed.inject(PageService);
     pageService.addAttachment('icon.png', 'https://cru.org/attachment.png');
 
@@ -247,10 +249,7 @@ describe('ContentButtonComponent', () => {
     });
     fixture.detectChanges();
 
-    const icon: HTMLImageElement =
-      fixture.nativeElement.querySelector('button img');
-    expect(icon).toBeTruthy();
-    expect(icon.getAttribute('src')).toBe('https://cru.org/attachment.png');
+    expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
   it('gives the icon a non-empty alt when the button has no text label', () => {
