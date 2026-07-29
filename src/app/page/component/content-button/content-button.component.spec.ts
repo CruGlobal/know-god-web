@@ -1,9 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-import {
-  Button,
-  Text
-} from 'src/app/services/xml-parser-service/xml-parser.service';
+import { Button } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { createResource, mockButton, mockText } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentButtonComponent } from './content-button.component';
@@ -117,50 +114,11 @@ describe('ContentButtonComponent', () => {
     expect(pageService.formAction).toHaveBeenCalledWith(buttonEvent);
   });
 
-  it('adds outlined class when button style is OUTLINED (event button)', () => {
-    component.item = mockOutlinedButton;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockOutlinedButton, true)
-    });
-    fixture.detectChanges();
-
-    expect(component.isOutlined).toBe(true);
-    const button: HTMLButtonElement =
-      fixture.nativeElement.querySelector('button');
-    expect(button.classList).toContain('button-outline');
-  });
-
-  it('adds outlined class when button style is OUTLINED (url button)', () => {
-    component.item = mockOutlinedUrlButton;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockOutlinedUrlButton, true)
-    });
-    fixture.detectChanges();
-
-    expect(component.isOutlined).toBe(true);
-    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
-    expect(anchor.classList).toContain('button-outline');
-  });
-
-  it('omits outlined class for a contained (default) button', () => {
-    component.item = mockEventButton;
-    component.ngOnChanges({
-      item: new SimpleChange(null, mockEventButton, true)
-    });
-    fixture.detectChanges();
-
-    expect(component.isOutlined).toBe(false);
-    const button: HTMLButtonElement =
-      fixture.nativeElement.querySelector('button');
-    expect(button.classList).not.toContain('button-outline');
-  });
-
-  it('renders the text start-image and end-image inside the button', () => {
+  it('does not render start/end images from the child text node', () => {
+    // Per the content schema, start-image/end-image only exist on standalone
+    // text elements; buttons render images via icon/icon-gravity only.
     const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict(
-      'image.png',
-      'https://cru.org/start-end-image.png'
-    );
+    pageService.addToImagesDict('image.png', 'https://cru.org/img.png');
 
     const buttonWithTextImages = {
       ...mockButton(buttonText, '', buttonEvent),
@@ -172,38 +130,26 @@ describe('ContentButtonComponent', () => {
     });
     fixture.detectChanges();
 
-    const images: NodeListOf<HTMLImageElement> =
-      fixture.nativeElement.querySelectorAll('button img');
-    expect(images.length).toBe(2);
-    expect(images[0].getAttribute('src')).toBe(
-      'https://cru.org/start-end-image.png'
-    );
-    expect(images[0].style.width).toBe('200px');
-    expect(images[1].getAttribute('src')).toBe(
-      'https://cru.org/start-end-image.png'
-    );
-    expect(images[1].style.width).toBe('200px');
-    expect(images[0].classList).toContain('buttonImgStart');
-    expect(images[1].classList).toContain('buttonImgEnd');
-    expect(images[0].getAttribute('alt')).toBe('');
-    expect(images[1].getAttribute('alt')).toBe('');
+    expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
-  it('renders the text images inside the anchor variant', () => {
+  it('renders the icon inside the anchor variant', () => {
     const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('image.png', 'https://cru.org/img.png');
+    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
 
-    const urlButtonWithImages = {
+    const urlButtonWithIcon = {
       ...mockButton(buttonText, buttonUrl, ''),
-      text: mockText(buttonText)
+      icon: createResource('icon.png', 'icon.png'),
+      iconGravity: { name: 'START', ordinal: 0 },
+      iconSize: 18
     } as Button;
-    component.item = urlButtonWithImages;
+    component.item = urlButtonWithIcon;
     component.ngOnChanges({
-      item: new SimpleChange(null, urlButtonWithImages, true)
+      item: new SimpleChange(null, urlButtonWithIcon, true)
     });
     fixture.detectChanges();
 
-    expect(fixture.nativeElement.querySelectorAll('a img').length).toBe(2);
+    expect(fixture.nativeElement.querySelectorAll('a img').length).toBe(1);
     expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
@@ -230,6 +176,7 @@ describe('ContentButtonComponent', () => {
     expect(icon.getAttribute('src')).toBe('https://cru.org/icon.png');
     expect(icon.style.width).toBe('18px');
     expect(icon.classList).toContain('buttonImgStart');
+    expect(icon.getAttribute('alt')).toBe('');
     expect(button.textContent.trim()).toBe('Button Text');
   });
 
@@ -284,26 +231,25 @@ describe('ContentButtonComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
-  it('falls back to attachments when the image is not in the images dict', () => {
+  it('does not resolve the icon from the attachments table', () => {
+    // The attachments table also contains unpublished files; icons only
+    // resolve through the images dict built from the published manifest.
     const pageService = TestBed.inject(PageService);
-    pageService.addAttachment('image.png', 'https://cru.org/attachment.png');
+    pageService.addAttachment('icon.png', 'https://cru.org/attachment.png');
 
-    const buttonWithTextImages = {
+    const iconButton = {
       ...mockButton(buttonText, '', buttonEvent),
-      text: mockText(buttonText)
+      icon: createResource('icon.png', 'icon.png'),
+      iconGravity: { name: 'START', ordinal: 0 },
+      iconSize: 18
     } as Button;
-    component.item = buttonWithTextImages;
+    component.item = iconButton;
     component.ngOnChanges({
-      item: new SimpleChange(null, buttonWithTextImages, true)
+      item: new SimpleChange(null, iconButton, true)
     });
     fixture.detectChanges();
 
-    const images: NodeListOf<HTMLImageElement> =
-      fixture.nativeElement.querySelectorAll('button img');
-    expect(images.length).toBe(2);
-    expect(images[0].getAttribute('src')).toBe(
-      'https://cru.org/attachment.png'
-    );
+    expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
   it('gives the icon a non-empty alt when the button has no text label', () => {
@@ -312,13 +258,7 @@ describe('ContentButtonComponent', () => {
 
     const iconOnlyButton = {
       ...mockButton('', '', buttonEvent),
-      text: {
-        ...mockText(''),
-        startImage: null,
-        startImageSize: null,
-        endImage: null,
-        endImageSize: null
-      } as Text,
+      text: mockText(''),
       icon: createResource('icon.png', 'icon.png'),
       iconGravity: { name: 'START', ordinal: 0 },
       iconSize: 18
@@ -335,43 +275,10 @@ describe('ContentButtonComponent', () => {
     expect(icon.getAttribute('alt')).toBe('icon');
   });
 
-  it('falls back to the text image name when the icon will not render', () => {
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('image.png', 'https://cru.org/img.png');
-
-    const imageOnlyButton = {
-      ...mockButton('', '', buttonEvent),
-      text: {
-        ...mockText(''),
-        endImage: null,
-        endImageSize: null
-      } as Text,
-      icon: createResource('icon.png', 'icon.png'),
-      iconGravity: { name: 'CENTER', ordinal: 1 },
-      iconSize: 18
-    } as Button;
-    component.item = imageOnlyButton;
-    component.ngOnChanges({
-      item: new SimpleChange(null, imageOnlyButton, true)
-    });
-    fixture.detectChanges();
-
-    const image: HTMLImageElement =
-      fixture.nativeElement.querySelector('button img');
-    expect(image).toBeTruthy();
-    expect(image.getAttribute('alt')).toBe('image');
-  });
-
   it("uses 'button' as the ultimate alt fallback", () => {
     const emptyButton = {
       ...mockButton('', '', buttonEvent),
-      text: {
-        ...mockText(''),
-        startImage: null,
-        startImageSize: null,
-        endImage: null,
-        endImageSize: null
-      } as Text,
+      text: mockText(''),
       icon: createResource('', '')
     } as Button;
     component.item = emptyButton;
@@ -381,5 +288,43 @@ describe('ContentButtonComponent', () => {
     fixture.detectChanges();
 
     expect(component.imgAlt).toBe('button');
+  });
+
+  it('adds outlined class when button style is OUTLINED (event button)', () => {
+    component.item = mockOutlinedButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockOutlinedButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.isOutlined).toBe(true);
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button');
+    expect(button.classList).toContain('button-outline');
+  });
+
+  it('adds outlined class when button style is OUTLINED (url button)', () => {
+    component.item = mockOutlinedUrlButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockOutlinedUrlButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.isOutlined).toBe(true);
+    const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
+    expect(anchor.classList).toContain('button-outline');
+  });
+
+  it('omits outlined class for a contained (default) button', () => {
+    component.item = mockEventButton;
+    component.ngOnChanges({
+      item: new SimpleChange(null, mockEventButton, true)
+    });
+    fixture.detectChanges();
+
+    expect(component.isOutlined).toBe(false);
+    const button: HTMLButtonElement =
+      fixture.nativeElement.querySelector('button');
+    expect(button.classList).not.toContain('button-outline');
   });
 });
