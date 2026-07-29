@@ -87,17 +87,9 @@ export class ContentTextComponent implements OnChanges, OnDestroy {
       // color: this.text.textColor || ''
     };
 
-    this.startImgResource = this.item.startImage
-      ? this.pageService.getImageUrl(this.item.startImage.name || '')
-      : null;
-    // Try to find image in all attachments
-    if (
-      this.startImgResource === this.item.startImage?.name &&
-      !this.startImgResource.includes('http')
-    ) {
-      this.startImgResource =
-        this.pageService.findAttachment(this.item.startImage?.name) || '';
-    }
+    this.startImgResource = this.pageService.resolveResourceUrl(
+      this.item.startImage
+    );
     this.startImgWidth = this.item.startImageSize
       ? this.item.startImageSize + 'px'
       : null;

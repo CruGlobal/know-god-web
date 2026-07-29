@@ -10,6 +10,7 @@ import {
   mockPageComponent,
   mockTractPage
 } from '../_tests/mocks';
+import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import {
@@ -19,7 +20,7 @@ import {
   XmlParserData,
   godToolsParser
 } from '../services/xml-parser-service/xml-parser.service';
-import { PageComponent, getResourceTypeEnum } from './page.component';
+import { PageComponent } from './page.component';
 import { PageService } from './service/page-service.service';
 
 describe('PageComponent', () => {
@@ -267,31 +268,6 @@ describe('PageComponent', () => {
     expect(router.navigate).toHaveBeenCalledTimes(0);
   });
 
-  describe('getResource()', () => {
-    const file2Name = 'file-name-2.png';
-    const file2Url = 'https://cru.org/assets/file-name-2.png';
-    it('should fetch an image', async () => {
-      await component.getResource(getResourceTypeEnum.image, file2Name);
-      expect(pageService.getAllImages()[file2Name]).toEqual(file2Url);
-    });
-
-    it('should fetch an animation', async () => {
-      const addToAnimationsDictSpy = spyOn(pageService, 'addToAnimationsDict');
-      const fileUrl = await component.getResource(
-        getResourceTypeEnum.animation,
-        file2Name
-      );
-      expect(addToAnimationsDictSpy).toHaveBeenCalledWith(file2Name, file2Url);
-      expect(fileUrl).toEqual(file2Url);
-    });
-
-    it('should not download resource', async () => {
-      spyOn(pageService, 'getAllImages');
-      await component.getResource(getResourceTypeEnum.image, 'file-name-3.png');
-      expect(pageService.getAllImages).toHaveBeenCalledTimes(0);
-    });
-  });
-
   describe('loadBookPage()', () => {
     it('does not call showPage', async () => {
       component.loadBookPage(tractPage);
@@ -360,7 +336,7 @@ describe('PageComponent', () => {
     });
   });
 
-  it('loadBookManifestXML() fetches only needed resources', async () => {
+  it('loadBookManifestXML() prefetches published image files', async () => {
     component._pageBookIndex = mockPageBookIndexData;
 
     component._selectedLanguage = { id: '2222' };
@@ -374,7 +350,8 @@ describe('PageComponent', () => {
 
     const fakeManifest = {
       relatedFiles: {
-        asJsReadonlySetView: () => new Set(['aaa111.png', 'bbb222.png'])
+        asJsReadonlySetView: () =>
+          new Set(['aaa111.png', 'bbb222.png', 'ccc333.json'])
       },
       pages: []
     };
@@ -382,26 +359,23 @@ describe('PageComponent', () => {
       Promise.resolve({ manifest: fakeManifest } as unknown as XmlParserData)
     );
 
-    const addAttachmentSpy = spyOn(pageService, 'addAttachment');
-    const getResourceSpy = spyOn(component, 'getResource');
-
     component['loadBookManifestXML']();
     await fixture.whenStable();
 
-    expect(addAttachmentSpy).toHaveBeenCalledTimes(3);
+    const prefetched = Array.from(
+      document.head.querySelectorAll('link[rel="prefetch"]')
+    ).map((link: HTMLLinkElement) => link.getAttribute('href'));
 
-    expect(getResourceSpy).toHaveBeenCalledWith(
-      getResourceTypeEnum.image,
-      'needed-1.png'
+    expect(prefetched).toContain(APIURL.GET_TRANSLATION_FILES + 'aaa111.png');
+    expect(prefetched).toContain(APIURL.GET_TRANSLATION_FILES + 'bbb222.png');
+    // Non-image files (page XML, animations) are not prefetched
+    expect(prefetched).not.toContain(
+      APIURL.GET_TRANSLATION_FILES + 'ccc333.json'
     );
-    expect(getResourceSpy).toHaveBeenCalledWith(
-      getResourceTypeEnum.image,
-      'needed-2.png'
-    );
-    expect(getResourceSpy).not.toHaveBeenCalledWith(
-      getResourceTypeEnum.image,
-      'skipped.png'
-    );
+
+    document.head
+      .querySelectorAll('link[rel="prefetch"]')
+      .forEach((link) => link.remove());
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {

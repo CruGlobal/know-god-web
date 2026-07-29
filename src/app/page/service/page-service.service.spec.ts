@@ -1,5 +1,6 @@
 import { TestBed, inject } from '@angular/core/testing';
-import { createEventId } from 'src/app/_tests/mocks';
+import { createEventId, createResource } from 'src/app/_tests/mocks';
+import { APIURL } from 'src/app/api/url';
 import { PageService } from './page-service.service';
 
 describe('PageService', () => {
@@ -125,6 +126,22 @@ describe('PageService', () => {
       console.log('stack', stack);
       expect(stack).toEqual(['0', '1']);
       done();
+    });
+  });
+
+  describe('resolveResourceUrl()', () => {
+    it('builds the published files url from the sha-named localName', () => {
+      const resource = createResource('image.png', 'abc123def456.png');
+      expect(service.resolveResourceUrl(resource)).toBe(
+        APIURL.GET_TRANSLATION_FILES + 'abc123def456.png'
+      );
+    });
+
+    it('returns null when the resource has no published file', () => {
+      expect(service.resolveResourceUrl(null)).toBeNull();
+      expect(
+        service.resolveResourceUrl(createResource('image.png', null))
+      ).toBeNull();
     });
   });
 });
