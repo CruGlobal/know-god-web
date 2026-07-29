@@ -7,7 +7,7 @@
     <ng-container *ngIf="(isFirstPage$ | async) === false">
       <button
         (click)="previous()"
-        class="button button-white far fa-arrow-left"
+        class="button button-outline far fa-arrow-left"
       >
         <span class="hide"></span>
       </button>
@@ -30,7 +30,7 @@
     <ng-container *ngIf="(isFirstPage$ | async) === false">
       <button
         (click)="previous()"
-        class="button button-white far fa-arrow-right"
+        class="button button-outline far fa-arrow-right"
       >
         <span class="hide"></span>
       </button>
