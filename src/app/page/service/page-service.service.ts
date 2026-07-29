@@ -64,7 +64,7 @@ export class PageService {
   // Resolve a manifest resource to its published, immutable file. Resources
   // are copied to the published content location under their sha256-based
   // filename (localName) when a tool is published.
-  resolveResourceUrl(resource: Resource | null): string | null {
+  getImageUrl(resource: Resource | null): string | null {
     return resource?.localName
       ? APIURL.GET_TRANSLATION_FILES + resource.localName
       : null;

@@ -87,9 +87,7 @@ export class ContentTextComponent implements OnChanges, OnDestroy {
       // color: this.text.textColor || ''
     };
 
-    this.startImgResource = this.pageService.resolveResourceUrl(
-      this.item.startImage
-    );
+    this.startImgResource = this.pageService.getImageUrl(this.item.startImage);
     this.startImgWidth = this.item.startImageSize
       ? this.item.startImageSize + 'px'
       : null;
