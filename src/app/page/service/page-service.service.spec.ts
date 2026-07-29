@@ -129,17 +129,19 @@ describe('PageService', () => {
     });
   });
 
-  describe('getImageUrl()', () => {
+  describe('getResourceUrl()', () => {
     it('builds the published files url from the sha-named localName', () => {
       const resource = createResource('image.png', 'abc123def456.png');
-      expect(service.getImageUrl(resource)).toBe(
+      expect(service.getResourceUrl(resource)).toBe(
         APIURL.GET_TRANSLATION_FILES + 'abc123def456.png'
       );
     });
 
     it('returns null when the resource has no published file', () => {
-      expect(service.getImageUrl(null)).toBeNull();
-      expect(service.getImageUrl(createResource('image.png', null))).toBeNull();
+      expect(service.getResourceUrl(null)).toBeNull();
+      expect(
+        service.getResourceUrl(createResource('image.png', null))
+      ).toBeNull();
     });
   });
 });

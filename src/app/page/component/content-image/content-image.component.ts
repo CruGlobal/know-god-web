@@ -68,7 +68,8 @@ export class ContentImageComponent implements OnChanges, OnDestroy {
   private init(): void {
     this.visibility.init(this.image);
 
-    this.imgResource = this.pageService.getImageUrl(this.image.resource) || '';
+    this.imgResource =
+      this.pageService.getResourceUrl(this.image.resource) || '';
     const dimensions = DimensionParser(this.image.width);
     this.width = dimensions?.value
       ? dimensions.value + dimensions.symbol
