@@ -1,5 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { APIURL } from 'src/app/api/url';
 import { mockAnimation } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentAnimationComponent } from './content-animation.component';
@@ -12,13 +13,7 @@ describe('ContentAnimationComponent', () => {
   const animation = mockAnimation(fileName, filePath, 'event');
   const animationWithUrl = mockAnimation(fileName, filePath, null);
   const animationWithEvents = mockAnimation(fileName, null, 'event');
-  const fileNameNotAdded = 'name-of-file-not-added.png';
-  const filePathNotAdded = `/some-folder/${fileName}`;
-  const animationNoNameNotAdded = mockAnimation(
-    fileNameNotAdded,
-    filePathNotAdded,
-    'event'
-  );
+  const animationNoPublishedFile = mockAnimation(fileName, null, 'event');
   let pageService: PageService;
 
   beforeEach(waitForAsync(() => {
@@ -31,30 +26,30 @@ describe('ContentAnimationComponent', () => {
     fixture = TestBed.createComponent(ContentAnimationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    pageService.addToAnimationsDict(fileName, filePath);
-    spyOn(pageService, 'findAttachment');
   }));
 
-  it('Fetch animation from pageService', async () => {
+  it('resolves the animation from the published content location', () => {
     component.item = animation;
     component.ngOnChanges({
       item: new SimpleChange(null, animation, true)
     });
-    expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
-    expect(component.anmResource).toEqual(filePath);
+    expect(component.anmResource).toEqual(
+      APIURL.GET_TRANSLATION_FILES + filePath
+    );
     expect(component.lottieOptions).toEqual({
-      path: filePath,
+      path: APIURL.GET_TRANSLATION_FILES + filePath,
       loop: true,
       autoplay: true
     });
   });
 
-  it('Find animation from pageService if not in pageService', () => {
-    component.item = animationNoNameNotAdded;
+  it('does not build lottie options when the resource has no published file', () => {
+    component.item = animationNoPublishedFile;
     component.ngOnChanges({
-      item: new SimpleChange(null, animationNoNameNotAdded, true)
+      item: new SimpleChange(null, animationNoPublishedFile, true)
     });
-    expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
+    expect(component.anmResource).toBeNull();
+    expect(component.lottieOptions).toBeUndefined();
   });
 
   it('fires events only when clicked on with events', () => {

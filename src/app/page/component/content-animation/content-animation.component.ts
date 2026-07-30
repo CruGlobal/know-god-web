@@ -94,20 +94,10 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
   private init(): void {
     this.visibility.init(this.item);
 
-    if (!this.animation?.resource?.name) {
+    if (!this.animation?.resource) {
       return;
     }
-    this.anmResource = this.pageService.getAnimationUrl(
-      this.animation.resource.name
-    );
-    if (
-      this.anmResource === this.animation.resource.name &&
-      !this.anmResource.includes('http')
-    ) {
-      this.anmResource = this.pageService.findAttachment(
-        this.animation.resource.name
-      );
-    }
+    this.anmResource = this.pageService.getResourceUrl(this.animation.resource);
 
     if (this.anmResource) {
       this.lottieOptions = {
