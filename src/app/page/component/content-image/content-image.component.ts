@@ -68,17 +68,8 @@ export class ContentImageComponent implements OnChanges, OnDestroy {
   private init(): void {
     this.visibility.init(this.image);
 
-    this.imgResource = this.pageService.getImageUrl(
-      this.image.resource.name || ''
-    );
-    // Try to find image in all attachments
-    if (
-      this.imgResource === this.image.resource.name &&
-      !this.imgResource.includes('http')
-    ) {
-      this.imgResource =
-        this.pageService.findAttachment(this.image.resource.name) || '';
-    }
+    this.imgResource =
+      this.pageService.getResourceUrl(this.image.resource) || '';
     const dimensions = DimensionParser(this.image.width);
     this.width = dimensions?.value
       ? dimensions.value + dimensions.symbol
