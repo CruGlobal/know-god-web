@@ -38,7 +38,7 @@
     "lottie-web": "^5.12.2",
     "ngx-lottie": "^8.3.0",
     "ngx-toastr": "^17.0.2",
-    "rxjs": "7.8.1",
+    "rxjs": "7.8.2",
     "ts-clipboard": "^1.0.17",
     "zone.js": "^0.15.0"
   },
@@ -55,7 +55,7 @@
     "@angular/language-service": "^17.3.12",
     "@crowdin/cli": "^4.14.2",
     "@types/jasmine": "^5.1.4",
-    "@types/node": "20.19.43",
+    "@types/node": "22.20.1",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "crowdin": "^3.5.0",
