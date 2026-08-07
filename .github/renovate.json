@@ -3,5 +3,11 @@
   "extends": ["config:recommended"],
   "labels": ["dependencies"],
   "separateMultipleMajor": true,
-  "dependencyDashboard": true
+  "dependencyDashboard": true,
+  "packageRules": [
+    {
+      "matchDepTypes": ["devDependencies"],
+      "automerge": true
+    }
+  ]
 }
