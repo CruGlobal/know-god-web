@@ -400,8 +400,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
       const lang = translation?.relationships?.language as
-        | { data?: { id?: string } }
-        | undefined;
+        { data?: { id?: string } } | undefined;
       if (lang?.data?.id === this._selectedLanguage.id) {
         item = translation;
         return;
@@ -637,8 +636,7 @@ export class PageComponent implements OnInit, OnDestroy {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
         const lang = x?.relationships?.language as
-          | { data?: { id?: string } }
-          | undefined;
+          { data?: { id?: string } } | undefined;
         return lang?.data?.id && lang.data.id === this._selectedLanguage.id;
       });
       return !!(y && y.id);
