@@ -31,9 +31,7 @@ export type CyoaPageCollectionPage =
   org.cru.godtools.shared.tool.parser.model.page.PageCollectionPage;
 
 export type CYOAPage =
-  | CyoaContentPage
-  | CyoaCardCollectionPage
-  | CyoaPageCollectionPage;
+  CyoaContentPage | CyoaCardCollectionPage | CyoaPageCollectionPage;
 export type CYOAPageCard =
   org.cru.godtools.shared.tool.parser.model.page.CardCollectionPage.Card;
 
