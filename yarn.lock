@@ -422,18 +422,18 @@ __metadata:
   linkType: hard
 
 "@angular/platform-server@npm:^20.2.1":
-  version: 20.3.21
-  resolution: "@angular/platform-server@npm:20.3.21"
+  version: 20.3.27
+  resolution: "@angular/platform-server@npm:20.3.27"
   dependencies:
     tslib: "npm:^2.3.0"
     xhr2: "npm:^0.2.0"
   peerDependencies:
-    "@angular/common": 20.3.21
-    "@angular/compiler": 20.3.21
-    "@angular/core": 20.3.21
-    "@angular/platform-browser": 20.3.21
+    "@angular/common": 20.3.27
+    "@angular/compiler": 20.3.27
+    "@angular/core": 20.3.27
+    "@angular/platform-browser": 20.3.27
     rxjs: ^6.5.3 || ^7.4.0
-  checksum: 10c0/a583c78dc264a569695f881858e9b5023f9c578c65592cc99af50e7c8adf15439237619df44b8542184a0f4d7176c3618b5fbdfc8cf3b02b19bf49defd4c3e50
+  checksum: 10c0/6044eca0373b56e5ab637d33102b0f2080a9fbe05b12783b3292d13050b8ccfba9bced95352d5d798edaf6f065706d735169332494b7746f4352cdebe7adb8c3
   languageName: node
   linkType: hard
 
