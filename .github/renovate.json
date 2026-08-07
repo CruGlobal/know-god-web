@@ -10,10 +10,10 @@
       "matchDepTypes": ["devDependencies"],
       "matchUpdateTypes": ["patch", "minor"],
       "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["patch"],
+      "automerge": true
     }
-  ],
-  "vulnerabilityAlerts": {
-    "labels": ["security"],
-    "automerge": true
-  }
+  ]
 }
