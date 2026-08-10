@@ -12,7 +12,7 @@
     "prettier:check": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
     "prettier:write": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
     "precommit": "pretty-quick --staged",
-    "postinstall": "husky install",
+    "postinstall": "husky",
     "extract": "i18next --config i18next-parser.config.cjs",
     "crowdin:sort-translations": "node ./crowdin/sort-translations.cjs",
     "crowdin:download": "crowdin download translations --skip-untranslated-strings && yarn crowdin:sort-translations",
