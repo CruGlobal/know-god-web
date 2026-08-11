@@ -11,7 +11,7 @@
     "lint": "eslint 'src/**/*.{js,ts,html}' --fix",
     "prettier:check": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --list-different",
     "prettier:write": "prettier '{{src,embed}/**/*.{js,json,ts,tsx,html},./*.{js,json,ts,tsx,yml,html}}' --write",
-    "postinstall": "husky install",
+    "postinstall": "husky",
     "extract": "i18next --config i18next-parser.config.cjs",
     "crowdin:sort-translations": "node ./crowdin/sort-translations.cjs",
     "crowdin:download": "crowdin download translations --skip-untranslated-strings && yarn crowdin:sort-translations",
@@ -55,7 +55,7 @@
     "@angular/language-service": "^17.3.12",
     "@crowdin/cli": "^4.14.2",
     "@types/jasmine": "^5.1.4",
-    "@types/node": "22.20.1",
+    "@types/node": "24.13.3",
     "@typescript-eslint/eslint-plugin": "^8.15.0",
     "@typescript-eslint/parser": "^8.15.0",
     "crowdin": "^3.5.0",
@@ -63,7 +63,7 @@
     "eslint-import-resolver-typescript": "^3.6.3",
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-prettier": "^5.2.1",
-    "husky": "^8.0.0",
+    "husky": "^9.0.0",
     "i18next-parser": "^9.0.2",
     "jasmine-core": "^5.4.0",
     "karma": "^6.4.4",
@@ -75,5 +75,5 @@
     "stream": "^0.0.3",
     "typescript": "~5.4.5"
   },
-  "packageManager": "yarn@4.7.0"
+  "packageManager": "yarn@4.18.0"
 }
