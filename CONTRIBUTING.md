@@ -13,7 +13,7 @@ pinned Node version with asdf (`.tool-versions` → Node 24.9.0), confirm Yarn
 <http://localhost:4200/en>.
 
 If anything misbehaves, check the README's **Troubleshooting** section first —
-the common asdf / Corepack / proxy issues are covered there.
+the common asdf / Corepack / API-connectivity issues are covered there.
 
 ## 2. Understand the app
 
