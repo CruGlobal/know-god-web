@@ -77,9 +77,10 @@ yarn start:dev    # serves staging data
 ```
 
 Open [`http://localhost:4200/en`](http://localhost:4200/en). The server
-hot-reloads on edit. Local API calls are routed through the dev-server proxy in
-[`proxy.conf.json`](proxy.conf.json) — so always start via `yarn start` /
-`yarn start:dev`, never a bare `ng serve`.
+hot-reloads on edit. API calls go straight to mobile-content-api over absolute
+URLs built from [`src/api/url.ts`](src/app/api/url.ts) and the active
+environment config, so which backend you hit
+depends only on the configuration you start with.
 
 ### Scripts
 
@@ -104,8 +105,9 @@ hot-reloads on edit. Local API calls are routed through the dev-server proxy in
   Corepack is on.
 - **Peer-dependency errors on install** — `.npmrc` sets `legacy-peer-deps=true`;
   peer warnings are expected and non-fatal.
-- **API requests fail locally** — Start via `yarn start` / `yarn start:dev` so the
-  proxy config is loaded.
+- **API requests fail locally** — Requests go direct to mobile-content-api. Check which backend the running configuration
+  points at: `yarn start` uses **production**, `yarn start:dev` uses **staging**
+  (see `src/environments/`).
 
 ## Project structure
 
@@ -134,14 +136,13 @@ src/
 
 embed/                 The embeddable loader (embed.js) and a usage example
 mobile/                Deep-linking association files served at /.well-known/
-proxy.conf.json        Dev-server proxy mapping API paths to mobile-content-api
 ```
 
 **Environments.** Config lives in `src/environments/`, not a `.env` file.
 `environment.ts` / `environment.development.ts` point at the **staging**
 mobile-content-api; `environment.prod.ts` points at **production**. Angular swaps
-them via `fileReplacements` in `angular.json` per build configuration. (Locally,
-API calls also pass through the dev-server proxy.)
+them via `fileReplacements` in `angular.json` per build configuration. These
+values are the only thing deciding which backend a build or dev server talks to.
 
 Content is parsed by `XmlParserService`, which wraps
 `@cruglobal/godtools-shared` — see [`docs/parser.md`](docs/parser.md).
