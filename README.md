@@ -79,7 +79,7 @@ yarn start:dev    # serves staging data
 Open [`http://localhost:4200/en`](http://localhost:4200/en). The server
 hot-reloads on edit. API calls go straight to mobile-content-api over absolute
 URLs built from [`src/api/url.ts`](src/app/api/url.ts) and the active
-environment config — there is no dev-server proxy, so which backend you hit
+environment config, so which backend you hit
 depends only on the configuration you start with.
 
 ### Scripts
@@ -105,8 +105,7 @@ depends only on the configuration you start with.
   Corepack is on.
 - **Peer-dependency errors on install** — `.npmrc` sets `legacy-peer-deps=true`;
   peer warnings are expected and non-fatal.
-- **API requests fail locally** — Requests go direct to mobile-content-api (no
-  proxy sits in front of them). Check which backend the running configuration
+- **API requests fail locally** — Requests go direct to mobile-content-api. Check which backend the running configuration
   points at: `yarn start` uses **production**, `yarn start:dev` uses **staging**
   (see `src/environments/`).
 
