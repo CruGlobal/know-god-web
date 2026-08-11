@@ -76,8 +76,9 @@ Local app: <http://localhost:4200/en>.
   the iframe auto-resize (`postMessage` height messaging in `src/index.html` and
   `embed/embed.js`). The `embedded` flag (`page.component.ts`) and embedded
   analytics tagging (`analytics.service.ts`) should keep working.
-- Don't bypass the proxy — API calls rely on `proxy.conf.json` wired through
-  `yarn start` / `yarn start:dev`.
+- API calls use absolute URLs from `src/app/api/url.ts` + `src/environments/`;
+  there is no dev-server proxy. Add new endpoints there rather than hardcoding
+  hosts at the call site.
 - New styles go in the component's co-located `.css` (or `src/styles.css` for
   globals); don't introduce a new styling system.
 - Use `yarn`; never add `npm`/`package-lock.json` artifacts.
