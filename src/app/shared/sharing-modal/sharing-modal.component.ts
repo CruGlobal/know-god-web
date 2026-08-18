@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Clipboard } from 'ts-clipboard';
-import { SHAREDURL } from '../../api/url';
+import { buildShareUrl } from '../../api/url';
 
 @Component({
   selector: 'app-sharing-modal',
@@ -11,7 +11,6 @@ import { SHAREDURL } from '../../api/url';
 export class SharingModalComponent implements OnInit {
   @Input()
   book: string;
-  currentUrl: string;
   ShareState = 'min';
 
   constructor(private toastr: ToastrService) {}
@@ -31,22 +30,10 @@ export class SharingModalComponent implements OnInit {
   }
 
   shareTo(type: string): void {
-    this.currentUrl = window.location.href;
-    let url = '';
-    switch (type) {
-      case 'TWITTER':
-        url = SHAREDURL.get(type)
-          .replace('BOOK_NAME', this.book)
-          .replace('BOOK_LINK', this.currentUrl);
-        break;
-      case 'MAILTO':
-        url = SHAREDURL.get(type)
-          .replace('MAIL_SUBJECT', this.book)
-          .replace('MAIL_BODY', this.currentUrl);
-        break;
-      default:
-        url = SHAREDURL.get(type) + this.currentUrl;
+    const url = buildShareUrl(type, this.book, window.location.href);
+    if (!url) {
+      return;
     }
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener');
   }
 }
