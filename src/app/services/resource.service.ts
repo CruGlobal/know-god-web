@@ -26,9 +26,7 @@ interface JsonApiResource {
   relationships: {
     [key: string]: {
       data:
-        | { type: string; id: string }
-        | { type: string; id: string }[]
-        | null;
+        { type: string; id: string } | { type: string; id: string }[] | null;
     };
   };
 }

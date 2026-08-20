@@ -87,11 +87,6 @@ interface JsonApiResponse {
   included: JsonApiResource[];
 }
 
-export enum getResourceTypeEnum {
-  animation = 'animation',
-  image = 'image'
-}
-
 @Component({
   selector: 'app-page',
   templateUrl: './page.component.html',
@@ -356,39 +351,13 @@ export class PageComponent implements OnInit, OnDestroy {
     );
   }
 
-  private getResource(
-    resourceType: getResourceTypeEnum,
-    resourceName: string
-  ): string {
-    if (!resourceName) {
-      return '';
-    }
-
-    if (this._pageBookIndex !== undefined && this._pageBookIndex !== null) {
-      const attachments = this._pageBookIndex.included.filter(
-        (row) =>
-          row.type.toLowerCase() === 'attachment' &&
-          (row.attributes['file-file-name'] as string).toLowerCase() ===
-            resourceName.toLowerCase()
-      );
-
-      if (!attachments.length) {
-        return '';
-      }
-
-      const fileUrl = attachments[0].attributes.file as string;
-      if (resourceType === getResourceTypeEnum.animation) {
-        this.pageService.addToAnimationsDict(resourceName, fileUrl);
-        return fileUrl;
-      } else if (resourceType === getResourceTypeEnum.image) {
-        const link = document.createElement('link');
-        link.href = fileUrl;
-        link.rel = 'prefetch';
-        document.getElementsByTagName('head')[0].appendChild(link);
-        this.pageService.addToImagesDict(resourceName, fileUrl);
-        return fileUrl;
-      }
-    }
+  // Prefetch a file from the published content location so it is cached
+  // before the pages that reference it render.
+  private prefetchPublishedFile(fileName: string): void {
+    const link = document.createElement('link');
+    link.href = APIURL.GET_TRANSLATION_FILES + fileName;
+    link.rel = 'prefetch';
+    document.getElementsByTagName('head')[0].appendChild(link);
   }
 
   private loadBookPage(page: TractPage): void {
@@ -431,8 +400,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.pullParserFactory.clearOrigin();
     this._pageBookTranslations.forEach((translation) => {
       const lang = translation?.relationships?.language as
-        | { data?: { id?: string } }
-        | undefined;
+        { data?: { id?: string } } | undefined;
       if (lang?.data?.id === this._selectedLanguage.id) {
         item = translation;
         return;
@@ -449,7 +417,6 @@ export class PageComponent implements OnInit, OnDestroy {
       const manifestName = item.attributes['manifest-name'] as string;
       this.pullParserFactory.setOrigin(APIURL.GET_TRANSLATION_FILES);
       const config = ParserConfig.createParserConfig()
-        .withLegacyWebImageResources(true)
         .withSupportedFeatures([
           ParserConfig.Companion.FEATURE_ANIMATION,
           ParserConfig.Companion.FEATURE_MULTISELECT,
@@ -465,38 +432,11 @@ export class PageComponent implements OnInit, OnDestroy {
           const { manifest } = data as XmlParserData;
           this._pageBookManifest = manifest;
 
-          // Remove file extensions to get the SHAs for manifest resources
-          const neededShas = new Set(
-            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? []).map(
-              (file) => file.replace(/\.[^.]+$/, '')
-            )
-          );
-
-          // Loop through and get all needed resources.
-          this._pageBookIndex.included.forEach((resource) => {
-            const { attributes, type } = resource;
-
-            if (type !== 'attachment') {
-              return;
-            }
-
-            const fileName = attributes['file-file-name'] as string;
-            // Add all resources to the lookup table so they can be accessed by any page that needs them
-            this.pageService.addAttachment(fileName, attributes.file as string);
-
-            if (!neededShas.has(attributes.sha256 as string)) {
-              return;
-            }
-
-            const isImage = IMAGE_EXTENSIONS_REGEX.test(fileName);
-
-            this.getResource(
-              isImage
-                ? getResourceTypeEnum.image
-                : getResourceTypeEnum.animation,
-              fileName
-            );
-          });
+          // Images are published as immutable, sha256-named files alongside
+          // the page XML; prefetch them from the published content location.
+          Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? [])
+            .filter((file) => IMAGE_EXTENSIONS_REGEX.test(file))
+            .forEach((file) => this.prefetchPublishedFile(file));
 
           if (manifest?.pages?.length) {
             this._pageBookSubPagesManifest = manifest.pages;
@@ -696,8 +636,7 @@ export class PageComponent implements OnInit, OnDestroy {
     if (this._selectedLanguage && this._selectedLanguage.id) {
       const y = this._pageBookTranslations.find((x) => {
         const lang = x?.relationships?.language as
-          | { data?: { id?: string } }
-          | undefined;
+          { data?: { id?: string } } | undefined;
         return lang?.data?.id && lang.data.id === this._selectedLanguage.id;
       });
       return !!(y && y.id);

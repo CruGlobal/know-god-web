@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { APIURL } from 'src/app/api/url';
 import { formatEvents } from 'src/app/shared/formatEvents';
 import {
   EventId,
   ParserState,
+  Resource,
   State
 } from '../../services/xml-parser-service/xml-parser.service';
 
@@ -31,9 +33,6 @@ export class PageService {
   private _isLastPage = new BehaviorSubject<boolean>(false);
   private _isForm = new BehaviorSubject<boolean>(false);
   private _isModal = new BehaviorSubject<boolean>(false);
-  private _imageUrlsDict = new BehaviorSubject<string[]>([]);
-  private _animationUrlsDict = new BehaviorSubject<string[]>([]);
-  private _allAttachmentResources = new Map<string, string>();
   private _navigationStack = new BehaviorSubject<string[]>([]);
   private XmlParserState = State.createState();
 
@@ -60,18 +59,15 @@ export class PageService {
     this._isLastPage.next(false);
     this._isForm.next(false);
     this._isModal.next(false);
-    this.clearImagesDict();
-    this.clearAnimationsDict();
   }
 
-  addAttachment(pImageName: string, pImageUrl: string): void {
-    const tImages = this._allAttachmentResources.get(pImageName);
-    if (!tImages) this._allAttachmentResources.set(pImageName, pImageUrl);
-  }
-
-  findAttachment(pImageName: string): string {
-    const tImages = this._allAttachmentResources.get(pImageName);
-    return tImages || '';
+  // Resolve a manifest resource to its published, immutable file. Resources
+  // are copied to the published content location under their sha256-based
+  // filename (localName) when a tool is published.
+  getResourceUrl(resource: Resource | null): string | null {
+    return resource?.localName
+      ? APIURL.GET_TRANSLATION_FILES + resource.localName
+      : null;
   }
 
   nextPage(): void {
@@ -142,45 +138,6 @@ export class PageService {
 
   hideTip(): void {
     this._visibleTip.next('');
-  }
-
-  clearImagesDict(): void {
-    this._imageUrlsDict.next([]);
-  }
-
-  addToImagesDict(pImageName: string, pImageUrl: string): void {
-    const tImages = this._imageUrlsDict.getValue();
-    tImages[pImageName.toLocaleLowerCase()] = pImageUrl;
-    this._imageUrlsDict.next(tImages);
-  }
-
-  getImageUrl(pImageName: string): string {
-    const tImages = this._imageUrlsDict.getValue();
-    if (tImages && tImages[pImageName.toLocaleLowerCase()]) {
-      return tImages[pImageName.toLocaleLowerCase()];
-    }
-    return pImageName;
-  }
-  getAllImages() {
-    return this._imageUrlsDict.getValue();
-  }
-
-  clearAnimationsDict(): void {
-    this._animationUrlsDict.next([]);
-  }
-
-  addToAnimationsDict(pFileName: string, pFileUrl: string): void {
-    const tFiles = this._animationUrlsDict.getValue();
-    tFiles[pFileName.toLocaleLowerCase()] = pFileUrl;
-    this._animationUrlsDict.next(tFiles);
-  }
-
-  getAnimationUrl(pFileName: string): string {
-    const tFiles = this._animationUrlsDict.getValue();
-    if (tFiles && tFiles[pFileName.toLocaleLowerCase()]) {
-      return tFiles[pFileName.toLocaleLowerCase()];
-    }
-    return pFileName;
   }
 
   isRestricted(deviceTypes: string[]): boolean {

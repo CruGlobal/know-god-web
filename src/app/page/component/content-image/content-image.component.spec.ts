@@ -1,5 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { APIURL } from 'src/app/api/url';
 import { mockImage } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentImageComponent } from './content-image.component';
@@ -14,9 +15,6 @@ describe('ContentImageComponent', () => {
   const imageOnlyUrl = mockImage(fileName, filePath, null);
   const imageWithEventsAndUrl = mockImage(fileName, filePath, imageEvent);
   const imageNotClickable = mockImage(fileName, null, null);
-  const fileNameNotAdded = 'name-of-file-not-added.png';
-  const filePathNotAdded = `/some-folder/${fileName}`;
-  const imageNoNameNotAdded = mockImage(fileNameNotAdded, filePathNotAdded);
   let pageService: PageService;
 
   beforeEach(waitForAsync(() => {
@@ -28,25 +26,22 @@ describe('ContentImageComponent', () => {
     fixture = TestBed.createComponent(ContentImageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-    pageService.addToImagesDict(fileName, filePath);
-    spyOn(pageService, 'findAttachment');
   }));
 
-  it('Fetch image from pageService', async () => {
+  it('resolves the image from the published content location', () => {
     component.item = imageWithEventsAndUrl;
     component.ngOnChanges({
       item: new SimpleChange(null, imageWithEventsAndUrl, true)
     });
-    expect(pageService.findAttachment).not.toHaveBeenCalledWith(fileName);
-    expect(component.imgResource).toBe(filePath);
+    expect(component.imgResource).toBe(APIURL.GET_TRANSLATION_FILES + filePath);
   });
 
-  it('Find image from pageService if not in pageService', () => {
-    component.item = imageNoNameNotAdded;
+  it('renders no image when the resource has no published file', () => {
+    component.item = imageNotClickable;
     component.ngOnChanges({
-      item: new SimpleChange(null, imageNoNameNotAdded, true)
+      item: new SimpleChange(null, imageNotClickable, true)
     });
-    expect(pageService.findAttachment).toHaveBeenCalledWith(fileNameNotAdded);
+    expect(component.imgResource).toBe('');
   });
 
   it('fires events only when clicked on with events', () => {

@@ -1,5 +1,6 @@
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { APIURL } from 'src/app/api/url';
 import { Button } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { createResource, mockButton, mockText } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
@@ -117,9 +118,6 @@ describe('ContentButtonComponent', () => {
   it('does not render start/end images from the child text node', () => {
     // Per the content schema, start-image/end-image only exist on standalone
     // text elements; buttons render images via icon/icon-gravity only.
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('image.png', 'https://cru.org/img.png');
-
     const buttonWithTextImages = {
       ...mockButton(buttonText, '', buttonEvent),
       text: mockText(buttonText)
@@ -134,9 +132,6 @@ describe('ContentButtonComponent', () => {
   });
 
   it('renders the icon inside the anchor variant', () => {
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
-
     const urlButtonWithIcon = {
       ...mockButton(buttonText, buttonUrl, ''),
       icon: createResource('icon.png', 'icon.png'),
@@ -154,9 +149,6 @@ describe('ContentButtonComponent', () => {
   });
 
   it('renders the button icon before the text when icon-gravity is start', () => {
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
-
     const iconButton = {
       ...mockButton(buttonText, '', buttonEvent),
       icon: createResource('icon.png', 'icon.png'),
@@ -173,7 +165,9 @@ describe('ContentButtonComponent', () => {
       fixture.nativeElement.querySelector('button');
     const icon: HTMLImageElement = button.querySelector('img');
     expect(icon).toBeTruthy();
-    expect(icon.getAttribute('src')).toBe('https://cru.org/icon.png');
+    expect(icon.getAttribute('src')).toBe(
+      APIURL.GET_TRANSLATION_FILES + 'icon.png'
+    );
     expect(icon.style.width).toBe('18px');
     expect(icon.classList).toContain('buttonImgStart');
     expect(icon.getAttribute('alt')).toBe('');
@@ -181,9 +175,6 @@ describe('ContentButtonComponent', () => {
   });
 
   it('renders the button icon after the text when icon-gravity is end', () => {
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
-
     const iconButton = {
       ...mockButton(buttonText, '', buttonEvent),
       icon: createResource('icon.png', 'icon.png'),
@@ -203,9 +194,6 @@ describe('ContentButtonComponent', () => {
   });
 
   it('does not render the icon when gravity is CENTER', () => {
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
-
     const iconButton = {
       ...mockButton(buttonText, '', buttonEvent),
       icon: createResource('icon.png', 'icon.png'),
@@ -231,15 +219,10 @@ describe('ContentButtonComponent', () => {
     expect(fixture.nativeElement.querySelectorAll('button img').length).toBe(0);
   });
 
-  it('does not resolve the icon from the attachments table', () => {
-    // The attachments table also contains unpublished files; icons only
-    // resolve through the images dict built from the published manifest.
-    const pageService = TestBed.inject(PageService);
-    pageService.addAttachment('icon.png', 'https://cru.org/attachment.png');
-
+  it('does not render the icon when it has no published file', () => {
     const iconButton = {
       ...mockButton(buttonText, '', buttonEvent),
-      icon: createResource('icon.png', 'icon.png'),
+      icon: createResource('icon.png', null),
       iconGravity: { name: 'START', ordinal: 0 },
       iconSize: 18
     } as Button;
@@ -253,9 +236,6 @@ describe('ContentButtonComponent', () => {
   });
 
   it('gives the icon a non-empty alt when the button has no text label', () => {
-    const pageService = TestBed.inject(PageService);
-    pageService.addToImagesDict('icon.png', 'https://cru.org/icon.png');
-
     const iconOnlyButton = {
       ...mockButton('', '', buttonEvent),
       text: mockText(''),
