@@ -29,7 +29,7 @@ jobs:
         run: yarn crowdin:download
         env:
           CROWDIN_API_TOKEN: ${{ secrets.CROWDIN_API_TOKEN }}
-      - name: Prettier Write
+      - name: Fix locale files code style
         run: yarn prettier src/assets/locales/ --write
       - name: 🔀 Create PR
         uses: peter-evans/create-pull-request@v8
