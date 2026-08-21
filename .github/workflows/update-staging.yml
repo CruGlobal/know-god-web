@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/main') || 
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'On Staging'))
+      (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'On Staging'))
     steps:
       - uses: actions/checkout@v7
       - name: 🖇️ Merge current branch into staging
@@ -29,8 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     if: |
       (github.event_name == 'push' && github.ref == 'refs/heads/main') || 
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'On Staging')) ||
-      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'On Development'))
+      (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'On Staging')) ||
+      (github.event_name == 'pull_request_target' && contains(github.event.pull_request.labels.*.name, 'On Development'))
     steps:
       - uses: actions/checkout@v7
       - name: 🖇️ Merge current branch into development
