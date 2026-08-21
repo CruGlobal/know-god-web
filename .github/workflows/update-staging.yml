@@ -3,16 +3,17 @@ on:
   push:
     branches:
       - main
-  pull_request:
+  pull_request_target:
     types: [labeled, synchronize]
+    branches: [main]
 
 jobs:
   update-staging:
     name: 🌱 Merge to Staging
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'On Staging')
-    permissions:
-      contents: write
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') || 
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'On Staging'))
     steps:
       - uses: actions/checkout@v7
       - name: 🖇️ Merge current branch into staging
@@ -20,14 +21,16 @@ jobs:
         with:
           type: now
           target_branch: 'staging'
+          head_to_merge: ${{ github.event.pull_request.head.sha || github.sha }}
           github_token: ${{ github.token }}
 
   update-development:
     name: 🛠 Merge to Development
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main' || contains(github.event.pull_request.labels.*.name, 'On Staging') || contains(github.event.pull_request.labels.*.name, 'On Development')
-    permissions:
-      contents: write
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/main') || 
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'On Staging')) ||
+      (github.event_name == 'pull_request' && contains(github.event.pull_request.labels.*.name, 'On Development'))
     steps:
       - uses: actions/checkout@v7
       - name: 🖇️ Merge current branch into development
@@ -35,4 +38,5 @@ jobs:
         with:
           type: now
           target_branch: 'development'
+          head_to_merge: ${{ github.event.pull_request.head.sha || github.sha }}
           github_token: ${{ github.token }}
