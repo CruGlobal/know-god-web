@@ -75,7 +75,7 @@
     "prettier": "^3.4.1",
     "pretty-quick": "^4.0.0",
     "stream": "^0.0.3",
-    "typescript": "~5.4.5"
+    "typescript": "~5.9.0"
   },
   "packageManager": "yarn@4.18.0"
 }
