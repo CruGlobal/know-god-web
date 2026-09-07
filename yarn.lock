@@ -2695,10 +2695,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rails/actioncable@npm:~8.0.0":
-  version: 8.0.500
-  resolution: "@rails/actioncable@npm:8.0.500"
-  checksum: 10c0/fae860dcf82237bbc09876e249d34929dd81be106f37a214f124bfb57237b36568ba72928ab9a897528d37952e7508892c544683e221c90dcc3d438e2f400042
+"@rails/actioncable@npm:~8.1.0":
+  version: 8.1.301
+  resolution: "@rails/actioncable@npm:8.1.301"
+  checksum: 10c0/50d395e012f23b7cbdd18ad42077baaf8f15fd2b3e55cdc93e0ae771c7d24ec0deeea97062e7e9549f0ebeae3f90d6a32ef7de909389d957f87e3384fe23501e
   languageName: node
   linkType: hard
 
@@ -8654,7 +8654,7 @@ __metadata:
     "@angular/router": "npm:^17.3.12"
     "@crowdin/cli": "npm:^4.14.2"
     "@cruglobal/godtools-shared": "npm:^1.3.0"
-    "@rails/actioncable": "npm:~8.0.0"
+    "@rails/actioncable": "npm:~8.1.0"
     "@types/jasmine": "npm:^5.1.4"
     "@types/node": "npm:24.13.3"
     "@typescript-eslint/eslint-plugin": "npm:^8.15.0"
