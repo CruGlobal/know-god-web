@@ -15,7 +15,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-card',
   templateUrl: './content-card.component.html',
-  styleUrls: ['./content-card.component.css']
+  styleUrls: ['./content-card.component.css'],
+  standalone: false
 })
 export class ContentCardComponent implements OnChanges, OnDestroy {
   @Input() item: Card;

@@ -22,7 +22,8 @@ interface TabWithContent {
 @Component({
   selector: 'app-content-tabs',
   templateUrl: './content-tabs.component.html',
-  styleUrls: ['./content-tabs.component.css']
+  styleUrls: ['./content-tabs.component.css'],
+  standalone: false
 })
 export class ContentTabsComponent implements OnChanges, OnDestroy {
   @Input() item: Tabs;

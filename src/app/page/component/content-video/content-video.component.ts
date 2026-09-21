@@ -14,7 +14,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-video',
   templateUrl: './content-video.component.html',
-  styleUrls: ['./content-video.component.css']
+  styleUrls: ['./content-video.component.css'],
+  standalone: false
 })
 export class ContentVideoComponent implements OnChanges, OnDestroy {
   @Input() item: Video;

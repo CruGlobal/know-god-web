@@ -91,7 +91,8 @@ interface JsonApiResponse {
   selector: 'app-page',
   templateUrl: './page.component.html',
   styleUrls: ['./page.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
 })
 export class PageComponent implements OnInit, OnDestroy {
   private _unsubscribeAll = new Subject<void>();

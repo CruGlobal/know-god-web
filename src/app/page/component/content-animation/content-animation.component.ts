@@ -16,7 +16,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-animation',
   templateUrl: './content-animation.component.html',
-  styleUrls: ['./content-animation.component.css']
+  styleUrls: ['./content-animation.component.css'],
+  standalone: false
 })
 export class ContentAnimationComponent implements OnChanges, OnDestroy {
   @Input() item: Animation;

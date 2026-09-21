@@ -16,7 +16,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-button',
   templateUrl: './content-button.component.html',
-  styleUrls: ['./content-button.component.css']
+  styleUrls: ['./content-button.component.css'],
+  standalone: false
 })
 export class ContentButtonComponent implements OnChanges, OnDestroy {
   @Input() item: Button;

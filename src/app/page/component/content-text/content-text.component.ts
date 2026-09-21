@@ -16,7 +16,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-text',
   templateUrl: './content-text.component.html',
-  styleUrls: ['./content-text.component.css']
+  styleUrls: ['./content-text.component.css'],
+  standalone: false
 })
 export class ContentTextComponent implements OnChanges, OnDestroy {
   @Input() item: Text;

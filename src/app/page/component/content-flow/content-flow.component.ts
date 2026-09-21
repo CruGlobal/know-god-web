@@ -23,7 +23,8 @@ type FlowContent = {
 @Component({
   selector: 'app-content-flow',
   templateUrl: './content-flow.component.html',
-  styleUrls: ['./content-flow.component.css']
+  styleUrls: ['./content-flow.component.css'],
+  standalone: false
 })
 export class ContentFlowComponent implements OnChanges, OnDestroy {
   @Input() item: Flow;
