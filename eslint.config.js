@@ -42,6 +42,11 @@ export default [
       ...typescriptEslintPlugin.configs.recommended.rules,
       ...angularEslintPlugin.configs.recommended.rules,
       'prettier/prettier': 'error',
+      // This app is NgModule-based, not standalone-component based. The rule
+      // is `error` in angular-eslint's recommended config and its autofixer
+      // strips the `standalone: false` that Angular 19 requires on declared
+      // components, so `yarn lint --fix` would silently break the build.
+      '@angular-eslint/prefer-standalone': 'off',
       '@angular-eslint/component-selector': [
         'error',
         {

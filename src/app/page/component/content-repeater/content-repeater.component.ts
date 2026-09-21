@@ -17,7 +17,8 @@ import { ContentInputComponent } from '../content-input/content-input.component'
 @Component({
   selector: 'app-content-repeater',
   templateUrl: './content-repeater.component.html',
-  styleUrls: ['./content-repeater.component.css']
+  styleUrls: ['./content-repeater.component.css'],
+  standalone: false
 })
 export class ContentRepeaterComponent implements OnChanges {
   @Input() items: Content[];

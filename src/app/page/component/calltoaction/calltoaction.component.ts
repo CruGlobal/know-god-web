@@ -9,7 +9,8 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-calltoaction',
   templateUrl: './calltoaction.component.html',
-  styleUrls: ['./calltoaction.component.css']
+  styleUrls: ['./calltoaction.component.css'],
+  standalone: false
 })
 export class CalltoactionComponent implements OnChanges {
   @Input() item: CallToAction;

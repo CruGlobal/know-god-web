@@ -15,7 +15,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-multiselect',
   templateUrl: './content-multiselect.component.html',
-  styleUrls: ['./content-multiselect.component.css']
+  styleUrls: ['./content-multiselect.component.css'],
+  standalone: false
 })
 export class ContentMultiselectComponent implements OnChanges, OnDestroy {
   @Input() item: Multiselect;

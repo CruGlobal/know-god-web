@@ -9,7 +9,8 @@ import {
 @Component({
   selector: 'app-cyoa-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
+  standalone: false
 })
 export class CyoaCardComponent implements OnChanges {
   @Input() card: CYOAPageCard;
