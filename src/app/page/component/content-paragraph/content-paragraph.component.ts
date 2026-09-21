@@ -15,7 +15,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-paragraph',
   templateUrl: './content-paragraph.component.html',
-  styleUrls: ['./content-paragraph.component.css']
+  styleUrls: ['./content-paragraph.component.css'],
+  standalone: false
 })
 export class ContentParagraphComponent implements OnChanges, OnDestroy {
   @Input() item: Paragraph;

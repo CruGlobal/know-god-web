@@ -22,7 +22,8 @@ import { navigateBackIfPossible, shouldShowBackButton } from '../page-helpers';
   selector: 'app-cyoa-card-collection-page',
   templateUrl: './cyoa-card-collection-page.component.html',
   styleUrls: ['../default-page.css', '../cyoa-page/cyoa-page.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
 })
 export class CYOACardCollectionComponent implements OnChanges, OnDestroy {
   @Input() page: CyoaCardCollectionPage;

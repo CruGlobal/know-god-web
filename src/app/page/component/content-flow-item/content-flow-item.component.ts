@@ -14,7 +14,8 @@ import {
   selector: 'app-content-flow-item',
   templateUrl: './content-flow-item.component.html',
   styleUrls: ['./content-flow-item.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
 })
 export class ContentFlowItemComponent implements OnChanges {
   @Input() item: FlowItem;

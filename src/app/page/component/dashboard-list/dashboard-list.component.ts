@@ -13,7 +13,8 @@ import { Resource } from '../../../services/resource.service';
   selector: 'app-dashboard-list',
   templateUrl: './dashboard-list.component.html',
   styleUrls: ['./dashboard-list.component.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
 })
 export class DashboardListComponent {
   @Input() title: string = '';

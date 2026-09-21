@@ -17,7 +17,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-image',
   templateUrl: './content-image.component.html',
-  styleUrls: ['./content-image.component.css']
+  styleUrls: ['./content-image.component.css'],
+  standalone: false
 })
 export class ContentImageComponent implements OnChanges, OnDestroy {
   @Input() item: Image;

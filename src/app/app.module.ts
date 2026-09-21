@@ -6,7 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule, Routes } from '@angular/router';
 import { I18NEXT_SERVICE, I18NextModule } from 'angular-i18next';
-import { LottieModule } from 'ngx-lottie';
+import { LottieComponent, provideLottieOptions } from 'ngx-lottie';
 import { ToastrModule } from 'ngx-toastr';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -156,12 +156,13 @@ export function playerFactory() {
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
-    LottieModule.forRoot({ player: playerFactory }),
+    LottieComponent,
     I18NextModule.forRoot()
   ],
   providers: [
     CommonModule,
     LoaderService,
+    provideLottieOptions({ player: playerFactory }),
     {
       provide: APP_INITIALIZER,
       useFactory: appInit,

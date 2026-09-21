@@ -6,7 +6,8 @@ import { SHAREDURL } from '../../api/url';
 @Component({
   selector: 'app-sharing-modal',
   templateUrl: './sharing-modal.component.html',
-  styleUrls: ['./sharing-modal.component.css']
+  styleUrls: ['./sharing-modal.component.css'],
+  standalone: false
 })
 export class SharingModalComponent implements OnInit {
   @Input()

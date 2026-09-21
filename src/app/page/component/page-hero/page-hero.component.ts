@@ -18,7 +18,8 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-hero',
   templateUrl: './page-hero.component.html',
-  styleUrls: ['./page-hero.component.css']
+  styleUrls: ['./page-hero.component.css'],
+  standalone: false
 })
 export class PageHeroComponent implements OnDestroy, OnChanges {
   @Input() hero: Hero;

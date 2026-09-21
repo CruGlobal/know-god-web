@@ -18,7 +18,8 @@ import { PageService } from '../../../service/page-service.service';
   selector: 'app-lesson-page',
   templateUrl: './lesson-page.component.html',
   styleUrls: ['../default-page.css'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  standalone: false
 })
 export class LessonComponent implements OnChanges, OnDestroy {
   @Input() page: LessonPage;

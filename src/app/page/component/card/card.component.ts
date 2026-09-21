@@ -10,7 +10,8 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-card',
   templateUrl: './card.component.html',
-  styleUrls: ['./card.component.css']
+  styleUrls: ['./card.component.css'],
+  standalone: false
 })
 export class CardComponent implements OnChanges {
   @Input() card: TractPageCard;

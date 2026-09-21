@@ -17,7 +17,8 @@ import { ContentRepeaterComponent } from '../content-repeater/content-repeater.c
 @Component({
   selector: 'app-content-form',
   templateUrl: './content-form.component.html',
-  styleUrls: ['./content-form.component.css']
+  styleUrls: ['./content-form.component.css'],
+  standalone: false
 })
 export class ContentFormComponent implements OnInit, OnDestroy, OnChanges {
   @Input() item: Content[];
