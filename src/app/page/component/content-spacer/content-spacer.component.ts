@@ -13,7 +13,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-spacer',
   templateUrl: './content-spacer.component.html',
-  styleUrls: ['./content-spacer.component.css']
+  styleUrls: ['./content-spacer.component.css'],
+  standalone: false
 })
 export class ContentSpacerComponent implements OnChanges, OnDestroy {
   @Input() item: Spacer;

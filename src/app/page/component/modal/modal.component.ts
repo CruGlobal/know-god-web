@@ -11,7 +11,8 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-page-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.css'],
+  standalone: false
 })
 export class ModalComponent implements OnChanges {
   @Input() modal: Modal;

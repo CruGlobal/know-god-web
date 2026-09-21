@@ -22,7 +22,8 @@ interface AccordionSectionWithContent {
 @Component({
   selector: 'app-content-accordion',
   templateUrl: './content-accordion.component.html',
-  styleUrls: ['./content-accordion.component.css']
+  styleUrls: ['./content-accordion.component.css'],
+  standalone: false
 })
 export class ContentAccordionComponent implements OnChanges, OnDestroy {
   @Input() item: Accordion;

@@ -17,7 +17,8 @@ import { PageService } from '../../service/page-service.service';
 @Component({
   selector: 'app-content-multiselect-option',
   templateUrl: './content-multiselect-option.component.html',
-  styleUrls: ['./content-multiselect-option.component.css']
+  styleUrls: ['./content-multiselect-option.component.css'],
+  standalone: false
 })
 export class ContentMultiselectOptionComponent implements OnChanges, OnDestroy {
   @Input() item: MultiselectOption;

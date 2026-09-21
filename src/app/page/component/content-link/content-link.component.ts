@@ -16,7 +16,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-link',
   templateUrl: './content-link.component.html',
-  styleUrls: ['./content-link.component.css']
+  styleUrls: ['./content-link.component.css'],
+  standalone: false
 })
 export class ContentLinkComponent implements OnChanges, OnDestroy {
   @Input() item: Link;

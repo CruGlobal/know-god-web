@@ -8,7 +8,8 @@ import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-page-navigation',
-  templateUrl: './page-navigation.component.html'
+  templateUrl: './page-navigation.component.html',
+  standalone: false
 })
 export class PageNavigationComponent {
   @Input() direction$: Observable<string>;

@@ -17,7 +17,8 @@ import { VisibilityWatchers } from '../visibility-watchers/visibility-watchers';
 @Component({
   selector: 'app-content-input',
   templateUrl: './content-input.component.html',
-  styleUrls: ['./content-input.component.css']
+  styleUrls: ['./content-input.component.css'],
+  standalone: false
 })
 export class ContentInputComponent implements OnChanges, OnDestroy {
   @Input() item: xmlInput;
