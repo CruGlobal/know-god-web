@@ -45,12 +45,12 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.0.0",
-    "@angular-eslint/builder": "^17.5.3",
-    "@angular-eslint/eslint-plugin": "^17.5.3",
-    "@angular-eslint/eslint-plugin-template": "^17.5.3",
-    "@angular-eslint/schematics": "^17.5.3",
-    "@angular-eslint/template-parser": "^17.5.3",
-    "@angular-eslint/utils": "^17.5.3",
+    "@angular-eslint/builder": "^19.0.0",
+    "@angular-eslint/eslint-plugin": "^19.0.0",
+    "@angular-eslint/eslint-plugin-template": "^19.0.0",
+    "@angular-eslint/schematics": "^19.0.0",
+    "@angular-eslint/template-parser": "^19.0.0",
+    "@angular-eslint/utils": "^19.0.0",
     "@angular/cli": "^19.0.0",
     "@angular/compiler-cli": "^19.0.0",
     "@angular/language-service": "^19.0.0",
@@ -75,7 +75,7 @@
     "prettier": "^3.4.1",
     "pretty-quick": "^4.0.0",
     "stream": "^0.0.3",
-    "typescript": "~5.9.0"
+    "typescript": "~5.8.0"
   },
   "packageManager": "yarn@4.18.0"
 }
