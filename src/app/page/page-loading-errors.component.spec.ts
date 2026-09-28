@@ -14,8 +14,13 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
-import { of } from 'rxjs';
-import { mockManifestTranslation, mockPageComponent } from '../_tests/mocks';
+import { BehaviorSubject, of } from 'rxjs';
+import {
+  mockManifestTranslation,
+  mockPageComponent,
+  mockTractBookIndex,
+  mockTractPage
+} from '../_tests/mocks';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
 import { LoaderService } from '../services/loader-service/loader.service';
@@ -31,12 +36,20 @@ const failedLoadText = 'Failed to load the book.';
 const notInLanguageText =
   "This book isn't available in the currently selected language.";
 const serverError = { status: 500, statusText: 'Server Error' };
+const routeParams = {
+  langId: 'en',
+  toolType: 'tool',
+  resourceType: 'v1',
+  bookId: 'fourlaws',
+  page: '0'
+};
 
 describe('PageComponent loading errors', () => {
   let component: PageComponent;
   let fixture: ComponentFixture<PageComponent>;
   let httpMock: HttpTestingController;
   let loaderService: LoaderService;
+  let params: BehaviorSubject<Record<string, string>>;
 
   const headingWithText = (text: string): HTMLElement | null =>
     Array.from(
@@ -52,6 +65,7 @@ describe('PageComponent loading errors', () => {
   };
 
   beforeEach(() => {
+    params = new BehaviorSubject<Record<string, string>>(routeParams);
     TestBed.configureTestingModule({
       declarations: [PageComponent],
       imports: [FormsModule, RouterTestingModule, I18NextModule.forRoot()],
@@ -64,13 +78,7 @@ describe('PageComponent loading errors', () => {
         {
           provide: ActivatedRoute,
           useValue: {
-            params: of({
-              langId: 'en',
-              toolType: 'tool',
-              resourceType: 'v1',
-              bookId: 'fourlaws',
-              page: '0'
-            }),
+            params: params.asObservable(),
             queryParams: of({}),
             snapshot: { queryParams: {} }
           }
@@ -125,6 +133,55 @@ describe('PageComponent loading errors', () => {
     expect(component.bookNotAvailable).toBeTrue();
     expect(loaderService.status.value).toBeFalse();
     expect(failedLoadMessage()).not.toBeNull();
+  }));
+
+  it('ignores a failed request from an older load and renders the newer load', fakeAsync(() => {
+    const page = mockTractPage(
+      false,
+      '1',
+      'Header',
+      'Hero',
+      'CTA',
+      '',
+      'Modal',
+      0
+    );
+    spyOn(ManifestParser.prototype, 'parseManifest').and.resolveTo({
+      manifest: { relatedFiles: null, pages: [page] }
+    } as unknown as XmlParserData);
+    startLoading();
+
+    // A route change starts a newer load while the first languages request is
+    // still in flight.
+    params.next({ ...routeParams });
+    tick();
+    const [olderRequest, newerRequest] = httpMock.match(
+      APIURL.GET_ALL_LANGUAGES
+    );
+    olderRequest.flush(null, serverError);
+    fixture.detectChanges();
+
+    expect(component.bookNotAvailable).toBeFalse();
+    expect(failedLoadMessage()).toBeNull();
+
+    newerRequest.flush({ data: [mockPageComponent.languageEnglish] });
+    httpMock
+      .expectOne(APIURL.GET_ALL_BOOKS)
+      .flush({ data: mockPageComponent.books });
+    httpMock
+      .expectOne(APIURL.GET_INDEX_FILE.replace('{0}', '1'))
+      .flush(
+        new TextEncoder().encode(JSON.stringify(mockTractBookIndex)).buffer
+      );
+    flushMicrotasks();
+    tick();
+    fixture.detectChanges();
+
+    expect(component.bookNotAvailable).toBeFalse();
+    expect(component.activePage).toBe(page);
+    expect(component.pagesLoaded).toBeTrue();
+    expect(loaderService.status.value).toBeFalse();
+    expect(failedLoadMessage()).toBeNull();
   }));
 
   describe('loadBookManifestXML()', () => {

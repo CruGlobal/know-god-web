@@ -750,6 +750,21 @@ export const mockManifestTranslation = {
   relationships: { language: { data: { id: '2222' } } }
 };
 
+// A tract book index whose latest translation is mockManifestTranslation
+export const mockTractBookIndex = {
+  data: {
+    attributes: {
+      'resource-type': 'tract',
+      manifest: 'manifest.xml',
+      name: 'Four Laws'
+    },
+    relationships: {
+      'latest-translations': { data: [{ id: mockManifestTranslation.id }] }
+    }
+  },
+  included: [mockManifestTranslation]
+};
+
 export const mockSpacer = (height = 100): Spacer => {
   return {
     height,

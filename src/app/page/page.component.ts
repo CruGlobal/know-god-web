@@ -115,6 +115,9 @@ export class PageComponent implements OnInit, OnDestroy {
   private _selectedLanguage: Language;
   private _languageSearchKeys = new Map<string, string>();
   private _manifestParseController: AbortController | null = null;
+  // Bumped on every route change. Catalog requests remember the value they
+  // started with, so a late response from an older load can't change the page.
+  private _loadId = 0;
   private liveShareSubscription: ActionCable.Channel;
 
   @ViewChild('languageSearchInput')
@@ -524,12 +527,16 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private loadPageBookIndex(): void {
+    const loadId = this._loadId;
     this._pageBookTranslations = [];
     this.commonService
       .downloadFile(APIURL.GET_INDEX_FILE.replace('{0}', this._pageBook.id))
       .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
       .subscribe({
         next: (data: ArrayBuffer) => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
           const enc = new TextDecoder('utf-8');
           const arr = new Uint8Array(data);
           const result = enc.decode(arr);
@@ -585,6 +592,9 @@ export class PageComponent implements OnInit, OnDestroy {
           this.getAvailableLanguagesForSelectedBook();
         },
         error: () => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
           this.showBookNotAvailable();
         }
       });
@@ -605,11 +615,15 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private getAllBooks(): void {
+    const loadId = this._loadId;
     this.commonService
       .getBooks(APIURL.GET_ALL_BOOKS)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data: { data: Book[] }) => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
           if (data && data.data) {
             this._books = data.data;
             this._booksLoaded = true;
@@ -619,18 +633,25 @@ export class PageComponent implements OnInit, OnDestroy {
           }
         },
         error: () => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
           this.showBookNotAvailable();
         }
       });
   }
 
   private getAllLanguages(): void {
+    const loadId = this._loadId;
     this._allLanguages = [];
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
       .pipe(takeUntil(this._unsubscribeAll))
       .subscribe({
         next: (data: { data: Language[] }) => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
           if (data && data.data) {
             this._allLanguages = data.data;
             this._allLanguagesLoaded = true;
@@ -643,6 +664,9 @@ export class PageComponent implements OnInit, OnDestroy {
           }
         },
         error: () => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
           this.showBookNotAvailable();
         }
       });
@@ -753,6 +777,7 @@ export class PageComponent implements OnInit, OnDestroy {
             this.setSelectedLanguage();
           }
         }
+        this._loadId++;
         this._pageChanged.next();
       });
   }
@@ -988,6 +1013,10 @@ export class PageComponent implements OnInit, OnDestroy {
             .subscribe();
         }
       });
+  }
+
+  private isCurrentLoad(loadId: number): boolean {
+    return loadId === this._loadId;
   }
 
   private showBookNotAvailable(): void {
