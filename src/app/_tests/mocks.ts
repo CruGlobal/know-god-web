@@ -742,6 +742,14 @@ export const mockPageBookIndexData = {
   ]
 };
 
+// An English (language 2222) translation that points to a manifest file
+export const mockManifestTranslation = {
+  id: 'tx-1',
+  type: 'translation',
+  attributes: { 'manifest-name': 'foo.xml' },
+  relationships: { language: { data: { id: '2222' } } }
+};
+
 export const mockSpacer = (height = 100): Spacer => {
   return {
     height,
