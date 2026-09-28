@@ -7,3 +7,9 @@ coverage:
     patch:
       default:
         informational: true
+
+# Test setup files and shared mocks are loaded by every spec, so they are not app code
+ignore:
+  - 'src/test.ts'
+  - 'src/polyfills.ts'
+  - 'src/app/_tests/**'
