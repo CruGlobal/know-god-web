@@ -28,6 +28,8 @@ import { PageComponent } from './page.component';
 import { PageService } from './service/page-service.service';
 
 const failedLoadText = 'Failed to load the book.';
+const notInLanguageText =
+  "This book isn't available in the currently selected language.";
 const serverError = { status: 500, statusText: 'Server Error' };
 
 describe('PageComponent loading errors', () => {
@@ -36,10 +38,12 @@ describe('PageComponent loading errors', () => {
   let httpMock: HttpTestingController;
   let loaderService: LoaderService;
 
-  const failedLoadMessage = (): HTMLElement | null =>
+  const headingWithText = (text: string): HTMLElement | null =>
     Array.from(
       (fixture.nativeElement as HTMLElement).querySelectorAll('h2')
-    ).find((heading) => heading.textContent.trim() === failedLoadText) ?? null;
+    ).find((heading) => heading.textContent.trim() === text) ?? null;
+  const failedLoadMessage = (): HTMLElement | null =>
+    headingWithText(failedLoadText);
 
   // Run the ngOnInit load chain up to the first request (the languages list).
   const startLoading = () => {
@@ -161,6 +165,21 @@ describe('PageComponent loading errors', () => {
       expect(component.bookNotAvailable).toBeTrue();
       expect(loaderService.status.value).toBeFalse();
       expect(failedLoadMessage()).not.toBeNull();
+    }));
+
+    it('hides the loader when the manifest has no pages', fakeAsync(() => {
+      spyOn(ManifestParser.prototype, 'parseManifest').and.resolveTo({
+        manifest: { relatedFiles: null, pages: [] }
+      } as unknown as XmlParserData);
+
+      startManifestLoad();
+      flushMicrotasks();
+      fixture.detectChanges();
+
+      expect(component.bookNotAvailableInLanguage).toBeTrue();
+      expect(component.bookNotAvailable).toBeFalse();
+      expect(loaderService.status.value).toBeFalse();
+      expect(headingWithText(notInLanguageText)).not.toBeNull();
     }));
 
     it('does not show the failed state when a newer load aborts the parse', fakeAsync(() => {

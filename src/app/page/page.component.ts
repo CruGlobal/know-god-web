@@ -469,6 +469,7 @@ export class PageComponent implements OnInit, OnDestroy {
           } else {
             this.pageService.setDir('ltr');
             this.bookNotAvailableInLanguage = true;
+            this.loaderService.display(false);
           }
         })
         .catch(() => {
