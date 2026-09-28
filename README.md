@@ -276,11 +276,12 @@ targeting `staging` or `main`. Every job installs deps first (Node from
 | 🧹 Lint & Prettier   | `yarn prettier:check` then `yarn lint`                             |
 | ✅ Tests             | `yarn test` (single Karma + Jasmine run)                          |
 | 🏗️ Build app         | `yarn build` — confirms a production build compiles                |
+| 🌐 Translations      | `yarn extract`; on pushes to `main`, uploads English strings to Crowdin |
 | 🚀 Deploy app        | Pushes only (never PRs). Builds the env-matched config, injects the host into `embed.js`, copies `mobile/`, and syncs to S3 |
 
 **`update-staging.yml`** promotes branches via PR labels: **`On Staging`**
 auto-merges into both `staging` and `development`; **`On Development`** merges into
-`development` only.
+`development` only. A push to `main` merges `main` into both.
 
 Branch → environment:
 
