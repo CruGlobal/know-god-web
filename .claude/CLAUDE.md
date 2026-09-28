@@ -29,10 +29,11 @@ Tests use Karma + Jasmine with ChromeHeadless. There is no single-test runner co
 ### Routing
 
 Routes are defined in `src/app/app.module.ts` (traditional NgModule, not standalone):
-- `/:langid/:bookid/:page` - main content page
-- `/:langid/embed/:bookid` - embedded iframe variant
-- `/:langid/:bookid` - redirects to page 0
-- `/:langid` and `/` - header/landing
+- `/:langId/tool/:resourceType/:bookId[/:page[/:cardPosition]]` - tool page
+- `/:langId/lesson/:bookId[/:page]` - lesson page
+- `/:langId/embed/:toolType/:resourceType/:bookId` - embedded iframe variant
+- `/:langId/:bookId[/:page]` - old URL format, redirects to `/:langId/tool/v1/...`
+- `/`, `/:langId`, `/:langId/tools`, `/:langId/lessons` - dashboard/landing
 
 ### State Management
 
