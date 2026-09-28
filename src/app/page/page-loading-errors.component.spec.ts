@@ -167,6 +167,27 @@ describe('PageComponent loading errors', () => {
       expect(failedLoadMessage()).not.toBeNull();
     }));
 
+    it('does not show the failed state when rendering the parsed manifest throws', fakeAsync(() => {
+      // Reading the manifest's related files throws after the parse succeeded.
+      const relatedFiles = {
+        asJsReadonlySetView: () => {
+          throw new Error('Render failed');
+        }
+      };
+      spyOn(ManifestParser.prototype, 'parseManifest').and.resolveTo({
+        manifest: { relatedFiles, pages: [] }
+      } as unknown as XmlParserData);
+
+      startManifestLoad();
+      // The render error is left unhandled instead of being reported as a
+      // failed load.
+      expect(() => flushMicrotasks()).toThrowError(/Render failed/);
+      fixture.detectChanges();
+
+      expect(component.bookNotAvailable).toBeFalse();
+      expect(failedLoadMessage()).toBeNull();
+    }));
+
     it('hides the loader when the manifest has no pages', fakeAsync(() => {
       spyOn(ManifestParser.prototype, 'parseManifest').and.resolveTo({
         manifest: { relatedFiles: null, pages: [] }

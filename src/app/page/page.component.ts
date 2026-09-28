@@ -434,51 +434,56 @@ export class PageComponent implements OnInit, OnDestroy {
       const { signal } = controller;
       parser
         .parseManifest(manifestName, signal)
-        .then((data) => {
-          // A newer load replaced this parse, so drop its result.
-          if (signal.aborted) {
-            return;
-          }
-          // The parser resolves with a ParserError instead of rejecting when a
-          // file fails to download or parse.
-          if (data instanceof godToolsParser.ParserResult.ParserError) {
-            this.showBookNotAvailable();
-            return;
-          }
-          const { manifest } = data as XmlParserData;
-          this._pageBookManifest = manifest;
+        // The failure handler is the second .then() argument so it only covers
+        // the parse itself. Errors thrown while rendering are not reported as
+        // a failed load.
+        .then(
+          (data) => {
+            // A newer load replaced this parse, so drop its result.
+            if (signal.aborted) {
+              return;
+            }
+            // The parser resolves with a ParserError instead of rejecting when a
+            // file fails to download or parse.
+            if (data instanceof godToolsParser.ParserResult.ParserError) {
+              this.showBookNotAvailable();
+              return;
+            }
+            const { manifest } = data as XmlParserData;
+            this._pageBookManifest = manifest;
 
-          // Images are published as immutable, sha256-named files alongside
-          // the page XML; prefetch them from the published content location.
-          Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? [])
-            .filter((file) => IMAGE_EXTENSIONS_REGEX.test(file))
-            .forEach((file) => this.prefetchPublishedFile(file));
+            // Images are published as immutable, sha256-named files alongside
+            // the page XML; prefetch them from the published content location.
+            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? [])
+              .filter((file) => IMAGE_EXTENSIONS_REGEX.test(file))
+              .forEach((file) => this.prefetchPublishedFile(file));
 
-          if (manifest?.pages?.length) {
-            this._pageBookSubPagesManifest = manifest.pages;
-            this._visibleHiddenPageIds.clear();
-            this._pageBookSubPages = manifest.pages.filter(
-              (page) => !page.isHidden
-            );
+            if (manifest?.pages?.length) {
+              this._pageBookSubPagesManifest = manifest.pages;
+              this._visibleHiddenPageIds.clear();
+              this._pageBookSubPages = manifest.pages.filter(
+                (page) => !page.isHidden
+              );
 
-            this.totalPages = this._pageBookSubPages.length;
-            this._pageBookManifestLoaded = true;
-            manifest.pages.forEach((page) => {
-              this.loadBookPage(page as TractPage);
-            });
-          } else {
-            this.pageService.setDir('ltr');
-            this.bookNotAvailableInLanguage = true;
-            this.loaderService.display(false);
+              this.totalPages = this._pageBookSubPages.length;
+              this._pageBookManifestLoaded = true;
+              manifest.pages.forEach((page) => {
+                this.loadBookPage(page as TractPage);
+              });
+            } else {
+              this.pageService.setDir('ltr');
+              this.bookNotAvailableInLanguage = true;
+              this.loaderService.display(false);
+            }
+          },
+          () => {
+            // Aborting rejects the parse. Don't show an error for a parse that a
+            // newer load replaced, only for unexpected failures.
+            if (!signal.aborted) {
+              this.showBookNotAvailable();
+            }
           }
-        })
-        .catch(() => {
-          // Aborting rejects the parse. Don't show an error for a parse that a
-          // newer load replaced, only for unexpected failures.
-          if (!signal.aborted) {
-            this.showBookNotAvailable();
-          }
-        });
+        );
     }
   }
 
