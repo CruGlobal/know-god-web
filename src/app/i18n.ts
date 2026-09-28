@@ -8,7 +8,7 @@ export function appInit(i18next: ITranslationService) {
   return () => {
     // i18next only reports a catalogue that fails to load or parse through its
     // debug logger, so the UI silently falls back to English. Log it as an
-    // error so the failure shows up in the console and in error monitoring.
+    // error so the failure shows up in the console.
     i18next.events.failedLoading.subscribe(
       ({ lng, ns, msg }: FailedLoadingEvent) => {
         console.error(
