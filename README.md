@@ -27,12 +27,12 @@ tool versions, so matching them avoids hard-to-debug issues. Node is managed wit
 correct there's nothing extra to install for Yarn — just
 [enable Corepack](https://yarnpkg.com/corepack).
 
-| Tool     | Version  | Why                                           |
-| -------- | -------- | --------------------------------------------- |
-| Node.js  | `24.21.0` | Defined in [`.tool-versions`](.tool-versions) |
+| Tool     | Version   | Why                                              |
+| -------- | --------- | ------------------------------------------------ |
+| Node.js  | `24.21.0` | Defined in [`.tool-versions`](.tool-versions)    |
 | Yarn     | `4.18.0`  | Committed via `.yarn/releases`; run via Corepack |
-| Git      | recent   | Cloning and deploying                         |
-| Homebrew | recent   | Installs asdf                                 |
+| Git      | recent    | Cloning and deploying                            |
+| Homebrew | recent    | Installs asdf                                    |
 
 **1. Install Homebrew** (skip if you have it):
 
