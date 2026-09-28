@@ -36,7 +36,7 @@ jobs:
         run: yarn prettier:check
 
       - name: 💨 Lint check
-        run: yarn lint
+        run: yarn lint:check
 
   test:
     name: ✅ Tests
