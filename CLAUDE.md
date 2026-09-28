@@ -8,7 +8,7 @@ Repo-specific context for Claude Code and the CruGlobal plugins
 ## Project overview
 
 `know-god-web` (package name `knowgod`) is the **KnowGod.com embeddable web app**:
-an Angular 17 + TypeScript single-page app that renders GodTools resources (e.g.
+an Angular 19 + TypeScript single-page app that renders GodTools resources (e.g.
 "Knowing God Personally", `kgp-us`). It also ships as an **embed** — third-party
 sites load a small dependency-free `embed.js` loader that runs the app inside an
 iframe and auto-resizes it via `postMessage`. See `README.md` for the full embed
@@ -18,7 +18,7 @@ Tools are addressed by a hash route: `/#/{lang}/{book}` (e.g. `/#/en/kgp-us`).
 
 ## Tech stack
 
-- **Framework:** Angular 17, TypeScript, RxJS.
+- **Framework:** Angular 19, TypeScript, RxJS.
 - **Shared logic:** `@cruglobal/godtools-shared` (resource/tool parsing). Prefer
   it over re-implementing GodTools data handling.
 - **Real-time / misc:** `@rails/actioncable`, `lottie-web` / `ngx-lottie`
@@ -26,7 +26,7 @@ Tools are addressed by a hash route: `/#/{lang}/{book}` (e.g. `/#/en/kgp-us`).
 - **Styling:** plain CSS. Global styles in `src/styles.css`; each component has a
   co-located `*.component.css`. There is **no** Tailwind, SCSS, or CSS-modules
   setup — match the existing component-CSS pattern.
-- **Node:** pinned to 24.9.0 via `.tool-versions` (asdf). **Yarn 4.7.0** via
+- **Node:** pinned to 24.21.0 via `.tool-versions` (asdf). **Yarn 4.18.0** via
   Corepack (`.yarnrc.yml`); always use `yarn`, never `npm`.
 
 ## Directory structure
@@ -45,7 +45,7 @@ Tools are addressed by a hash route: `/#/{lang}/{book}` (e.g. `/#/en/kgp-us`).
 
 | Command | Purpose |
 | --- | --- |
-| `yarn start` | Dev server, **production** config (proxies to prod backends) |
+| `yarn start` | Dev server, **production** config |
 | `yarn start:dev` | Dev server, development config (staging data) |
 | `yarn build` / `yarn build:dev` | Production / development build |
 | `yarn test --no-watch` | Run unit tests once (Karma + Jasmine) |
@@ -83,8 +83,8 @@ Local app: <http://localhost:4200/en>.
 
 ## Figma / design-to-code
 
-- UI framework: **Angular 17** components (declared in modules; this repo is not
-  standalone-component based).
+- UI framework: **Angular 19** components (declared in modules with
+  `standalone: false`; this repo is not standalone-component based).
 - CSS: plain CSS, co-located per component + global `src/styles.css`. No design
   token file exists today — emit plain CSS matching neighboring components.
 
@@ -93,7 +93,7 @@ Local app: <http://localhost:4200/en>.
 - **Branch targets:** open PRs against `staging` or `main` — CI PR checks (lint,
   prettier, test, build) only run on those branches.
 - **PR title:** `GT-(JIRA#) (summary, max 80 chars)`. `GT` = GodTools Jira
-  project; if there's no ticket, use a short descriptive title.
+  project; if there's no ticket, use `[No Jira] - (summary, max 80 chars)`.
 - **Deploy labels:** `On Staging` auto-merges the branch into `staging` and
   `development`; `On Development` merges into `development` only (see
   `.github/workflows/update-staging.yml`).

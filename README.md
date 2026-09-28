@@ -1,13 +1,13 @@
 # KnowGod.com embeddable web app
 
-An Angular 17 + TypeScript single-page app that renders GodTools resources (e.g.
+An Angular 19 + TypeScript single-page app that renders GodTools resources (e.g.
 "Knowing God Personally", `kgp-us`). It also ships as an **embed**: third-party
 sites load a small `embed.js` loader that runs the app inside an auto-resizing
 iframe. Tools are addressed by hash route — `/#/{lang}/{book}` (e.g. `/#/en/kgp-us`).
 
 ## Quick start
 
-If you already have Node `24.9.0` and Yarn (via Corepack) set up:
+If you already have Node `24.21.0` and Yarn (via Corepack) set up:
 
 ```bash
 git clone https://github.com/CruGlobal/know-god-web.git
@@ -29,8 +29,8 @@ correct there's nothing extra to install for Yarn — just
 
 | Tool     | Version  | Why                                           |
 | -------- | -------- | --------------------------------------------- |
-| Node.js  | `24.9.0` | Defined in [`.tool-versions`](.tool-versions) |
-| Yarn     | `4.7.0`  | Committed via `.yarn/releases`; run via Corepack |
+| Node.js  | `24.21.0` | Defined in [`.tool-versions`](.tool-versions) |
+| Yarn     | `4.18.0`  | Committed via `.yarn/releases`; run via Corepack |
 | Git      | recent   | Cloning and deploying                         |
 | Homebrew | recent   | Installs asdf                                 |
 
@@ -40,7 +40,7 @@ correct there's nothing extra to install for Yarn — just
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 ```
 
-**2. Install Node `24.9.0` with asdf:**
+**2. Install Node `24.21.0` with asdf:**
 
 ```bash
 brew install asdf
@@ -55,30 +55,30 @@ Open a **new** terminal so the shell picks up asdf, then from inside the repo:
 
 ```bash
 asdf install nodejs   # installs the version from .tool-versions
-node --version        # should print v24.9.0
+node --version        # should print v24.21.0
 ```
 
-asdf auto-switches to `24.9.0` whenever you `cd` into the project.
+asdf auto-switches to `24.21.0` whenever you `cd` into the project.
 
 **3. Enable Yarn and install dependencies:**
 
 ```bash
-corepack enable   # turns on the repo's pinned Yarn 4.7.0
-yarn --version    # should print 4.7.0
+corepack enable   # turns on the repo's pinned Yarn 4.18.0
+yarn --version    # should print 4.18.0
 yarn              # installs packages + runs postinstall (Husky git hooks)
 ```
 
 **4. Run the dev server:**
 
 ```bash
-yarn start        # serves the PRODUCTION config (proxies to prod backends)
+yarn start        # serves the PRODUCTION config
 # or
 yarn start:dev    # serves staging data
 ```
 
 Open [`http://localhost:4200/en`](http://localhost:4200/en). The server
 hot-reloads on edit. API calls go straight to mobile-content-api over absolute
-URLs built from [`src/api/url.ts`](src/app/api/url.ts) and the active
+URLs built from [`src/app/api/url.ts`](src/app/api/url.ts) and the active
 environment config, so which backend you hit
 depends only on the configuration you start with.
 
@@ -97,14 +97,14 @@ depends only on the configuration you start with.
 
 ### Troubleshooting
 
-- **`node --version` isn't `24.9.0`** — Open a new terminal after the asdf shell
+- **`node --version` isn't `24.21.0`** — Open a new terminal after the asdf shell
   integration step, and make sure you're inside the repo so asdf reads
   `.tool-versions`.
 - **`command not found: yarn`** — Run `corepack enable`, then retry. Yarn is
   driven by `yarnPath` in [`.yarnrc.yml`](.yarnrc.yml) and only resolves once
   Corepack is on.
-- **Peer-dependency errors on install** — `.npmrc` sets `legacy-peer-deps=true`;
-  peer warnings are expected and non-fatal.
+- **Peer-dependency warnings on install** — Yarn prints these as warnings; they
+  are expected and non-fatal.
 - **API requests fail locally** — Requests go direct to mobile-content-api. Check which backend the running configuration
   points at: `yarn start` uses **production**, `yarn start:dev` uses **staging**
   (see `src/environments/`).
@@ -241,12 +241,9 @@ Embed**; the log panel shows the generated URL and incoming height updates.
 
 ## Translations (i18n & Crowdin)
 
-> **Status: not yet landed.** UI-string translation via
-> [i18next](https://www.i18next.com/) + [Crowdin](https://crowdin.com/) is
-> planned; the files and scripts below don't exist in the checkout yet. This
-> documents the intended workflow.
-
-Developers only write **English** strings in templates with the `i18next` pipe;
+UI strings are translated with [i18next](https://www.i18next.com/) and
+[Crowdin](https://crowdin.com/). Developers only write **English** strings in
+templates with the `i18nextEager` pipe;
 extraction, upload, and the translation-return PR are automated:
 
 1. Write a string: `{{ 'Tools' | i18nextEager }}` (or with a value:
@@ -263,7 +260,7 @@ extraction, upload, and the translation-return PR are automated:
 4. A scheduled job downloads translations weekly and opens an **"Update
    translations"** PR for the UI team to review.
 
-Crowdin project ID `897600` _(temporary)_; `CROWDIN_API_TOKEN` lives in the
+Crowdin project ID `902409`; `CROWDIN_API_TOKEN` lives in the
 repo's GitHub Actions secrets.
 
 ## CI, deployment & environments
@@ -312,11 +309,11 @@ deploy it to a test environment.
 
 ### Code review
 
-[`.github/CODEOWNERS`](.github/CODEOWNERS) lists the maintainers, and GitHub
-auto-requests their review when you open a PR — you don't need to tag anyone.
-Merges into `main` require at least **one approving review** and passing CI
-(enforced via branch protection in `cru-terraform`). New contributors and
-contractors: just open the PR; the right reviewers are requested automatically.
+When your PR is ready, add the **`Review`** label.
+[`request-review.yml`](.github/workflows/request-review.yml) then requests a
+review from one random web team member. It skips PRs from forks, so request a
+reviewer by hand there. Merges into `main` require at least **one approving
+review** and passing CI (enforced via branch protection in `cru-terraform`).
 
 ## Browser Support
 
