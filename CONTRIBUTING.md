@@ -108,3 +108,20 @@ automatically (run `/plugin marketplace update` if they don't appear). Beyond
 `/quality:agent-review` (covered in section 7), `/testing:test-writer` scaffolds
 new specs for you. These skills read `CLAUDE.md` in the repo root to follow our
 Angular, testing, and embed conventions.
+
+## 9. Editor setup
+
+The repo ships shared VS Code config in `.vscode/` and an `.editorconfig` that
+other editors read too. It matches Prettier, so the two never fight.
+
+- When you open the folder, accept VS Code's prompt to install the recommended
+  extensions (`.vscode/extensions.json`). ESLint and Prettier then fix and
+  format files on save.
+- **Terminal > Run Task** has `yarn start:dev`, `yarn test`, `yarn lint` and
+  `yarn build`.
+- **Run and Debug > Launch Chrome** starts `yarn start:dev` and opens
+  <http://localhost:4200/en> with breakpoints working.
+- **Run and Debug > Debug unit tests** starts Karma with no browser
+  (`yarn ng test --watch --no-browsers`) and opens
+  <http://localhost:9876/debug.html> in a debug Chrome. Set breakpoints in a
+  spec and reload the page to rerun. Stop the task when you are done.
