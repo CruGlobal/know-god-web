@@ -64,7 +64,7 @@ RxJS Subjects/BehaviorSubjects directly in services (no NgRx):
 - **Prettier:** single quotes, no trailing commas (`.prettierrc`)
 - **Component selectors:** prefix `app`, kebab-case for elements, camelCase for directive attributes
 - **Import order enforced:** builtin > external > internal > parent > sibling > index
-- **Pre-commit hook** (Husky): runs `yarn lint` and `yarn prettier:check`
+- **Pre-commit hook** (Husky): runs `yarn lint:check` and `yarn prettier:check`
 
 ## Build & Deploy
 

@@ -92,6 +92,7 @@ depends only on the configuration you start with.
 | `yarn build:dev`      | Development build                                    |
 | `yarn test`           | Run unit tests once (Karma + Jasmine, single pass)   |
 | `yarn lint`           | Lint and auto-fix `src/**/*.{js,ts,html}`            |
+| `yarn lint:check`     | Lint without fixing (what CI and pre-commit run)     |
 | `yarn prettier:check` | Report files that aren't formatted                   |
 | `yarn prettier:write` | Format all files                                     |
 
@@ -276,7 +277,7 @@ targeting `staging` or `main`. Every job installs deps first (Node from
 
 | Job                  | Checks                                                              |
 | -------------------- | ------------------------------------------------------------------ |
-| 🧹 Lint & Prettier   | `yarn prettier:check` then `yarn lint`                             |
+| 🧹 Lint & Prettier   | `yarn prettier:check` then `yarn lint:check`                       |
 | ✅ Tests             | `yarn test` (single Karma + Jasmine run)                          |
 | 🏗️ Build app         | `yarn build` — confirms a production build compiles                |
 | 🚀 Deploy app        | Pushes only (never PRs). Builds the env-matched config, injects the host into `embed.js`, copies `mobile/`, and syncs to S3 |
@@ -305,7 +306,7 @@ yarn test             # run unit tests once
 yarn build            # confirm a production build compiles
 ```
 
-A Husky pre-commit hook runs `yarn lint` and `yarn prettier:check`, but the full
+A Husky pre-commit hook runs `yarn lint:check` and `yarn prettier:check`, but the full
 set above still catches more. Open your PR against **`staging`** or **`main`** (the
 branches CI runs PR checks on); add the `On Staging` / `On Development` label to
 deploy it to a test environment.
