@@ -129,7 +129,13 @@ export class ContentAnimationComponent implements OnChanges, OnDestroy {
         );
 
         if (shouldPlay) {
-          this.anmViewItem.play();
+          // play() resumes from the current frame, so a non-looping animation
+          // that already finished would stay on its last frame. Rewind it first.
+          if (this.animation.loop) {
+            this.anmViewItem.play();
+          } else {
+            this.anmViewItem.goToAndPlay(0, true);
+          }
         } else if (shouldStop) {
           this.anmViewItem.pause();
         }

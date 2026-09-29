@@ -165,12 +165,13 @@ export const mockImage = (
 export const mockAnimation = (
   name: string,
   url: string,
-  event: string
+  event: string,
+  loop: boolean = true
 ): Animation => {
   return {
     url,
     resource: createResource(name, url),
-    loop: true,
+    loop,
     autoPlay: true,
     playListeners: [createEventId(`${event}-play-listener`)],
     stopListeners: [createEventId(`${event}-stop-listener`)],
