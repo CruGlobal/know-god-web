@@ -742,6 +742,29 @@ export const mockPageBookIndexData = {
   ]
 };
 
+// An English (language 2222) translation that points to a manifest file
+export const mockManifestTranslation = {
+  id: 'tx-1',
+  type: 'translation',
+  attributes: { 'manifest-name': 'foo.xml' },
+  relationships: { language: { data: { id: '2222' } } }
+};
+
+// A tract book index whose latest translation is mockManifestTranslation
+export const mockTractBookIndex = {
+  data: {
+    attributes: {
+      'resource-type': 'tract',
+      manifest: 'manifest.xml',
+      name: 'Four Laws'
+    },
+    relationships: {
+      'latest-translations': { data: [{ id: mockManifestTranslation.id }] }
+    }
+  },
+  included: [mockManifestTranslation]
+};
+
 export const mockSpacer = (height = 100): Spacer => {
   return {
     height,
