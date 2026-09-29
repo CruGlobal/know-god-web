@@ -1,0 +1,21 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Chrome",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "yarn: start:dev",
+      "url": "http://localhost:4200/en",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Debug unit tests",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "yarn: test (debug server)",
+      "url": "http://localhost:9876/debug.html",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}
