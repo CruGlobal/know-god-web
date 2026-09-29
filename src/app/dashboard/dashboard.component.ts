@@ -12,6 +12,7 @@ import { Subject } from 'rxjs';
 import { delay, take, takeUntil } from 'rxjs/operators';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
+import { DocumentTitleService } from '../services/document-title.service';
 import { Resource, ResourceService } from '../services/resource.service';
 import {
   ResourceType,
@@ -80,10 +81,12 @@ export class DashboardComponent implements OnInit, OnDestroy {
     public activatedRoute: ActivatedRoute,
     public commonService: CommonService,
     readonly resourceService: ResourceService,
+    private documentTitleService: DocumentTitleService,
     @Inject(I18NEXT_SERVICE) private i18n: ITranslationService
   ) {}
 
   ngOnInit(): void {
+    this.documentTitleService.resetTitle();
     this.awaitBooks();
 
     this.activatedRoute.paramMap.subscribe((params) => {
