@@ -8,7 +8,7 @@ the [README](README.md) for the deep detail.
 
 Follow the **Getting started** steps in the [README](README.md): install the
 pinned Node version with asdf (`.tool-versions` → Node 24.21.0), confirm Yarn
-4.18.0 resolves (enable Corepack if not), run `yarn` to install, then `yarn start`
+4.18.1 resolves (enable Corepack if not), run `yarn` to install, then `yarn start`
 (production data) or `yarn start:dev` (staging data) and open
 <http://localhost:4200/en>.
 

@@ -30,7 +30,7 @@ correct there's nothing extra to install for Yarn — just
 | Tool     | Version   | Why                                              |
 | -------- | --------- | ------------------------------------------------ |
 | Node.js  | `24.21.0` | Defined in [`.tool-versions`](.tool-versions)    |
-| Yarn     | `4.18.0`  | Committed via `.yarn/releases`; run via Corepack |
+| Yarn     | `4.18.1`  | Committed via `.yarn/releases`; run via Corepack |
 | Git      | recent    | Cloning and deploying                            |
 | Homebrew | recent    | Installs asdf                                    |
 
@@ -63,8 +63,8 @@ asdf auto-switches to `24.21.0` whenever you `cd` into the project.
 **3. Enable Yarn and install dependencies:**
 
 ```bash
-corepack enable   # turns on the repo's pinned Yarn 4.18.0
-yarn --version    # should print 4.18.0
+corepack enable   # turns on the repo's pinned Yarn 4.18.1
+yarn --version    # should print 4.18.1
 yarn              # installs packages + runs postinstall (Husky git hooks)
 ```
 

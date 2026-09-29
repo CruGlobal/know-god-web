@@ -20,7 +20,7 @@ Know God Web is an Angular 19 application that renders GodTools religious conten
 | Format check | `yarn prettier:check` |
 | Format fix | `yarn prettier:write` |
 
-Always use `yarn`, never `npm` (Yarn 4.18.0 via Corepack; see the root `CLAUDE.md`).
+Always use `yarn`, never `npm` (Yarn 4.18.1 via Corepack; see the root `CLAUDE.md`).
 
 Tests use Karma + Jasmine with ChromeHeadless. There is no single-test runner configured; all specs run together via `yarn test --no-watch`.
 
