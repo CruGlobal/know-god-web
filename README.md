@@ -1,5 +1,7 @@
 # KnowGod.com embeddable web app
 
+[![codecov](https://codecov.io/gh/CruGlobal/know-god-web/branch/main/graph/badge.svg)](https://codecov.io/gh/CruGlobal/know-god-web)
+
 An Angular 17 + TypeScript single-page app that renders GodTools resources (e.g.
 "Knowing God Personally", `kgp-us`). It also ships as an **embed**: third-party
 sites load a small `embed.js` loader that runs the app inside an auto-resizing
