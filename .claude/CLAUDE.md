@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Know God Web is an Angular 17 application that renders GodTools religious content for web and embedded (iframe) contexts. Content is fetched from Cru Global's mobile-content-api and parsed from XML manifests using `@cruglobal/godtools-shared`.
+Know God Web is an Angular 19 application that renders GodTools religious content for web and embedded (iframe) contexts. Content is fetched from Cru Global's mobile-content-api and parsed from XML manifests using `@cruglobal/godtools-shared`.
 
 **Live sites:** knowgod.com (prod/main), stage.knowgod.com (staging)
 
@@ -20,7 +20,7 @@ Know God Web is an Angular 17 application that renders GodTools religious conten
 | Format check | `yarn prettier:check` |
 | Format fix | `yarn prettier:write` |
 
-Always use `yarn`, never `npm` (Yarn 4.7.0 via Corepack; see the root `CLAUDE.md`).
+Always use `yarn`, never `npm` (Yarn 4.18.1 via Corepack; see the root `CLAUDE.md`).
 
 Tests use Karma + Jasmine with ChromeHeadless. There is no single-test runner configured; all specs run together via `yarn test --no-watch`.
 
@@ -29,10 +29,11 @@ Tests use Karma + Jasmine with ChromeHeadless. There is no single-test runner co
 ### Routing
 
 Routes are defined in `src/app/app.module.ts` (traditional NgModule, not standalone):
-- `/:langid/:bookid/:page` - main content page
-- `/:langid/embed/:bookid` - embedded iframe variant
-- `/:langid/:bookid` - redirects to page 0
-- `/:langid` and `/` - header/landing
+- `/:langId/tool/:resourceType/:bookId[/:page[/:cardPosition]]` - tool page
+- `/:langId/lesson/:bookId[/:page]` - lesson page
+- `/:langId/embed/:toolType/:resourceType/:bookId` - embedded iframe variant
+- `/:langId/:bookId[/:page]` - old URL format, redirects to `/:langId/tool/v1/...`
+- `/`, `/:langId`, `/:langId/tools`, `/:langId/lessons` - dashboard/landing
 
 ### State Management
 
@@ -75,8 +76,8 @@ CI is GitHub Actions (`.github/workflows/node.js.yml`). Branches auto-deploy to 
 
 The `update-staging.yml` workflow promotes work to lower environments via PR
 labels: `On Staging` auto-merges the branch into `staging` and `development`,
-`On Development` merges into `development` only. (Its legacy `push` trigger still
-references the old `master` branch, which no longer exists.)
+`On Development` merges into `development` only. A push to `main` merges `main`
+into both.
 
 Build output goes to `dist/knowgod/`, plus `embed/embed.js` and `mobile/` are copied alongside.
 
@@ -85,5 +86,5 @@ Build output goes to `dist/knowgod/`, plus `embed/embed.js` and `mobile/` are co
 - **@cruglobal/godtools-shared** - core content parsing library (manifest models, XML parser)
 - **ngx-lottie / lottie-web** - Lottie animations
 - **@rails/actioncable** - WebSocket real-time data
-- **Node 24.9.0** (`.tool-versions`)
+- **Node 24.21.0** (`.tool-versions`)
 - **Package manager:** Yarn

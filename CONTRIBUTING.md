@@ -7,8 +7,8 @@ the [README](README.md) for the deep detail.
 ## 1. Get set up
 
 Follow the **Getting started** steps in the [README](README.md): install the
-pinned Node version with asdf (`.tool-versions` → Node 24.9.0), confirm Yarn
-4.7.0 resolves (enable Corepack if not), run `yarn` to install, then `yarn start`
+pinned Node version with asdf (`.tool-versions` → Node 24.21.0), confirm Yarn
+4.18.1 resolves (enable Corepack if not), run `yarn` to install, then `yarn start`
 (production data) or `yarn start:dev` (staging data) and open
 <http://localhost:4200/en>.
 
@@ -17,7 +17,7 @@ the common asdf / Corepack / API-connectivity issues are covered there.
 
 ## 2. Understand the app
 
-This is an Angular 17 app that is also **embeddable** in third-party sites via a
+This is an Angular 19 app that is also **embeddable** in third-party sites via a
 small `embed.js` loader that runs the app inside an iframe. If your change
 touches the embed, read the README's **Embed** section and test against
 [`embed/example.html`](embed/example.html). Tools are addressed by a hash route
@@ -29,21 +29,18 @@ in the form `/#/{lang}/{book}` (e.g. `/#/en/kgp-us` for "Knowing God Personally"
   (lint, prettier, test, build) on those two branches — a PR against any other
   base will not be validated.
 - **Title format:** `GT-(JIRA#) (summary, max 80 chars)`. `GT` is the GodTools
-  Jira project prefix. If your work has no ticket, use a short descriptive title.
+  Jira project prefix. If your work has no ticket, use
+  `[No Jira] - (summary, max 80 chars)`.
 - **Commits:** clean up your commit history before requesting review.
 
 ## 4. Translations (i18n)
 
-> **Status: not yet landed.** The `i18next` pipe, the `yarn extract` script, and
-> `src/assets/locales/` don't exist in the checkout yet — the flow below is the
-> planned process, not a current pre-PR requirement. Skip it until the tooling
-> lands.
-
 All UI strings are English-only in templates and translated via i18next +
-Crowdin. When you add or change a user-facing string, write it with the `i18next`
-pipe (e.g. `{{ 'Tools' | i18next }}`), run `yarn extract`, and commit the updated
-`src/assets/locales/en/translation.json` with your change. Translators and the
-weekly "Update translations" PR are handled automatically. See the
+Crowdin. When you add or change a user-facing string, write it with the
+`i18nextEager` pipe (e.g. `{{ 'Tools' | i18nextEager }}`), run `yarn extract`,
+and commit the updated `src/assets/locales/en/translation.json` with your
+change. Translators and the weekly "Update translations" PR are handled
+automatically. See the
 **[Translations (i18n & Crowdin)](README.md#translations-i18n--crowdin)** section
 of the README for the full flow, setup, and template examples.
 
@@ -58,10 +55,8 @@ yarn test --no-watch  # unit tests, single run (Karma + Jasmine)
 yarn build            # confirm a production build compiles
 ```
 
-Once i18n lands (see [§4](#4-translations-i18n)), touching user-facing strings
-will also mean running `yarn extract` and committing the updated
-`translation.json`. That tooling doesn't exist yet, so there's nothing extra to
-run today.
+If you touched user-facing strings, also run `yarn extract` and commit the
+updated `translation.json` (see [§4](#4-translations-i18n)).
 
 A Husky pre-commit hook runs `yarn lint` and `yarn prettier:check`, but running
 the full set above is still the reliable way to match CI.
@@ -86,14 +81,16 @@ Branch promotion is driven by PR labels (see
 
 Before requesting a review from a human, run `/quality:agent-review` (see
 section 8) and address its findings — this catches the easy stuff and keeps the
-codeowner review focused on substance.
+human review focused on substance.
 
-GitHub automatically requests a review from the repo's code owners
-(`.github/CODEOWNERS`) when you open a PR. The PR will need a passing code review
-from one of the codeowners before merging. If you're unsure who to ask, check
-with the team lead or whoever assigned you the ticket. For UI or tool-content
-changes, include before/after screenshots or a short screen recording in the PR
-description so the reviewer can verify the visual result quickly.
+When your PR is ready, add the **`Review`** label. It requests a review from one
+random web team member
+([`request-review.yml`](.github/workflows/request-review.yml)). PRs from forks
+are skipped, so request a reviewer by hand there. The PR needs one approving
+review before merging. If you're unsure who to ask, check with the team lead or
+whoever assigned you the ticket. For UI or tool-content changes, include
+before/after screenshots or a short screen recording in the PR description so
+the reviewer can verify the visual result quickly.
 
 The PR template (`.github/PULL_REQUEST_TEMPLATE.md`) populates automatically when
 you open a PR — fill out every section and tick the checklist.
