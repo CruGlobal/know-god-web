@@ -63,7 +63,7 @@ will also mean running `yarn extract` and committing the updated
 `translation.json`. That tooling doesn't exist yet, so there's nothing extra to
 run today.
 
-A Husky pre-commit hook runs `yarn lint` and `yarn prettier:check`, but running
+A Husky pre-commit hook runs `yarn lint:check` and `yarn prettier:check`, but running
 the full set above is still the reliable way to match CI.
 
 ## 6. Deploying to a test environment

@@ -1,2 +1,2 @@
-yarn lint
+yarn lint:check
 yarn prettier:check

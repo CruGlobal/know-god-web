@@ -1,5 +1,6 @@
 import angularEslintPlugin from '@angular-eslint/eslint-plugin';
 import angularEslintTemplatePlugin from '@angular-eslint/eslint-plugin-template';
+import angularTemplateParser from '@angular-eslint/template-parser';
 import * as path from 'path';
 import eslintPluginImport from 'eslint-plugin-import';
 import typescriptEslintPlugin from '@typescript-eslint/eslint-plugin';
@@ -115,7 +116,10 @@ export default [
     }
   },
   {
-    files: ['*.html'],
+    files: ['**/*.html'],
+    languageOptions: {
+      parser: angularTemplateParser
+    },
     plugins: {
       '@angular-eslint/template': angularEslintTemplatePlugin
     },
