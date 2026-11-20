@@ -54,7 +54,16 @@ jobs:
         run: yarn install
 
       - name: ✅ Run Tests
-        run: yarn test --no-watch
+        run: yarn test --no-watch --code-coverage
+
+      - name: ☂️ Upload coverage to Codecov
+        uses: codecov/codecov-action@v7
+        with:
+          files: ./coverage/lcov.info
+          disable_search: true
+          # Coverage is informational, so a failed upload must not fail the build
+          fail_ci_if_error: false
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   build:
     name: 🏗️ Build app
