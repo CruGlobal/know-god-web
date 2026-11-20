@@ -1,0 +1,75 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "yarn: start:dev",
+      "type": "shell",
+      "command": "yarn start:dev",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^Error: (.*):(\\d+):(\\d+) - error (TS\\d+): (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "code": 4,
+          "message": 5
+        },
+        // Matches the webpack dev server output of ng serve, so the
+        // "Launch Chrome" debug config waits until the app is ready
+        "background": {
+          "activeBegins": true,
+          "beginsPattern": "Generating browser application bundles|Browser application bundle generation (complete|failed)",
+          "endsPattern": "(Compiled successfully|Failed to compile)\\."
+        }
+      }
+    },
+    {
+      "label": "yarn: test",
+      "type": "shell",
+      "command": "yarn test --no-watch",
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "yarn: test (debug server)",
+      "type": "shell",
+      // Keeps Karma running with no browser so the "Debug unit tests"
+      // launch config can open http://localhost:9876/debug.html itself
+      "command": "yarn ng test --watch --no-browsers",
+      "isBackground": true,
+      "problemMatcher": {
+        "owner": "typescript",
+        "fileLocation": ["relative", "${workspaceFolder}"],
+        "pattern": {
+          "regexp": "^Error: (.*):(\\d+):(\\d+) - error (TS\\d+): (.*)$",
+          "file": 1,
+          "line": 2,
+          "column": 3,
+          "code": 4,
+          "message": 5
+        },
+        "background": {
+          "activeBegins": true,
+          "beginsPattern": "Generating browser application bundles",
+          "endsPattern": "Karma v[\\d.]+ server started"
+        }
+      }
+    },
+    {
+      "label": "yarn: lint",
+      "type": "shell",
+      "command": "yarn lint",
+      "problemMatcher": ["$eslint-stylish"]
+    },
+    {
+      "label": "yarn: build",
+      "type": "shell",
+      "command": "yarn build",
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    }
+  ]
+}
