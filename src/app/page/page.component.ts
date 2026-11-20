@@ -114,6 +114,10 @@ export class PageComponent implements OnInit, OnDestroy {
   private _visibleHiddenPageIds: Set<string>; // Track temporarily visible hidden pages
   private _selectedLanguage: Language;
   private _languageSearchKeys = new Map<string, string>();
+  private _manifestParseController: AbortController | null = null;
+  // Bumped on every route change. Catalog requests remember the value they
+  // started with, so a late response from an older load can't change the page.
+  private _loadId = 0;
   private liveShareSubscription: ActionCable.Channel;
 
   @ViewChild('languageSearchInput')
@@ -179,6 +183,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this._unsubscribeAll.next();
     this._unsubscribeAll.complete();
     this._pageChanged.complete();
+    this._manifestParseController?.abort();
     if (this.liveShareSubscription) {
       this.liveShareSubscription.unsubscribe();
     }
@@ -426,39 +431,62 @@ export class PageComponent implements OnInit, OnDestroy {
         ])
         .withParseTips(false);
       const parser = new ManifestParser(this.pullParserFactory, config);
+      this._manifestParseController?.abort();
       const controller = new AbortController();
-      const signal = controller.signal;
-      try {
-        parser.parseManifest(manifestName, signal).then((data) => {
-          const { manifest } = data as XmlParserData;
-          this._pageBookManifest = manifest;
+      this._manifestParseController = controller;
+      const { signal } = controller;
+      parser
+        .parseManifest(manifestName, signal)
+        // The failure handler is the second .then() argument so it only covers
+        // the parse itself. Errors thrown while rendering are not reported as
+        // a failed load.
+        .then(
+          (data) => {
+            // A newer load replaced this parse, so drop its result.
+            if (signal.aborted) {
+              return;
+            }
+            // The parser resolves with a ParserError instead of rejecting when a
+            // file fails to download or parse.
+            if (data instanceof godToolsParser.ParserResult.ParserError) {
+              this.showBookNotAvailable();
+              return;
+            }
+            const { manifest } = data as XmlParserData;
+            this._pageBookManifest = manifest;
 
-          // Images are published as immutable, sha256-named files alongside
-          // the page XML; prefetch them from the published content location.
-          Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? [])
-            .filter((file) => IMAGE_EXTENSIONS_REGEX.test(file))
-            .forEach((file) => this.prefetchPublishedFile(file));
+            // Images are published as immutable, sha256-named files alongside
+            // the page XML; prefetch them from the published content location.
+            Array.from(manifest.relatedFiles?.asJsReadonlySetView() ?? [])
+              .filter((file) => IMAGE_EXTENSIONS_REGEX.test(file))
+              .forEach((file) => this.prefetchPublishedFile(file));
 
-          if (manifest?.pages?.length) {
-            this._pageBookSubPagesManifest = manifest.pages;
-            this._visibleHiddenPageIds.clear();
-            this._pageBookSubPages = manifest.pages.filter(
-              (page) => !page.isHidden
-            );
+            if (manifest?.pages?.length) {
+              this._pageBookSubPagesManifest = manifest.pages;
+              this._visibleHiddenPageIds.clear();
+              this._pageBookSubPages = manifest.pages.filter(
+                (page) => !page.isHidden
+              );
 
-            this.totalPages = this._pageBookSubPages.length;
-            this._pageBookManifestLoaded = true;
-            manifest.pages.forEach((page) => {
-              this.loadBookPage(page as TractPage);
-            });
-          } else {
-            this.pageService.setDir('ltr');
-            this.bookNotAvailableInLanguage = true;
+              this.totalPages = this._pageBookSubPages.length;
+              this._pageBookManifestLoaded = true;
+              manifest.pages.forEach((page) => {
+                this.loadBookPage(page as TractPage);
+              });
+            } else {
+              this.pageService.setDir('ltr');
+              this.bookNotAvailableInLanguage = true;
+              this.loaderService.display(false);
+            }
+          },
+          () => {
+            // Aborting rejects the parse. Don't show an error for a parse that a
+            // newer load replaced, only for unexpected failures.
+            if (!signal.aborted) {
+              this.showBookNotAvailable();
+            }
           }
-        });
-      } catch (e) {
-        console.error('Manifest Parse error', e);
-      }
+        );
     }
   }
 
@@ -499,68 +527,76 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private loadPageBookIndex(): void {
+    const loadId = this._loadId;
     this._pageBookTranslations = [];
     this.commonService
       .downloadFile(APIURL.GET_INDEX_FILE.replace('{0}', this._pageBook.id))
       .pipe(takeUntil(this._unsubscribeAll), takeUntil(this._pageChanged))
-      .subscribe((data: ArrayBuffer) => {
-        const enc = new TextDecoder('utf-8');
-        const arr = new Uint8Array(data);
-        const result = enc.decode(arr);
-        const jsonResource = JSON.parse(result);
-        this._pageBookIndex = jsonResource;
-        const resourceTypes = [
-          ResourceType.Tract,
-          ResourceType.CYOA,
-          ResourceType.Lesson
-        ];
-
-        if (
-          !resourceTypes.includes(
-            jsonResource?.data?.attributes?.['resource-type']
-          )
-        ) {
-          this.pageService.setDir('ltr');
-          this.bookNotAvailable = true;
-          this.loaderService.display(false);
-          return;
-        }
-
-        this.resourceType = jsonResource?.data?.attributes?.['resource-type'];
-
-        if (!jsonResource.data.attributes['manifest']) {
-          this.pageService.setDir('ltr');
-          this.bookNotAvailable = true;
-          this.loaderService.display(false);
-          return;
-        }
-        const latestTranslations =
-          jsonResource.data.relationships?.['latest-translations']?.data;
-
-        if (latestTranslations?.length) {
-          if (jsonResource.included?.length) {
-            const includedTranslations = jsonResource.included;
-            latestTranslations.forEach((pageBookTranslationItem) => {
-              const translations = includedTranslations.filter((row) => {
-                if (
-                  row.type === 'translation' &&
-                  row.id === pageBookTranslationItem.id
-                ) {
-                  return true;
-                }
-
-                return false;
-              });
-              translations?.forEach((item) => {
-                this._pageBookTranslations.push(item);
-              });
-            });
+      .subscribe({
+        next: (data: ArrayBuffer) => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
           }
+          const enc = new TextDecoder('utf-8');
+          const arr = new Uint8Array(data);
+          const result = enc.decode(arr);
+          const jsonResource = JSON.parse(result);
+          this._pageBookIndex = jsonResource;
+          const resourceTypes = [
+            ResourceType.Tract,
+            ResourceType.CYOA,
+            ResourceType.Lesson
+          ];
+
+          if (
+            !resourceTypes.includes(
+              jsonResource?.data?.attributes?.['resource-type']
+            )
+          ) {
+            this.showBookNotAvailable();
+            return;
+          }
+
+          this.resourceType = jsonResource?.data?.attributes?.['resource-type'];
+
+          if (!jsonResource.data.attributes['manifest']) {
+            this.showBookNotAvailable();
+            return;
+          }
+          const latestTranslations =
+            jsonResource.data.relationships?.['latest-translations']?.data;
+
+          if (latestTranslations?.length) {
+            if (jsonResource.included?.length) {
+              const includedTranslations = jsonResource.included;
+              latestTranslations.forEach((pageBookTranslationItem) => {
+                const translations = includedTranslations.filter((row) => {
+                  if (
+                    row.type === 'translation' &&
+                    row.id === pageBookTranslationItem.id
+                  ) {
+                    return true;
+                  }
+
+                  return false;
+                });
+                translations?.forEach((item) => {
+                  this._pageBookTranslations.push(item);
+                });
+              });
+            }
+          }
+
+          this.selectedBookName = jsonResource.data.attributes['name'];
+
+          this.getAvailableLanguagesForSelectedBook();
+        },
+        error: () => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
+          this.showBookNotAvailable();
         }
-
-        this.selectedBookName = jsonResource.data.attributes['name'];
-
-        this.getAvailableLanguagesForSelectedBook();
       });
   }
 
@@ -571,9 +607,7 @@ export class PageComponent implements OnInit, OnDestroy {
       ) || ({} as Book);
 
     if (!this._pageBook.id) {
-      this.pageService.setDir('ltr');
-      this.bookNotAvailable = true;
-      this.loaderService.display(false);
+      this.showBookNotAvailable();
     } else {
       this._pageBookLoaded = true;
       this.loadPageBookIndex();
@@ -581,39 +615,59 @@ export class PageComponent implements OnInit, OnDestroy {
   }
 
   private getAllBooks(): void {
+    const loadId = this._loadId;
     this.commonService
       .getBooks(APIURL.GET_ALL_BOOKS)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: { data: Book[] }) => {
-        if (data && data.data) {
-          this._books = data.data;
-          this._booksLoaded = true;
-          this.loadPageBook();
-        } else {
-          this.pageService.setDir('ltr');
-          this.bookNotAvailable = true;
-          this.loaderService.display(false);
+      .subscribe({
+        next: (data: { data: Book[] }) => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
+          if (data && data.data) {
+            this._books = data.data;
+            this._booksLoaded = true;
+            this.loadPageBook();
+          } else {
+            this.showBookNotAvailable();
+          }
+        },
+        error: () => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
+          this.showBookNotAvailable();
         }
       });
   }
 
   private getAllLanguages(): void {
+    const loadId = this._loadId;
     this._allLanguages = [];
     this.commonService
       .getLanguages(APIURL.GET_ALL_LANGUAGES)
       .pipe(takeUntil(this._unsubscribeAll))
-      .subscribe((data: { data: Language[] }) => {
-        if (data && data.data) {
-          this._allLanguages = data.data;
-          this._allLanguagesLoaded = true;
-          if (this._pageParams && this._pageParams.langId) {
-            this.setSelectedLanguage();
+      .subscribe({
+        next: (data: { data: Language[] }) => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
           }
-          this.getAllBooks();
-        } else {
-          this.pageService.setDir('ltr');
-          this.bookNotAvailable = true;
-          this.loaderService.display(false);
+          if (data && data.data) {
+            this._allLanguages = data.data;
+            this._allLanguagesLoaded = true;
+            if (this._pageParams && this._pageParams.langId) {
+              this.setSelectedLanguage();
+            }
+            this.getAllBooks();
+          } else {
+            this.showBookNotAvailable();
+          }
+        },
+        error: () => {
+          if (!this.isCurrentLoad(loadId)) {
+            return;
+          }
+          this.showBookNotAvailable();
         }
       });
   }
@@ -723,6 +777,7 @@ export class PageComponent implements OnInit, OnDestroy {
             this.setSelectedLanguage();
           }
         }
+        this._loadId++;
         this._pageChanged.next();
       });
   }
@@ -960,7 +1015,20 @@ export class PageComponent implements OnInit, OnDestroy {
       });
   }
 
+  private isCurrentLoad(loadId: number): boolean {
+    return loadId === this._loadId;
+  }
+
+  private showBookNotAvailable(): void {
+    this.pageService.setDir('ltr');
+    this.bookNotAvailable = true;
+    this.loaderService.display(false);
+  }
+
   private clearData(): void {
+    // Stop any in-flight manifest parse, since its book is being replaced.
+    this._manifestParseController?.abort();
+    this._manifestParseController = null;
     this._booksLoaded = false;
     this._books = [];
     this._pageBookLoaded = false;

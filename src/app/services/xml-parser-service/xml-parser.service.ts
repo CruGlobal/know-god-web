@@ -4,6 +4,7 @@ import {
   ManifestParser as manifestParser,
   org
 } from '@cruglobal/godtools-shared';
+import { firstValueFrom } from 'rxjs';
 
 export const godToolsParser = org.cru.godtools.shared.tool.parser;
 export type Text = org.cru.godtools.shared.tool.parser.model.Text;
@@ -246,16 +247,12 @@ export class PullParserFactory
     fileName = fileName?.includes('http')
       ? fileName
       : `${this.getOrigin() + fileName}`;
-    return new Promise((resolve) => {
-      this.http
-        .get(fileName, { responseType: 'arraybuffer' })
-        .subscribe((data: ArrayBuffer) => {
-          const enc = new TextDecoder('utf-8');
-          const arr = new Uint8Array(data);
-          const result = enc.decode(arr);
-          resolve(result);
-        });
-    });
+    // firstValueFrom rejects on HTTP errors, so ManifestParser.parseManifest
+    // finishes with a ParserError instead of waiting forever.
+    const data = await firstValueFrom(
+      this.http.get(fileName, { responseType: 'arraybuffer' })
+    );
+    return new TextDecoder('utf-8').decode(new Uint8Array(data));
   }
 }
 
