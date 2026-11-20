@@ -1,6 +1,8 @@
 import { CUSTOM_ELEMENTS_SCHEMA, SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+import { AnimationItem } from 'lottie-web';
 import { APIURL } from 'src/app/api/url';
+import { Animation } from 'src/app/services/xml-parser-service/xml-parser.service';
 import { mockAnimation } from '../../../_tests/mocks';
 import { PageService } from '../../service/page-service.service';
 import { ContentAnimationComponent } from './content-animation.component';
@@ -14,6 +16,7 @@ describe('ContentAnimationComponent', () => {
   const animationWithUrl = mockAnimation(fileName, filePath, null);
   const animationWithEvents = mockAnimation(fileName, null, 'event');
   const animationNoPublishedFile = mockAnimation(fileName, null, 'event');
+  const nonLoopingAnimation = mockAnimation(fileName, filePath, 'event', false);
   let pageService: PageService;
 
   beforeEach(waitForAsync(() => {
@@ -105,5 +108,53 @@ describe('ContentAnimationComponent', () => {
 
     component.onClick();
     expect(pageService.formAction).toHaveBeenCalledWith('event');
+  });
+
+  describe('play and stop listeners', () => {
+    let anmViewItem: jasmine.SpyObj<AnimationItem>;
+
+    const initWith = (item: Animation): void => {
+      component.item = item;
+      component.ngOnChanges({
+        item: new SimpleChange(null, item, true)
+      });
+      fixture.detectChanges();
+      anmViewItem = jasmine.createSpyObj<AnimationItem>('AnimationItem', [
+        'play',
+        'pause',
+        'goToAndPlay'
+      ]);
+      component.onAnimationCreated(anmViewItem);
+    };
+
+    it('rewinds a non-looping animation every time a play event fires', () => {
+      initWith(nonLoopingAnimation);
+
+      pageService.contentEvent('event-play-listener');
+      pageService.contentEvent('event-play-listener');
+
+      expect(anmViewItem.goToAndPlay).toHaveBeenCalledTimes(2);
+      expect(anmViewItem.goToAndPlay).toHaveBeenCalledWith(0, true);
+      expect(anmViewItem.play).not.toHaveBeenCalled();
+    });
+
+    it('resumes a looping animation with play() when a play event fires', () => {
+      initWith(animation);
+
+      pageService.contentEvent('event-play-listener');
+
+      expect(anmViewItem.play).toHaveBeenCalledTimes(1);
+      expect(anmViewItem.goToAndPlay).not.toHaveBeenCalled();
+    });
+
+    it('pauses the animation when a stop event fires', () => {
+      initWith(nonLoopingAnimation);
+
+      pageService.contentEvent('event-stop-listener');
+
+      expect(anmViewItem.pause).toHaveBeenCalledTimes(1);
+      expect(anmViewItem.play).not.toHaveBeenCalled();
+      expect(anmViewItem.goToAndPlay).not.toHaveBeenCalled();
+    });
   });
 });
