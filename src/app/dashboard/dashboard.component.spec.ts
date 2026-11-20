@@ -7,6 +7,7 @@ import {
   waitForAsync
 } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
 import { NEVER } from 'rxjs';
@@ -38,6 +39,16 @@ describe('DashboardComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('ngOnInit() should reset the tab title', () => {
+    const title = TestBed.inject(Title);
+    spyOn(title, 'setTitle');
+    spyOn(component.resourceService, 'getDashboardData').and.returnValue(NEVER);
+
+    component.ngOnInit();
+
+    expect(title.setTitle).toHaveBeenCalledOnceWith('Know God');
   });
 
   it('prepareLanguageSwitcher() should set availableLangs based on languagesWithLessons and current page', fakeAsync(() => {

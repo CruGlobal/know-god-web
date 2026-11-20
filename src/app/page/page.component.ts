@@ -17,6 +17,7 @@ import { delay, filter, takeUntil } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { APIURL } from '../api/url';
 import { CommonService } from '../services/common.service';
+import { DocumentTitleService } from '../services/document-title.service';
 import { LoaderService } from '../services/loader-service/loader.service';
 import {
   Manifest,
@@ -141,6 +142,7 @@ export class PageComponent implements OnInit, OnDestroy {
     public router: Router,
     private viewportScroller: ViewportScroller,
     private pullParserFactory: PullParserFactory,
+    private documentTitleService: DocumentTitleService,
     @Inject(I18NEXT_SERVICE) private i18n: ITranslationService
   ) {
     this._pageParams = {
@@ -416,6 +418,12 @@ export class PageComponent implements OnInit, OnDestroy {
       item.attributes['manifest-name']
     ) {
       const manifestName = item.attributes['manifest-name'] as string;
+      // Prefer the tool name in the selected language over the resource name
+      const translatedName = item.attributes['translated-name'] as
+        string | null;
+      this.documentTitleService.setToolTitle(
+        translatedName || this.selectedBookName
+      );
       this.pullParserFactory.setOrigin(APIURL.GET_TRANSLATION_FILES);
       const config = ParserConfig.createParserConfig()
         .withSupportedFeatures([
@@ -983,6 +991,7 @@ export class PageComponent implements OnInit, OnDestroy {
     this.totalPages = 0;
     this.bookNotAvailableInLanguage = false;
     this.bookNotAvailable = false;
+    this.documentTitleService.resetTitle();
   }
 
   private showPage(page: TractPage): void {

@@ -1,6 +1,7 @@
 import { HttpClientModule } from '@angular/common/http';
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { Title } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { I18NextModule } from 'angular-i18next';
@@ -376,6 +377,60 @@ describe('PageComponent', () => {
     document.head
       .querySelectorAll('link[rel="prefetch"]')
       .forEach((link) => link.remove());
+  });
+
+  describe('loadBookManifestXML() tab title', () => {
+    let title: Title;
+
+    const loadTranslation = (translatedName: string | null) => {
+      component._selectedLanguage = { id: '2222' };
+      component._pageBookTranslations = [
+        {
+          id: 'tx-1',
+          attributes: {
+            'manifest-name': 'foo.xml',
+            'translated-name': translatedName
+          },
+          relationships: { language: { data: { id: '2222' } } }
+        }
+      ];
+      component['loadBookManifestXML']();
+    };
+
+    beforeEach(() => {
+      title = TestBed.inject(Title);
+      spyOn(title, 'setTitle');
+      spyOn(ManifestParser.prototype, 'parseManifest').and.returnValue(
+        new Promise(() => {})
+      );
+    });
+
+    it('uses the translated tool name', () => {
+      component.selectedBookName = 'Knowing God Personally';
+      loadTranslation('Gott persönlich kennenlernen');
+
+      expect(title.setTitle).toHaveBeenCalledOnceWith(
+        'Gott persönlich kennenlernen | Know God'
+      );
+    });
+
+    it('falls back to the resource name when there is no translated name', () => {
+      component.selectedBookName = 'Knowing God Personally';
+      loadTranslation(null);
+
+      expect(title.setTitle).toHaveBeenCalledOnceWith(
+        'Knowing God Personally | Know God'
+      );
+    });
+  });
+
+  it('clearData() should reset the tab title', () => {
+    const title = TestBed.inject(Title);
+    spyOn(title, 'setTitle');
+
+    component.clearData();
+
+    expect(title.setTitle).toHaveBeenCalledOnceWith('Know God');
   });
 
   it('getAvailableLanguagesForSelectedBook() no languages downloaded', () => {
